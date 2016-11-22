@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://localhost:4000/notes/Metasploit%E6%B8%97%E9%80%8F%E4%BB%8E%E6%B5%8B%E8%AF%95%E6%8C%87%E5%8D%97</loc>
+<lastmod>2016-11-22T00:00:00+08:00</lastmod>
+</url>
+<url>
 <loc>http://localhost:4000/notes/very-long-title-post</loc>
 <lastmod>2016-10-18T00:00:00+08:00</lastmod>
 </url>

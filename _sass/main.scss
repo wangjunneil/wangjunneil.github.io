@@ -1,5 +1,6 @@
 body {
-  font-family: 'Karla', sans-serif;
+  /* font-family: 'Karla', sans-serif; */
+  font-family: sans-serif;
   padding: 20px;
   margin: 0;
   font-weight: 400;
@@ -13,7 +14,8 @@ h2,
 h3,
 h4,
 h5 {
-  margin: 45px 0 25px;
+  // margin: 45px 0 25px;
+  margin: 35px 0 25px;
 }
 img {
   max-width: 100%;
@@ -217,8 +219,8 @@ pre {
   display: block;
   margin-top: 0;
   margin-bottom: 1rem;
-  font-size: 0.8rem;
-  line-height: 1.4;
+  font-size: 0.9rem;
+  line-height: 1.6;
   white-space: pre;
   overflow-x: auto;
   background-color: #f9f9f9;
@@ -275,8 +277,8 @@ article {
     margin: 30px 0;
   }
   p {
-    font-size: 15px;
-    line-height: 1.9em;
+    font-size: 12px;
+    line-height: 1.5em;
     word-wrap: break-word;
   }
   .footnote {
@@ -342,7 +344,7 @@ section {
     margin: 0;
     padding: 0;
     li {
-      margin: 25px 0;
+      margin: 15px 0;
       .title {
         max-width: 100%;
         //overflow: hidden !important;
@@ -364,7 +366,7 @@ section {
         display: inline-block;
         color: #757575;
         letter-spacing: 1px;
-        text-transform: uppercase;
+        // text-transform: uppercase;
       }
       @media (min-width: 992px) {a {
           border-bottom: 2px solid transparent;

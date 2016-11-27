@@ -11,7 +11,12 @@ layout: compress
 
 	<body>
 
-		{% include header.html %}
+        <!-- // 修改，原有每个页面都有logo，改成只有首页有logo
+        {% include header.html %}
+        -->
+        {% if page.url == '/index.html' or page.url == '/' %}
+    		{% include header.html %}
+		{% endif %}
 
 		<main>
 			{{ content | replace: '&#8617;', '&#8617;&#xfe0e;' }}
@@ -28,6 +33,10 @@ layout: compress
 
 		{% endif %}
 
+        {% if jekyll.environment == 'production' %}
+        {% include baidu_tongji.html %}
+        {% include google_analytics.html %}
+        {% endif %}
 	</body>
 
 </html>

@@ -2,9 +2,14 @@
 layout: default
 ---
 
+<!-- search -->
+<div class="searchform">
+<input type="text" placeholder="Please enter search key word"/>
+</div>
+
 <section>
 
-	{% for post in site.posts %}
+	{% for post in paginator.posts %}
 		{% unless post.next %}
 			<h3>{{ post.date | date: '%Y' }} &#172;</h3>
 		{% else %}
@@ -29,3 +34,18 @@ layout: default
 	{% endfor %}
 
 </section>
+
+<!-- Pagination links -->
+<div class="pagination">
+  {% if paginator.previous_page %}
+    <a href="{{ paginator.previous_page_path }}" class="previous">previous</a>
+  {% else %}
+    <span class="previous">previous</span>
+  {% endif %}
+  <span class="page_number ">{{ paginator.page }} of {{ paginator.total_pages }}</span>
+  {% if paginator.next_page %}
+    <a href="{{ paginator.next_page_path }}" class="next">next</a>
+  {% else %}
+    <span class="next ">next</span>
+  {% endif %}
+</div>

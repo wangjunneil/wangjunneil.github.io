@@ -270,6 +270,10 @@ article {
     height: 1px;
     margin: 2em 0;
   }
+  a:hover {
+    color: white;
+    background-color: #333;
+  }
   .center {
     text-align: center;
     margin: 0 auto;
@@ -309,6 +313,10 @@ article {
       color: #000;
     }
   }
+}
+.highlighter-rouge {
+    margin: 0px 5px;
+    font-size: 11px;
 }
 .pagination {
     max-width: 500px;

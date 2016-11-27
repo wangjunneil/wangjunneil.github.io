@@ -348,6 +348,19 @@ article {
     display: inline-block;
   }
 }
+#by-nc-nd {
+    margin: 10px 0;
+    padding: 5px 5px;
+    a {
+        border-bottom:0px;
+    }
+    div {
+        font-size: 12px;
+        a {
+            border-bottom: 1px solid #555;
+        }
+    }
+}
 .footer {
   margin-top: 10px;
   color: #777;

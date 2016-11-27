@@ -16,13 +16,15 @@ layout: default
 
 	<div class="center">
 		<h1>{{ page.title }}</h1>
-		<time>{{ page.date | date: '%B %-d, %Y' }}</time>
+		<time>{{ page.date | date: "%F" }}</time>
 	</div>
 
 	<div class="divider"></div>
 
 	{{ content }}
 
+    {% include cc.html %}
+    
 </article>
 
 <div class="page-navigation">

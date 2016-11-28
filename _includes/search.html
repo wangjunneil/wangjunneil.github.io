@@ -54,7 +54,8 @@
                 $(".suggest li.hover").prev().removeClass("hover");
                 $(".suggest").val($(".suggest li.hover").text());
             } else if (k == 13) {
-                
+                var url = $(".suggest li.hover a").attr("href");
+                location.href = url;
             }
         });
     });

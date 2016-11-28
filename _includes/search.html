@@ -11,11 +11,14 @@
 <script src="//lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script>
 <script>
     $(function () {
-        $("#keyword").bind("input", function (e) {
+        $("#keyword").bind("input", function () {
             var keyword = $("#keyword").val();
+            
             if (keyword == null || keyword == "") {
                 $(".suggest").empty();
                 $(".suggest").hide();
+                $(".gravatar").attr("src", "/assets/evan.jpeg");
+                $("body").removeClass("hackmode");
                 return;
             }
             
@@ -26,13 +29,33 @@
                     $.each(posts, function(key, value) {
                         var title = value.title;
                         if (title.indexOf(keyword) != -1) {
-                            var li = $("<li>" + title.substring(0, title.indexOf('_')) + "</li>");
+                            var li = $("<li><a href='" + value.url + "'>"
+                             + title.substring(0, title.indexOf('_'))
+                             + "</a></li>");
                             $(".suggest").append(li);
                         }
                     });
+                    $(".suggest").children().first().addClass("hover");
                     $(".suggest").show();
+                    $(".gravatar").attr("src", "/assets/hacker.jpg");
+                    $("body").addClass("hackmode");
                 }
             });
+        });
+        
+        $("#keyword").bind("keyup", function (evt) {
+            var k = window.event ? evt.keyCode : evt.which;
+            if (k == 38) {
+                $(".suggest li.hover").prev().addClass("hover");
+                $(".suggest li.hover").next().removeClass("hover");
+                $(".suggest").val($(".suggest li.hover").text());
+            } else if (k == 40) {
+                $(".suggest li.hover").next().addClass("hover");
+                $(".suggest li.hover").prev().removeClass("hover");
+                $(".suggest").val($(".suggest li.hover").text());
+            } else if (k == 13) {
+                
+            }
         });
     });
 </script>

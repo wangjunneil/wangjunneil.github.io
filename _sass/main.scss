@@ -1,6 +1,6 @@
 body {
   /* font-family: 'Karla', sans-serif; */
-  font: 400 1em/1.8 "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font: 400 12px/1.8 "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
   padding: 20px;
   margin: 0;
   font-weight: 400;
@@ -388,7 +388,8 @@ article {
   text-align: center;
   max-width: 500px;
   margin: 0 auto;
-  font-size: 1rem;
+  // font-size: 1rem;
+  font-size: 11px;
 }
 .page-navigation {
   // margin: 50px auto 0 auto;

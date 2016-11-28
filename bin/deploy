@@ -1,8 +1,0 @@
-#!/bin/bash
-
-git add .
-git commit -m "fix"
-git push
-
-cd ../master
-pwd

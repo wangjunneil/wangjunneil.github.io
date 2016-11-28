@@ -11,7 +11,11 @@ layout: compress
 
 	<body>
 
-        {% if page.url == '/index.html' or page.url == '/' %}
+        {% if page.url == '/index.html' 
+            or page.url == '/' 
+            or page.url contains '/page/'
+            or page.url contains '/categories/'
+            or page.url == '/about/' %}
     		{% include header.html %}
     		{% include search.html %}
 		{% endif %}

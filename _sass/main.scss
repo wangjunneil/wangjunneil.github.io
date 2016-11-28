@@ -157,14 +157,14 @@ span[data-note] {
 .logo {
   position: relative;
   // margin: 0 auto 35px;
-  margin: 0 auto 15px;
+  margin: 0 auto 5px;
   text-align: center;
-  animation-duration: 0.7s;
-  animation-fill-mode: both;
-  animation-name: bounce;
-  -webkit-animation-duration: 0.7s;
-  -webkit-animation-fill-mode: both;
-  -webkit-animation-name: bounce;
+  // animation-duration: 0.7s;
+  // animation-fill-mode: both;
+  // animation-name: bounce;
+  // -webkit-animation-duration: 0.7s;
+  // -webkit-animation-fill-mode: both;
+  // -webkit-animation-name: bounce;
   .hack_pic { display:none; }
   a {
     background: #ddd url("gravatar_wrapper.png");
@@ -388,10 +388,11 @@ article {
   text-align: center;
   max-width: 500px;
   margin: 0 auto;
-  font-size: 0.8rem;
+  font-size: 1rem;
 }
 .page-navigation {
-  margin: 50px auto 0 auto;
+  // margin: 50px auto 0 auto;
+  margin: 20px auto 0 auto;
   a {
     display: inline-block;
     text-decoration: none;
@@ -437,6 +438,8 @@ article {
     display: none;
     text-align: left;
     color: #757575;
+    height:200px;
+    overflow:auto;
     li {
         padding: 0px 0px 0px 5px;
         cursor: pointer;
@@ -451,7 +454,7 @@ article {
     background-color: #000;
     color: #FFF;
     .title a{color:#757575;}
-    
+    .footer {border-top: 2px solid #FFF;}
 }
 .hover{background-color: black;color: white;}
 section {

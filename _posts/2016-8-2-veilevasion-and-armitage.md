@@ -1,8 +1,9 @@
 ---
 title: Veil-Evasion与Armitage的集成操作
+name: veilevasion-and-armitage
 date: 2016-8-2
 tags: [Veil-Evasion,Armitag,Veil-Evasion集成Armitag]
-categories: [产品]
+categories: [blackhat]
 ---
 
 [veil-evasion](https://www.veil-framework.com/framework/veil-evasion/) 是有名的终端下后门生成工具，其免杀效果表现的非常好。**armitage** 是 metasploit 的图形化操作界面，本文就两者如何集成进行简单说明。

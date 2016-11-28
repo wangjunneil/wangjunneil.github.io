@@ -1,8 +1,9 @@
 ---
 title: 在kali中创建伪装AP热点
-date: 2015-10-19 04:53 
+name: create-fake-ap-in-kali
+date: 2015-10-19 04:53
 tags: [git, 咖啡]
-categories: [产品]
+categories: [blackhat]
 ---
 
 ## 1.必须工具

@@ -1,0 +1,38 @@
+<!-- search -->
+<div class="searchform">
+<input type="text" id="keyword" placeholder="Put here search key word"/>
+
+<ul class="suggest">
+    <li>经济建设就我ijsiwjs</li>
+    <li>往往文网文文网文</li>
+</ul>
+</div>
+
+<script src="//lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script>
+<script>
+    $(function () {
+        $("#keyword").bind("input", function (e) {
+            var keyword = $("#keyword").val();
+            if (keyword == null || keyword == "") {
+                $(".suggest").empty();
+                $(".suggest").hide();
+                return;
+            }
+            
+            $.getJSON("/data/index.html",function(result){
+                var posts = result.data;
+                if (posts.length != 0) {
+                    $(".suggest").empty();
+                    $.each(posts, function(key, value) {
+                        var title = value.title;
+                        if (title.indexOf(keyword) != -1) {
+                            var li = $("<li>" + title.substring(0, title.indexOf('_')) + "</li>");
+                            $(".suggest").append(li);
+                        }
+                    });
+                    $(".suggest").show();
+                }
+            });
+        });
+    });
+</script>

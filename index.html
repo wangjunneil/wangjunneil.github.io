@@ -2,14 +2,10 @@
 layout: default
 ---
 
-<!-- search -->
-<div class="searchform">
-<input type="text" placeholder="Please enter search key word"/>
-</div>
-
 <section>
 
 	{% for post in paginator.posts %}
+	    <!--
 		{% unless post.next %}
 			<h3>{{ post.date | date: '%Y' }} &#172;</h3>
 		{% else %}
@@ -19,7 +15,7 @@ layout: default
 				<h3>{{ post.date | date: '%Y' }} &#172;</h3>
 			{% endif %}
 		{% endunless %}
-
+        -->
 		<ul>
 			<li>
 				<div class="post-date">

@@ -3,7 +3,6 @@ title:              "A Coder, a Programmer, a Hacker walk into Evan's Blog"
 description: >
     首页描述首页描述首页描述首页描述首页描述首页描述首页描述
     首页描述首页描述首页描述。
-    
 keywords: >
     ok,cancel,wangjunneil,evan
 google_verify:      epFgX0s_0RM3CdjwFcsewfXzPov2g8s9ZBOLyaIUH-o # Put your Google Verification here
@@ -19,9 +18,7 @@ github_username:    wangjunneil # GitHub username
 baseurl:            "" # Base URL must end WITHOUT a slash, default: ""
 url:                "http://www.wangjunneil.com" 
 permalink:          /:year/:month/:title/
-timezone:           Asia/Shanghai 
-
-# Gems
+timezone:           Asia/Shanghai
 
 # Site Build
 highlighter:        rouge
@@ -64,4 +61,4 @@ defaults:
       
 gems: [jekyll-paginate]
 paginate: 10
-paginate_path: "/notes/page:num/"
+paginate_path: "/page/:num"

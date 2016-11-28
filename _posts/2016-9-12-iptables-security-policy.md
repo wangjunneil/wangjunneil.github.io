@@ -1,7 +1,9 @@
 ---
 title: 服务器上的iptables防火墙应该如何配置才能更安全
+name: iptables-security-policy
 date: 2016-9-12
 tags: [iptables,iptables安全测策略,防火墙]
+categories: [whitehat]
 ---
 
 新入网的服务器在不做任何配置的情况下将会出现很多安全问题。端口肆意暴露、来源请求不明，恶意的数据包源源不断的流入服务器中。

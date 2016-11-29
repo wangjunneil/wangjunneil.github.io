@@ -50,13 +50,13 @@ smbclient //192.168.1.198/test -U administrator 123321
 
 &lt;p&gt;依次点击 &lt;strong&gt;armitage&lt;/strong&gt; 菜单，Armitage - Scripts，点击 Load 按钮定位到 &lt;strong&gt;veil-evasion&lt;/strong&gt; 的安装目录中找到 &lt;strong&gt;armitage&lt;/strong&gt; 的扩展文件 &lt;strong&gt;veil-evasion/tools/cortanaveil_evasion.cna&lt;/strong&gt; 加载，加载完成后就会在 &lt;strong&gt;armitage&lt;/strong&gt; 的菜单中看见 &lt;strong&gt;Veil-Evasion&lt;/strong&gt; 的菜单已经被加载到了。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/armitage-veilevasion_1.png&quot; alt=&quot;VeilEvasion与Armitage的集成操作&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/armitage-veilevasion_1.png&quot; alt=&quot;armitage1&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;3-测试生成-payload&quot;&gt;3. 测试生成 payload&lt;/h1&gt;
 
 &lt;p&gt;点击 &lt;strong&gt;armitage&lt;/strong&gt; 上的 &lt;strong&gt;Veil-Evasion&lt;/strong&gt; 菜单，首次运行会提示输入完整的 &lt;strong&gt;veil-evasion&lt;/strong&gt; 安装路径。配置好生成参数，点击 Generate 按钮即可生成后门文件，也可以点击 Use Listener 按钮开启对后门的监听。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/armitage-veilevasion_2.png&quot; alt=&quot;VeilEvasion与Armitage的集成操作&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/armitage-veilevasion_2.png&quot; alt=&quot;armitage2&quot; /&gt;&lt;/p&gt;
 
 </description>  
                <pubDate>Tue, 01 Nov 2016 00:00:00 +0800</pubDate>  

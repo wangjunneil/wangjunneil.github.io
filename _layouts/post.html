@@ -25,6 +25,11 @@ layout: default
 
     {% include cc.html %}
     
+    <div class="divider"></div>
+    
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="29bca95032aff645a6f67f03e45bddfb" data-title="{{page.title}}" data-url="{{page.url}}"></div>
+    <!-- 多说评论框 end -->
 </article>
 
 <div class="page-navigation">
@@ -38,3 +43,17 @@ layout: default
     <a class="prev" href="{{page.previous.url}}" title="PREV: {{page.previous.title}}">&gt;&gt;</a>
   {% endif %}
 </div>
+
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"wangjunneil"};
+(function() {
+	var ds = document.createElement('script');
+	ds.type = 'text/javascript';ds.async = true;
+	ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+	ds.charset = 'UTF-8';
+	(document.getElementsByTagName('head')[0] 
+	 || document.getElementsByTagName('body')[0]).appendChild(ds);
+})();
+</script>
+<!-- 多说公共JS代码 end -->

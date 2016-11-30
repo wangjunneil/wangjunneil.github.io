@@ -86,14 +86,33 @@ span[data-note] {
         background-color: #333;
       }
 }
+.searchcommand {
+    .mk {display:inline;}
+    #keyword {padding-left: 95px;width: 79%;font-weight: 800;font-size: 13px;}
+}
 .searchform {
     max-width: 500px;
     margin: 0 auto;
     text-align: center;
-    // border-bottom: 2px solid #000;
+    // border-bottom: 2px solid #777;
     padding: 1.1em 0em;
+    label {
+    display:none;
+        position: absolute;
+width: 70px;
+background-color: #555;
+text-align: center;
+margin-left: 3px;
+padding: 0px 5px 0px 10px;
+margin-top: 3px;
+border-radius: 0.25em;
+vertical-align: baseline;
+white-space: nowrap;
+color: #FFF;
+font-weight: 700;
+    }
     input[type="text"] {
-        width:98%;font-size: 12px;
+        width: 96%;font-size: 12px;
         border: 1px solid #b6b6b6;
 background: #fff;
 display: inline-block;
@@ -440,7 +459,7 @@ article {
   }
 }
 .suggest {
-    width: 508px;
+    width: 498px;
     // height: 300px;
     position: absolute;
     border: 1px dashed grey;
@@ -469,7 +488,7 @@ article {
     background-color: #000;
     color: #FFF;
     .title a{color:#757575;}
-    .footer {border-top: 2px solid #FFF;}
+    .footer {border-top: 1px dashed #f14e32;color:#f14e32;}
     .code_pic {display:none;}
     .hack_pic {display:inline-block;}
     .logo a {background: #f14e32;}

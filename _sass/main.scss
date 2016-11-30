@@ -94,7 +94,29 @@ span[data-note] {
     padding: 1.1em 0em;
     input[type="text"] {
         width:98%;font-size: 12px;
+        border: 1px solid #b6b6b6;
+background: #fff;
+display: inline-block;
+overflow: hidden;
+height: 20px;
+vertical-align: top;
+padding: 3px;
+padding-left: 15px;
     }
+    .clear {
+        display: none;
+position: absolute;
+width: 16px;
+height: 16px;
+margin: 6px 0 0 -20px;
+background: url(/assets/clear.png);
+border-bottom: 0px;
+cursor:pointer;
+    
+    }
+    // input[type="text"]::-ms-clear { display: none; }
+    // input[type="text"]:valid + .clear { display: inline; }
+    // input[type="text"]:focus {border: 1px solid red;}
 }
 .category {
     background-color: #333;
@@ -370,16 +392,6 @@ article {
     color: #777;
     font-family: "Cutive Mono", monospace;
 }
-.searchform {
-    max-width: 500px;
-    margin: 0 auto;
-    text-align: center;
-    // padding: 1.1em 0em;
-    // border-top: 2px solid black;
-    input[type="text"] {
-        width:98%;font-size: 12px;
-    }
-}
 .block {
   display: block;
 }
@@ -428,7 +440,7 @@ article {
   }
 }
 .suggest {
-    width: 502px;
+    width: 508px;
     // height: 300px;
     position: absolute;
     border: 1px dashed grey;
@@ -441,23 +453,30 @@ article {
     color: #757575;
     height:200px;
     overflow:auto;
+    margin-top: 2px;
     li {
-        padding: 0px 0px 0px 5px;
+        padding: 0px 0px 0px 15px;
         cursor: pointer;
         a {border-bottom: 0px;}
     }
     li:hover{
-        background-color: black;
+        background-color: #f14e32;
         color: white;
     }
 }
+
 .hackmode {
     background-color: #000;
     color: #FFF;
     .title a{color:#757575;}
     .footer {border-top: 2px solid #FFF;}
+    .code_pic {display:none;}
+    .hack_pic {display:inline-block;}
+    .logo a {background: #f14e32;}
+    .searchform input[type="text"] {font-weight:bold;}
+    .clear {display:inline;}
 }
-.hover{background-color: black;color: white;}
+.hover{background-color: #f14e32;color: white;}
 section {
   max-width: 500px;
   margin: 30px auto 20px auto;

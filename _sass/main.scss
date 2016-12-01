@@ -470,9 +470,11 @@ article {
     display: none;
     text-align: left;
     color: #757575;
-    height:200px;
     overflow:auto;
     margin-top: 2px;
+    overflow: auto;
+    margin-top: 2px;
+    max-height: 300px;
     li {
         padding: 0px 0px 0px 15px;
         cursor: pointer;
@@ -494,6 +496,9 @@ article {
     .logo a {background: #f14e32;}
     .searchform input[type="text"] {font-weight:bold;}
     .clear {display:inline;}
+    .header-nav {border-bottom: 1px dashed #f14e32;}
+    .page-link {color: #FFF;background-color: #f14e32;}
+    section {color:#757575;}
 }
 .hover{background-color: #f14e32;color: white;}
 section {

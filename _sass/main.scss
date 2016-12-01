@@ -148,10 +148,13 @@ cursor:pointer;
         font-family: "Cutive Mono", monospace;
         padding: 0px 10px;
     }
-    a:hover{
-        color:white;
-        background-color: #333;
-    }
+    // a:hover{
+    //     color:white;
+    //     background-color: #333;
+    // }
+}
+.category:hover{
+    background-color: #777;
 }
 .note {
   background: #f8f8f8;

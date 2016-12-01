@@ -1,23 +1,29 @@
-command_mode = false;
+command_mode = false;   // 标识命令模式
 
-/*function suggest(posts) {
-    $(".suggest").empty();
+function suggest(posts) {
     var keyword = $("#keyword").val();
-    
+    var flag = false;   // 标识是否有搜索到数据
+    $(".suggest").empty();
     $.each(posts, function(key, value) {
         var title = value.title;
         if (title.indexOf(keyword) != -1) {
-
             var li = $("<li><a href='" + value.url + "'>"
              + title.substring(0, title.indexOf('_'))
              + "</a></li>");
             $(".suggest").append(li);
+            flag = true;
         }
     });
+    if (!flag) {    // 没有搜索到文章
+        var li = $("<li><span>Cannot find out anything article ......</span></li>");
+        li.css("background-color", "rgb(0, 116, 54)");
+        li.css("cursor", "crosshair");
+        $(".suggest").append(li);
+    }
     $(".suggest").children().first().addClass("hover");
     $(".suggest").show();
     $("body").addClass("hackmode");
-}*/
+}
 
 $(function () {
     $(".clear").bind("click", function () {
@@ -31,7 +37,7 @@ $(function () {
         if (command_mode) {
             return;
         }
-    
+        
         var keyword = $("#keyword").val();
         if (keyword == null || keyword == "") {
             $(".suggest").empty();
@@ -45,33 +51,21 @@ $(function () {
             command_mode = true;
             return;
         } else {
-            /*if (window.localStorage) {
-            posts = localStorage.wangjunneil_posts;
-            suggest(JSON.parse(posts));
-            return;
-            }*/
+            if (window.sessionStorage) {
+                posts = sessionStorage.posts;
+                if (posts != null && posts != "" && posts != "undefined") {
+                    suggest(JSON.parse(posts));
+                    return;
+                }
+            }
             
             $.getJSON("/data/index.html",function(result){
                 var posts = result.data;
                 if (posts.length != 0) {
-                    /*if (window.localStorage) {
-                        localStorage.wangjunneil_posts = JSON.stringify(posts);
+                    if (window.sessionStorage) {
+                        sessionStorage.posts = JSON.stringify(posts);
                         suggest(posts);
-                    }*/
-                    
-                    $(".suggest").empty();
-                    $.each(posts, function(key, value) {
-                        var title = value.title;
-                        if (title.indexOf(keyword) != -1) {
-                            var li = $("<li><a href='" + value.url + "'>"
-                             + title.substring(0, title.indexOf('_'))
-                             + "</a></li>");
-                            $(".suggest").append(li);
-                        }
-                    });
-                    $(".suggest").children().first().addClass("hover");
-                    $(".suggest").show();
-                    $("body").addClass("hackmode");
+                    }
                 }
             });
         }
@@ -82,17 +76,23 @@ $(function () {
         if (k == 38) {
             $(".suggest li.hover").prev().addClass("hover");
             $(".suggest li.hover").next().removeClass("hover");
-            $("#keyword").val($(".suggest li.hover").text());
+            if (isSearchData()) {
+                $("#keyword").val($(".suggest li.hover").text());
+            }
         } else if (k == 40) {
             $(".suggest li.hover").next().addClass("hover");
             $(".suggest li.hover").prev().removeClass("hover");
-            $("#keyword").val($(".suggest li.hover").text());
+            if (isSearchData()) {
+                $("#keyword").val($(".suggest li.hover").text());
+            }
         } else if (k == 13) {
             if (command_mode) {
                 var keyword = $("#keyword").val();
                 if (keyword == null || keyword == "") 
                     return;
                 command_process();
+            } else if (!isSearchData()) { // 没有检索到文章，回车事件忽略
+                return;
             } else {
                 var url = $(".suggest li.hover a").attr("href");
                 location.href = url;
@@ -101,20 +101,29 @@ $(function () {
             var keyword = $("#keyword").val();
             if (keyword.length == "") {
                 $(".searchform").removeClass("searchcommand");
-                $("#keyword").attr("placeholder", "Simple Search");
+                $("#keyword").attr("placeholder", "Universal search control");
                 command_mode = false
             } 
         }
     });
 });
 
+function isSearchData() {
+    return $(".hover span").length == 0;
+}
+
 function command_process() {
     var command = $("#keyword").val();
     switch (command) {
         case "getip":
+            getip();
             break;
         default:
             console.log('Unknown command [' + command + "]");
             break;
     }
+}
+
+function getip() {
+    
 }

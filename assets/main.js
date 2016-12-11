@@ -101,7 +101,6 @@ $(function () {
             var keyword = $("#keyword").val();
             if (keyword.length == "") {
                 $(".searchform").removeClass("searchcommand");
-                $("#keyword").attr("placeholder", "Universal search control");
                 command_mode = false
             } 
         }

@@ -331,17 +331,18 @@ pre {
 table {
   width: 100%;
   table-layout: fixed;
-  margin: 45px 0;
+  // margin: 45px 0;
+  margin: 20px 0;
   thead {
     background: #f2f2f2;
   }
   th {
     text-align: left;
-    padding: 8px 10px;
-    border-bottom: 15px solid #fff;
+    padding: 3px 10px;
+    // border-bottom: 5px solid #fff;
   }
   td {
-    padding: 4px 0;
+    padding: 2px 5px;
   }
 }
 iframe {

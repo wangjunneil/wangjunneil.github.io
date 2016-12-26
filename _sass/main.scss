@@ -353,7 +353,7 @@ article {
   margin: 0 auto;
   .title {
     line-height: 1.4em;
-    text-align: center;
+    text-align: center;    
   }
   .divider {
     background: #ddd;
@@ -528,6 +528,7 @@ section {
         //text-overflow: ellipsis !important;
         //white-space: nowrap !important;
         word-wrap: normal !important;
+        span {padding-right:5px;font-weight:bold;}
       }
       a {
         text-decoration: none;

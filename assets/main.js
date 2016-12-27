@@ -6,9 +6,11 @@ function suggest(posts) {
     $(".suggest").empty();
     $.each(posts, function(key, value) {
         var title = value.title;
+        // 高亮
+        // title = title.replace(keyword, "<span>" + keyword + "</span>");
         if (title.indexOf(keyword) != -1) {
             var li = $("<li><a href='" + value.url + "'>"
-             + title.substring(0, title.indexOf('_'))
+             + title.substring(0, title.indexOf('_')).replace(keyword, "<span class='hilight'>" + keyword + "</span>")
              + "</a></li>");
             $(".suggest").append(li);
             flag = true;

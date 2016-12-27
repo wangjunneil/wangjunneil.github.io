@@ -6,8 +6,6 @@ function suggest(posts) {
     $(".suggest").empty();
     $.each(posts, function(key, value) {
         var title = value.title;
-        // 高亮
-        // title = title.replace(keyword, "<span>" + keyword + "</span>");
         if (title.indexOf(keyword) != -1) {
             var li = $("<li><a href='" + value.url + "'>"
              + title.substring(0, title.indexOf('_')).replace(keyword, "<span class='hilight'>" + keyword + "</span>")
@@ -78,23 +76,23 @@ $(function () {
         if (k == 38) {
             $(".suggest li.hover").prev().addClass("hover");
             $(".suggest li.hover").next().removeClass("hover");
-            if (isSearchData()) {
+            // if (isSearchData()) {
                 $("#keyword").val($(".suggest li.hover").text());
-            }
+            // }
         } else if (k == 40) {
             $(".suggest li.hover").next().addClass("hover");
             $(".suggest li.hover").prev().removeClass("hover");
-            if (isSearchData()) {
+            // if (isSearchData()) {
                 $("#keyword").val($(".suggest li.hover").text());
-            }
+            // }
         } else if (k == 13) {
             if (command_mode) {
                 var keyword = $("#keyword").val();
                 if (keyword == null || keyword == "") 
                     return;
                 command_process();
-            } else if (!isSearchData()) { // 没有检索到文章，回车事件忽略
-                return;
+            // } else if (!isSearchData()) { // 没有检索到文章，回车事件忽略
+            //    return;
             } else {
                 var url = $(".suggest li.hover a").attr("href");
                 location.href = url;

@@ -489,10 +489,16 @@ article {
         padding: 0px 0px 0px 15px;
         cursor: pointer;
         a {border-bottom: 0px;}
+        .hilight {
+            padding: 0px 3px;
+            background-color: yellow;
+            color: black;
+            border-radius: 3px;
+        }
     }
     li:hover{
         background-color: #f14e32;
-        color: white;
+        color: white;        
     }
 }
 

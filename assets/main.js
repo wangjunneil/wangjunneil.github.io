@@ -95,6 +95,7 @@ $(function () {
             //    return;
             } else {
                 var url = $(".suggest li.hover a").attr("href");
+                $("#keyword").val('');
                 location.href = url;
             }
         } else if (k == 8) {

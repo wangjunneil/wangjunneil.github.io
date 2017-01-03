@@ -96,7 +96,7 @@ $(function () {
             } else {
                 var url = $(".suggest li.hover a").attr("href");
                 $("#keyword").val('');
-                location.href = url;
+                location.href = "http://127.0.0.1:4000" + url;
             }
         } else if (k == 8) {
             var keyword = $("#keyword").val();

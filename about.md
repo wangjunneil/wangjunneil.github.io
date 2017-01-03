@@ -3,10 +3,18 @@ layout: page
 title: About Me
 ---
 
-Hello.
+**hi.**
 
-The main purpose of this theme is to be as simple as it could be, so you can focus on writing your stuffs. This is your About page. You may describe about yourself here; who you are, what are you currently doing, share some of your projects, your social links and how people can contact you, etc.
+首先欢迎进入我的博客。
 
-**Just write thing that matters..**
+自2002年购买的第一台电脑后，就注定与电脑有着一辈子的缘分。孩童时代像许多人一样沉迷于游戏之中，尤记得当时基本上无网络的概念，玩游戏看电影基本上是购买光盘的方式解决，就这样伴随着我好几个年份，直到我的第一个VB的小程序。
+
+从2006年开始接触编程，到现在已有10个年头，评价一个好的IT从业者我很鄙视以工作年限衡量技术高低。毕竟在当今的中国社会，**情商永远比智商更加重要**。
+
+在这里并不想介绍我会什么，拿手的语言是什么。由于自己的好奇心，对软件的各个方面都有所了解，用现在IT业的说法可以说是**全栈**型的，**全栈**这词既有贬义又有褒义，什么都会，什么都不精。在如今大型IT企业业务细粒度划分的情况下，这并不是一个很好的选择。然而我就是这么固执的一个人。
+
+**学习积累很重要，温习回顾更重要**，我尝试着做着各种笔记，写着各种博客，我希望能一辈子保存这些经验，并没有那么高尚的分享精神，只是用于自己回顾查找及翻阅。或许有些文章过于简单，但对于当时的我这值得记录。回看往日博文，多么幼稚，但这是我的青春岁月，那并不可笑。
+
+**我们唯一能够逃避的就是逃避本身**
 
 Enjoy!

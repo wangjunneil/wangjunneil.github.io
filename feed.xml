@@ -316,8 +316,8 @@ spinner &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot
                </item>  
           
             <item>  
-               <title>Windows中关于"net user"命令的hacker语法备注</title>  
-               <description>&lt;h1 id=&quot;windows中关于net-user命令的hacker语法备注&quot;&gt;Windows中关于”net user”命令的hacker语法备注&lt;/h1&gt;
+               <title>Windows中关于net user命令的hacker语法备注</title>  
+               <description>&lt;h1 id=&quot;windows中关于net-user命令的hacker语法备注&quot;&gt;Windows中关于net user命令的hacker语法备注&lt;/h1&gt;
 
 &lt;pre&gt;&lt;code class=&quot;language-cmd&quot;&gt;# 创建用户并增加到管理员组
 net user hacker$ hacker123 /add

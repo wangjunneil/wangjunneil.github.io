@@ -1,6 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="baidu-site-verification" content="gDf3P6sfyW" /><meta name="360-site-verification" content="0c91ee58977e5924d92896a89289b668" /><meta name="sogou_site_verification" content="jHNtHqKt34"/><meta name="google-site-verification" content="An2eGWQakKFcIZ1YuwZSilNuSYlfHs1zH0Hr-OMW6oQ" /><title>Centos7下的oracle静默安装</title><meta name="description" content=""><meta name="keywords" content="oracle,静默安装"><link rel="icon" href="/assets/favicon.ico"><link rel="apple-touch-icon" href="/assets/touch-icon.png"><link rel="stylesheet" href="/assets/core.css"><link rel="canonical" href="/2015/10/oracle-silent-install/"><link rel="alternate" type="application/atom+xml" title="Vinny's Blog - 王俊博客 - 交流软件领域知识 | 纪录点滴精彩人生" href="/feed.xml" /></head><body><nav class="header-nav"> <a class="page-link" href="/">HOME</a> / <a class="page-link" href="/categories/">CATEGORY</a> / <a class="page-link" href="/feed.xml">FEED</a> / <a class="page-link" href="/about/">ABOUT</a></nav><main> <noscript><style> article .footnotes { display: block; }</style></noscript><article><div class="center"><h1>Centos7下的oracle静默安装</h1><time>2015-10-16</time></div><div class="divider"></div><ul id="markdown-toc"><li><a href="#centos7oracle" id="markdown-toc-centos7oracle">Centos7下的oracle静默安装</a><ul><li><a href="#section" id="markdown-toc-section">1. 背景</a></li><li><a href="#section-1" id="markdown-toc-section-1">2. 参考</a></li><li><a href="#section-2" id="markdown-toc-section-2">3. 安装</a><ul><li><a href="#section-3" id="markdown-toc-section-3">3.1 上传安装包</a></li><li><a href="#section-4" id="markdown-toc-section-4">3.2 检查依赖库</a></li><li><a href="#section-5" id="markdown-toc-section-5">3.3 创建用户和组</a></li><li><a href="#section-6" id="markdown-toc-section-6">3.4 设置内核参数</a></li><li><a href="#section-7" id="markdown-toc-section-7">3.5 创建安装目录</a></li><li><a href="#section-8" id="markdown-toc-section-8">3.6 设置环境变量</a></li><li><a href="#section-9" id="markdown-toc-section-9">3.7 解压缩安装文件</a></li><li><a href="#section-10" id="markdown-toc-section-10">3.8 修改数据库响应文件</a></li><li><a href="#swap" id="markdown-toc-swap">3.9 调整swap空间大小</a></li><li><a href="#section-11" id="markdown-toc-section-11">3.10 执行安装</a></li><li><a href="#root" id="markdown-toc-root">3.11 运行root脚本</a></li><li><a href="#section-12" id="markdown-toc-section-12">3.12 配置监听文件</a></li><li><a href="#section-13" id="markdown-toc-section-13">3.13 静默创建数据库</a></li><li><a href="#section-14" id="markdown-toc-section-14">3.14 检查建库实例</a></li></ul></li><li><a href="#section-15" id="markdown-toc-section-15">4. 问题总结</a></li></ul></li></ul><hr /><h1 id="centos7oracle">Centos7下的oracle静默安装</h1><h2 id="section">1. 背景</h2><p>静默安装oracle是在非GUI界面的操作系统中迫不得已的做法，通常的Unix服务器因为性能要求并不会安装图形化界面，这种情况下，若需要安装oracle数据库则需要使用它的静默安装方法。</p><h2 id="section-1">2. 参考</h2><p>本篇文章使用的oracle版本为<strong>11gR2</strong>，操作系统为<strong>centos6.5</strong>，相关参考的文件可以点击<strong><a href="http://ohdpyqlwy.bkt.clouddn.com/response.zip">下载</a></strong>。</p><h2 id="section-2">3. 安装</h2><h3 id="section-3">3.1 上传安装包</h3><div class="highlighter-rouge"><pre class="highlight"><code>linux.x64_11gR2_database_1of2.zip
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="baidu-site-verification" content="gDf3P6sfyW" /><meta name="360-site-verification" content="0c91ee58977e5924d92896a89289b668" /><meta name="sogou_site_verification" content="jHNtHqKt34"/><meta name="google-site-verification" content="An2eGWQakKFcIZ1YuwZSilNuSYlfHs1zH0Hr-OMW6oQ" /><title>Centos7下的oracle静默安装</title><meta name="description" content=""><meta name="keywords" content="oracle,静默安装"><link rel="icon" href="/assets/favicon.ico"><link rel="apple-touch-icon" href="/assets/touch-icon.png"><link rel="stylesheet" href="/assets/core.css"><link rel="canonical" href="/2015/10/oracle-silent-install/"><link rel="alternate" type="application/atom+xml" title="Vinny's Blog - 王俊博客 - 交流软件领域知识 | 纪录点滴精彩人生" href="/feed.xml" /></head><body><nav class="header-nav"> <a class="page-link" href="/">HOME</a> / <a class="page-link" href="/categories/">CATEGORY</a> / <a class="page-link" href="/feed.xml">FEED</a> / <a class="page-link" href="/about/">ABOUT</a></nav><main> <noscript><style> article .footnotes { display: block; }</style></noscript><article><div class="center"><h1>Centos7下的oracle静默安装</h1><time>2015-10-16</time></div><div class="divider"></div><ul id="markdown-toc"><li><a href="#centos7下的oracle静默安装" id="markdown-toc-centos7下的oracle静默安装">Centos7下的oracle静默安装</a><ul><li><a href="#1-背景" id="markdown-toc-1-背景">1. 背景</a></li><li><a href="#2-参考" id="markdown-toc-2-参考">2. 参考</a></li><li><a href="#3-安装" id="markdown-toc-3-安装">3. 安装</a><ul><li><a href="#31-上传安装包" id="markdown-toc-31-上传安装包">3.1 上传安装包</a></li><li><a href="#32-检查依赖库" id="markdown-toc-32-检查依赖库">3.2 检查依赖库</a></li><li><a href="#33-创建用户和组" id="markdown-toc-33-创建用户和组">3.3 创建用户和组</a></li><li><a href="#34-设置内核参数" id="markdown-toc-34-设置内核参数">3.4 设置内核参数</a></li><li><a href="#35-创建安装目录" id="markdown-toc-35-创建安装目录">3.5 创建安装目录</a></li><li><a href="#36-设置环境变量" id="markdown-toc-36-设置环境变量">3.6 设置环境变量</a></li><li><a href="#37-解压缩安装文件" id="markdown-toc-37-解压缩安装文件">3.7 解压缩安装文件</a></li><li><a href="#38-修改数据库响应文件" id="markdown-toc-38-修改数据库响应文件">3.8 修改数据库响应文件</a></li><li><a href="#39-调整swap空间大小" id="markdown-toc-39-调整swap空间大小">3.9 调整swap空间大小</a></li><li><a href="#310-执行安装" id="markdown-toc-310-执行安装">3.10 执行安装</a></li><li><a href="#311-运行root脚本" id="markdown-toc-311-运行root脚本">3.11 运行root脚本</a></li><li><a href="#312-配置监听文件" id="markdown-toc-312-配置监听文件">3.12 配置监听文件</a></li><li><a href="#313-静默创建数据库" id="markdown-toc-313-静默创建数据库">3.13 静默创建数据库</a></li><li><a href="#314-检查建库实例" id="markdown-toc-314-检查建库实例">3.14 检查建库实例</a></li></ul></li><li><a href="#4-问题总结" id="markdown-toc-4-问题总结">4. 问题总结</a></li></ul></li></ul><hr /><h1 id="centos7下的oracle静默安装">Centos7下的oracle静默安装</h1><h2 id="1-背景">1. 背景</h2><p>静默安装oracle是在非GUI界面的操作系统中迫不得已的做法，通常的Unix服务器因为性能要求并不会安装图形化界面，这种情况下，若需要安装oracle数据库则需要使用它的静默安装方法。</p><h2 id="2-参考">2. 参考</h2><p>本篇文章使用的oracle版本为<strong>11gR2</strong>，操作系统为<strong>centos6.5</strong>，相关参考的文件可以点击<strong><a href="http://ohdpyqlwy.bkt.clouddn.com/response.zip">下载</a></strong>。</p><h2 id="3-安装">3. 安装</h2><h3 id="31-上传安装包">3.1 上传安装包</h3><div class="highlighter-rouge"><pre class="highlight"><code>linux.x64_11gR2_database_1of2.zip
 linux.x64_11gR2_database_2of2.zip
-</code></pre></div><h3 id="section-4">3.2 检查依赖库</h3><div class="highlighter-rouge"><pre class="highlight"><code>rpm -q binutils | grep <span class="s2">"not installed"</span>
+</code></pre></div><h3 id="32-检查依赖库">3.2 检查依赖库</h3><div class="language-shell highlighter-rouge"><pre class="highlight"><code>rpm -q binutils | grep <span class="s2">"not installed"</span>
 rpm -q compat-libstdc++-33 | grep <span class="s2">"not installed"</span>
 rpm -q elfutils-libelf | grep <span class="s2">"not installed"</span>
 rpm -q elfutils-libelf-devel | grep <span class="s2">"not installed"</span>
@@ -23,13 +23,13 @@ rpm -q sysstat | grep <span class="s2">"not installed"</span>
 rpm -q binutils | grep <span class="s2">"not installed"</span>
 rpm -q unixODBC | grep <span class="s2">"not installed"</span>
 rpm -q unixODBC-devel | grep <span class="s2">"not installed"</span>
-</code></pre></div><blockquote><p>若出现哪些依赖库没有安装，使用”<strong>yum install [依赖库]</strong>“进行安装。尽量使用<code class="highlighter-rouge">yum</code>的安装方式，可以解决循环依赖的问题。</p></blockquote><h3 id="section-5">3.3 创建用户和组</h3><div class="highlighter-rouge"><pre class="highlight"><code>groupadd oinstall
+</code></pre></div><blockquote><p>若出现哪些依赖库没有安装，使用”<strong>yum install [依赖库]</strong>“进行安装。尽量使用<code class="highlighter-rouge">yum</code>的安装方式，可以解决循环依赖的问题。</p></blockquote><h3 id="33-创建用户和组">3.3 创建用户和组</h3><div class="language-shell highlighter-rouge"><pre class="highlight"><code>groupadd oinstall
 groupadd dba
 groupadd asmadmin
 groupadd asmdba
 useradd -g oinstall -G dba,asmdba oracle -d /home/oracle
 passwd oracle
-</code></pre></div><h3 id="section-6">3.4 设置内核参数</h3><p>编辑<code class="highlighter-rouge">vi /etc/sysctl.conf</code>文件，在文件内容最后追加如下内容：</p><div class="highlighter-rouge"><pre class="highlight"><code># 在底部追加以下内容
+</code></pre></div><h3 id="34-设置内核参数">3.4 设置内核参数</h3><p>编辑<code class="highlighter-rouge">vi /etc/sysctl.conf</code>文件，在文件内容最后追加如下内容：</p><div class="highlighter-rouge"><pre class="highlight"><code># 在底部追加以下内容
 net.ipv4.icmp_echo_ignore_broadcasts = 1
 net.ipv4.conf.all.rp_filter = 1
 fs.file-max = 6815744
@@ -43,16 +43,16 @@ net.core.rmem_default = 262144
 net.core.rmem_max = 4194304
 net.core.wmem_default = 262144
 net.core.wmem_max = 1048576
-</code></pre></div><p>执行下面命令使立即生效</p><div class="highlighter-rouge"><pre class="highlight"><code>sysctl -p
+</code></pre></div><p>执行下面命令使立即生效</p><div class="language-shell highlighter-rouge"><pre class="highlight"><code>sysctl -p
 </code></pre></div><p>编辑<code class="highlighter-rouge">vi /etc/security/limits.conf</code>文件，在文件内容最后追加如下内容：</p><div class="highlighter-rouge"><pre class="highlight"><code># 在底部追加以下内容
 oracle soft nproc 2047
 oracle hard nproc 16384
 oracle soft nofile 1024
 oracle hard nofile 65536
-</code></pre></div><h3 id="section-7">3.5 创建安装目录</h3><div class="highlighter-rouge"><pre class="highlight"><code>mkdir -p /u01/app/oracle/
+</code></pre></div><h3 id="35-创建安装目录">3.5 创建安装目录</h3><div class="language-shell highlighter-rouge"><pre class="highlight"><code>mkdir -p /u01/app/oracle/
 chown -R oracle:oinstall /home/oracle
 chown -R oracle:oinstall /u01
-</code></pre></div><h3 id="section-8">3.6 设置环境变量</h3><p>编辑oracle用户目录下<code class="highlighter-rouge">vi /home/oracle/.bash_profile</code>文件，增加安装的环境变量</p><div class="highlighter-rouge"><pre class="highlight"><code>export PATHTH=$PATH:HOME/bin
+</code></pre></div><h3 id="36-设置环境变量">3.6 设置环境变量</h3><p>编辑oracle用户目录下<code class="highlighter-rouge">vi /home/oracle/.bash_profile</code>文件，增加安装的环境变量</p><div class="highlighter-rouge"><pre class="highlight"><code>export PATHTH=$PATH:HOME/bin
 export ORACLE_BASE=/u01
 export ORACLE_HOME=$ORACLE_BASE/oracle
 export ORACLE_SID=LED
@@ -63,7 +63,7 @@ export NLS_LANG=AMERICAN_AMERICA.AL32UTF8
 # export ORA_NLS10=$ORACLE_HOME/nls/data
 unset USERNAME
 umask 022
-</code></pre></div><h3 id="section-9">3.7 解压缩安装文件</h3><div class="highlighter-rouge"><pre class="highlight"><code><span class="c"># 切换到root用户</span>
+</code></pre></div><h3 id="37-解压缩安装文件">3.7 解压缩安装文件</h3><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># 切换到root用户</span>
 su - root
 
 <span class="c"># 将安装文件移动到oracle用户目录中</span>
@@ -88,7 +88,7 @@ unzip linux.x64_11gR2_database_2of2.zip -d /u01
 
 <span class="c"># 设置DISTRIB变量</span>
 <span class="nb">export </span><span class="nv">DISTRIB</span><span class="o">=</span><span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>
-</code></pre></div><h3 id="section-10">3.8 修改数据库响应文件</h3><p>编辑响应文件<code class="highlighter-rouge">vi /u01/database/response/db_install.rsp</code>，配置节点数据</p><div class="highlighter-rouge"><pre class="highlight"><code># 需要更改的参数，其他尽量不要更改，若非要更改请了解参数含义
+</code></pre></div><h3 id="38-修改数据库响应文件">3.8 修改数据库响应文件</h3><p>编辑响应文件<code class="highlighter-rouge">vi /u01/database/response/db_install.rsp</code>，配置节点数据</p><div class="highlighter-rouge"><pre class="highlight"><code># 需要更改的参数，其他尽量不要更改，若非要更改请了解参数含义
 UNIX_GROUP_NAME=oinstall
 INVENTORY_LOCATION=/u01/app/oracle/oraInventory
 SELECTED_LANGUAGES=en,zh_CN,zh_TW
@@ -98,7 +98,7 @@ oracle.install.db.InstallEdition=EE
 oracle.install.db.isCustomInstall=true
 oracle.install.db.DBA_GROUP=dba
 oracle.install.db.OPER_GROUP=oinstall
-</code></pre></div><h3 id="swap">3.9 调整swap空间大小</h3><div class="highlighter-rouge"><pre class="highlight"><code><span class="c"># 切换到root用户</span>
+</code></pre></div><h3 id="39-调整swap空间大小">3.9 调整swap空间大小</h3><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># 切换到root用户</span>
 su - root
 
 <span class="c"># 查看swap大小</span>
@@ -115,7 +115,7 @@ swapon /home/swap
 
 <span class="c"># 如果要在引导时自动启用，则编辑 /etc/fstab 文件，添加行</span>
 /home/swap swap swap defaults 0 0
-</code></pre></div><h3 id="section-11">3.10 执行安装</h3><div class="highlighter-rouge"><pre class="highlight"><code><span class="c"># 切换到oracle用户</span>
+</code></pre></div><h3 id="310-执行安装">3.10 执行安装</h3><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># 切换到oracle用户</span>
 su - oracle
 
 <span class="c"># 进入安装目录</span>
@@ -136,12 +136,12 @@ To execute the configuration scripts:
 Successfully Setup Software.
 </code></pre></div><p>这一步操作最容易出错，在执行安装脚本时就会报错，经反复测试，只要保证以下规律就能出现”<strong>Successfully Setup Software</strong>“，在执行此步操作时，最好再次执行下以下命令:</p><div class="highlighter-rouge"><pre class="highlight"><code>cd /u01/database
 export DISTRIB=`pwd`
-</code></pre></div><h3 id="root">3.11 运行root脚本</h3><div class="highlighter-rouge"><pre class="highlight"><code><span class="nb">cd</span> /u01/oraInventory/
+</code></pre></div><h3 id="311-运行root脚本">3.11 运行root脚本</h3><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="nb">cd</span> /u01/oraInventory/
 ./orainstRoot.sh
 
 <span class="nb">cd</span> /u01/oracle/
 ./root.sh
-</code></pre></div><h3 id="section-12">3.12 配置监听文件</h3><div class="highlighter-rouge"><pre class="highlight"><code><span class="c"># 切换到oracle用户</span>
+</code></pre></div><h3 id="312-配置监听文件">3.12 配置监听文件</h3><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># 切换到oracle用户</span>
 su - oracle
 
 <span class="c"># 执行监听的响应文件安装</span>
@@ -152,16 +152,16 @@ ll <span class="nv">$ORACLE_HOME</span>/network/admin/<span class="k">*</span>.o
 
 <span class="c"># 检查监听启动状态</span>
 lsnrctl status
-</code></pre></div><h3 id="section-13">3.13 静默创建数据库</h3><p>编辑<code class="highlighter-rouge">vi /u01/database/response/dbca.rsp</code>文件</p><div class="highlighter-rouge"><pre class="highlight"><code># 以下参数必须设置
+</code></pre></div><h3 id="313-静默创建数据库">3.13 静默创建数据库</h3><p>编辑<code class="highlighter-rouge">vi /u01/database/response/dbca.rsp</code>文件</p><div class="highlighter-rouge"><pre class="highlight"><code># 以下参数必须设置
 [CREATEDATABASE]
 GDBNAME = "ORCL.LK"
 TEMPLATENAME = "General_Purpose.dbc"
 # 以下参数不设置则使用默认值,建议设置
 CHARACTERSET = "utf8"
 TOTALMEMORY = "1024"
-</code></pre></div><p>执行静默安装</p><div class="highlighter-rouge"><pre class="highlight"><code><span class="nv">$ORACLE_HOME</span>/bin/dbca -silent -responseFile /u01/database/response/dbca.rsp
+</code></pre></div><p>执行静默安装</p><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="nv">$ORACLE_HOME</span>/bin/dbca -silent -responseFile /u01/database/response/dbca.rsp
 Enter SYS user password:
 Enter SYSTEM user password:
-</code></pre></div><p>由于没有更改<strong>dbca.rsp</strong>文件中的SYS和SYSTEM的密码，所以oracle缺省密码分别为<strong>chang_on_install</strong>和<strong>manager</strong>。</p><h3 id="section-14">3.14 检查建库实例</h3><div class="highlighter-rouge"><pre class="highlight"><code>ps -ef | grep ora_ | grep -v grep | wc -l
+</code></pre></div><p>由于没有更改<strong>dbca.rsp</strong>文件中的SYS和SYSTEM的密码，所以oracle缺省密码分别为<strong>chang_on_install</strong>和<strong>manager</strong>。</p><h3 id="314-检查建库实例">3.14 检查建库实例</h3><div class="language-shell highlighter-rouge"><pre class="highlight"><code>ps -ef | grep ora_ | grep -v grep | wc -l
 ps -ef | grep ora_ | grep -v grep
-</code></pre></div><h2 id="section-15">4. 问题总结</h2><p><strong>[SEVERE] – Email Address Not Specified</strong></p><p>修改db_install.rsp响应文件将DECLINE_SECURITY_UPDATES的值设为true。</p><p><strong>[INS-13013] Target environment do not meet some mandatory requirements</strong></p><p>安装命令中加入选项-ignorePrereq</p><div class="divider"></div><blockquote id='by-nc-nd'><div> 版权所有，本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">知识共享署名-非商业性使用 3.0 未本地化版本许可协议</a>进行许可。转载请注明出处：<a href="http://www.vinny.cc//2015/10/oracle-silent-install/" akt="">http://www.vinny.cc//2015/10/oracle-silent-install/</a></div></blockquote><div class="divider"></div><a class="w-toplink active" href="#" title="Back to top">^</a> <!-- 多说评论框 start --><div class="ds-thread" data-thread-key="29bca95032aff645a6f67f03e45bddfb" data-title="Centos7下的oracle静默安装" data-url="/2015/10/oracle-silent-install/"></div><!-- 多说评论框 end --></article><div class="page-navigation"> <a class="next" href="/2015/11/how-to-angular-service/" title="NEXT: Angular服务定义与使用">&lt;&lt;</a> <span> &middot; </span> <a class="home" href="/" title="Back to Homepage">首页</a> <span> &middot; </span> <a class="prev" href="/2015/09/shell-install-package/" title="PREV: 制作shell安装包">&gt;&gt;</a></div><!-- 多说公共JS代码 start (一个网页只需插入一次) --> <script type="text/javascript"> var duoshuoQuery = {short_name:"wangjunneil"}; (function() { var ds = document.createElement('script'); ds.type = 'text/javascript';ds.async = true; ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js'; ds.charset = 'UTF-8'; (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds); })(); </script> <!-- 多说公共JS代码 end --></main><div class="footer"> <!-- <span class="block">Made with &hearts; using <a href="http://jekyllrb.com/">Jekyll</a> &amp; <a href="https://github.com/heiswayi/the-plain" title="The Plain theme by Heiswayi Nrird">The Plain</a> &middot; &lt;/&gt; on <a href="https://github.com/wangjunneil" title="Hosted on GitHub">GitHub</a></span> --> <span class="block"><a href="https://vinny.cc">Vinny's Blog</a> © 2017 - All Rights Reserved</span></div><script> var _hmt = _hmt || []; (function() { var hm = document.createElement("script"); hm.src = "https://hm.baidu.com/hm.js?9c10955e76f3568532fff91d922d32ac"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hm, s); })(); </script> <script> (function(){ var bp = document.createElement('script'); var curProtocol = window.location.protocol.split(':')[0]; if (curProtocol === 'https') { bp.src = 'https://zz.bdstatic.com/linksubmit/push.js'; } else { bp.src = 'http://push.zhanzhang.baidu.com/push.js'; } var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(bp, s); })(); </script> <script> (function(){ var src = (document.location.protocol == "http:") ? "http://js.passport.qihucdn.com/11.0.1.js?fa28985f7104be1c3ead0ecbe074eb24":"https://jspassport.ssl.qhimg.com/11.0.1.js?fa28985f7104be1c3ead0ecbe074eb24"; document.write('<script src="' + src + '" id="sozz"><\/script>'); })(); </script> <script> (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,'script','https://www.google-analytics.com/analytics.js','ga'); ga('create', 'UA-88762290-1', 'auto'); ga('send', 'pageview'); </script></body></html>
+</code></pre></div><h2 id="4-问题总结">4. 问题总结</h2><p><strong>[SEVERE] – Email Address Not Specified</strong></p><p>修改db_install.rsp响应文件将DECLINE_SECURITY_UPDATES的值设为true。</p><p><strong>[INS-13013] Target environment do not meet some mandatory requirements</strong></p><p>安装命令中加入选项-ignorePrereq</p><div class="divider"></div><blockquote id='by-nc-nd'><div> 版权所有，本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">知识共享署名-非商业性使用 3.0 未本地化版本许可协议</a>进行许可。转载请注明出处：<a href="http://localhost:4000//2015/10/oracle-silent-install/" akt="">http://localhost:4000//2015/10/oracle-silent-install/</a></div></blockquote><div class="divider"></div><a class="w-toplink active" href="#" title="Back to top">^</a> <!-- 多说评论框 start --><div class="ds-thread" data-thread-key="29bca95032aff645a6f67f03e45bddfb" data-title="Centos7下的oracle静默安装" data-url="/2015/10/oracle-silent-install/"></div><!-- 多说评论框 end --></article><div class="page-navigation"> <a class="next" href="/2015/11/how-to-angular-service/" title="NEXT: Angular服务定义与使用">&lt;&lt;</a> <span> &middot; </span> <a class="home" href="/" title="Back to Homepage">首页</a> <span> &middot; </span> <a class="prev" href="/2015/09/shell-install-package/" title="PREV: 制作shell安装包">&gt;&gt;</a></div><!-- 多说公共JS代码 start (一个网页只需插入一次) --> <script type="text/javascript"> var duoshuoQuery = {short_name:"wangjunneil"}; (function() { var ds = document.createElement('script'); ds.type = 'text/javascript';ds.async = true; ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js'; ds.charset = 'UTF-8'; (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds); })(); </script> <!-- 多说公共JS代码 end --></main><div class="footer"> <!-- <span class="block">Made with &hearts; using <a href="http://jekyllrb.com/">Jekyll</a> &amp; <a href="https://github.com/heiswayi/the-plain" title="The Plain theme by Heiswayi Nrird">The Plain</a> &middot; &lt;/&gt; on <a href="https://github.com/wangjunneil" title="Hosted on GitHub">GitHub</a></span> --> <span class="block"><a href="https://vinny.cc">Vinny's Blog</a> © 2017 - All Rights Reserved</span></div><script> var _hmt = _hmt || []; (function() { var hm = document.createElement("script"); hm.src = "https://hm.baidu.com/hm.js?9c10955e76f3568532fff91d922d32ac"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hm, s); })(); </script> <script> (function(){ var bp = document.createElement('script'); var curProtocol = window.location.protocol.split(':')[0]; if (curProtocol === 'https') { bp.src = 'https://zz.bdstatic.com/linksubmit/push.js'; } else { bp.src = 'http://push.zhanzhang.baidu.com/push.js'; } var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(bp, s); })(); </script> <script> (function(){ var src = (document.location.protocol == "http:") ? "http://js.passport.qihucdn.com/11.0.1.js?fa28985f7104be1c3ead0ecbe074eb24":"https://jspassport.ssl.qhimg.com/11.0.1.js?fa28985f7104be1c3ead0ecbe074eb24"; document.write('<script src="' + src + '" id="sozz"><\/script>'); })(); </script> <script> (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,'script','https://www.google-analytics.com/analytics.js','ga'); ga('create', 'UA-88762290-1', 'auto'); ga('send', 'pageview'); </script></body></html>

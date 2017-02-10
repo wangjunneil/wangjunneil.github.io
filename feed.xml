@@ -8,6 +8,104 @@
         <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />  
           
             <item>  
+               <title>Centos7中NFS的配置及使用方法</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#centos7中nfs的配置及使用方法&quot; id=&quot;markdown-toc-centos7中nfs的配置及使用方法&quot;&gt;Centos7中NFS的配置及使用方法&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#安装nfs工具包&quot; id=&quot;markdown-toc-安装nfs工具包&quot;&gt;安装NFS工具包&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#编辑nfs配置文件&quot; id=&quot;markdown-toc-编辑nfs配置文件&quot;&gt;编辑NFS配置文件&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#服务端启动nfs&quot; id=&quot;markdown-toc-服务端启动nfs&quot;&gt;服务端启动NFS&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#客户端执行挂载&quot; id=&quot;markdown-toc-客户端执行挂载&quot;&gt;客户端执行挂载&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#挂载命令exportfs说明&quot; id=&quot;markdown-toc-挂载命令exportfs说明&quot;&gt;挂载命令exportfs说明&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;centos7中nfs的配置及使用方法&quot;&gt;Centos7中NFS的配置及使用方法&lt;/h1&gt;
+
+&lt;h2 id=&quot;安装nfs工具包&quot;&gt;安装NFS工具包&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;yum install -y nfs-utils
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;尽量使用&lt;code class=&quot;highlighter-rouge&quot;&gt;yum&lt;/code&gt;方式安装，依赖文件的互相依赖，编译安装很麻烦。
+&lt;strong&gt;nfs-utils&lt;/strong&gt;包含server和client端的工具，所以nfs的服务端和客户端都需要执行此安装。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;编辑nfs配置文件&quot;&gt;编辑NFS配置文件&lt;/h2&gt;
+
+&lt;p&gt;编辑&lt;code class=&quot;highlighter-rouge&quot;&gt;vi /etc/exports&lt;/code&gt;文件，添加共享路径及访问规则，例如：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/data *(rw,sync,no_root_squash)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;上面为最简单的共享方式，共享本机&lt;strong&gt;/data&lt;/strong&gt;目录，允许所有来源进行挂载读写。&lt;/p&gt;
+
+&lt;p&gt;配置文件中的每一行分为三个部分：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;共享路径，如:/root/nfs&lt;/li&gt;
+  &lt;li&gt;访问来源，”*****“号表示任意，可以是一个IP地址，也可以是一个网段，如192.168.1.0/24&lt;/li&gt;
+  &lt;li&gt;行为控制，括号中使用英文逗号分隔，如rw表示读写，ro只读，等参数&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;注意：配置行中的&lt;strong&gt;访问来源&lt;/strong&gt;和&lt;strong&gt;行为控制&lt;/strong&gt;中间没有空格。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;服务端启动nfs&quot;&gt;服务端启动NFS&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 设置开机启动&lt;/span&gt;
+systemctl &lt;span class=&quot;nb&quot;&gt;enable &lt;/span&gt;rpcbind.service
+systemctl &lt;span class=&quot;nb&quot;&gt;enable &lt;/span&gt;nfs-server.service
+
+&lt;span class=&quot;c&quot;&gt;# 启动NFS服务&lt;/span&gt;
+systemctl start rpcbind.service
+systemctl start nfs-server.service
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;启动好后可以使用命令&lt;code class=&quot;highlighter-rouge&quot;&gt;rpcinfo -p&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;showmount -e&lt;/code&gt;查看是否启动和挂载成功。&lt;/p&gt;
+
+&lt;h2 id=&quot;客户端执行挂载&quot;&gt;客户端执行挂载&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 设置开机运行&lt;/span&gt;
+systemctl &lt;span class=&quot;nb&quot;&gt;enable &lt;/span&gt;rpcbind.service
+
+&lt;span class=&quot;c&quot;&gt;# 启动RPC服务&lt;/span&gt;
+systemctl start rpcbind.service
+
+&lt;span class=&quot;c&quot;&gt;# 检查NFS服务器共享路径&lt;/span&gt;
+showmount -e 192.168.1.100
+
+&lt;span class=&quot;c&quot;&gt;# 执行挂载到本地&lt;/span&gt;
+mount -t nfs 192.168.1.100:/data /root/resources
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;客户端执行挂载时尽量不要在目标目录中，完成后，可以使用命令&lt;code class=&quot;highlighter-rouge&quot;&gt;df -hP&lt;/code&gt;或者&lt;code class=&quot;highlighter-rouge&quot;&gt;mount&lt;/code&gt;查看挂载路径。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;挂载命令exportfs说明&quot;&gt;挂载命令exportfs说明&lt;/h2&gt;
+
+&lt;p&gt;当更改了NFS的配置文件，可以不重启服务，使用命令&lt;code class=&quot;highlighter-rouge&quot;&gt;exportfs -rv&lt;/code&gt;重新读取，具体使用参数如下：&lt;/p&gt;
+
+&lt;p&gt;-a ： 全部挂载或者卸载
+-r ： 重新挂载
+-u ： 卸载某个目录
+-v ： 现实共享目录&lt;/p&gt;
+</description>  
+               <pubDate>Thu, 09 Feb 2017 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2017/02/how-to-use-nfs-in-centos7/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/02/how-to-use-nfs-in-centos7/</guid>  
+               </item>  
+          
+            <item>  
                <title>Shell中switch条件选择语句的执行示例</title>  
                <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
   &lt;li&gt;&lt;a href=&quot;#shell中switch条件选择语句的执行示例&quot; id=&quot;markdown-toc-shell中switch条件选择语句的执行示例&quot;&gt;Shell中switch条件选择语句的执行示例&lt;/a&gt;    &lt;ul&gt;
@@ -629,119 +727,6 @@ wangjun[192] /Users/wangjun &lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ps -
                <pubDate>Wed, 04 Jan 2017 00:00:00 +0800</pubDate>  
                <link>http://localhost:4000/2017/01/ssh-tunnel-local/</link>  
                <guid isPermaLink="true">http://localhost:4000/2017/01/ssh-tunnel-local/</guid>  
-               </item>  
-          
-            <item>  
-               <title>Linux中关于find命令全收集参考</title>  
-               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#linux中关于find命令全收集参考&quot; id=&quot;markdown-toc-linux中关于find命令全收集参考&quot;&gt;Linux中关于find命令全收集参考&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#忽略大小写查找文件&quot; id=&quot;markdown-toc-忽略大小写查找文件&quot;&gt;忽略大小写查找文件&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#找到文件并执行命令&quot; id=&quot;markdown-toc-找到文件并执行命令&quot;&gt;找到文件并执行命令&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#相反匹配&quot; id=&quot;markdown-toc-相反匹配&quot;&gt;相反匹配&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#查找空文件0字节&quot; id=&quot;markdown-toc-查找空文件0字节&quot;&gt;查找空文件（0字节）&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#查找5个最大文件&quot; id=&quot;markdown-toc-查找5个最大文件&quot;&gt;查找5个最大文件&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#查找5个最小的文件&quot; id=&quot;markdown-toc-查找5个最小的文件&quot;&gt;查找5个最小的文件&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#查找所有的目录&quot; id=&quot;markdown-toc-查找所有的目录&quot;&gt;查找所有的目录&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#查找所有的一般文件&quot; id=&quot;markdown-toc-查找所有的一般文件&quot;&gt;查找所有的一般文件&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#查找所有的隐藏文件&quot; id=&quot;markdown-toc-查找所有的隐藏文件&quot;&gt;查找所有的隐藏文件&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#查找所有的隐藏目录&quot; id=&quot;markdown-toc-查找所有的隐藏目录&quot;&gt;查找所有的隐藏目录&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#查找比指定文件大的文件&quot; id=&quot;markdown-toc-查找比指定文件大的文件&quot;&gt;查找比指定文件大的文件&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#查找比指定文件小的文件&quot; id=&quot;markdown-toc-查找比指定文件小的文件&quot;&gt;查找比指定文件小的文件&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#查找符合给定大小的文件&quot; id=&quot;markdown-toc-查找符合给定大小的文件&quot;&gt;查找符合给定大小的文件&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#用find命令删除大型打包文件&quot; id=&quot;markdown-toc-用find命令删除大型打包文件&quot;&gt;用find命令删除大型打包文件&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;linux中关于find命令全收集参考&quot;&gt;Linux中关于find命令全收集参考&lt;/h1&gt;
-
-&lt;h2 id=&quot;忽略大小写查找文件&quot;&gt;忽略大小写查找文件&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find -iname &lt;span class=&quot;s2&quot;&gt;&quot;HelloWorld.java&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;找到文件并执行命令&quot;&gt;找到文件并执行命令&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find -iname &lt;span class=&quot;s2&quot;&gt;&quot;HelloWorld.java&quot;&lt;/span&gt; -exec md5sum &lt;span class=&quot;o&quot;&gt;{}&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;相反匹配&quot;&gt;相反匹配&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find -maxdepth 1 -not -iname &lt;span class=&quot;s2&quot;&gt;&quot;HelloWorld.java&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;查找空文件0字节&quot;&gt;查找空文件（0字节）&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find ~ -empty
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;查找5个最大文件&quot;&gt;查找5个最大文件&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find . -type f -exec ls -s &lt;span class=&quot;o&quot;&gt;{}&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\;&lt;/span&gt; | sort -n -r | head -5
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;查找5个最小的文件&quot;&gt;查找5个最小的文件&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find . -type f -exec ls -s &lt;span class=&quot;o&quot;&gt;{}&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\;&lt;/span&gt; | sort -n  | head -5
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;查找所有的目录&quot;&gt;查找所有的目录&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find . -type d
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;查找所有的一般文件&quot;&gt;查找所有的一般文件&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find . -type f
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;查找所有的隐藏文件&quot;&gt;查找所有的隐藏文件&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find . -type f -name &lt;span class=&quot;s2&quot;&gt;&quot;.*&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;查找所有的隐藏目录&quot;&gt;查找所有的隐藏目录&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find -type d -name &lt;span class=&quot;s2&quot;&gt;&quot;.*&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;查找比指定文件大的文件&quot;&gt;查找比指定文件大的文件&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find ~ -size +100M
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;查找比指定文件小的文件&quot;&gt;查找比指定文件小的文件&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find ~ -size -100M
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;查找符合给定大小的文件&quot;&gt;查找符合给定大小的文件&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find ~ -size 100M
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;用find命令删除大型打包文件&quot;&gt;用find命令删除大型打包文件&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find / -type f -name &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.zip -size +100M -exec rm -i &lt;span class=&quot;o&quot;&gt;{}&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-</description>  
-               <pubDate>Tue, 03 Jan 2017 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2017/01/linux-find-command/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2017/01/linux-find-command/</guid>  
                </item>  
           
     </channel>  

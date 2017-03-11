@@ -352,7 +352,7 @@ pre {
 }
 table {
   width: 100%;
-  table-layout: fixed;
+  // table-layout: fixed;
   // margin: 45px 0;
   margin: 20px 0;
   thead {
@@ -362,9 +362,11 @@ table {
     text-align: left;
     padding: 3px 10px;
     // border-bottom: 5px solid #fff;
+    font-size: 10px
   }
   td {
     padding: 2px 5px;
+    font-size: 10px
   }
 }
 iframe {

@@ -8,6 +8,243 @@
         <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />  
           
             <item>  
+               <title>Nginx常用配置汇总</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#nginx常用配置汇总&quot; id=&quot;markdown-toc-nginx常用配置汇总&quot;&gt;Nginx常用配置汇总&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#代理转发简要配置&quot; id=&quot;markdown-toc-代理转发简要配置&quot;&gt;代理转发简要配置&lt;/a&gt;        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#http方式的代理转发配置&quot; id=&quot;markdown-toc-http方式的代理转发配置&quot;&gt;HTTP方式的代理转发配置&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#https方式的代理转发配置&quot; id=&quot;markdown-toc-https方式的代理转发配置&quot;&gt;HTTPS方式的代理转发配置&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#https证书生成&quot; id=&quot;markdown-toc-https证书生成&quot;&gt;HTTPS证书生成&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#代理缓存配置&quot; id=&quot;markdown-toc-代理缓存配置&quot;&gt;代理缓存配置&lt;/a&gt;        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#创建缓存目录并授与权限&quot; id=&quot;markdown-toc-创建缓存目录并授与权限&quot;&gt;创建缓存目录并授与权限&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#利用缓存目录配置代理缓存&quot; id=&quot;markdown-toc-利用缓存目录配置代理缓存&quot;&gt;利用缓存目录配置代理缓存&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#跨域请求配置&quot; id=&quot;markdown-toc-跨域请求配置&quot;&gt;跨域请求配置&lt;/a&gt;        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#跨域消息头说明&quot; id=&quot;markdown-toc-跨域消息头说明&quot;&gt;跨域消息头说明&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#具体配置明细&quot; id=&quot;markdown-toc-具体配置明细&quot;&gt;具体配置明细&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#负载均衡配置&quot; id=&quot;markdown-toc-负载均衡配置&quot;&gt;负载均衡配置&lt;/a&gt;        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#简单的权重示例&quot; id=&quot;markdown-toc-简单的权重示例&quot;&gt;简单的权重示例&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#负载参数说明&quot; id=&quot;markdown-toc-负载参数说明&quot;&gt;负载参数说明&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;nginx常用配置汇总&quot;&gt;Nginx常用配置汇总&lt;/h1&gt;
+
+&lt;h2 id=&quot;代理转发简要配置&quot;&gt;代理转发简要配置&lt;/h2&gt;
+
+&lt;h3 id=&quot;http方式的代理转发配置&quot;&gt;HTTP方式的代理转发配置&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;server {
+    listen       80;
+    server_name  www.example.cn;
+
+    location / {
+        proxy_set_header Host $host:80;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_pass http://192.168.1.199:8080;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;https方式的代理转发配置&quot;&gt;HTTPS方式的代理转发配置&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;server {
+    listen       443;
+    server_name  www.example.com;
+
+    ssl on;
+    ssl_certificate server.crt;
+    ssl_certificate_key server.key;
+    ssl_session_timeout 5m;
+
+    location / {
+        proxy_set_header Host $host:443;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_pass https://192.168.1.197:8443;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;https证书生成&quot;&gt;HTTPS证书生成&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;openssl genrsa -des3 -out server.key 1024
+openssl req -new -key server.key -out server.csr
+cp server.key server.key.org
+openssl rsa -in server.key.org -out server.key
+openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;代理缓存配置&quot;&gt;代理缓存配置&lt;/h2&gt;
+
+&lt;h3 id=&quot;创建缓存目录并授与权限&quot;&gt;创建缓存目录并授与权限&lt;/h3&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mkdir -p /usr/local/nginx/temp
+chmod -R 755 /usr/local/nginx/temp
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;缓存目录的创建位置可以随意，但必须具有读写权限&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;利用缓存目录配置代理缓存&quot;&gt;利用缓存目录配置代理缓存&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;http {
+    # levels=1:2 配置缓存空间有两层hash目录
+    # keys_zone=cache_zone:50m 配置缓存的名称及缓存空间大小
+    # inactive 设置缓存有效期，1d表示在1天时间内没有被访问则自动删除
+    # max_size 硬盘缓存的最大大小
+    proxy_cache_path /usr/local/nginx/cache levels=1:2 keys_zone=cache_one:50m inactive=1d max_size=10g;
+    server {
+        listen       80;
+        server_name  www.testcache123.com;
+
+        location / {
+            proxy_cache cache_one; # 指定上面配置的缓存名称
+            proxy_cache_valid 200 302 1h; # 200和302请求缓存1小时
+            proxy_cache_valid 301 1d; # 301请求缓存1天
+            proxy_cache_key $host$uri$is_args$args; # 缓存请求匹配的key
+            expires 30d;
+
+            proxy_set_header Host $host:80;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_pass http://www.wangjunneil.com;
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;跨域请求配置&quot;&gt;跨域请求配置&lt;/h2&gt;
+
+&lt;h3 id=&quot;跨域消息头说明&quot;&gt;跨域消息头说明&lt;/h3&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;名称&lt;/th&gt;
+      &lt;th&gt;含义&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Access-Control-Allow-Origin&lt;/td&gt;
+      &lt;td&gt;授权那些地址或者域名可以访问&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Access-Control-Allow-Credentials&lt;/td&gt;
+      &lt;td&gt;是否响应与该请求可以暴露&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Access-Control-Allow-Methods&lt;/td&gt;
+      &lt;td&gt;指定运行请求的HTTP方法&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&quot;具体配置明细&quot;&gt;具体配置明细&lt;/h3&gt;
+
+&lt;p&gt;在nginx中，若设置在http段内则对所有server都启用，设置在server段内则只对该server启用，设置在location段内则对该请求启用。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;server {
+    listen       80;
+    server_name  vinny.cc;
+
+    location / {
+        # 跨域请求头
+        add_header Access-Control-Allow-Origin *;
+        add_header Access-Control-Allow-Headers true;
+        add_header Access-Control-Allow-Methods GET,POST,OPTIONS;
+
+        proxy_set_header Host $host:80;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_pass http://localhost:8080;
+        client_max_body_size    1000m;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;负载均衡配置&quot;&gt;负载均衡配置&lt;/h2&gt;
+
+&lt;h3 id=&quot;简单的权重示例&quot;&gt;简单的权重示例&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;upstream backend {
+    server  192.168.1.197:80 backup;
+    server  192.168.1.196:80 weight=1;
+    server  192.168.1.197:80 weight=3;
+    # ip_hash;
+}
+
+server {
+    location / {
+        proxy_pass http://backend;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Nginx自带的负载均衡策略有轮询（默认），权重和ip_hash，第三方的有fair和url_hash等配置方式。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;负载参数说明&quot;&gt;负载参数说明&lt;/h3&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;名称&lt;/th&gt;
+      &lt;th&gt;含义&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;down&lt;/td&gt;
+      &lt;td&gt;表示当前server不参与负载&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;weight&lt;/td&gt;
+      &lt;td&gt;默认为1，weight越大，负载的权重就越大，分发到的请求就越多&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;max_fails&lt;/td&gt;
+      &lt;td&gt;允许请求失败的次数，默认为1，当超过最大次数时，返回proxy_next_upstream 模块定义的错误&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;fail_timeout&lt;/td&gt;
+      &lt;td&gt;max_fails多少次失败后，暂停请求的时间&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;backup&lt;/td&gt;
+      &lt;td&gt;其它所有的非backup机器down或者忙的时候，请求backup机器。所以这台机器压力会最轻&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+</description>  
+               <pubDate>Sat, 11 Mar 2017 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2017/03/nginx-general-config/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/03/nginx-general-config/</guid>  
+               </item>  
+          
+            <item>  
                <title>Linux中使用yum安装zabbix-agent客户端和配置</title>  
                <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
   &lt;li&gt;&lt;a href=&quot;#linux中使用yum安装zabbix-agent客户端和配置&quot; id=&quot;markdown-toc-linux中使用yum安装zabbix-agent客户端和配置&quot;&gt;Linux中使用yum安装zabbix-agent客户端和配置&lt;/a&gt;    &lt;ul&gt;
@@ -581,116 +818,6 @@ net user hacker$ /delete
                <pubDate>Sun, 08 Jan 2017 00:00:00 +0800</pubDate>  
                <link>http://localhost:4000/2017/01/hacker-net-user/</link>  
                <guid isPermaLink="true">http://localhost:4000/2017/01/hacker-net-user/</guid>  
-               </item>  
-          
-            <item>  
-               <title>Google Hack 语法收集</title>  
-               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#google-hack-语法收集&quot; id=&quot;markdown-toc-google-hack-语法收集&quot;&gt;Google Hack 语法收集&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#搜索语法&quot; id=&quot;markdown-toc-搜索语法&quot;&gt;搜索语法&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#查找示例&quot; id=&quot;markdown-toc-查找示例&quot;&gt;查找示例&lt;/a&gt;        &lt;ul&gt;
-          &lt;li&gt;&lt;a href=&quot;#查找后台地址&quot; id=&quot;markdown-toc-查找后台地址&quot;&gt;查找后台地址&lt;/a&gt;&lt;/li&gt;
-          &lt;li&gt;&lt;a href=&quot;#查找上传漏洞&quot; id=&quot;markdown-toc-查找上传漏洞&quot;&gt;查找上传漏洞&lt;/a&gt;&lt;/li&gt;
-          &lt;li&gt;&lt;a href=&quot;#查找注入点&quot; id=&quot;markdown-toc-查找注入点&quot;&gt;查找注入点&lt;/a&gt;&lt;/li&gt;
-          &lt;li&gt;&lt;a href=&quot;#查找编辑器页面&quot; id=&quot;markdown-toc-查找编辑器页面&quot;&gt;查找编辑器页面&lt;/a&gt;&lt;/li&gt;
-          &lt;li&gt;&lt;a href=&quot;#查找重要文件&quot; id=&quot;markdown-toc-查找重要文件&quot;&gt;查找重要文件&lt;/a&gt;&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;google-hack-语法收集&quot;&gt;Google Hack 语法收集&lt;/h1&gt;
-
-&lt;h2 id=&quot;搜索语法&quot;&gt;搜索语法&lt;/h2&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;名称&lt;/th&gt;
-      &lt;th&gt;含义&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;intext&lt;/td&gt;
-      &lt;td&gt;网页中的正文内容中的某个字符做为搜索条件&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;intitle&lt;/td&gt;
-      &lt;td&gt;搜索网页标题中是否有我们所要找的字符&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;cache&lt;/td&gt;
-      &lt;td&gt;关于某些内容的缓存&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;define&lt;/td&gt;
-      &lt;td&gt;搜索某个词语的定义&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;filetype&lt;/td&gt;
-      &lt;td&gt;搜索指定类型的文件&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;inf&lt;/td&gt;
-      &lt;td&gt;查找指定站点的一些基本信息&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;inurl&lt;/td&gt;
-      &lt;td&gt;搜索指定的字符是否存在于URL中&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;site&lt;/td&gt;
-      &lt;td&gt;返回指定站点信息&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h2 id=&quot;查找示例&quot;&gt;查找示例&lt;/h2&gt;
-
-&lt;h3 id=&quot;查找后台地址&quot;&gt;查找后台地址&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;site:example.com intext:管理|后台|登陆|用户名|密码|验证码|系统|帐号
-site:example.com inurl:login/admin/manage/manager/admin_login/login_admin/system/boss/master
-site:example.com intitle:管理|后台|登陆|
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;查找上传漏洞&quot;&gt;查找上传漏洞&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;site:example.com inurl:file
-site:example.com inurl:load
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;查找注入点&quot;&gt;查找注入点&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;site:example.com inurl:php?id=
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;查找编辑器页面&quot;&gt;查找编辑器页面&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;site:example.com inurl:fck
-site:example.com inurl:ewebeditor
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;查找重要文件&quot;&gt;查找重要文件&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;site:example.com inurl:robots.txt
-site:example.com filetype:mdb
-site:example.com filetype:ini
-site:example.com inurl:txt
-site:example.com filetype:php
-site:example.com filetype:asp
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-</description>  
-               <pubDate>Sun, 08 Jan 2017 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2017/01/google-hack-syntax/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2017/01/google-hack-syntax/</guid>  
                </item>  
           
     </channel>  

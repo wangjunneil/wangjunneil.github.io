@@ -245,6 +245,42 @@ server {
                </item>  
           
             <item>  
+               <title>Centos7文本界面与图形界面的切换</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#centos7文本界面与图形界面的切换&quot; id=&quot;markdown-toc-centos7文本界面与图形界面的切换&quot;&gt;Centos7文本界面与图形界面的切换&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#文本模式&quot; id=&quot;markdown-toc-文本模式&quot;&gt;文本模式&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#图形模式&quot; id=&quot;markdown-toc-图形模式&quot;&gt;图形模式&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;centos7文本界面与图形界面的切换&quot;&gt;Centos7文本界面与图形界面的切换&lt;/h1&gt;
+
+&lt;h2 id=&quot;文本模式&quot;&gt;文本模式&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;systemctl &lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt;-default multi-user.target
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;图形模式&quot;&gt;图形模式&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;systemctl &lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt;-default graphical.target
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;使用命令&lt;code class=&quot;highlighter-rouge&quot;&gt;reboot&lt;/code&gt;重启即可&lt;/p&gt;
+&lt;/blockquote&gt;
+
+</description>  
+               <pubDate>Fri, 10 Mar 2017 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2017/03/centos7-text-graphics/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/03/centos7-text-graphics/</guid>  
+               </item>  
+          
+            <item>  
                <title>Linux中使用yum安装zabbix-agent客户端和配置</title>  
                <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
   &lt;li&gt;&lt;a href=&quot;#linux中使用yum安装zabbix-agent客户端和配置&quot; id=&quot;markdown-toc-linux中使用yum安装zabbix-agent客户端和配置&quot;&gt;Linux中使用yum安装zabbix-agent客户端和配置&lt;/a&gt;    &lt;ul&gt;
@@ -340,6 +376,7 @@ netstat -an | grep 10050
       &lt;li&gt;&lt;a href=&quot;#4-使swap分区有效&quot; id=&quot;markdown-toc-4-使swap分区有效&quot;&gt;4. 使swap分区有效&lt;/a&gt;&lt;/li&gt;
       &lt;li&gt;&lt;a href=&quot;#5-检查swap分区&quot; id=&quot;markdown-toc-5-检查swap分区&quot;&gt;5. 检查swap分区&lt;/a&gt;&lt;/li&gt;
       &lt;li&gt;&lt;a href=&quot;#6-配置启动自动挂载&quot; id=&quot;markdown-toc-6-配置启动自动挂载&quot;&gt;6. 配置启动自动挂载&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#附录fstab挂载文件配置说明&quot; id=&quot;markdown-toc-附录fstab挂载文件配置说明&quot;&gt;附录：fstab挂载文件配置说明&lt;/a&gt;&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
@@ -388,6 +425,52 @@ dd &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;o&quot;&g
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/home/swap	swap	swap	defaults	0 0
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
+
+&lt;h2 id=&quot;附录fstab挂载文件配置说明&quot;&gt;附录：fstab挂载文件配置说明&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/14-38-19.png&quot; alt=&quot;fstab内容&quot; /&gt;&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;列&lt;/th&gt;
+      &lt;th&gt;含义&lt;/th&gt;
+      &lt;th&gt;说明&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;磁盘设备文件或该设备的Label或者UUID&lt;/td&gt;
+      &lt;td&gt;该列可以是设备名、设备的Label或者设备的UUID。可以使用命令&lt;code class=&quot;highlighter-rouge&quot;&gt;blkid&lt;/code&gt;或者&lt;code class=&quot;highlighter-rouge&quot;&gt;blkid /home/swap&lt;/code&gt;查看设备名和UUID。&lt;br /&gt;&lt;strong&gt;设备名、Label和UUID区别？&lt;/strong&gt;&lt;br /&gt;设备名，如/dev/sda是固定的，硬盘的插槽改变，设备名会变更。使用Label挂在则不需要担心此类问题，但需要注意Label的格式化时的名称变化。对于UUID，唯一性，磁盘在格式化后会分配唯一的标识号，&lt;strong&gt;挂在建议使用UUID的方式&lt;/strong&gt;。&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;设备挂在点&lt;/td&gt;
+      &lt;td&gt;表示将该设备挂在在系统的哪个文件目录下&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;3&lt;/td&gt;
+      &lt;td&gt;文件系统格式&lt;/td&gt;
+      &lt;td&gt;磁盘文件系统的格式，通常是包括ext2、ext3、reiserfs、nfs、vfat等。&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;4&lt;/td&gt;
+      &lt;td&gt;文件系统参数&lt;/td&gt;
+      &lt;td&gt;&lt;strong&gt;Async/sync&lt;/strong&gt; 设置是否为同步方式运行，默认为async&lt;br /&gt;&lt;strong&gt;auto/noauto&lt;/strong&gt; 当下载mount -a 的命令时，此文件系统是否被主动挂载，默认为auto&lt;br /&gt;&lt;strong&gt;rw/ro&lt;/strong&gt; 是否以以只读或者读写模式挂载&lt;br /&gt;&lt;strong&gt;exec/noexec&lt;/strong&gt; 限制此文件系统内是否能够进行”执行”的操作&lt;br /&gt;&lt;strong&gt;user/nouser&lt;/strong&gt; 是否允许用户使用mount命令挂载&lt;br /&gt;&lt;strong&gt;suid/nosuid&lt;/strong&gt; 是否允许SUID的存在&lt;br /&gt;&lt;strong&gt;Usrquota&lt;/strong&gt; 启动文件系统支持磁盘配额模式&lt;br /&gt;&lt;strong&gt;Grpquota&lt;/strong&gt; 启动文件系统对群组磁盘配额模式的支持&lt;br /&gt;&lt;strong&gt;Defaults&lt;/strong&gt; 同时具有rw,suid,dev,exec,auto,nouser,async等默认参数的设置&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;5&lt;/td&gt;
+      &lt;td&gt;是否被dump备份命令作用&lt;/td&gt;
+      &lt;td&gt;dump是一个用来作为备份的命令，通常这个参数的值为0或者1。&lt;br /&gt;&lt;strong&gt;0&lt;/strong&gt; 不要做dump备份&lt;br /&gt;&lt;strong&gt;1&lt;/strong&gt; 每天进行dump的操作&lt;br /&gt;&lt;strong&gt;2&lt;/strong&gt; 不定日期的进行dump操作&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;6&lt;/td&gt;
+      &lt;td&gt;是否检验扇区&lt;/td&gt;
+      &lt;td&gt;类似于windows开机时检查磁盘坏点，开启后系统会以fsck检查磁盘文件的完整性。&lt;br /&gt;&lt;strong&gt;0&lt;/strong&gt; 不要检查&lt;br /&gt;&lt;strong&gt;1&lt;/strong&gt; 最早检验&lt;br /&gt;&lt;strong&gt;2&lt;/strong&gt; 1级别检验完成之后进行检验&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
 </description>  
                <pubDate>Fri, 10 Feb 2017 00:00:00 +0800</pubDate>  
                <link>http://localhost:4000/2017/02/linux-add-swap-space/</link>  
@@ -798,26 +881,6 @@ spinner &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot
                <pubDate>Mon, 09 Jan 2017 00:00:00 +0800</pubDate>  
                <link>http://localhost:4000/2017/01/shell-font-color/</link>  
                <guid isPermaLink="true">http://localhost:4000/2017/01/shell-font-color/</guid>  
-               </item>  
-          
-            <item>  
-               <title>Windows中关于net user命令的hacker语法备注</title>  
-               <description>&lt;h1 id=&quot;windows中关于net-user命令的hacker语法备注&quot;&gt;Windows中关于net user命令的hacker语法备注&lt;/h1&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-cmd&quot;&gt;# 创建用户并增加到管理员组
-net user hacker$ hacker123 /add
-net localgroup administrators hacker$ /add
-
-# 移除目标用户密码
-net user hacker$ *
-
-# 删除目标用户
-net user hacker$ /delete
-&lt;/code&gt;&lt;/pre&gt;
-</description>  
-               <pubDate>Sun, 08 Jan 2017 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2017/01/hacker-net-user/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2017/01/hacker-net-user/</guid>  
                </item>  
           
     </channel>  

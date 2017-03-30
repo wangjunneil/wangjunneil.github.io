@@ -40,8 +40,10 @@ mark {
 }
 blockquote {
   border-left: 5px solid #ccc;
-  margin: 40px 0;
-  padding: 5px 30px;
+  // margin: 40px 0;
+  margin: 20px 0;
+  // padding: 5px 30px;
+  padding: 1px 20px;
   background: #eee;
 }
 span[data-note] {
@@ -341,7 +343,8 @@ pre {
   overflow-x: auto;
   background-color: #f9f9f9;
   border: 1px solid #ddd;
-  padding: 1rem;
+  // padding: 1rem;
+  padding: 0.5rem;
   code {
     // font-size: 100%;
     font-size: 90%;

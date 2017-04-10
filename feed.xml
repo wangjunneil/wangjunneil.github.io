@@ -8,12 +8,158 @@
         <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />  
           
             <item>  
+               <title>使用Tomcat时应该注意的安全策略</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#使用tomcat时应该注意的安全策略&quot; id=&quot;markdown-toc-使用tomcat时应该注意的安全策略&quot;&gt;使用Tomcat时应该注意的安全策略&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#1-删除默认应用&quot; id=&quot;markdown-toc-1-删除默认应用&quot;&gt;1. 删除默认应用&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#2-默认用户管理&quot; id=&quot;markdown-toc-2-默认用户管理&quot;&gt;2. 默认用户管理&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#3-隐藏混淆版本信息&quot; id=&quot;markdown-toc-3-隐藏混淆版本信息&quot;&gt;3. 隐藏混淆版本信息&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#4-关闭自动部署&quot; id=&quot;markdown-toc-4-关闭自动部署&quot;&gt;4. 关闭自动部署&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#5-自定义错误页面&quot; id=&quot;markdown-toc-5-自定义错误页面&quot;&gt;5. 自定义错误页面&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#6-关闭ajp端口&quot; id=&quot;markdown-toc-6-关闭ajp端口&quot;&gt;6. 关闭AJP端口&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#7-服务权限控制&quot; id=&quot;markdown-toc-7-服务权限控制&quot;&gt;7. 服务权限控制&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#8-cookie安全控制&quot; id=&quot;markdown-toc-8-cookie安全控制&quot;&gt;8. cookie安全控制&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;使用tomcat时应该注意的安全策略&quot;&gt;使用Tomcat时应该注意的安全策略&lt;/h1&gt;
+
+&lt;h2 id=&quot;1-删除默认应用&quot;&gt;1. 删除默认应用&lt;/h2&gt;
+
+&lt;p&gt;新部署的Tomcat，在webapps目录中有几个工程，包含了示例、管理等功能，这些绝大部分都用不到且有风险，应该删除。&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rm -rf apache-tomcat/webapps/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;2-默认用户管理&quot;&gt;2. 默认用户管理&lt;/h2&gt;
+
+&lt;p&gt;若不想通过web的方式部署应用，建议注释或者删除&lt;strong&gt;tomcat-users.xml&lt;/strong&gt;下用户权限相关配置。&lt;/p&gt;
+
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;tomcat-users&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;&amp;lt;!--
+  &amp;lt;role rolename=&quot;tomcat&quot;/&amp;gt;
+  &amp;lt;role rolename=&quot;role1&quot;/&amp;gt;
+  &amp;lt;user username=&quot;tomcat&quot; password=&quot;tomcat&quot; roles=&quot;tomcat&quot;/&amp;gt;
+  &amp;lt;user username=&quot;both&quot; password=&quot;tomcat&quot; roles=&quot;tomcat,role1&quot;/&amp;gt;
+  &amp;lt;user username=&quot;role1&quot; password=&quot;tomcat&quot; roles=&quot;role1&quot;/&amp;gt;
+--&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/tomcat-users&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;高版本的Tomcat默认已经将此注释&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;3-隐藏混淆版本信息&quot;&gt;3. 隐藏混淆版本信息&lt;/h2&gt;
+
+&lt;p&gt;使用Tomcat时，若不使用nginx等反向代理，则会在消息头或者异常的页面直接暴露web服务器的名称及其版本号，这样攻击者可以有针对性的进行攻击。&lt;/p&gt;
+
+&lt;p&gt;修改&lt;strong&gt;$CATALINA_HOME/conf/server.xml&lt;/strong&gt;,在Connector节点添加server字段，如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;Connector&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;port=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;8080&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;protocol=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;HTTP/1.1&quot;&lt;/span&gt;
+               &lt;span class=&quot;na&quot;&gt;connectionTimeout=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;20000&quot;&lt;/span&gt;
+               &lt;span class=&quot;na&quot;&gt;redirectPort=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;8443&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;server=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;KBS1.1&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/10-08-40.png&quot; alt=&quot;消息头&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;4-关闭自动部署&quot;&gt;4. 关闭自动部署&lt;/h2&gt;
+
+&lt;p&gt;自动部署即将war包放在已经启动中的Tomcat时，自动解压缩和进行热部署。若不需要此功能则建议关闭。修改&lt;strong&gt;$CATALINA_HOME/conf/server.xml&lt;/strong&gt;中的&lt;strong&gt;host&lt;/strong&gt;字段，修改&lt;strong&gt;unpackWARs=”false” autoDeploy=”false”&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;Host&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;localhost&quot;&lt;/span&gt;  &lt;span class=&quot;na&quot;&gt;appBase=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;webapps&quot;&lt;/span&gt;
+            &lt;span class=&quot;na&quot;&gt;unpackWARs=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;autoDeploy=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;false&quot;&lt;/span&gt;
+            &lt;span class=&quot;na&quot;&gt;xmlValidation=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;xmlNamespaceAware=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;false&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;5-自定义错误页面&quot;&gt;5. 自定义错误页面&lt;/h2&gt;
+
+&lt;p&gt;部署在Tomcat中的应用，在未定义404或者500等错误页面时，会抛出异常页面，异常页面会暴露出应用的路径及服务区版本等信息。所以通常需要在web.xml中配置异常页面。&lt;/p&gt;
+
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;error-page&amp;gt;&lt;/span&gt;
+	&lt;span class=&quot;nt&quot;&gt;&amp;lt;error-code&amp;gt;&lt;/span&gt;404&lt;span class=&quot;nt&quot;&gt;&amp;lt;/error-code&amp;gt;&lt;/span&gt;
+	&lt;span class=&quot;nt&quot;&gt;&amp;lt;location&amp;gt;&lt;/span&gt;404.html&lt;span class=&quot;nt&quot;&gt;&amp;lt;/location&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/error-page&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;error-page&amp;gt;&lt;/span&gt;
+	&lt;span class=&quot;nt&quot;&gt;&amp;lt;error-code&amp;gt;&lt;/span&gt;500&lt;span class=&quot;nt&quot;&gt;&amp;lt;/error-code&amp;gt;&lt;/span&gt;
+	&lt;span class=&quot;nt&quot;&gt;&amp;lt;location&amp;gt;&lt;/span&gt;/500.html&lt;span class=&quot;nt&quot;&gt;&amp;lt;/location&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/error-page&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;6-关闭ajp端口&quot;&gt;6. 关闭AJP端口&lt;/h2&gt;
+
+&lt;p&gt;AJP是为 Tomcat 与 HTTP 服务器之间通信而定制的协议，能提供较高的通信速度和效率。如果tomcat前端放的是apache的时候，会使用到AJP这个连接器。前端如果是由nginx做的反向代理的话可以不使用此连接器，因此需要注销掉该连接器。&lt;/p&gt;
+
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;	&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- Define an AJP 1.3 Connector on port 8009 --&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- &amp;lt;Connector port=&quot;8009&quot; protocol=&quot;AJP/1.3&quot; redirectPort=&quot;8443&quot; /&amp;gt; --&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;7-服务权限控制&quot;&gt;7. 服务权限控制&lt;/h2&gt;
+
+&lt;p&gt;tomcat以非root权限启动，应用部署目录权限和tomcat服务启动用户分离，比如tomcat以tomcat用户启动，而部署应用的目录设置为nobody用户750。&lt;/p&gt;
+
+&lt;h2 id=&quot;8-cookie安全控制&quot;&gt;8. cookie安全控制&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;HttpOnly属性&lt;/strong&gt;：如果在Cookie中设置了”HttpOnly”属性，那么通过程序(JS脚本、Applet等)将无法读取到Cookie信息，这样能有效的防止XSS攻击。&lt;/p&gt;
+
+&lt;p&gt;编辑&lt;strong&gt;$CATALINA_HOME/conf/context.xml&lt;/strong&gt;文件，在&lt;strong&gt;Context&lt;/strong&gt;节点中增加属性&lt;strong&gt;useHttpOnly=”true”&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;Context&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;useHttpOnly=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;true&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+
+    &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- Default set of monitored resources --&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;WatchedResource&amp;gt;&lt;/span&gt;WEB-INF/web.xml&lt;span class=&quot;nt&quot;&gt;&amp;lt;/WatchedResource&amp;gt;&lt;/span&gt;
+
+    &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- Uncomment this to disable session persistence across Tomcat restarts --&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;&amp;lt;!--
+    &amp;lt;Manager pathname=&quot;&quot; /&amp;gt;
+    --&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;secure属性&lt;/strong&gt;：当设置为true时，表示创建的 Cookie 会被以安全的形式向服务器传输，也就是只能在 HTTPS 连接中被浏览器传递到服务器端进行会话验证，如果是 HTTP 连接则不会传递该信息，所以不会被窃取到Cookie 的具体内容。&lt;/p&gt;
+
+&lt;p&gt;配置cookie的secure属性，在web.xml中sesion-config节点配置cooker-config，此配置只允许cookie在加密方式下传输。&lt;/p&gt;
+
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;session-config&amp;gt;&lt;/span&gt;
+	&lt;span class=&quot;nt&quot;&gt;&amp;lt;session-timeout&amp;gt;&lt;/span&gt;30&lt;span class=&quot;nt&quot;&gt;&amp;lt;/session-timeout&amp;gt;&lt;/span&gt;
+	&lt;span class=&quot;nt&quot;&gt;&amp;lt;cookie-config&amp;gt;&lt;/span&gt;
+		&lt;span class=&quot;nt&quot;&gt;&amp;lt;secure&amp;gt;&lt;/span&gt;true&lt;span class=&quot;nt&quot;&gt;&amp;lt;/secure&amp;gt;&lt;/span&gt;
+	&lt;span class=&quot;nt&quot;&gt;&amp;lt;/cookie-config&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/session-config&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;secure&lt;/strong&gt;属性是防止信息在传递的过程中被监听捕获后信息泄漏，&lt;strong&gt;HttpOnly&lt;/strong&gt;属性的目的是防止程序获取cookie后进行攻击。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+</description>  
+               <pubDate>Thu, 06 Apr 2017 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2017/04/tomcat-security/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/04/tomcat-security/</guid>  
+               </item>  
+          
+            <item>  
                <title>Nginx常用配置汇总</title>  
                <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
   &lt;li&gt;&lt;a href=&quot;#nginx常用配置汇总&quot; id=&quot;markdown-toc-nginx常用配置汇总&quot;&gt;Nginx常用配置汇总&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#代理转发简要配置&quot; id=&quot;markdown-toc-代理转发简要配置&quot;&gt;代理转发简要配置&lt;/a&gt;        &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#反向代理简要配置&quot; id=&quot;markdown-toc-反向代理简要配置&quot;&gt;反向代理简要配置&lt;/a&gt;        &lt;ul&gt;
           &lt;li&gt;&lt;a href=&quot;#http方式的代理转发配置&quot; id=&quot;markdown-toc-http方式的代理转发配置&quot;&gt;HTTP方式的代理转发配置&lt;/a&gt;&lt;/li&gt;
           &lt;li&gt;&lt;a href=&quot;#https方式的代理转发配置&quot; id=&quot;markdown-toc-https方式的代理转发配置&quot;&gt;HTTPS方式的代理转发配置&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#正向http代理使用&quot; id=&quot;markdown-toc-正向http代理使用&quot;&gt;正向HTTP代理使用&lt;/a&gt;        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#配置正向代理&quot; id=&quot;markdown-toc-配置正向代理&quot;&gt;配置正向代理&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#客户端使用正向代理&quot; id=&quot;markdown-toc-客户端使用正向代理&quot;&gt;客户端使用正向代理&lt;/a&gt;&lt;/li&gt;
         &lt;/ul&gt;
       &lt;/li&gt;
       &lt;li&gt;&lt;a href=&quot;#https证书生成&quot; id=&quot;markdown-toc-https证书生成&quot;&gt;HTTPS证书生成&lt;/a&gt;&lt;/li&gt;
@@ -40,7 +186,7 @@
 
 &lt;h1 id=&quot;nginx常用配置汇总&quot;&gt;Nginx常用配置汇总&lt;/h1&gt;
 
-&lt;h2 id=&quot;代理转发简要配置&quot;&gt;代理转发简要配置&lt;/h2&gt;
+&lt;h2 id=&quot;反向代理简要配置&quot;&gt;反向代理简要配置&lt;/h2&gt;
 
 &lt;h3 id=&quot;http方式的代理转发配置&quot;&gt;HTTP方式的代理转发配置&lt;/h3&gt;
 
@@ -78,6 +224,61 @@
 }
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
+
+&lt;h2 id=&quot;正向http代理使用&quot;&gt;正向HTTP代理使用&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;背景&lt;/strong&gt;：子网中存在两台服务器AB，服务器A可以连接到互联网，服务器B不能上网，服务器B需要使用服务器A中的nginx正向代理功能使其连接到互联网上。&lt;/p&gt;
+
+&lt;h3 id=&quot;配置正向代理&quot;&gt;配置正向代理&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;server {
+    resolver 8.8.8.8;
+    resolver_timeout 5s;
+
+    listen 0.0.0.0:8080;
+
+    location / {
+        proxy_pass $scheme://$host$request_uri;
+        proxy_set_header Host $http_host;
+
+        proxy_buffers 256 4k;
+        proxy_max_temp_file_size 0;
+
+        proxy_connect_timeout 30;
+
+        proxy_cache_valid 200 302 10m;
+        proxy_cache_valid 301 1h;
+        proxy_cache_valid any 1m;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;客户端使用正向代理&quot;&gt;客户端使用正向代理&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;全局HTTP代理&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 添加全局HTTP代理&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;http_proxy&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;http://10.132.10.116:8080&quot;&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 删除全局HTTP代理&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;unset &lt;/span&gt;http_proxy
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;yum使用代理&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 编辑yum.conf文件&lt;/span&gt;
+vim /etc/yum.conf
+
+&lt;span class=&quot;c&quot;&gt;# 底部添加&lt;/span&gt;
+proxy &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; http://10.132.10.116:8080
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;据网络上文章所说，nginx的正向代理不支持HTTPS的方式&lt;/p&gt;
+&lt;/blockquote&gt;
 
 &lt;h2 id=&quot;https证书生成&quot;&gt;HTTPS证书生成&lt;/h2&gt;
 
@@ -814,73 +1015,6 @@ spinner &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot
                <pubDate>Mon, 09 Jan 2017 00:00:00 +0800</pubDate>  
                <link>http://localhost:4000/2017/01/shell-loading-status/</link>  
                <guid isPermaLink="true">http://localhost:4000/2017/01/shell-loading-status/</guid>  
-               </item>  
-          
-            <item>  
-               <title>Shell定义在终端执行时的字体颜色</title>  
-               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#shell定义在终端执行时的字体颜色&quot; id=&quot;markdown-toc-shell定义在终端执行时的字体颜色&quot;&gt;Shell定义在终端执行时的字体颜色&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#介绍&quot; id=&quot;markdown-toc-介绍&quot;&gt;介绍&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#脚本&quot; id=&quot;markdown-toc-脚本&quot;&gt;脚本&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#截图&quot; id=&quot;markdown-toc-截图&quot;&gt;截图&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;shell定义在终端执行时的字体颜色&quot;&gt;Shell定义在终端执行时的字体颜色&lt;/h1&gt;
-
-&lt;h2 id=&quot;介绍&quot;&gt;介绍&lt;/h2&gt;
-
-&lt;p&gt;在&lt;strong&gt;kali&lt;/strong&gt;系统中的一些shell工具时，常常会发现很多编写shell的技巧，本篇文章将介绍如何在shell的执行过程中定义输出字体的颜色和样式。&lt;/p&gt;
-
-&lt;h2 id=&quot;脚本&quot;&gt;脚本&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# 标准颜色定义&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;Black&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'\e[0;30m'&lt;/span&gt;        &lt;span class=&quot;c&quot;&gt;# Black&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;Red&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'\e[0;31m'&lt;/span&gt;          &lt;span class=&quot;c&quot;&gt;# Red&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;Green&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'\e[0;32m'&lt;/span&gt;        &lt;span class=&quot;c&quot;&gt;# Green&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;Yellow&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'\e[0;33m'&lt;/span&gt;       &lt;span class=&quot;c&quot;&gt;# Yellow&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;Blue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'\e[0;34m'&lt;/span&gt;         &lt;span class=&quot;c&quot;&gt;# Blue&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;Purple&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'\e[0;35m'&lt;/span&gt;       &lt;span class=&quot;c&quot;&gt;# Purple&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;Cyan&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'\e[0;36m'&lt;/span&gt;         &lt;span class=&quot;c&quot;&gt;# Cyan&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;White&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'\e[0;37m'&lt;/span&gt;        &lt;span class=&quot;c&quot;&gt;# White&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# 粗体颜色定义&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;BBlack&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'\e[1;30m'&lt;/span&gt;       &lt;span class=&quot;c&quot;&gt;# Black&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;BRed&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'\e[1;31m'&lt;/span&gt;         &lt;span class=&quot;c&quot;&gt;# Red&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;BGreen&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'\e[1;32m'&lt;/span&gt;       &lt;span class=&quot;c&quot;&gt;# Green&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;BYellow&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'\e[1;33m'&lt;/span&gt;      &lt;span class=&quot;c&quot;&gt;# Yellow&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;BBlue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'\e[1;34m'&lt;/span&gt;        &lt;span class=&quot;c&quot;&gt;# Blue&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;BPurple&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'\e[1;35m'&lt;/span&gt;      &lt;span class=&quot;c&quot;&gt;# Purple&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;BCyan&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'\e[1;36m'&lt;/span&gt;        &lt;span class=&quot;c&quot;&gt;# Cyan&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;BWhite&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'\e[1;37m'&lt;/span&gt;       &lt;span class=&quot;c&quot;&gt;# White&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# 使用&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;33[40;37m 黑底白字 &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;33[0m&quot;&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;33[41;37m 红底白字 &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;33[0m&quot;&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;33[42;37m 绿底白字 &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;33[0m&quot;&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;33[43;37m 黄底白字 &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;33[0m&quot;&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;33[44;37m 蓝底白字 &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;33[0m&quot;&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;33[45;37m 紫底白字 &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;33[0m&quot;&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;33[46;37m 天蓝底白字 &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;33[0m&quot;&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;33[47;30m 白底黑字 &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;33[0m&quot;&lt;/span&gt;
-
-&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;BRed&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Hello &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;BYellow&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;World&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;这里值得注意的是，执行&lt;code class=&quot;highlighter-rouge&quot;&gt;sh color.sh&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;./color.sh&lt;/code&gt;的输出效果不一样，通过我们会使用&lt;code class=&quot;highlighter-rouge&quot;&gt;chmod u+x color.sh&lt;/code&gt;进行授权，然后直接运行 &lt;code class=&quot;highlighter-rouge&quot;&gt;./color.sh&lt;/code&gt;的方式进行使用，这样&lt;code class=&quot;highlighter-rouge&quot;&gt;echo -e&lt;/code&gt;才能生效。s&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;截图&quot;&gt;截图&lt;/h2&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/shell-color.png&quot; alt=&quot;shell-color&quot; /&gt;&lt;/p&gt;
-</description>  
-               <pubDate>Mon, 09 Jan 2017 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2017/01/shell-font-color/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2017/01/shell-font-color/</guid>  
                </item>  
           
     </channel>  

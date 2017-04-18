@@ -8,6 +8,80 @@
         <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />  
           
             <item>  
+               <title>Nohup后台启动不输出及文件过大的问题</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#nohup后台启动不输出及文件过大的问题&quot; id=&quot;markdown-toc-nohup后台启动不输出及文件过大的问题&quot;&gt;Nohup后台启动不输出及文件过大的问题&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#1-背景&quot; id=&quot;markdown-toc-1-背景&quot;&gt;1. 背景&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#1-重定向概念&quot; id=&quot;markdown-toc-1-重定向概念&quot;&gt;1. 重定向概念&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#2-无底洞devnull文件&quot; id=&quot;markdown-toc-2-无底洞devnull文件&quot;&gt;2. 无底洞/dev/null文件&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#3-nohup的正常用法&quot; id=&quot;markdown-toc-3-nohup的正常用法&quot;&gt;3. nohup的正常用法&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;nohup后台启动不输出及文件过大的问题&quot;&gt;Nohup后台启动不输出及文件过大的问题&lt;/h1&gt;
+
+&lt;h2 id=&quot;1-背景&quot;&gt;1. 背景&lt;/h2&gt;
+
+&lt;p&gt;在Linux中常常使用&lt;strong&gt;nohup&lt;/strong&gt;的方式启动程序，目的是当关闭终端时程序能自由的后台执行，&lt;strong&gt;nohup&lt;/strong&gt;启动会将程序输出信息进行保持到&lt;strong&gt;nohup.out&lt;/strong&gt;文件中，久而久之此文件会过于庞大，且程序有自己的日志系统，所以&lt;strong&gt;nohup&lt;/strong&gt;的纪录往往是多余且没有效率的。&lt;/p&gt;
+
+&lt;h2 id=&quot;1-重定向概念&quot;&gt;1. 重定向概念&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;0 标准输入（默认）&lt;/li&gt;
+  &lt;li&gt;1 标准输出&lt;/li&gt;
+  &lt;li&gt;2 错误输出&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;将错误信息输出到error.log文件中&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nohup ./start.sh 2&amp;gt;error.log
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;将错误信息重定向到标准输出上&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nohup ./start.sh 2&amp;gt;&amp;amp;1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;2-无底洞devnull文件&quot;&gt;2. 无底洞/dev/null文件&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;/dev/null&lt;/strong&gt;可以比喻为Linux系统的垃圾桶，任何重定向到此的信息都会被丢掉。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;标准信息和错误信息都不纪录&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nohup ./start.sh 1&amp;gt;/dev./null 2&amp;gt;/dev/null
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;将错误重定向到标准输出再重定向到/dev/null&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nohup ./start.sh 2&amp;gt;&amp;amp;1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;3-nohup的正常用法&quot;&gt;3. nohup的正常用法&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;标准信息丢弃，错误信息纪录到error.log文件&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nohup ./start.sh &amp;gt;/dev/null 2&amp;gt;error.log &amp;amp;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;标准信息和错误信息都丢弃&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nohup ./start.sh &amp;gt;/dev/null 2&amp;gt;&amp;amp;1 &amp;amp;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+</description>  
+               <pubDate>Tue, 18 Apr 2017 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2017/04/nohup-big-output/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/04/nohup-big-output/</guid>  
+               </item>  
+          
+            <item>  
                <title>使用css的sprites技术</title>  
                <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
   &lt;li&gt;&lt;a href=&quot;#使用css的sprites技术&quot; id=&quot;markdown-toc-使用css的sprites技术&quot;&gt;使用css的sprites技术&lt;/a&gt;    &lt;ul&gt;
@@ -112,6 +186,71 @@
                <pubDate>Mon, 17 Apr 2017 00:00:00 +0800</pubDate>  
                <link>http://localhost:4000/2017/04/css-sprites/</link>  
                <guid isPermaLink="true">http://localhost:4000/2017/04/css-sprites/</guid>  
+               </item>  
+          
+            <item>  
+               <title>Shell获取屏幕分辨率</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#shell获取屏幕分辨率&quot; id=&quot;markdown-toc-shell获取屏幕分辨率&quot;&gt;Shell获取屏幕分辨率&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;shell获取屏幕分辨率&quot;&gt;Shell获取屏幕分辨率&lt;/h1&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 获取当前主机屏幕分辨率字符串&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;detectedresolution&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;xdpyinfo | grep -A 3 &lt;span class=&quot;s2&quot;&gt;&quot;screen #0&quot;&lt;/span&gt; | grep dimensions | tr -s &lt;span class=&quot;s2&quot;&gt;&quot; &quot;&lt;/span&gt; | cut -d&lt;span class=&quot;s2&quot;&gt;&quot; &quot;&lt;/span&gt; -f 3&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;##  A) 1024x600&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;##  B) 1024x768&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;##  C) 1280x768&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;##  D) 1280x1024&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;##  E) 1600x1200&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$detectedresolution&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;
+	&lt;span class=&quot;s2&quot;&gt;&quot;1024x600&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; resA &lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
+	&lt;span class=&quot;s2&quot;&gt;&quot;1024x768&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; resB &lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
+	&lt;span class=&quot;s2&quot;&gt;&quot;1280x768&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; resC &lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
+	&lt;span class=&quot;s2&quot;&gt;&quot;1366x768&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; resC &lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
+	&lt;span class=&quot;s2&quot;&gt;&quot;1280x1024&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; resD &lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
+	&lt;span class=&quot;s2&quot;&gt;&quot;1600x1200&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; resE &lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
+	&lt;span class=&quot;s2&quot;&gt;&quot;1366x768&quot;&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; resF &lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
+		  &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; resA &lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;esac&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+</description>  
+               <pubDate>Wed, 12 Apr 2017 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2017/04/shell-screen-size/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/04/shell-screen-size/</guid>  
+               </item>  
+          
+            <item>  
+               <title>Shell判断当前用户是否为root用户</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#shell判断当前用户是否为root用户&quot; id=&quot;markdown-toc-shell判断当前用户是否为root用户&quot;&gt;Shell判断当前用户是否为root用户&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;shell判断当前用户是否为root用户&quot;&gt;Shell判断当前用户是否为root用户&lt;/h1&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# EUID为0表示具有root权限&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$EUID&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# 0&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# check root&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[[&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$EUID&lt;/span&gt; -ne 0 &lt;span class=&quot;o&quot;&gt;]]&lt;/span&gt;; &lt;span class=&quot;k&quot;&gt;then
+	&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;You don't have admin privilegies, execute the script as root.&quot;&lt;/span&gt;
+	&lt;span class=&quot;nb&quot;&gt;exit
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;fi&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+</description>  
+               <pubDate>Tue, 11 Apr 2017 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2017/04/shell-is-root/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/04/shell-is-root/</guid>  
                </item>  
           
             <item>  
@@ -881,193 +1020,6 @@ mount -t nfs 192.168.1.100:/data /root/resources
                <pubDate>Thu, 09 Feb 2017 00:00:00 +0800</pubDate>  
                <link>http://localhost:4000/2017/02/how-to-use-nfs-in-centos7/</link>  
                <guid isPermaLink="true">http://localhost:4000/2017/02/how-to-use-nfs-in-centos7/</guid>  
-               </item>  
-          
-            <item>  
-               <title>Shell中switch条件选择语句的执行示例</title>  
-               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#shell中switch条件选择语句的执行示例&quot; id=&quot;markdown-toc-shell中switch条件选择语句的执行示例&quot;&gt;Shell中switch条件选择语句的执行示例&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#脚本&quot; id=&quot;markdown-toc-脚本&quot;&gt;脚本&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;shell中switch条件选择语句的执行示例&quot;&gt;Shell中switch条件选择语句的执行示例&lt;/h1&gt;
-
-&lt;h2 id=&quot;脚本&quot;&gt;脚本&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# 定义一个选择语言的方法&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;function &lt;/span&gt;language &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-	clear
-	&lt;span class=&quot;k&quot;&gt;while &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;; &lt;span class=&quot;k&quot;&gt;do
-		&lt;/span&gt;clear
-		&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;[i] Select your language&quot;&lt;/span&gt;
-		&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;                                       &quot;&lt;/span&gt;
-		&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;      [1] English          &quot;&lt;/span&gt;
-		&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;      [2] German      &quot;&lt;/span&gt;
-		&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;      [3] Romanian     &quot;&lt;/span&gt;
-		&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;      [4] Turkish    &quot;&lt;/span&gt;
-		&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;      [5] Spanish    &quot;&lt;/span&gt;
-		&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;      [6] Chinese   &quot;&lt;/span&gt;
-		&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;      [7] Italian   &quot;&lt;/span&gt;
-		&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;      [8] Czech   &quot;&lt;/span&gt;
-		&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;      [9] Greek   &quot;&lt;/span&gt;
-		&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;                                       &quot;&lt;/span&gt;
-		&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -n -e &lt;span class=&quot;s2&quot;&gt;&quot;[deltaxflux@fluxion]-[~] &quot;&lt;/span&gt;
-		&lt;span class=&quot;nb&quot;&gt;read &lt;/span&gt;yn
-		&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;
-		&lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$yn&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in
-			&lt;/span&gt;1 &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; english; invokeMethod; &lt;span class=&quot;nb&quot;&gt;break&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
-			2 &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; german; invokeMethod; &lt;span class=&quot;nb&quot;&gt;break&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
-			3 &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; romanian; invokeMethod; &lt;span class=&quot;nb&quot;&gt;break&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
-			4 &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; turkish; invokeMethod; &lt;span class=&quot;nb&quot;&gt;break&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
-			5 &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; spanish; invokeMethod; &lt;span class=&quot;nb&quot;&gt;break&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
-			6 &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; chinese; invokeMethod; &lt;span class=&quot;nb&quot;&gt;break&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
-			7 &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; italian; &lt;span class=&quot;nb&quot;&gt;break&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
-			8 &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; czech; invokeMethod; &lt;span class=&quot;nb&quot;&gt;break&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
-			9 &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; greek; invokeMethod; &lt;span class=&quot;nb&quot;&gt;break&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
-			skip &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; english; skipme; &lt;span class=&quot;nb&quot;&gt;break&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt; 
-			&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Unknown option. Please choose again&quot;&lt;/span&gt;; clear &lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
-		  &lt;span class=&quot;k&quot;&gt;esac&lt;/span&gt;
-	&lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-language
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-</description>  
-               <pubDate>Tue, 10 Jan 2017 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2017/01/shell-switch-cond/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2017/01/shell-switch-cond/</guid>  
-               </item>  
-          
-            <item>  
-               <title>Shell执行中信号捕获的处理方式</title>  
-               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#shell执行中信号捕获的处理方式&quot; id=&quot;markdown-toc-shell执行中信号捕获的处理方式&quot;&gt;Shell执行中信号捕获的处理方式&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#介绍&quot; id=&quot;markdown-toc-介绍&quot;&gt;介绍&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#脚本&quot; id=&quot;markdown-toc-脚本&quot;&gt;脚本&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#信号&quot; id=&quot;markdown-toc-信号&quot;&gt;信号&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;shell执行中信号捕获的处理方式&quot;&gt;Shell执行中信号捕获的处理方式&lt;/h1&gt;
-
-&lt;h2 id=&quot;介绍&quot;&gt;介绍&lt;/h2&gt;
-
-&lt;p&gt;当shell在执行过程中，使用&lt;code class=&quot;highlighter-rouge&quot;&gt;CTRL+C&lt;/code&gt;可以中断当前shell的执行，强制中断执行时可能需要做些清理任务，此时可以捕获中断信号进行shell进程结束前的处理。&lt;/p&gt;
-
-&lt;h2 id=&quot;脚本&quot;&gt;脚本&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# 定义中断执行方法&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;function &lt;/span&gt;exitmode&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-	&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;clear temp file&quot;&lt;/span&gt;
-	&lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;1
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# 注册信号处理&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;trap &lt;/span&gt;exitmode SIGINT SIGHUP
-
-&lt;span class=&quot;c&quot;&gt;# 模拟一个10秒的任务&lt;/span&gt;
-sleep 10
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;信号&quot;&gt;信号&lt;/h2&gt;
-
-&lt;p&gt;在unix系统中使用命令&lt;code class=&quot;highlighter-rouge&quot;&gt;kill -l&lt;/code&gt;查看所有支持的信号&lt;/p&gt;
-</description>  
-               <pubDate>Mon, 09 Jan 2017 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2017/01/shell-trap-process/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2017/01/shell-trap-process/</guid>  
-               </item>  
-          
-            <item>  
-               <title>Shell执行时弹出xterm子进程终端窗口</title>  
-               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#shell执行时弹出xterm子进程终端窗口&quot; id=&quot;markdown-toc-shell执行时弹出xterm子进程终端窗口&quot;&gt;Shell执行时弹出xterm子进程终端窗口&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#介绍&quot; id=&quot;markdown-toc-介绍&quot;&gt;介绍&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#示例脚本&quot; id=&quot;markdown-toc-示例脚本&quot;&gt;示例脚本&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#参数解释&quot; id=&quot;markdown-toc-参数解释&quot;&gt;参数解释&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;shell执行时弹出xterm子进程终端窗口&quot;&gt;Shell执行时弹出xterm子进程终端窗口&lt;/h1&gt;
-
-&lt;h2 id=&quot;介绍&quot;&gt;介绍&lt;/h2&gt;
-
-&lt;p&gt;不知道是否在看美国大片时，黑客执行某些工具，整个屏幕会时不时弹出多个终端窗口在执行，看似很酷的样子，其实实现很简单，每弹出的窗口都是作为一个子进程在运行，下面介绍实现方案。&lt;/p&gt;
-
-&lt;h2 id=&quot;示例脚本&quot;&gt;示例脚本&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# 弹出位置定义&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;TOPLEFT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;-geometry 90x13+0+0&quot;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;TOPRIGHT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;-geometry 83x26-0+0&quot;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;BOTTOMLEFT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;-geometry 90x24+0-0&quot;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;BOTTOMRIGHT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;-geometry 75x12-0-0&quot;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;TOPLEFTBIG&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;-geometry 91x42+0+0&quot;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;TOPRIGHTBIG&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;-geometry 83x26-0+0&quot;&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# 左上角弹出执行ping的命令&lt;/span&gt;
-xterm -hold -title &lt;span class=&quot;s2&quot;&gt;&quot;test title&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$TOPLEFT&lt;/span&gt; -bg &lt;span class=&quot;s2&quot;&gt;&quot;#000000&quot;&lt;/span&gt; -fg &lt;span class=&quot;s2&quot;&gt;&quot;#FFFFFF&quot;&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;ping www.baidu.com&quot;&lt;/span&gt; &amp;amp;
-
-&lt;span class=&quot;c&quot;&gt;# 右上角弹出执行下载的命令&lt;/span&gt;
-xterm -hold -title &lt;span class=&quot;s2&quot;&gt;&quot;test title&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$TOPRIGHT&lt;/span&gt; -bg &lt;span class=&quot;s2&quot;&gt;&quot;#000000&quot;&lt;/span&gt; -fg &lt;span class=&quot;s2&quot;&gt;&quot;#FFFFFF&quot;&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;wget http://nginx.org/download/nginx-1.10.2.tar.gz&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;xterm是阻塞式运行，即地一个xterm不执行完不会执行第二个，可以加上&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;amp;&lt;/code&gt;号让其后台执行，但如果两个xterm都加上&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;amp;&lt;/code&gt;号则主shell进行会立即关闭。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;参数解释&quot;&gt;参数解释&lt;/h2&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;名称&lt;/th&gt;
-      &lt;th&gt;含义&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;-hold&lt;/td&gt;
-      &lt;td&gt;开启资源等待模式。shell执行完成不会销毁窗口&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;-title&lt;/td&gt;
-      &lt;td&gt;定义终端标题&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;-geometry&lt;/td&gt;
-      &lt;td&gt;大小和坐标定义&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;-bg&lt;/td&gt;
-      &lt;td&gt;背景色定义&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;-fg&lt;/td&gt;
-      &lt;td&gt;前景色定义&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;-e&lt;/td&gt;
-      &lt;td&gt;需要执行的任务&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-</description>  
-               <pubDate>Mon, 09 Jan 2017 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2017/01/shell-pop-xterm/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2017/01/shell-pop-xterm/</guid>  
                </item>  
           
     </channel>  

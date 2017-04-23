@@ -10,10 +10,8 @@ ServerActive		= Zabbix Server的IP地址
 zabbix-agent    10050/udp  Zabbix Agent
 zabbix-trapper  10051/tcp  Zabbix Trapper
 zabbix-trapper  10051/udp  Zabbix Trapper
-</code></pre></div><blockquote><p>若服务器有配置防火墙规则，则添加zabbix-agent端口的出入站规则：</p></blockquote><div class="language-shell highlighter-rouge"><pre class="highlight"><code>iptables -A INPUT -m state --state NEW -m udp -p udp --dport 10050 -j ACCEPT
-iptables -A INPUT -m state --state NEW -m tcp -p tcp --dport 10050 -j ACCEPT
-iptables -A INPUT -m state --state NEW -m udp -p udp --dport 10051 -j ACCEPT
-iptables -A INPUT -m state --state NEW -m tcp -p tcp --dport 10051 -j ACCEPT
+</code></pre></div><blockquote><p>若服务器有配置防火墙规则，则添加zabbix-agent端口的出入站规则：</p></blockquote><div class="language-shell highlighter-rouge"><pre class="highlight"><code>iptables -A INPUT -p tcp --dport 10050 -j ACCEPT
+iptables -A OUTPUT -p tcp --sport 10050 -j ACCEPT
 </code></pre></div><h2 id="5-启动zabbix-agent客户端服务">5. 启动zabbix-agent客户端服务</h2><div class="language-shell highlighter-rouge"><pre class="highlight"><code>zabbix_agentd start
 </code></pre></div><h2 id="6-检查服务是否正常启动">6. 检查服务是否正常启动</h2><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># 检查是否存在zabbix-agent进程</span>
 ps -ef | grep zabbix

@@ -785,10 +785,8 @@ zabbix-trapper  10051/udp  Zabbix Trapper
   &lt;p&gt;若服务器有配置防火墙规则，则添加zabbix-agent端口的出入站规则：&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;iptables -A INPUT -m state --state NEW -m udp -p udp --dport 10050 -j ACCEPT
-iptables -A INPUT -m state --state NEW -m tcp -p tcp --dport 10050 -j ACCEPT
-iptables -A INPUT -m state --state NEW -m udp -p udp --dport 10051 -j ACCEPT
-iptables -A INPUT -m state --state NEW -m tcp -p tcp --dport 10051 -j ACCEPT
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;iptables -A INPUT -p tcp --dport 10050 -j ACCEPT
+iptables -A OUTPUT -p tcp --sport 10050 -j ACCEPT
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 

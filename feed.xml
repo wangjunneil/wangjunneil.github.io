@@ -8,6 +8,75 @@
         <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />  
           
             <item>  
+               <title>Gitlab私有仓库的备份和还原</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#gitlab私有仓库的备份和还原&quot; id=&quot;markdown-toc-gitlab私有仓库的备份和还原&quot;&gt;Gitlab私有仓库的备份和还原&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#1-gitlab的搭建&quot; id=&quot;markdown-toc-1-gitlab的搭建&quot;&gt;1. Gitlab的搭建&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#2-配置备份路径&quot; id=&quot;markdown-toc-2-配置备份路径&quot;&gt;2. 配置备份路径&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#3-备份gitlab&quot; id=&quot;markdown-toc-3-备份gitlab&quot;&gt;3. 备份Gitlab&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#4-还原gitlab&quot; id=&quot;markdown-toc-4-还原gitlab&quot;&gt;4. 还原Gitlab&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;gitlab私有仓库的备份和还原&quot;&gt;Gitlab私有仓库的备份和还原&lt;/h1&gt;
+
+&lt;h2 id=&quot;1-gitlab的搭建&quot;&gt;1. Gitlab的搭建&lt;/h2&gt;
+
+&lt;p&gt;单纯的搭建Gitlab需要安装和配置很多东西，过于麻烦，这里使用&lt;strong&gt;&lt;a href=&quot;https://bitnami.com&quot;&gt;bitnami&lt;/a&gt;&lt;/strong&gt;的一键安装方式进行安装，傻瓜式的安装按步骤执行即可。Bitnami的Gitlab下载地址为 &lt;strong&gt;&lt;a href=&quot;https://bitnami.com/stack/gitlab&quot;&gt;https://bitnami.com/stack/gitlab&lt;/a&gt;&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;默认的Gitlab安装路径为&lt;/strong&gt;：/opt/gitlab-x.xx.x-x&lt;/p&gt;
+
+&lt;h2 id=&quot;2-配置备份路径&quot;&gt;2. 配置备份路径&lt;/h2&gt;
+
+&lt;p&gt;编辑 &lt;strong&gt;/opt/gitlab-8.12.6-0/apps/gitlab/htdocs/config/gitlab.yml&lt;/strong&gt; 文件，找到如下&lt;strong&gt;Backup&lt;/strong&gt;节点。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;## Backup settings
+backup:
+	# path: &quot;tmp/backups&quot; 默认的备份路径
+	path: &quot;/home/git/backup&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;配置好后需要重新启动Gitlab使其生效&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;./ctlscript.sh restart
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;3-备份gitlab&quot;&gt;3. 备份Gitlab&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 切换到git用户&lt;/span&gt;
+su - git
+&lt;span class=&quot;c&quot;&gt;# 进入备份脚本目录&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /opt/gitlab-8.12.6-0/apps/gitlab/htdocs
+&lt;span class=&quot;c&quot;&gt;# 执行备份命令&lt;/span&gt;
+bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;bin/rake gitlab:backup:create &lt;span class=&quot;nv&quot;&gt;RAILS_ENV&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;production
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;4-还原gitlab&quot;&gt;4. 还原Gitlab&lt;/h2&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 切换到git用户&lt;/span&gt;
+su - git
+&lt;span class=&quot;c&quot;&gt;# 进入备份脚本目录&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /opt/gitlab-8.12.6-0/apps/gitlab/htdocs
+&lt;span class=&quot;c&quot;&gt;# 执行还原命令&lt;/span&gt;
+bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;bin/rake gitlab:backup:restore &lt;span class=&quot;nv&quot;&gt;RAILS_ENV&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;production &lt;span class=&quot;nv&quot;&gt;BACKUP&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1405247282
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;更多的备份还原参数请参看 &lt;a href=&quot;https://docs.gitlab.com/ce/raketasks/backup_restore.html&quot;&gt;https://docs.gitlab.com/ce/raketasks/backup_restore.html&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>  
+               <pubDate>Sun, 23 Apr 2017 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2017/04/gitlab-backup-restore/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/04/gitlab-backup-restore/</guid>  
+               </item>  
+          
+            <item>  
                <title>Nohup后台启动不输出及文件过大的问题</title>  
                <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
   &lt;li&gt;&lt;a href=&quot;#nohup后台启动不输出及文件过大的问题&quot; id=&quot;markdown-toc-nohup后台启动不输出及文件过大的问题&quot;&gt;Nohup后台启动不输出及文件过大的问题&lt;/a&gt;    &lt;ul&gt;
@@ -728,9 +797,9 @@ server {
                </item>  
           
             <item>  
-               <title>Linux中使用yum安装zabbix-agent客户端和配置</title>  
+               <title>Centos7安装zabbix-agent监控客户端</title>  
                <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#linux中使用yum安装zabbix-agent客户端和配置&quot; id=&quot;markdown-toc-linux中使用yum安装zabbix-agent客户端和配置&quot;&gt;Linux中使用yum安装zabbix-agent客户端和配置&lt;/a&gt;    &lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;#centos7安装zabbix-agent监控客户端&quot; id=&quot;markdown-toc-centos7安装zabbix-agent监控客户端&quot;&gt;Centos7安装zabbix-agent监控客户端&lt;/a&gt;    &lt;ul&gt;
       &lt;li&gt;&lt;a href=&quot;#1-下载zabbix仓库并安装&quot; id=&quot;markdown-toc-1-下载zabbix仓库并安装&quot;&gt;1. 下载zabbix仓库并安装&lt;/a&gt;&lt;/li&gt;
       &lt;li&gt;&lt;a href=&quot;#2-yum安装zabbix-agent客户端&quot; id=&quot;markdown-toc-2-yum安装zabbix-agent客户端&quot;&gt;2. yum安装zabbix-agent客户端&lt;/a&gt;&lt;/li&gt;
       &lt;li&gt;&lt;a href=&quot;#3-编辑zabbix-agent配置文件&quot; id=&quot;markdown-toc-3-编辑zabbix-agent配置文件&quot;&gt;3. 编辑zabbix-agent配置文件&lt;/a&gt;&lt;/li&gt;
@@ -743,19 +812,17 @@ server {
 
 &lt;hr /&gt;
 
-&lt;h1 id=&quot;linux中使用yum安装zabbix-agent客户端和配置&quot;&gt;Linux中使用yum安装zabbix-agent客户端和配置&lt;/h1&gt;
+&lt;h1 id=&quot;centos7安装zabbix-agent监控客户端&quot;&gt;Centos7安装zabbix-agent监控客户端&lt;/h1&gt;
 
 &lt;h2 id=&quot;1-下载zabbix仓库并安装&quot;&gt;1. 下载zabbix仓库并安装&lt;/h2&gt;
 
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;wget http://repo.zabbix.com/zabbix/2.4/rhel/6/x86_64/zabbix-release-2.4-1.el6.noarch.rpm
-
-rpm -ivh zabbix-release-2.4-1.el6.noarch.rpm
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rpm -ivh http://repo.zabbix.com/zabbix/2.4/rhel/6/x86_64/zabbix-release-2.4-1.el6.noarch.rpm
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
 &lt;h2 id=&quot;2-yum安装zabbix-agent客户端&quot;&gt;2. yum安装zabbix-agent客户端&lt;/h2&gt;
 
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;yum install zabbix-agent
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;yum install -y zabbix-agent
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
@@ -785,7 +852,7 @@ zabbix-trapper  10051/udp  Zabbix Trapper
   &lt;p&gt;若服务器有配置防火墙规则，则添加zabbix-agent端口的出入站规则：&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;iptables -A INPUT -p tcp --dport 10050 -j ACCEPT
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;iptables -A INPUT -s 139.196.14.112 -p tcp --dport 10050 -j ACCEPT
 iptables -A OUTPUT -p tcp --sport 10050 -j ACCEPT
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
@@ -793,6 +860,23 @@ iptables -A OUTPUT -p tcp --sport 10050 -j ACCEPT
 &lt;h2 id=&quot;5-启动zabbix-agent客户端服务&quot;&gt;5. 启动zabbix-agent客户端服务&lt;/h2&gt;
 
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;zabbix_agentd start
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;blockquote&gt;
+  &lt;table&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;
+        &lt;td&gt;启动后应该使用”netstat -an&lt;/td&gt;
+        &lt;td&gt;grep 10050”查看10050端口是否正常，若不正常，应该在查看/var/log/zabbix/zabbix_agentd.log日志文件查看异常原因。&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;出现 &lt;strong&gt;zabbix_agentd [6954]: cannot create PID file [/var/run/zabbix/zabbix_agentd.pid]: [2] No such file or directory&lt;/strong&gt; 错误。&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mkdir  -p /var/run/zabbix/
+chown zabbix.zabbix /var/run/zabbix/
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
@@ -812,212 +896,192 @@ netstat -an | grep 10050
                </item>  
           
             <item>  
-               <title>Linux增加swap分区</title>  
+               <title>Centos7安装zabbix-server监控服务端</title>  
                <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#linux增加swap分区&quot; id=&quot;markdown-toc-linux增加swap分区&quot;&gt;Linux增加swap分区&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#1-何为swap分区&quot; id=&quot;markdown-toc-1-何为swap分区&quot;&gt;1. 何为swap分区&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#2-创建分区&quot; id=&quot;markdown-toc-2-创建分区&quot;&gt;2. 创建分区&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#3-转换为swap分区&quot; id=&quot;markdown-toc-3-转换为swap分区&quot;&gt;3. 转换为swap分区&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#4-使swap分区有效&quot; id=&quot;markdown-toc-4-使swap分区有效&quot;&gt;4. 使swap分区有效&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#5-检查swap分区&quot; id=&quot;markdown-toc-5-检查swap分区&quot;&gt;5. 检查swap分区&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#6-配置启动自动挂载&quot; id=&quot;markdown-toc-6-配置启动自动挂载&quot;&gt;6. 配置启动自动挂载&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#附录fstab挂载文件配置说明&quot; id=&quot;markdown-toc-附录fstab挂载文件配置说明&quot;&gt;附录：fstab挂载文件配置说明&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#centos7安装zabbix-server监控服务端&quot; id=&quot;markdown-toc-centos7安装zabbix-server监控服务端&quot;&gt;Centos7安装zabbix-server监控服务端&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#1-安装zabbix仓库源&quot; id=&quot;markdown-toc-1-安装zabbix仓库源&quot;&gt;1. 安装zabbix仓库源&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#2-使用yum安装zabbix组件&quot; id=&quot;markdown-toc-2-使用yum安装zabbix组件&quot;&gt;2. 使用yum安装zabbix组件&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#3-安装mysql数据库服务器&quot; id=&quot;markdown-toc-3-安装mysql数据库服务器&quot;&gt;3. 安装mysql数据库服务器&lt;/a&gt;        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#31-检查本机是否已经安装mysql&quot; id=&quot;markdown-toc-31-检查本机是否已经安装mysql&quot;&gt;3.1 检查本机是否已经安装mysql&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#32-安装mysql官方源&quot; id=&quot;markdown-toc-32-安装mysql官方源&quot;&gt;3.2 安装mysql官方源&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#33-使用yum安装mysql&quot; id=&quot;markdown-toc-33-使用yum安装mysql&quot;&gt;3.3 使用yum安装mysql&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#34-启动mysql服务器&quot; id=&quot;markdown-toc-34-启动mysql服务器&quot;&gt;3.4 启动mysql服务器&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#35-修改root默认密码&quot; id=&quot;markdown-toc-35-修改root默认密码&quot;&gt;3.5 修改root默认密码&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#4-创建zabbix数据库及用户&quot; id=&quot;markdown-toc-4-创建zabbix数据库及用户&quot;&gt;4. 创建zabbix数据库及用户&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#5-初始化zabbix表及相关数据&quot; id=&quot;markdown-toc-5-初始化zabbix表及相关数据&quot;&gt;5. 初始化zabbix表及相关数据&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#6-配置zabbix服务的配置文件&quot; id=&quot;markdown-toc-6-配置zabbix服务的配置文件&quot;&gt;6. 配置zabbix服务的配置文件&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#7-编辑zabbix的php配置文件&quot; id=&quot;markdown-toc-7-编辑zabbix的php配置文件&quot;&gt;7. 编辑zabbix的php配置文件&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#8-启动zabbix服务&quot; id=&quot;markdown-toc-8-启动zabbix服务&quot;&gt;8. 启动zabbix服务&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#9-启动http服务&quot; id=&quot;markdown-toc-9-启动http服务&quot;&gt;9. 启动http服务&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#10-开放相应的防火墙规则&quot; id=&quot;markdown-toc-10-开放相应的防火墙规则&quot;&gt;10. 开放相应的防火墙规则&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#11-浏览器打开web控制台&quot; id=&quot;markdown-toc-11-浏览器打开web控制台&quot;&gt;11. 浏览器打开web控制台&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#附录a邮件脚步报警&quot; id=&quot;markdown-toc-附录a邮件脚步报警&quot;&gt;附录A：邮件脚步报警&lt;/a&gt;&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;hr /&gt;
 
-&lt;h1 id=&quot;linux增加swap分区&quot;&gt;Linux增加swap分区&lt;/h1&gt;
+&lt;h1 id=&quot;centos7安装zabbix-server监控服务端&quot;&gt;Centos7安装zabbix-server监控服务端&lt;/h1&gt;
 
-&lt;h2 id=&quot;1-何为swap分区&quot;&gt;1. 何为swap分区&lt;/h2&gt;
+&lt;h2 id=&quot;1-安装zabbix仓库源&quot;&gt;1. 安装zabbix仓库源&lt;/h2&gt;
 
-&lt;p&gt;&lt;strong&gt;swap&lt;/strong&gt;分区在系统的物理内存不够用的时候，把硬盘空间中的一部分空间释放出来，以供当前运行的程序使用。那些被释放的空间可能来自一些很长时间没有什么操作的程序，这些被释放的空间被临时保存到swap分区中，等到那些程序要运行时，再从swap分区中恢复保存的数据到内存中。&lt;/p&gt;
-
-&lt;h2 id=&quot;2-创建分区&quot;&gt;2. 创建分区&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 创建一个512M的/home/swap分区，文件大小为51200个block,1个block为1k&lt;/span&gt;
-dd &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/dev/zero &lt;span class=&quot;nv&quot;&gt;of&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/home/swap &lt;span class=&quot;nv&quot;&gt;bs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1024 &lt;span class=&quot;nv&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;512000
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rpm -ivh http://repo.zabbix.com/zabbix/3.2/rhel/7/x86_64/zabbix-release-3.2-1.el7.noarch.rpm
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
+&lt;h2 id=&quot;2-使用yum安装zabbix组件&quot;&gt;2. 使用yum安装zabbix组件&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;yum install -y zabbix-server-mysql zabbix-web-mysql
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;3-安装mysql数据库服务器&quot;&gt;3. 安装mysql数据库服务器&lt;/h2&gt;
+
+&lt;h3 id=&quot;31-检查本机是否已经安装mysql&quot;&gt;3.1 检查本机是否已经安装mysql&lt;/h3&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rpm -qa | grep mysql
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;32-安装mysql官方源&quot;&gt;3.2 安装mysql官方源&lt;/h3&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rpm -ivh http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;33-使用yum安装mysql&quot;&gt;3.3 使用yum安装mysql&lt;/h3&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;yum install -y mysql mysql-server
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;34-启动mysql服务器&quot;&gt;3.4 启动mysql服务器&lt;/h3&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;systemctl start mysqld.service
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;35-修改root默认密码&quot;&gt;3.5 修改root默认密码&lt;/h3&gt;
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;root&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;update&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;user&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;password&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;password&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'root'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'root'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;4-创建zabbix数据库及用户&quot;&gt;4. 创建zabbix数据库及用户&lt;/h2&gt;
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;create&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;database&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;zabbix&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;character&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;utf8&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;collate&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;utf8_bin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;grant&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;all&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;privileges&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;on&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;zabbix&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;zabbix&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;localhost&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;identified&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;by&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'zabbix'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;flush&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;privileges&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;quit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;5-初始化zabbix表及相关数据&quot;&gt;5. 初始化zabbix表及相关数据&lt;/h2&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;zcat /usr/share/doc/zabbix-server-mysql-3.2.&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;/create.sql.gz | mysql -uzabbix -p zabbix
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;6-配置zabbix服务的配置文件&quot;&gt;6. 配置zabbix服务的配置文件&lt;/h2&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# vi /etc/zabbix/zabbix_server.conf
+DBHost=localhost
+DBName=zabbix
+DBUser=zabbix
+DBPassword=zabbix
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;7-编辑zabbix的php配置文件&quot;&gt;7. 编辑zabbix的php配置文件&lt;/h2&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# vi /etc/httpd/conf.d/zabbix.conf
+php_value max_execution_time 300
+php_value memory_limit 128M
+php_value post_max_size 16M
+php_value upload_max_filesize 2M
+php_value max_input_time 300
+php_value always_populate_raw_post_data -1
+# 时区配置
+php_value date.timezone Asia/Shanghai
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;8-启动zabbix服务&quot;&gt;8. 启动zabbix服务&lt;/h2&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;systemctl start zabbix-server.service
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 &lt;blockquote&gt;
-  &lt;p&gt;上述命令需要以&lt;strong&gt;root&lt;/strong&gt;账号执行&lt;/p&gt;
+  &lt;p&gt;若出现 &lt;strong&gt;zabbix-server.service never wrote its PID file. Failing.&lt;/strong&gt; 的错误，在终端执行&lt;code class=&quot;highlighter-rouge&quot;&gt;setenforce 0&lt;/code&gt;命令即可。&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;h2 id=&quot;3-转换为swap分区&quot;&gt;3. 转换为swap分区&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mkswap /home/swap
+&lt;h2 id=&quot;9-启动http服务&quot;&gt;9. 启动http服务&lt;/h2&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;systemctl start httpd
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h2 id=&quot;4-使swap分区有效&quot;&gt;4. 使swap分区有效&lt;/h2&gt;
+&lt;h2 id=&quot;10-开放相应的防火墙规则&quot;&gt;10. 开放相应的防火墙规则&lt;/h2&gt;
 
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;swapon /home/swap
+&lt;p&gt;防火墙规则不是必须的，若服务器配置了防火墙规则则应加上如下的规则。&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 运行localhost访问任意端口服务&lt;/span&gt;
+iptables -A INPUT -i lo -j ACCEPT
+iptables -A OUTPUT -o lo -j ACCEPT
+&lt;span class=&quot;c&quot;&gt;# 调用agent客户端端口&lt;/span&gt;
+iptables -A OUTPUT -p tcp --dport 10050 -j ACCEPT
+iptables -A INPUT -p tcp --sport 10050 -j ACCEPT
+&lt;span class=&quot;c&quot;&gt;# 邮件报警端口&lt;/span&gt;
+iptables -A OUTPUT -p tcp --dport 25 -j ACCEPT
+iptables -A INPUT -p tcp --sport 25 -j ACCEPT
+&lt;span class=&quot;c&quot;&gt;# web监控时http和https端口&lt;/span&gt;
+iptables -A OUTPUT -p tcp --dport 80 -j ACCEPT
+iptables -A INPUT -p tcp --sport 80 -j ACCEPT
+iptables -A OUTPUT -p tcp --dport 443 -j ACCEPT
+iptables -A INPUT -p tcp --sport 443 -j ACCEPT
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h2 id=&quot;5-检查swap分区&quot;&gt;5. 检查swap分区&lt;/h2&gt;
+&lt;h2 id=&quot;11-浏览器打开web控制台&quot;&gt;11. 浏览器打开web控制台&lt;/h2&gt;
 
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;free -m
+&lt;p&gt;输入连接 &lt;strong&gt;http://xxx.xxx.xxx.xxx/zabbix&lt;/strong&gt; 进行界面配置即可完成。默认的用户名密码是 &lt;strong&gt;Admin&lt;/strong&gt;/&lt;strong&gt;zabbix&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;h2 id=&quot;附录a邮件脚步报警&quot;&gt;附录A：邮件脚步报警&lt;/h2&gt;
+
+&lt;p&gt;对于自定义的媒介脚本，应该放在”&lt;strong&gt;/usr/local/zabbix/share/zabbix/alertscripts&lt;/strong&gt;“目录中，这样在配置自定义媒介时，zabbix-server才会识别到。&lt;/p&gt;
+
+&lt;p&gt;下面是python语言编写的自动发送邮件的脚本&lt;strong&gt;mail.py&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#coding:utf-8&lt;/span&gt;
+
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;smtplib&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;email.mime.text&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MIMEText&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sys&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;mail_host&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'smtp.163.com'&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;mail_user&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'vinny@163.com'&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;mail_pass&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'vinny123'&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;mail_postfix&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'163.com'&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;send_mail&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;subject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;me&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Zabbix监控告警平台&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mail_user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;@&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mail_postfix&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;gt;&quot;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MIMEText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'plain'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'utf-8'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Subject'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;subject&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'From'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;me&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'to'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;to_list&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;smtplib&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SMTP&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;connect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mail_host&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;login&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mail_user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mail_pass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sendmail&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;me&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;as_string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;except&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Exception&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;False&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__name__&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;__main__&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;send_mail&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
-
-&lt;h2 id=&quot;6-配置启动自动挂载&quot;&gt;6. 配置启动自动挂载&lt;/h2&gt;
-
-&lt;p&gt;编辑&lt;code class=&quot;highlighter-rouge&quot;&gt;vi /etc/fstab&lt;/code&gt;文件，添加swap分区配置，如下：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/home/swap	swap	swap	defaults	0 0
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;附录fstab挂载文件配置说明&quot;&gt;附录：fstab挂载文件配置说明&lt;/h2&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/14-38-19.png&quot; alt=&quot;fstab内容&quot; /&gt;&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;列&lt;/th&gt;
-      &lt;th&gt;含义&lt;/th&gt;
-      &lt;th&gt;说明&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;磁盘设备文件或该设备的Label或者UUID&lt;/td&gt;
-      &lt;td&gt;该列可以是设备名、设备的Label或者设备的UUID。可以使用命令&lt;code class=&quot;highlighter-rouge&quot;&gt;blkid&lt;/code&gt;或者&lt;code class=&quot;highlighter-rouge&quot;&gt;blkid /home/swap&lt;/code&gt;查看设备名和UUID。&lt;br /&gt;&lt;strong&gt;设备名、Label和UUID区别？&lt;/strong&gt;&lt;br /&gt;设备名，如/dev/sda是固定的，硬盘的插槽改变，设备名会变更。使用Label挂在则不需要担心此类问题，但需要注意Label的格式化时的名称变化。对于UUID，唯一性，磁盘在格式化后会分配唯一的标识号，&lt;strong&gt;挂在建议使用UUID的方式&lt;/strong&gt;。&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;2&lt;/td&gt;
-      &lt;td&gt;设备挂在点&lt;/td&gt;
-      &lt;td&gt;表示将该设备挂在在系统的哪个文件目录下&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;3&lt;/td&gt;
-      &lt;td&gt;文件系统格式&lt;/td&gt;
-      &lt;td&gt;磁盘文件系统的格式，通常是包括ext2、ext3、reiserfs、nfs、vfat等。&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;4&lt;/td&gt;
-      &lt;td&gt;文件系统参数&lt;/td&gt;
-      &lt;td&gt;&lt;strong&gt;Async/sync&lt;/strong&gt; 设置是否为同步方式运行，默认为async&lt;br /&gt;&lt;strong&gt;auto/noauto&lt;/strong&gt; 当下载mount -a 的命令时，此文件系统是否被主动挂载，默认为auto&lt;br /&gt;&lt;strong&gt;rw/ro&lt;/strong&gt; 是否以以只读或者读写模式挂载&lt;br /&gt;&lt;strong&gt;exec/noexec&lt;/strong&gt; 限制此文件系统内是否能够进行”执行”的操作&lt;br /&gt;&lt;strong&gt;user/nouser&lt;/strong&gt; 是否允许用户使用mount命令挂载&lt;br /&gt;&lt;strong&gt;suid/nosuid&lt;/strong&gt; 是否允许SUID的存在&lt;br /&gt;&lt;strong&gt;Usrquota&lt;/strong&gt; 启动文件系统支持磁盘配额模式&lt;br /&gt;&lt;strong&gt;Grpquota&lt;/strong&gt; 启动文件系统对群组磁盘配额模式的支持&lt;br /&gt;&lt;strong&gt;Defaults&lt;/strong&gt; 同时具有rw,suid,dev,exec,auto,nouser,async等默认参数的设置&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;5&lt;/td&gt;
-      &lt;td&gt;是否被dump备份命令作用&lt;/td&gt;
-      &lt;td&gt;dump是一个用来作为备份的命令，通常这个参数的值为0或者1。&lt;br /&gt;&lt;strong&gt;0&lt;/strong&gt; 不要做dump备份&lt;br /&gt;&lt;strong&gt;1&lt;/strong&gt; 每天进行dump的操作&lt;br /&gt;&lt;strong&gt;2&lt;/strong&gt; 不定日期的进行dump操作&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;6&lt;/td&gt;
-      &lt;td&gt;是否检验扇区&lt;/td&gt;
-      &lt;td&gt;类似于windows开机时检查磁盘坏点，开启后系统会以fsck检查磁盘文件的完整性。&lt;br /&gt;&lt;strong&gt;0&lt;/strong&gt; 不要检查&lt;br /&gt;&lt;strong&gt;1&lt;/strong&gt; 最早检验&lt;br /&gt;&lt;strong&gt;2&lt;/strong&gt; 1级别检验完成之后进行检验&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
 </description>  
-               <pubDate>Fri, 10 Feb 2017 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2017/02/linux-add-swap-space/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2017/02/linux-add-swap-space/</guid>  
-               </item>  
-          
-            <item>  
-               <title>Centos7中NFS的配置及使用方法</title>  
-               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#centos7中nfs的配置及使用方法&quot; id=&quot;markdown-toc-centos7中nfs的配置及使用方法&quot;&gt;Centos7中NFS的配置及使用方法&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#安装nfs工具包&quot; id=&quot;markdown-toc-安装nfs工具包&quot;&gt;安装NFS工具包&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#编辑nfs配置文件&quot; id=&quot;markdown-toc-编辑nfs配置文件&quot;&gt;编辑NFS配置文件&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#服务端启动nfs&quot; id=&quot;markdown-toc-服务端启动nfs&quot;&gt;服务端启动NFS&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#客户端执行挂载&quot; id=&quot;markdown-toc-客户端执行挂载&quot;&gt;客户端执行挂载&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#挂载命令exportfs说明&quot; id=&quot;markdown-toc-挂载命令exportfs说明&quot;&gt;挂载命令exportfs说明&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h1 id=&quot;centos7中nfs的配置及使用方法&quot;&gt;Centos7中NFS的配置及使用方法&lt;/h1&gt;
-
-&lt;h2 id=&quot;安装nfs工具包&quot;&gt;安装NFS工具包&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;yum install -y nfs-utils
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;尽量使用&lt;code class=&quot;highlighter-rouge&quot;&gt;yum&lt;/code&gt;方式安装，依赖文件的互相依赖，编译安装很麻烦。
-&lt;strong&gt;nfs-utils&lt;/strong&gt;包含server和client端的工具，所以nfs的服务端和客户端都需要执行此安装。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;编辑nfs配置文件&quot;&gt;编辑NFS配置文件&lt;/h2&gt;
-
-&lt;p&gt;编辑&lt;code class=&quot;highlighter-rouge&quot;&gt;vi /etc/exports&lt;/code&gt;文件，添加共享路径及访问规则，例如：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/data *(rw,sync,no_root_squash)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;上面为最简单的共享方式，共享本机&lt;strong&gt;/data&lt;/strong&gt;目录，允许所有来源进行挂载读写。&lt;/p&gt;
-
-&lt;p&gt;配置文件中的每一行分为三个部分：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;共享路径，如:/root/nfs&lt;/li&gt;
-  &lt;li&gt;访问来源，”*****“号表示任意，可以是一个IP地址，也可以是一个网段，如192.168.1.0/24&lt;/li&gt;
-  &lt;li&gt;行为控制，括号中使用英文逗号分隔，如rw表示读写，ro只读，等参数&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;注意：配置行中的&lt;strong&gt;访问来源&lt;/strong&gt;和&lt;strong&gt;行为控制&lt;/strong&gt;中间没有空格。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;服务端启动nfs&quot;&gt;服务端启动NFS&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 设置开机启动&lt;/span&gt;
-systemctl &lt;span class=&quot;nb&quot;&gt;enable &lt;/span&gt;rpcbind.service
-systemctl &lt;span class=&quot;nb&quot;&gt;enable &lt;/span&gt;nfs-server.service
-
-&lt;span class=&quot;c&quot;&gt;# 启动NFS服务&lt;/span&gt;
-systemctl start rpcbind.service
-systemctl start nfs-server.service
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;启动好后可以使用命令&lt;code class=&quot;highlighter-rouge&quot;&gt;rpcinfo -p&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;showmount -e&lt;/code&gt;查看是否启动和挂载成功。&lt;/p&gt;
-
-&lt;h2 id=&quot;客户端执行挂载&quot;&gt;客户端执行挂载&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 设置开机运行&lt;/span&gt;
-systemctl &lt;span class=&quot;nb&quot;&gt;enable &lt;/span&gt;rpcbind.service
-
-&lt;span class=&quot;c&quot;&gt;# 启动RPC服务&lt;/span&gt;
-systemctl start rpcbind.service
-
-&lt;span class=&quot;c&quot;&gt;# 检查NFS服务器共享路径&lt;/span&gt;
-showmount -e 192.168.1.100
-
-&lt;span class=&quot;c&quot;&gt;# 执行挂载到本地&lt;/span&gt;
-mount -t nfs 192.168.1.100:/data /root/resources
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;客户端执行挂载时尽量不要在目标目录中，完成后，可以使用命令&lt;code class=&quot;highlighter-rouge&quot;&gt;df -hP&lt;/code&gt;或者&lt;code class=&quot;highlighter-rouge&quot;&gt;mount&lt;/code&gt;查看挂载路径。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;挂载命令exportfs说明&quot;&gt;挂载命令exportfs说明&lt;/h2&gt;
-
-&lt;p&gt;当更改了NFS的配置文件，可以不重启服务，使用命令&lt;code class=&quot;highlighter-rouge&quot;&gt;exportfs -rv&lt;/code&gt;重新读取，具体使用参数如下：&lt;/p&gt;
-
-&lt;p&gt;-a ： 全部挂载或者卸载
--r ： 重新挂载
--u ： 卸载某个目录
--v ： 现实共享目录&lt;/p&gt;
-</description>  
-               <pubDate>Thu, 09 Feb 2017 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2017/02/how-to-use-nfs-in-centos7/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2017/02/how-to-use-nfs-in-centos7/</guid>  
+               <pubDate>Tue, 14 Feb 2017 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2017/02/zabbix-server-install/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/02/zabbix-server-install/</guid>  
                </item>  
           
     </channel>  

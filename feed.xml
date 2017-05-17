@@ -467,30 +467,30 @@ bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;bin/rake gitlab:backup
                <title>Nginx常用配置汇总</title>  
                <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
   &lt;li&gt;&lt;a href=&quot;#nginx常用配置汇总&quot; id=&quot;markdown-toc-nginx常用配置汇总&quot;&gt;Nginx常用配置汇总&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#反向代理简要配置&quot; id=&quot;markdown-toc-反向代理简要配置&quot;&gt;反向代理简要配置&lt;/a&gt;        &lt;ul&gt;
-          &lt;li&gt;&lt;a href=&quot;#http方式的代理转发配置&quot; id=&quot;markdown-toc-http方式的代理转发配置&quot;&gt;HTTP方式的代理转发配置&lt;/a&gt;&lt;/li&gt;
-          &lt;li&gt;&lt;a href=&quot;#https方式的代理转发配置&quot; id=&quot;markdown-toc-https方式的代理转发配置&quot;&gt;HTTPS方式的代理转发配置&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#1-反向代理简要配置&quot; id=&quot;markdown-toc-1-反向代理简要配置&quot;&gt;1. 反向代理简要配置&lt;/a&gt;        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#11-http方式的代理转发配置&quot; id=&quot;markdown-toc-11-http方式的代理转发配置&quot;&gt;1.1. HTTP方式的代理转发配置&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#12-https方式的代理转发配置&quot; id=&quot;markdown-toc-12-https方式的代理转发配置&quot;&gt;1.2 HTTPS方式的代理转发配置&lt;/a&gt;&lt;/li&gt;
         &lt;/ul&gt;
       &lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#正向http代理使用&quot; id=&quot;markdown-toc-正向http代理使用&quot;&gt;正向HTTP代理使用&lt;/a&gt;        &lt;ul&gt;
-          &lt;li&gt;&lt;a href=&quot;#配置正向代理&quot; id=&quot;markdown-toc-配置正向代理&quot;&gt;配置正向代理&lt;/a&gt;&lt;/li&gt;
-          &lt;li&gt;&lt;a href=&quot;#客户端使用正向代理&quot; id=&quot;markdown-toc-客户端使用正向代理&quot;&gt;客户端使用正向代理&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#2-正向http代理使用&quot; id=&quot;markdown-toc-2-正向http代理使用&quot;&gt;2. 正向HTTP代理使用&lt;/a&gt;        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#21-配置正向代理&quot; id=&quot;markdown-toc-21-配置正向代理&quot;&gt;2.1 配置正向代理&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#22-客户端使用正向代理&quot; id=&quot;markdown-toc-22-客户端使用正向代理&quot;&gt;2.2 客户端使用正向代理&lt;/a&gt;&lt;/li&gt;
         &lt;/ul&gt;
       &lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#https证书生成&quot; id=&quot;markdown-toc-https证书生成&quot;&gt;HTTPS证书生成&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#代理缓存配置&quot; id=&quot;markdown-toc-代理缓存配置&quot;&gt;代理缓存配置&lt;/a&gt;        &lt;ul&gt;
-          &lt;li&gt;&lt;a href=&quot;#创建缓存目录并授与权限&quot; id=&quot;markdown-toc-创建缓存目录并授与权限&quot;&gt;创建缓存目录并授与权限&lt;/a&gt;&lt;/li&gt;
-          &lt;li&gt;&lt;a href=&quot;#利用缓存目录配置代理缓存&quot; id=&quot;markdown-toc-利用缓存目录配置代理缓存&quot;&gt;利用缓存目录配置代理缓存&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#3-https证书生成&quot; id=&quot;markdown-toc-3-https证书生成&quot;&gt;3. HTTPS证书生成&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#4-代理缓存配置&quot; id=&quot;markdown-toc-4-代理缓存配置&quot;&gt;4. 代理缓存配置&lt;/a&gt;        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#41-创建缓存目录并授与权限&quot; id=&quot;markdown-toc-41-创建缓存目录并授与权限&quot;&gt;4.1 创建缓存目录并授与权限&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#42-利用缓存目录配置代理缓存&quot; id=&quot;markdown-toc-42-利用缓存目录配置代理缓存&quot;&gt;4.2 利用缓存目录配置代理缓存&lt;/a&gt;&lt;/li&gt;
         &lt;/ul&gt;
       &lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#跨域请求配置&quot; id=&quot;markdown-toc-跨域请求配置&quot;&gt;跨域请求配置&lt;/a&gt;        &lt;ul&gt;
-          &lt;li&gt;&lt;a href=&quot;#跨域消息头说明&quot; id=&quot;markdown-toc-跨域消息头说明&quot;&gt;跨域消息头说明&lt;/a&gt;&lt;/li&gt;
-          &lt;li&gt;&lt;a href=&quot;#具体配置明细&quot; id=&quot;markdown-toc-具体配置明细&quot;&gt;具体配置明细&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#5-跨域请求配置&quot; id=&quot;markdown-toc-5-跨域请求配置&quot;&gt;5. 跨域请求配置&lt;/a&gt;        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#51-跨域消息头说明&quot; id=&quot;markdown-toc-51-跨域消息头说明&quot;&gt;5.1 跨域消息头说明&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#52-具体配置明细&quot; id=&quot;markdown-toc-52-具体配置明细&quot;&gt;5.2 具体配置明细&lt;/a&gt;&lt;/li&gt;
         &lt;/ul&gt;
       &lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#负载均衡配置&quot; id=&quot;markdown-toc-负载均衡配置&quot;&gt;负载均衡配置&lt;/a&gt;        &lt;ul&gt;
-          &lt;li&gt;&lt;a href=&quot;#简单的权重示例&quot; id=&quot;markdown-toc-简单的权重示例&quot;&gt;简单的权重示例&lt;/a&gt;&lt;/li&gt;
-          &lt;li&gt;&lt;a href=&quot;#负载参数说明&quot; id=&quot;markdown-toc-负载参数说明&quot;&gt;负载参数说明&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#6-负载均衡配置&quot; id=&quot;markdown-toc-6-负载均衡配置&quot;&gt;6. 负载均衡配置&lt;/a&gt;        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#61-简单的权重示例&quot; id=&quot;markdown-toc-61-简单的权重示例&quot;&gt;6.1 简单的权重示例&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#62-负载参数说明&quot; id=&quot;markdown-toc-62-负载参数说明&quot;&gt;6.2 负载参数说明&lt;/a&gt;&lt;/li&gt;
         &lt;/ul&gt;
       &lt;/li&gt;
     &lt;/ul&gt;
@@ -501,9 +501,9 @@ bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;bin/rake gitlab:backup
 
 &lt;h1 id=&quot;nginx常用配置汇总&quot;&gt;Nginx常用配置汇总&lt;/h1&gt;
 
-&lt;h2 id=&quot;反向代理简要配置&quot;&gt;反向代理简要配置&lt;/h2&gt;
+&lt;h2 id=&quot;1-反向代理简要配置&quot;&gt;1. 反向代理简要配置&lt;/h2&gt;
 
-&lt;h3 id=&quot;http方式的代理转发配置&quot;&gt;HTTP方式的代理转发配置&lt;/h3&gt;
+&lt;h3 id=&quot;11-http方式的代理转发配置&quot;&gt;1.1. HTTP方式的代理转发配置&lt;/h3&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;server {
     listen       80;
@@ -519,7 +519,7 @@ bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;bin/rake gitlab:backup
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h3 id=&quot;https方式的代理转发配置&quot;&gt;HTTPS方式的代理转发配置&lt;/h3&gt;
+&lt;h3 id=&quot;12-https方式的代理转发配置&quot;&gt;1.2 HTTPS方式的代理转发配置&lt;/h3&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;server {
     listen       443;
@@ -540,11 +540,11 @@ bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;bin/rake gitlab:backup
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h2 id=&quot;正向http代理使用&quot;&gt;正向HTTP代理使用&lt;/h2&gt;
+&lt;h2 id=&quot;2-正向http代理使用&quot;&gt;2. 正向HTTP代理使用&lt;/h2&gt;
 
 &lt;p&gt;&lt;strong&gt;背景&lt;/strong&gt;：子网中存在两台服务器AB，服务器A可以连接到互联网，服务器B不能上网，服务器B需要使用服务器A中的nginx正向代理功能使其连接到互联网上。&lt;/p&gt;
 
-&lt;h3 id=&quot;配置正向代理&quot;&gt;配置正向代理&lt;/h3&gt;
+&lt;h3 id=&quot;21-配置正向代理&quot;&gt;2.1 配置正向代理&lt;/h3&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;server {
     resolver 8.8.8.8;
@@ -569,7 +569,7 @@ bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;bin/rake gitlab:backup
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h3 id=&quot;客户端使用正向代理&quot;&gt;客户端使用正向代理&lt;/h3&gt;
+&lt;h3 id=&quot;22-客户端使用正向代理&quot;&gt;2.2 客户端使用正向代理&lt;/h3&gt;
 
 &lt;p&gt;&lt;strong&gt;全局HTTP代理&lt;/strong&gt;&lt;/p&gt;
 
@@ -595,7 +595,7 @@ proxy &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; http://10.132.10.116:8080
   &lt;p&gt;据网络上文章所说，nginx的正向代理不支持HTTPS的方式&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;h2 id=&quot;https证书生成&quot;&gt;HTTPS证书生成&lt;/h2&gt;
+&lt;h2 id=&quot;3-https证书生成&quot;&gt;3. HTTPS证书生成&lt;/h2&gt;
 
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;openssl genrsa -des3 -out server.key 1024
 openssl req -new -key server.key -out server.csr
@@ -605,9 +605,9 @@ openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h2 id=&quot;代理缓存配置&quot;&gt;代理缓存配置&lt;/h2&gt;
+&lt;h2 id=&quot;4-代理缓存配置&quot;&gt;4. 代理缓存配置&lt;/h2&gt;
 
-&lt;h3 id=&quot;创建缓存目录并授与权限&quot;&gt;创建缓存目录并授与权限&lt;/h3&gt;
+&lt;h3 id=&quot;41-创建缓存目录并授与权限&quot;&gt;4.1 创建缓存目录并授与权限&lt;/h3&gt;
 
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mkdir -p /usr/local/nginx/temp
 chmod -R 755 /usr/local/nginx/temp
@@ -618,7 +618,7 @@ chmod -R 755 /usr/local/nginx/temp
   &lt;p&gt;缓存目录的创建位置可以随意，但必须具有读写权限&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;h3 id=&quot;利用缓存目录配置代理缓存&quot;&gt;利用缓存目录配置代理缓存&lt;/h3&gt;
+&lt;h3 id=&quot;42-利用缓存目录配置代理缓存&quot;&gt;4.2 利用缓存目录配置代理缓存&lt;/h3&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;http {
     # levels=1:2 配置缓存空间有两层hash目录
@@ -647,9 +647,9 @@ chmod -R 755 /usr/local/nginx/temp
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h2 id=&quot;跨域请求配置&quot;&gt;跨域请求配置&lt;/h2&gt;
+&lt;h2 id=&quot;5-跨域请求配置&quot;&gt;5. 跨域请求配置&lt;/h2&gt;
 
-&lt;h3 id=&quot;跨域消息头说明&quot;&gt;跨域消息头说明&lt;/h3&gt;
+&lt;h3 id=&quot;51-跨域消息头说明&quot;&gt;5.1 跨域消息头说明&lt;/h3&gt;
 
 &lt;table&gt;
   &lt;thead&gt;
@@ -674,7 +674,7 @@ chmod -R 755 /usr/local/nginx/temp
   &lt;/tbody&gt;
 &lt;/table&gt;
 
-&lt;h3 id=&quot;具体配置明细&quot;&gt;具体配置明细&lt;/h3&gt;
+&lt;h3 id=&quot;52-具体配置明细&quot;&gt;5.2 具体配置明细&lt;/h3&gt;
 
 &lt;p&gt;在nginx中，若设置在http段内则对所有server都启用，设置在server段内则只对该server启用，设置在location段内则对该请求启用。&lt;/p&gt;
 
@@ -698,9 +698,9 @@ chmod -R 755 /usr/local/nginx/temp
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h2 id=&quot;负载均衡配置&quot;&gt;负载均衡配置&lt;/h2&gt;
+&lt;h2 id=&quot;6-负载均衡配置&quot;&gt;6. 负载均衡配置&lt;/h2&gt;
 
-&lt;h3 id=&quot;简单的权重示例&quot;&gt;简单的权重示例&lt;/h3&gt;
+&lt;h3 id=&quot;61-简单的权重示例&quot;&gt;6.1 简单的权重示例&lt;/h3&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;upstream backend {
     server  192.168.1.197:80 backup;
@@ -721,7 +721,7 @@ server {
   &lt;p&gt;Nginx自带的负载均衡策略有轮询（默认），权重和ip_hash，第三方的有fair和url_hash等配置方式。&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;h3 id=&quot;负载参数说明&quot;&gt;负载参数说明&lt;/h3&gt;
+&lt;h3 id=&quot;62-负载参数说明&quot;&gt;6.2 负载参数说明&lt;/h3&gt;
 
 &lt;table&gt;
   &lt;thead&gt;
@@ -863,14 +863,7 @@ iptables -A OUTPUT -p tcp --sport 10050 -j ACCEPT
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;blockquote&gt;
-  &lt;table&gt;
-    &lt;tbody&gt;
-      &lt;tr&gt;
-        &lt;td&gt;启动后应该使用”netstat -an&lt;/td&gt;
-        &lt;td&gt;grep 10050”查看10050端口是否正常，若不正常，应该在查看/var/log/zabbix/zabbix_agentd.log日志文件查看异常原因。&lt;/td&gt;
-      &lt;/tr&gt;
-    &lt;/tbody&gt;
-  &lt;/table&gt;
+  &lt;p&gt;启动后应该使用&lt;code class=&quot;highlighter-rouge&quot;&gt;netstat -an | grep 10050&lt;/code&gt;查看&lt;strong&gt;10050&lt;/strong&gt;端口是否正常，若不正常，应该在查看 &lt;strong&gt;/var/log/zabbix/zabbix_agentd.log&lt;/strong&gt; 日志文件查看异常原因。&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;出现 &lt;strong&gt;zabbix_agentd [6954]: cannot create PID file [/var/run/zabbix/zabbix_agentd.pid]: [2] No such file or directory&lt;/strong&gt; 错误。&lt;/p&gt;

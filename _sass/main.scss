@@ -523,7 +523,6 @@ div.highlighter-rouge {
 #markdown-toc {
   display: block;
   position: static;
-  // border-left: 3px double #555;
   @media (min-width: 992px) {
     display: block;
     position: fixed;
@@ -531,7 +530,9 @@ div.highlighter-rouge {
     right: 15px;
     width: 200px;
     z-index: 100;
-    // border: 3px double #555;
+    border-top: 20px solid #b2b2b2;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
     box-shadow: .1em .1em .5em rgba(0, 0, 0, .45);
     &:nth-of-type(1) {
         color: #555;

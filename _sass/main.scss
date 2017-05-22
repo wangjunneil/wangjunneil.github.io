@@ -14,12 +14,14 @@ body {
     padding: 15px 50px;
   }
 }
+h1,
 h2,
 h3,
 h4,
 h5 {
   // margin: 45px 0 25px;
   margin: 15px 0 15px;
+  color:#000;
 }
 img {
   max-width: 100%;
@@ -530,9 +532,9 @@ div.highlighter-rouge {
     right: 15px;
     width: 200px;
     z-index: 100;
-    border-top: 20px solid #b2b2b2;
-    border-top-right-radius: 5px;
-    border-top-left-radius: 5px;
+    border-top: 20px solid #626262;
+    border-top-right-radius: 3px;
+    border-top-left-radius: 3px;
     box-shadow: .1em .1em .5em rgba(0, 0, 0, .45);
     &:nth-of-type(1) {
         color: #555;

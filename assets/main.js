@@ -37,7 +37,7 @@ $(function () {
         if (command_mode) {
             return;
         }
-        
+
         var keyword = $("#keyword").val();
         if (keyword == null || keyword == "") {
             $(".suggest").empty();
@@ -58,7 +58,7 @@ $(function () {
                     return;
                 }
             }
-            
+
             $.getJSON("/data/index.html",function(result){
                 var posts = result.data;
                 if (posts.length != 0) {
@@ -70,7 +70,7 @@ $(function () {
             });
         }
     });
-    
+
     $("#keyword").bind("keyup", function (evt) {
         var k = window.event ? evt.keyCode : evt.which;
         if (k == 38) {
@@ -88,7 +88,7 @@ $(function () {
         } else if (k == 13) {
             if (command_mode) {
                 var keyword = $("#keyword").val();
-                if (keyword == null || keyword == "") 
+                if (keyword == null || keyword == "")
                     return;
                 command_process();
             // } else if (!isSearchData()) { // 没有检索到文章，回车事件忽略
@@ -103,7 +103,7 @@ $(function () {
             if (keyword.length == "") {
                 $(".searchform").removeClass("searchcommand");
                 command_mode = false
-            } 
+            }
         }
     });
 });
@@ -119,11 +119,11 @@ function command_process() {
             getip();
             break;
         default:
-            console.log('Unknown command [' + command + "]");
+            $("#keyword").val('Unknown command');
             break;
     }
 }
 
 function getip() {
-    
+
 }

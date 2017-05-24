@@ -94,8 +94,9 @@ span[data-note] {
       }
 }
 .searchcommand {
-    .mk {display:inline;}
-    #keyword {padding-left: 95px;width: 79%;font-weight: 800;font-size: 13px;}
+    .mk {display:inline;padding: 2px;}
+    #keyword {padding-left: 85px;width: 85%;font-weight: 800;font-size: 13px;background-color: #000;color: #00fb00;}
+
 }
 .w-toplink {
     display: block;
@@ -579,6 +580,10 @@ div.highlighter-rouge {
 }
 
 .hackmode {
+  // 文章页
+  h1, h2, h3, h4, h5{color: #9b9b9b;}
+  pre,blockquote {background-color: #393939;}
+
   font-weight: bold;
     background-color: #000;
     color: #FFF;

@@ -17,9 +17,9 @@ layout: compress
             or page.url contains '/categories/'
             or page.url == '/about/' %}
     		{% include header.html %}
-    		{% include search.html %}
 		{% endif %}
 
+        {% include search.html %}
 		{% include menu.html %}
 
 
@@ -38,10 +38,10 @@ layout: compress
 
 		{% endif %}
 
-        {% include baidu_tongji.html %}
-        {% include baidu_push.html %}
-        {% include 360_push.html %}
-        {% include google_analytics.html %}
+         <!-- include baidu_tongji.html
+         include baidu_push.html
+         include 360_push.html
+         include google_analytics.html  -->
 	</body>
 
 </html>

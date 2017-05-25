@@ -9,9 +9,9 @@ title: About Me
 
 ---
 
-**学习积累很重要，温习回顾更重要**，尝试着做着各种笔记，写着各种博客，希望能一辈子保存这些经验，并没有那么高尚的分享精神，只是用于自己回顾查找及翻阅。或许有些文章过于简单，但对于当时的我这值得记录。回看往日博文，多么幼稚，但这是我的青葱岁月，一直在成长。
+**Life is not a race, but a journey to be savored each step of the way.Yesterday is history,Tomorrow is a Mystery and Today is a giftthat's why we call it The Present.**
 
-**我们唯一能够逃避的就是逃避本身**
+[ 生活不是赛跑而是一场旅行，需要你一步一步的慢慢的去体会。昨天已成过去，明天还是未知，今天才是最珍贵的。 ]
 
 ---
 

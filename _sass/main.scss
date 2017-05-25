@@ -98,26 +98,46 @@ span[data-note] {
     #keyword {padding-left: 85px;width: 85%;font-weight: 800;font-size: 13px;background-color: #000;color: #00fb00;}
 
 }
-.w-toplink {
-    display: block;
+.w-search {
+    display: none;
     position: fixed;
-    bottom: 15px;
-    right: 15px;
+    bottom: 10px;
+    // right: 15px;
     text-align: center;
-    font-size: 15px;
+    font-size: 22px;
     line-height: 28px;
-    height: 20px;
-    width: 20px;
+    height: 30px;
+    width: 30px;
     border-radius: 5px;
     z-index: 100;
     outline: none !important;
-    background-color: #000;
-    color: #fff !important;
-    // transform: translate3d(0,70px,0);
+    background-color: #eee;
+    color: #555 !important;
+    border-bottom:none;
 }
-.w-toplink.active {
-    transform: translate3d(0,0,0);
+.w-catalog {
+    display: none;
+    position: fixed;
+    bottom: 42px;
+    // right: 15px;
+    text-align: center;
+    font-size: 24px;
+    line-height: 28px;
+    height: 30px;
+    width: 30px;
+    border-radius: 5px;
+    z-index: 100;
+    outline: none !important;
+    background-color: #eee;
+    color: #555 !important;
+    border-bottom:none;
 }
+.w-catalog:hover,.w-search:hover {
+  color: #FFF !important;
+}
+.ui-effects-transfer { border: 2px dotted gray; }
+
+
 .searchform {
     max-width: 600px;
     margin: 0 auto;
@@ -524,22 +544,23 @@ div.highlighter-rouge {
   }
 }
 #markdown-toc {
-  display: block;
+  display: none;
   position: static;
   @media (min-width: 992px) {
-    display: block;
+    display: none;
     position: fixed;
-    top: 15px;
+    top: 100px;
     right: 15px;
-    width: 200px;
+    width: 230px;
     z-index: 100;
-    border-top: 20px solid #626262;
-    border-top-right-radius: 3px;
-    border-top-left-radius: 3px;
-    box-shadow: .1em .1em .5em rgba(0, 0, 0, .45);
+    border-top: 10px solid #f9f9f9;
+    border-bottom: 10px solid #f9f9f9;
+    border-radius:3px;
+    box-shadow: .1em .1em .5em rgba(0, 0, 0, .25);
+    li {padding:0px 5px;}
     &:nth-of-type(1) {
         color: #555;
-        background-color: #f2eeeecc;
+        background-color: #f9f9f9;
         list-style: none;
         a {border-bottom: none;margin:5px 0px;}
     }
@@ -583,6 +604,8 @@ div.highlighter-rouge {
   // 文章页
   h1, h2, h3, h4, h5{color: #9b9b9b;}
   pre,blockquote {background-color: #393939;}
+  // 目录
+  #markdown-toc {background-color: #393939;color: #9b9b9b;}
 
   font-weight: bold;
     background-color: #000;

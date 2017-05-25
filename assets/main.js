@@ -1,3 +1,29 @@
+$(document).ready(function(){
+    $(function () {
+        $(window).scroll(function(){
+            if ($(window).scrollTop()>600){
+                $(".w-catalog").fadeIn(500);
+                $(".w-search").fadeIn(500);
+
+                var left = $("article").position().left;
+                var width = $("article").width();
+                $(".w-catalog").css('left', left + width + 10 + 'px');
+                $(".w-search").css('left', left + width + 10 + 'px');
+            }else{
+                $(".w-catalog").fadeOut(500);
+                $(".w-search").fadeOut(500);
+            }
+        });
+        $(".w-search").click(function(){
+            $('body,html').animate({scrollTop:0},200);
+            $("#keyword").focus();
+        });
+        $(".w-catalog").click(function(){
+            $("#markdown-toc").toggle();
+        });
+    });
+});
+
 command_mode = false;   // 标识命令模式
 
 function suggest(posts) {
@@ -127,3 +153,5 @@ function command_process() {
 function getip() {
 
 }
+
+

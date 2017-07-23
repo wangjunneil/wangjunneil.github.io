@@ -8,6 +8,393 @@
         <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />  
           
             <item>  
+               <title>Linux个人常用命令汇总收集（不断更新）</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#linux个人常用命令汇总&quot; id=&quot;markdown-toc-linux个人常用命令汇总&quot;&gt;Linux个人常用命令汇总&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#查看端口被谁占用&quot; id=&quot;markdown-toc-查看端口被谁占用&quot;&gt;查看端口被谁占用&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#递归删除指定文件&quot; id=&quot;markdown-toc-递归删除指定文件&quot;&gt;递归删除指定文件&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#内存cache占用大&quot; id=&quot;markdown-toc-内存cache占用大&quot;&gt;内存cache占用大&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;linux个人常用命令汇总&quot;&gt;Linux个人常用命令汇总&lt;/h1&gt;
+
+&lt;h2 id=&quot;查看端口被谁占用&quot;&gt;查看端口被谁占用&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;lsof -i:8080
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;递归删除指定文件&quot;&gt;递归删除指定文件&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find . -name &lt;span class=&quot;s2&quot;&gt;&quot;*.bak&quot;&lt;/span&gt; -exec rm &lt;span class=&quot;o&quot;&gt;{}&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\;&lt;/span&gt;
+find . -name &lt;span class=&quot;s2&quot;&gt;&quot;*.c&quot;&lt;/span&gt; | xargs rm -rf;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;内存cache占用大&quot;&gt;内存cache占用大&lt;/h2&gt;
+
+&lt;p&gt;使用&lt;code class=&quot;highlighter-rouge&quot;&gt;free -m&lt;/code&gt;时会发现内存的&lt;strong&gt;cache&lt;/strong&gt;段缓存的过多，导致内存不够用，可以使用以下命令进行清空。&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;shell&amp;gt; &lt;/span&gt;free -m
+             total       used       free     shared    buffers     cached
+Mem:         15888      15226        661        248        624       5123
+-/+ buffers/cache:       9479       6408
+Swap:          499          0        499
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sync;
+sync;
+sync;
+&lt;span class=&quot;nb&quot;&gt;echo &lt;/span&gt;3 &amp;gt; /proc/sys/vm/drop_caches
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;此命令有风险，会破坏内存中存储的数据，尤其不要在Oracle服务器中使用&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>  
+               <pubDate>Sun, 23 Jul 2017 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2017/07/linux-skill-gather/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/07/linux-skill-gather/</guid>  
+               </item>  
+          
+            <item>  
+               <title>Debain防火墙规则保存</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#debain防火墙规则保存&quot; id=&quot;markdown-toc-debain防火墙规则保存&quot;&gt;Debain防火墙规则保存&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#1-背景&quot; id=&quot;markdown-toc-1-背景&quot;&gt;1. 背景&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#2-步骤&quot; id=&quot;markdown-toc-2-步骤&quot;&gt;2. 步骤&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#21-保存规则&quot; id=&quot;markdown-toc-21-保存规则&quot;&gt;2.1 保存规则&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#22-启动文件&quot; id=&quot;markdown-toc-22-启动文件&quot;&gt;2.2 启动文件&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#23-文件内容&quot; id=&quot;markdown-toc-23-文件内容&quot;&gt;2.3 文件内容&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;debain防火墙规则保存&quot;&gt;Debain防火墙规则保存&lt;/h1&gt;
+
+&lt;h2 id=&quot;1-背景&quot;&gt;1. 背景&lt;/h2&gt;
+
+&lt;p&gt;配置好防火墙规则后，为防止服务器重启导致配置的规则被清除，应该将防火墙规则进行文件保存，在启动时进行自动加载。&lt;/p&gt;
+
+&lt;h2 id=&quot;2-步骤&quot;&gt;2. 步骤&lt;/h2&gt;
+
+&lt;h2 id=&quot;21-保存规则&quot;&gt;2.1 保存规则&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 将现有防火墙规则保存到/etc/iptables文件中&lt;/span&gt;
+iptables-save &amp;gt; /etc/iptables
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;22-启动文件&quot;&gt;2.2 启动文件&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 创建启动脚本文件&lt;/span&gt;
+touch /etc/network/if-pre-up.d/iptables
+&lt;span class=&quot;c&quot;&gt;# 赋予执行权限&lt;/span&gt;
+chmod u+x /etc/network/if-pre-up.d/iptables
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;23-文件内容&quot;&gt;2.3 文件内容&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 编辑启动配置文件&lt;/span&gt;
+vi /etc/network/if-pre-up.d/iptables
+
+&lt;span class=&quot;c&quot;&gt;# 文件内容为还原保存的防火墙配置规则&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#!/bin/sh&lt;/span&gt;
+/sbin/iptables-restore &amp;lt; /etc/iptables
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+</description>  
+               <pubDate>Mon, 17 Jul 2017 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2017/07/debain-save-iptables/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/07/debain-save-iptables/</guid>  
+               </item>  
+          
+            <item>  
+               <title>Gitlab重置管理员密码</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#gitlab重置管理员密码&quot; id=&quot;markdown-toc-gitlab重置管理员密码&quot;&gt;Gitlab重置管理员密码&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;gitlab重置管理员密码&quot;&gt;Gitlab重置管理员密码&lt;/h1&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;shell&amp;gt; &lt;/span&gt;su - git
+&lt;span class=&quot;gp&quot;&gt;shell&amp;gt; &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /opt/gitlab-8.12.6-0/apps/gitlab/htdocs
+&lt;span class=&quot;gp&quot;&gt;shell&amp;gt; &lt;/span&gt;bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;rails console production
+&lt;span class=&quot;c&quot;&gt;# email为需要更改密码的用户账户&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;irb(main):001:0&amp;gt; &lt;/span&gt;user &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; User.where&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;email: &lt;span class=&quot;s1&quot;&gt;'jun.wang@vinny.cn'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.first
+&lt;span class=&quot;c&quot;&gt;# 密码必须至少8个字符&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;irb(main):002:0&amp;gt; &lt;/span&gt;user.password &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'123456'&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 返回true表示修改成功&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;irb(main):003:0&amp;gt; &lt;/span&gt;user.save!
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+</description>  
+               <pubDate>Sun, 16 Jul 2017 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2017/07/gitlab-reset-admin-pwd/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/07/gitlab-reset-admin-pwd/</guid>  
+               </item>  
+          
+            <item>  
+               <title>C#无焦点扫码实现方案</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#c无焦点扫码实现方案&quot; id=&quot;markdown-toc-c无焦点扫码实现方案&quot;&gt;C#无焦点扫码实现方案&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#1-背景说明&quot; id=&quot;markdown-toc-1-背景说明&quot;&gt;1. 背景说明&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#2-程序说明&quot; id=&quot;markdown-toc-2-程序说明&quot;&gt;2. 程序说明&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#3-调用方法&quot; id=&quot;markdown-toc-3-调用方法&quot;&gt;3. 调用方法&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#3-中文问题&quot; id=&quot;markdown-toc-3-中文问题&quot;&gt;3. 中文问题&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#4-源码下载&quot; id=&quot;markdown-toc-4-源码下载&quot;&gt;4. 源码下载&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;c无焦点扫码实现方案&quot;&gt;C#无焦点扫码实现方案&lt;/h1&gt;
+
+&lt;h2 id=&quot;1-背景说明&quot;&gt;1. 背景说明&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;无焦点扫码&lt;/strong&gt; 的意思是在没有选择输出源载体的情况下捕获扫枪的扫码事件，即没有聚焦输出源（记事本、文本框等）获取条码／二维码中的内容。&lt;/p&gt;
+
+&lt;h2 id=&quot;2-程序说明&quot;&gt;2. 程序说明&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;BarCodeHook&lt;/code&gt;类是用于全局注册键盘钩子的核心类，一般不需要更改，直接放到工程中。&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;ScanCodeForm&lt;/code&gt;类是具体调用BarCodeHook类的窗体，为了便于测试此窗体中输出使用无焦点的Label控件。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;3-调用方法&quot;&gt;3. 调用方法&lt;/h2&gt;
+
+&lt;p&gt;下面&lt;code class=&quot;highlighter-rouge&quot;&gt;ScanCodeForm&lt;/code&gt;源码是具体怎么调用&lt;code class=&quot;highlighter-rouge&quot;&gt;BarCodeHook&lt;/code&gt;类的窗体代码，此窗体含有两个Label，一个用于最终输出条码/二维码内容的&lt;strong&gt;codeLabel&lt;/strong&gt;，一个是临时的&lt;strong&gt;tempLabel&lt;/strong&gt;，这个临时的&lt;strong&gt;tempLabel&lt;/strong&gt;不需要显示，设置为不可见即可，只是用于临时保存扫枪的字符数据，使用时你的窗体必须包含此控件，通过它的&lt;em&gt;textChange&lt;/em&gt;事件最终拿到扫枪的输入值。&lt;/p&gt;
+
+&lt;div class=&quot;language-c# highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;System.Collections.Generic&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;System.ComponentModel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;System.Data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;System.Drawing&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;System.Linq&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;System.Text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;System.Windows.Forms&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;namespace&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;NoFocusScan&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;partial&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ScanCodeForm&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Form&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;c1&quot;&gt;// 定义BarCodeHook对象及其委托方法
+&lt;/span&gt;        &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;BarCodeHook&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;barCodeHook&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;BarCodeHook&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;delegate&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;ShowInfoDelegate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BarCodeHook&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BarCodes&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;barCode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+        &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;ScanCodeForm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;nf&quot;&gt;InitializeComponent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+        &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;ScanCodeForm_Load&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sender&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EventArgs&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;c1&quot;&gt;// 注册扫枪委托事件
+&lt;/span&gt;            &lt;span class=&quot;n&quot;&gt;barCodeHook&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BarCodeEvent&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;BarCodeHook&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;BarCodeDeletegate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BarCodeEvent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+            &lt;span class=&quot;c1&quot;&gt;// 启动扫码钩子
+&lt;/span&gt;            &lt;span class=&quot;kt&quot;&gt;bool&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;status&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;barCodeHook&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;status&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;codeLabel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Text&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;等待扫码...&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;codeLabel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Text&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;启动失败&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+        &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;BarCodeEvent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BarCodeHook&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BarCodes&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;barCode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;nf&quot;&gt;ShowInfo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;barCode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+        &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;ShowInfo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BarCodeHook&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BarCodes&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;barCode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;InvokeRequired&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;BeginInvoke&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;ShowInfoDelegate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ShowInfo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;barCode&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;c1&quot;&gt;// 使用隐藏的tempLabel来储存扫码字符，扫码读取会改变隐藏label的字符，
+&lt;/span&gt;		&lt;span class=&quot;c1&quot;&gt;// 同时触发自身的tempLabel_TextChanged事件
+&lt;/span&gt;                &lt;span class=&quot;n&quot;&gt;tempLabel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Text&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;barCode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;IsValid&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;barCode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BarCode&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+        &lt;span class=&quot;c1&quot;&gt;/// &amp;lt;summary&amp;gt;
+&lt;/span&gt;        &lt;span class=&quot;c1&quot;&gt;/// Form窗体关闭事件
+&lt;/span&gt;        &lt;span class=&quot;c1&quot;&gt;/// &amp;lt;/summary&amp;gt;
+&lt;/span&gt;        &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;ScanCodeForm_FormClosed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sender&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;FormClosedEventArgs&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;c1&quot;&gt;// 卸载注册的钩子
+&lt;/span&gt;            &lt;span class=&quot;n&quot;&gt;barCodeHook&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Stop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+        &lt;span class=&quot;c1&quot;&gt;/// &amp;lt;summary&amp;gt;
+&lt;/span&gt;        &lt;span class=&quot;c1&quot;&gt;/// 扫码读取的字符事件
+&lt;/span&gt;        &lt;span class=&quot;c1&quot;&gt;/// &amp;lt;/summary&amp;gt;
+&lt;/span&gt;        &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;tempLabel_TextChanged&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sender&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EventArgs&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;c1&quot;&gt;// 这里code就是最终得到的条码/二维码字符
+&lt;/span&gt;            &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;code&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tempLabel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+            &lt;span class=&quot;n&quot;&gt;codeLabel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Text&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tempLabel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+            &lt;span class=&quot;c1&quot;&gt;// 扫完得到二维码就清空临时tempLabel，避免再次进入textchange事件
+&lt;/span&gt;            &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tempLabel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;TextChanged&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;EventHandler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tempLabel_TextChanged&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tempLabel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Text&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tempLabel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;TextChanged&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;EventHandler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tempLabel_TextChanged&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;3-中文问题&quot;&gt;3. 中文问题&lt;/h2&gt;
+
+&lt;p&gt;条形码的输出是字母或者数字，不会有问题。二维码可能含有中文或Unicode等字符时，一般不能正常读取到。首先确认的是二维码扫枪是否支持中文解码，支持中文的二维码扫枪因为需要内置解码器所以成本较高，市面上目前现在大部分的二维码扫枪都不可以支持中文。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;BarCodeHook&lt;/code&gt;类未测试支持中文的二维码扫枪&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;4-源码下载&quot;&gt;4. 源码下载&lt;/h2&gt;
+
+&lt;p&gt;链接: &lt;a href=&quot;http://pan.baidu.com/s/1o8oLe7w&quot;&gt;http://pan.baidu.com/s/1o8oLe7w&lt;/a&gt;  密码: &lt;strong&gt;tdei&lt;/strong&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;NoFocusScan.zip&lt;/strong&gt;源码保存在个人百度网盘的&lt;strong&gt;博客保存的源码&lt;/strong&gt;目录中（给自己看的）&lt;/p&gt;
+&lt;/blockquote&gt;
+
+</description>  
+               <pubDate>Sat, 15 Jul 2017 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2017/07/no-focus-scan/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/07/no-focus-scan/</guid>  
+               </item>  
+          
+            <item>  
+               <title>C#串口获取称重设备的实现方案</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#c串口获取称重设备的实现方案&quot; id=&quot;markdown-toc-c串口获取称重设备的实现方案&quot;&gt;C#串口获取称重设备的实现方案&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#1-串口概念&quot; id=&quot;markdown-toc-1-串口概念&quot;&gt;1. 串口概念&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#2-一些提示&quot; id=&quot;markdown-toc-2-一些提示&quot;&gt;2. 一些提示&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#3-实现代码&quot; id=&quot;markdown-toc-3-实现代码&quot;&gt;3. 实现代码&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#4-测试程序&quot; id=&quot;markdown-toc-4-测试程序&quot;&gt;4. 测试程序&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;c串口获取称重设备的实现方案&quot;&gt;C#串口获取称重设备的实现方案&lt;/h1&gt;
+
+&lt;h2 id=&quot;1-串口概念&quot;&gt;1. 串口概念&lt;/h2&gt;
+
+&lt;p&gt;串口即是com口，笔记本电脑没有串口，现在的台式机有串口的也很少，需要另配串口卡，一般位于机箱后面的9针公口（非VGA口）。实现串口通信的协议有多种，常用的是&lt;strong&gt;RS232&lt;/strong&gt;协议，只要输入设备存在串口就可以通过标准协议读取此设备的数据。&lt;/p&gt;
+
+&lt;p&gt;串口通信是双向的，既可以获取数据，也可以向设备发送指令数据，这个要看设备具体是否支持指令的发送。通常发送指令的目的是变更设置、获取数据（非连续输出）、开关设备等。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;本文中的串口设备使用的称重设备，电子秤、地磅，只负责读取，不写入。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;2-一些提示&quot;&gt;2. 一些提示&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;串口线&lt;/strong&gt; 购买串口线时需要看清楚设备的串口是9针的还是25针的、公口还是母口。串口线是否支持热插拨，&lt;strong&gt;不支持热插拨的串口线，需要关闭电源再进行插入和拔出，否则串口线会损坏&lt;/strong&gt;。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;参数调整&lt;/strong&gt; 需要接入的串口设备通常情况下都是出厂设置，需要手动配置或查看此设备的波特率、校验位、数据位、传输方式等信息，说明书或仪表盘上可以得到。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;波特率使用设备缺省的即可，若将设备的校验位设置为空，则数据位随意。传输方式需要设置为连续输出，连续输出的意思是当COM口打开时设备不停的向串口发送数据，除了连续输出还有指令输出，即只有发送指令设备才向COM口发送数据。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;3-实现代码&quot;&gt;3. 实现代码&lt;/h2&gt;
+
+&lt;p&gt;使用&lt;strong&gt;C#&lt;/strong&gt;操作串口使用&lt;code class=&quot;highlighter-rouge&quot;&gt;SerialPort&lt;/code&gt;类，实现的步骤为设置串口参数、打开串口监听、获取数据事件、关闭串口，主要代码如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-c# highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// -------------------- 定义串口对象及委托事件 --------------------
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SerialPort&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Com_SerialPort&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;SerialPort&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;delegate&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;UpdateTextEventHandler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;UpdateTextEventHandler&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;updateText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;SerialForm_Load&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sender&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EventArgs&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;c1&quot;&gt;// 注册委托事件，核心
+&lt;/span&gt;	&lt;span class=&quot;n&quot;&gt;updateText&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;UpdateTextEventHandler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;UpdateTextBox&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;button1_Click&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sender&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EventArgs&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;Com_SerialPort&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;PortName&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;COM1&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;	&lt;span class=&quot;c1&quot;&gt;// 使用哪个串口
+&lt;/span&gt;	&lt;span class=&quot;n&quot;&gt;Com_SerialPort&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BaudRate&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;9600&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;	&lt;span class=&quot;c1&quot;&gt;// 波特率
+&lt;/span&gt;	&lt;span class=&quot;n&quot;&gt;Com_SerialPort&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DataBits&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;		&lt;span class=&quot;c1&quot;&gt;// 数据位
+&lt;/span&gt;	&lt;span class=&quot;n&quot;&gt;Com_SerialPort&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Parity&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Parity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;None&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;	&lt;span class=&quot;c1&quot;&gt;// 校验位
+&lt;/span&gt;	&lt;span class=&quot;n&quot;&gt;Com_SerialPort&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;StopBits&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;StopBits&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;None&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;// 停止位
+&lt;/span&gt;	&lt;span class=&quot;n&quot;&gt;Com_SerialPort&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;Com_SerialPort&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ReceivedBytesThreshold&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;Com_SerialPort&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DataReceived&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;SerialDataReceivedEventHandler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Com_SerialPort_DataReceive&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Com_SerialPort_DataReceive&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sender&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SerialDataReceivedEventArgs&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;Thread&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Sleep&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// 时间短可能导致数据读取不完整
+&lt;/span&gt;	&lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Com_SerialPort&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;ReadExisting&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Invoke&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;updateText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// 核心方法，当打开串口时，串口设备会不停调用此方法
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;UpdateTextBox&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;c1&quot;&gt;// 这里的text就是设备输入的数据
+&lt;/span&gt;	&lt;span class=&quot;n&quot;&gt;label1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;每个设备输入的协议会有所不同，即UpdateTextBox方法中的text变量不同，如”30 726 00”，30代表称重设备的稳定状态，38代表不稳定，726代表称重重量，即72.6kg，所以text需要根据设备具体的输出区别对待。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;4-测试程序&quot;&gt;4. 测试程序&lt;/h2&gt;
+
+&lt;p&gt;下面的程序是当时为了便于调测串口称重设备时做的，包含基本的称重数据读取及原始数据的输出，不支持发送指令。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/12-15-54.png&quot; alt=&quot;称重程序截图&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;链接: &lt;a href=&quot;http://pan.baidu.com/s/1o8oLe7w&quot;&gt;http://pan.baidu.com/s/1o8oLe7w&lt;/a&gt;  密码: &lt;strong&gt;tdei&lt;/strong&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;SerialDemo.zip&lt;/strong&gt;源码保存在个人百度网盘的&lt;strong&gt;博客保存的源码&lt;/strong&gt;目录中（给自己看的）&lt;/p&gt;
+&lt;/blockquote&gt;
+
+</description>  
+               <pubDate>Fri, 14 Jul 2017 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2017/07/serial-port-weight/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/07/serial-port-weight/</guid>  
+               </item>  
+          
+            <item>  
                <title>Gitlab私有仓库的备份和还原</title>  
                <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
   &lt;li&gt;&lt;a href=&quot;#gitlab私有仓库的备份和还原&quot; id=&quot;markdown-toc-gitlab私有仓库的备份和还原&quot;&gt;Gitlab私有仓库的备份和还原&lt;/a&gt;    &lt;ul&gt;
@@ -320,761 +707,6 @@ bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;bin/rake gitlab:backup
                <pubDate>Tue, 11 Apr 2017 00:00:00 +0800</pubDate>  
                <link>http://localhost:4000/2017/04/shell-is-root/</link>  
                <guid isPermaLink="true">http://localhost:4000/2017/04/shell-is-root/</guid>  
-               </item>  
-          
-            <item>  
-               <title>使用Tomcat时应该注意的安全策略</title>  
-               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#使用tomcat时应该注意的安全策略&quot; id=&quot;markdown-toc-使用tomcat时应该注意的安全策略&quot;&gt;使用Tomcat时应该注意的安全策略&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#1-删除默认应用&quot; id=&quot;markdown-toc-1-删除默认应用&quot;&gt;1. 删除默认应用&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#2-默认用户管理&quot; id=&quot;markdown-toc-2-默认用户管理&quot;&gt;2. 默认用户管理&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#3-隐藏混淆版本信息&quot; id=&quot;markdown-toc-3-隐藏混淆版本信息&quot;&gt;3. 隐藏混淆版本信息&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#4-关闭自动部署&quot; id=&quot;markdown-toc-4-关闭自动部署&quot;&gt;4. 关闭自动部署&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#5-自定义错误页面&quot; id=&quot;markdown-toc-5-自定义错误页面&quot;&gt;5. 自定义错误页面&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#6-关闭ajp端口&quot; id=&quot;markdown-toc-6-关闭ajp端口&quot;&gt;6. 关闭AJP端口&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#7-服务权限控制&quot; id=&quot;markdown-toc-7-服务权限控制&quot;&gt;7. 服务权限控制&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#8-cookie安全控制&quot; id=&quot;markdown-toc-8-cookie安全控制&quot;&gt;8. cookie安全控制&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h1 id=&quot;使用tomcat时应该注意的安全策略&quot;&gt;使用Tomcat时应该注意的安全策略&lt;/h1&gt;
-
-&lt;h2 id=&quot;1-删除默认应用&quot;&gt;1. 删除默认应用&lt;/h2&gt;
-
-&lt;p&gt;新部署的Tomcat，在webapps目录中有几个工程，包含了示例、管理等功能，这些绝大部分都用不到且有风险，应该删除。&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rm -rf apache-tomcat/webapps/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;2-默认用户管理&quot;&gt;2. 默认用户管理&lt;/h2&gt;
-
-&lt;p&gt;若不想通过web的方式部署应用，建议注释或者删除&lt;strong&gt;tomcat-users.xml&lt;/strong&gt;下用户权限相关配置。&lt;/p&gt;
-
-&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;tomcat-users&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;&amp;lt;!--
-  &amp;lt;role rolename=&quot;tomcat&quot;/&amp;gt;
-  &amp;lt;role rolename=&quot;role1&quot;/&amp;gt;
-  &amp;lt;user username=&quot;tomcat&quot; password=&quot;tomcat&quot; roles=&quot;tomcat&quot;/&amp;gt;
-  &amp;lt;user username=&quot;both&quot; password=&quot;tomcat&quot; roles=&quot;tomcat,role1&quot;/&amp;gt;
-  &amp;lt;user username=&quot;role1&quot; password=&quot;tomcat&quot; roles=&quot;role1&quot;/&amp;gt;
---&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/tomcat-users&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;高版本的Tomcat默认已经将此注释&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;3-隐藏混淆版本信息&quot;&gt;3. 隐藏混淆版本信息&lt;/h2&gt;
-
-&lt;p&gt;使用Tomcat时，若不使用nginx等反向代理，则会在消息头或者异常的页面直接暴露web服务器的名称及其版本号，这样攻击者可以有针对性的进行攻击。&lt;/p&gt;
-
-&lt;p&gt;修改&lt;strong&gt;$CATALINA_HOME/conf/server.xml&lt;/strong&gt;,在Connector节点添加server字段，如下：&lt;/p&gt;
-
-&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;Connector&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;port=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;8080&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;protocol=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;HTTP/1.1&quot;&lt;/span&gt;
-               &lt;span class=&quot;na&quot;&gt;connectionTimeout=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;20000&quot;&lt;/span&gt;
-               &lt;span class=&quot;na&quot;&gt;redirectPort=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;8443&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;server=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;KBS1.1&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/10-08-40.png&quot; alt=&quot;消息头&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;4-关闭自动部署&quot;&gt;4. 关闭自动部署&lt;/h2&gt;
-
-&lt;p&gt;自动部署即将war包放在已经启动中的Tomcat时，自动解压缩和进行热部署。若不需要此功能则建议关闭。修改&lt;strong&gt;$CATALINA_HOME/conf/server.xml&lt;/strong&gt;中的&lt;strong&gt;host&lt;/strong&gt;字段，修改&lt;strong&gt;unpackWARs=”false” autoDeploy=”false”&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;Host&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;localhost&quot;&lt;/span&gt;  &lt;span class=&quot;na&quot;&gt;appBase=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;webapps&quot;&lt;/span&gt;
-            &lt;span class=&quot;na&quot;&gt;unpackWARs=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;autoDeploy=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;false&quot;&lt;/span&gt;
-            &lt;span class=&quot;na&quot;&gt;xmlValidation=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;xmlNamespaceAware=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;false&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;5-自定义错误页面&quot;&gt;5. 自定义错误页面&lt;/h2&gt;
-
-&lt;p&gt;部署在Tomcat中的应用，在未定义404或者500等错误页面时，会抛出异常页面，异常页面会暴露出应用的路径及服务区版本等信息。所以通常需要在web.xml中配置异常页面。&lt;/p&gt;
-
-&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;error-page&amp;gt;&lt;/span&gt;
-	&lt;span class=&quot;nt&quot;&gt;&amp;lt;error-code&amp;gt;&lt;/span&gt;404&lt;span class=&quot;nt&quot;&gt;&amp;lt;/error-code&amp;gt;&lt;/span&gt;
-	&lt;span class=&quot;nt&quot;&gt;&amp;lt;location&amp;gt;&lt;/span&gt;404.html&lt;span class=&quot;nt&quot;&gt;&amp;lt;/location&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/error-page&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;error-page&amp;gt;&lt;/span&gt;
-	&lt;span class=&quot;nt&quot;&gt;&amp;lt;error-code&amp;gt;&lt;/span&gt;500&lt;span class=&quot;nt&quot;&gt;&amp;lt;/error-code&amp;gt;&lt;/span&gt;
-	&lt;span class=&quot;nt&quot;&gt;&amp;lt;location&amp;gt;&lt;/span&gt;/500.html&lt;span class=&quot;nt&quot;&gt;&amp;lt;/location&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/error-page&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;6-关闭ajp端口&quot;&gt;6. 关闭AJP端口&lt;/h2&gt;
-
-&lt;p&gt;AJP是为 Tomcat 与 HTTP 服务器之间通信而定制的协议，能提供较高的通信速度和效率。如果tomcat前端放的是apache的时候，会使用到AJP这个连接器。前端如果是由nginx做的反向代理的话可以不使用此连接器，因此需要注销掉该连接器。&lt;/p&gt;
-
-&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;	&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- Define an AJP 1.3 Connector on port 8009 --&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- &amp;lt;Connector port=&quot;8009&quot; protocol=&quot;AJP/1.3&quot; redirectPort=&quot;8443&quot; /&amp;gt; --&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;7-服务权限控制&quot;&gt;7. 服务权限控制&lt;/h2&gt;
-
-&lt;p&gt;tomcat以非root权限启动，应用部署目录权限和tomcat服务启动用户分离，比如tomcat以tomcat用户启动，而部署应用的目录设置为nobody用户750。&lt;/p&gt;
-
-&lt;h2 id=&quot;8-cookie安全控制&quot;&gt;8. cookie安全控制&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;HttpOnly属性&lt;/strong&gt;：如果在Cookie中设置了”HttpOnly”属性，那么通过程序(JS脚本、Applet等)将无法读取到Cookie信息，这样能有效的防止XSS攻击。&lt;/p&gt;
-
-&lt;p&gt;编辑&lt;strong&gt;$CATALINA_HOME/conf/context.xml&lt;/strong&gt;文件，在&lt;strong&gt;Context&lt;/strong&gt;节点中增加属性&lt;strong&gt;useHttpOnly=”true”&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;Context&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;useHttpOnly=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;true&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-
-    &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- Default set of monitored resources --&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;WatchedResource&amp;gt;&lt;/span&gt;WEB-INF/web.xml&lt;span class=&quot;nt&quot;&gt;&amp;lt;/WatchedResource&amp;gt;&lt;/span&gt;
-
-    &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- Uncomment this to disable session persistence across Tomcat restarts --&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;c&quot;&gt;&amp;lt;!--
-    &amp;lt;Manager pathname=&quot;&quot; /&amp;gt;
-    --&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;secure属性&lt;/strong&gt;：当设置为true时，表示创建的 Cookie 会被以安全的形式向服务器传输，也就是只能在 HTTPS 连接中被浏览器传递到服务器端进行会话验证，如果是 HTTP 连接则不会传递该信息，所以不会被窃取到Cookie 的具体内容。&lt;/p&gt;
-
-&lt;p&gt;配置cookie的secure属性，在web.xml中sesion-config节点配置cooker-config，此配置只允许cookie在加密方式下传输。&lt;/p&gt;
-
-&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;session-config&amp;gt;&lt;/span&gt;
-	&lt;span class=&quot;nt&quot;&gt;&amp;lt;session-timeout&amp;gt;&lt;/span&gt;30&lt;span class=&quot;nt&quot;&gt;&amp;lt;/session-timeout&amp;gt;&lt;/span&gt;
-	&lt;span class=&quot;nt&quot;&gt;&amp;lt;cookie-config&amp;gt;&lt;/span&gt;
-		&lt;span class=&quot;nt&quot;&gt;&amp;lt;secure&amp;gt;&lt;/span&gt;true&lt;span class=&quot;nt&quot;&gt;&amp;lt;/secure&amp;gt;&lt;/span&gt;
-	&lt;span class=&quot;nt&quot;&gt;&amp;lt;/cookie-config&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/session-config&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;&lt;strong&gt;secure&lt;/strong&gt;属性是防止信息在传递的过程中被监听捕获后信息泄漏，&lt;strong&gt;HttpOnly&lt;/strong&gt;属性的目的是防止程序获取cookie后进行攻击。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-</description>  
-               <pubDate>Thu, 06 Apr 2017 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2017/04/tomcat-security/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2017/04/tomcat-security/</guid>  
-               </item>  
-          
-            <item>  
-               <title>Nginx常用配置汇总</title>  
-               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#nginx常用配置汇总&quot; id=&quot;markdown-toc-nginx常用配置汇总&quot;&gt;Nginx常用配置汇总&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#1-反向代理简要配置&quot; id=&quot;markdown-toc-1-反向代理简要配置&quot;&gt;1. 反向代理简要配置&lt;/a&gt;        &lt;ul&gt;
-          &lt;li&gt;&lt;a href=&quot;#11-http方式的代理转发配置&quot; id=&quot;markdown-toc-11-http方式的代理转发配置&quot;&gt;1.1. HTTP方式的代理转发配置&lt;/a&gt;&lt;/li&gt;
-          &lt;li&gt;&lt;a href=&quot;#12-https方式的代理转发配置&quot; id=&quot;markdown-toc-12-https方式的代理转发配置&quot;&gt;1.2 HTTPS方式的代理转发配置&lt;/a&gt;&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#2-正向http代理使用&quot; id=&quot;markdown-toc-2-正向http代理使用&quot;&gt;2. 正向HTTP代理使用&lt;/a&gt;        &lt;ul&gt;
-          &lt;li&gt;&lt;a href=&quot;#21-配置正向代理&quot; id=&quot;markdown-toc-21-配置正向代理&quot;&gt;2.1 配置正向代理&lt;/a&gt;&lt;/li&gt;
-          &lt;li&gt;&lt;a href=&quot;#22-客户端使用正向代理&quot; id=&quot;markdown-toc-22-客户端使用正向代理&quot;&gt;2.2 客户端使用正向代理&lt;/a&gt;&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#3-https证书生成&quot; id=&quot;markdown-toc-3-https证书生成&quot;&gt;3. HTTPS证书生成&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#4-代理缓存配置&quot; id=&quot;markdown-toc-4-代理缓存配置&quot;&gt;4. 代理缓存配置&lt;/a&gt;        &lt;ul&gt;
-          &lt;li&gt;&lt;a href=&quot;#41-创建缓存目录并授与权限&quot; id=&quot;markdown-toc-41-创建缓存目录并授与权限&quot;&gt;4.1 创建缓存目录并授与权限&lt;/a&gt;&lt;/li&gt;
-          &lt;li&gt;&lt;a href=&quot;#42-利用缓存目录配置代理缓存&quot; id=&quot;markdown-toc-42-利用缓存目录配置代理缓存&quot;&gt;4.2 利用缓存目录配置代理缓存&lt;/a&gt;&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#5-跨域请求配置&quot; id=&quot;markdown-toc-5-跨域请求配置&quot;&gt;5. 跨域请求配置&lt;/a&gt;        &lt;ul&gt;
-          &lt;li&gt;&lt;a href=&quot;#51-跨域消息头说明&quot; id=&quot;markdown-toc-51-跨域消息头说明&quot;&gt;5.1 跨域消息头说明&lt;/a&gt;&lt;/li&gt;
-          &lt;li&gt;&lt;a href=&quot;#52-具体配置明细&quot; id=&quot;markdown-toc-52-具体配置明细&quot;&gt;5.2 具体配置明细&lt;/a&gt;&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#6-负载均衡配置&quot; id=&quot;markdown-toc-6-负载均衡配置&quot;&gt;6. 负载均衡配置&lt;/a&gt;        &lt;ul&gt;
-          &lt;li&gt;&lt;a href=&quot;#61-简单的权重示例&quot; id=&quot;markdown-toc-61-简单的权重示例&quot;&gt;6.1 简单的权重示例&lt;/a&gt;&lt;/li&gt;
-          &lt;li&gt;&lt;a href=&quot;#62-负载参数说明&quot; id=&quot;markdown-toc-62-负载参数说明&quot;&gt;6.2 负载参数说明&lt;/a&gt;&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h1 id=&quot;nginx常用配置汇总&quot;&gt;Nginx常用配置汇总&lt;/h1&gt;
-
-&lt;h2 id=&quot;1-反向代理简要配置&quot;&gt;1. 反向代理简要配置&lt;/h2&gt;
-
-&lt;h3 id=&quot;11-http方式的代理转发配置&quot;&gt;1.1. HTTP方式的代理转发配置&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;server {
-    listen       80;
-    server_name  www.example.cn;
-
-    location / {
-        proxy_set_header Host $host:80;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_pass http://192.168.1.199:8080;
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;12-https方式的代理转发配置&quot;&gt;1.2 HTTPS方式的代理转发配置&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;server {
-    listen       443;
-    server_name  www.example.com;
-
-    ssl on;
-    ssl_certificate server.crt;
-    ssl_certificate_key server.key;
-    ssl_session_timeout 5m;
-
-    location / {
-        proxy_set_header Host $host:443;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_pass https://192.168.1.197:8443;
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;2-正向http代理使用&quot;&gt;2. 正向HTTP代理使用&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;背景&lt;/strong&gt;：子网中存在两台服务器AB，服务器A可以连接到互联网，服务器B不能上网，服务器B需要使用服务器A中的nginx正向代理功能使其连接到互联网上。&lt;/p&gt;
-
-&lt;h3 id=&quot;21-配置正向代理&quot;&gt;2.1 配置正向代理&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;server {
-    resolver 8.8.8.8;
-    resolver_timeout 5s;
-
-    listen 0.0.0.0:8080;
-
-    location / {
-        proxy_pass $scheme://$host$request_uri;
-        proxy_set_header Host $http_host;
-
-        proxy_buffers 256 4k;
-        proxy_max_temp_file_size 0;
-
-        proxy_connect_timeout 30;
-
-        proxy_cache_valid 200 302 10m;
-        proxy_cache_valid 301 1h;
-        proxy_cache_valid any 1m;
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;22-客户端使用正向代理&quot;&gt;2.2 客户端使用正向代理&lt;/h3&gt;
-
-&lt;p&gt;&lt;strong&gt;全局HTTP代理&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 添加全局HTTP代理&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;http_proxy&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;http://10.132.10.116:8080&quot;&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# 删除全局HTTP代理&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;unset &lt;/span&gt;http_proxy
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;yum使用代理&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 编辑yum.conf文件&lt;/span&gt;
-vim /etc/yum.conf
-
-&lt;span class=&quot;c&quot;&gt;# 底部添加&lt;/span&gt;
-proxy &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; http://10.132.10.116:8080
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;据网络上文章所说，nginx的正向代理不支持HTTPS的方式&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;3-https证书生成&quot;&gt;3. HTTPS证书生成&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;openssl genrsa -des3 -out server.key 1024
-openssl req -new -key server.key -out server.csr
-cp server.key server.key.org
-openssl rsa -in server.key.org -out server.key
-openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;4-代理缓存配置&quot;&gt;4. 代理缓存配置&lt;/h2&gt;
-
-&lt;h3 id=&quot;41-创建缓存目录并授与权限&quot;&gt;4.1 创建缓存目录并授与权限&lt;/h3&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mkdir -p /usr/local/nginx/temp
-chmod -R 755 /usr/local/nginx/temp
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;缓存目录的创建位置可以随意，但必须具有读写权限&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;42-利用缓存目录配置代理缓存&quot;&gt;4.2 利用缓存目录配置代理缓存&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;http {
-    # levels=1:2 配置缓存空间有两层hash目录
-    # keys_zone=cache_zone:50m 配置缓存的名称及缓存空间大小
-    # inactive 设置缓存有效期，1d表示在1天时间内没有被访问则自动删除
-    # max_size 硬盘缓存的最大大小
-    proxy_cache_path /usr/local/nginx/cache levels=1:2 keys_zone=cache_one:50m inactive=1d max_size=10g;
-    server {
-        listen       80;
-        server_name  www.testcache123.com;
-
-        location / {
-            proxy_cache cache_one; # 指定上面配置的缓存名称
-            proxy_cache_valid 200 302 1h; # 200和302请求缓存1小时
-            proxy_cache_valid 301 1d; # 301请求缓存1天
-            proxy_cache_key $host$uri$is_args$args; # 缓存请求匹配的key
-            expires 30d;
-
-            proxy_set_header Host $host:80;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_pass http://www.wangjunneil.com;
-        }
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;5-跨域请求配置&quot;&gt;5. 跨域请求配置&lt;/h2&gt;
-
-&lt;h3 id=&quot;51-跨域消息头说明&quot;&gt;5.1 跨域消息头说明&lt;/h3&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;名称&lt;/th&gt;
-      &lt;th&gt;含义&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Access-Control-Allow-Origin&lt;/td&gt;
-      &lt;td&gt;授权那些地址或者域名可以访问&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Access-Control-Allow-Credentials&lt;/td&gt;
-      &lt;td&gt;是否响应与该请求可以暴露&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Access-Control-Allow-Methods&lt;/td&gt;
-      &lt;td&gt;指定运行请求的HTTP方法&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h3 id=&quot;52-具体配置明细&quot;&gt;5.2 具体配置明细&lt;/h3&gt;
-
-&lt;p&gt;在nginx中，若设置在http段内则对所有server都启用，设置在server段内则只对该server启用，设置在location段内则对该请求启用。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;server {
-    listen       80;
-    server_name  vinny.cc;
-
-    location / {
-        # 跨域请求头
-        add_header Access-Control-Allow-Origin *;
-        add_header Access-Control-Allow-Headers true;
-        add_header Access-Control-Allow-Methods GET,POST,OPTIONS;
-
-        proxy_set_header Host $host:80;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_pass http://localhost:8080;
-        client_max_body_size    1000m;
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;6-负载均衡配置&quot;&gt;6. 负载均衡配置&lt;/h2&gt;
-
-&lt;h3 id=&quot;61-简单的权重示例&quot;&gt;6.1 简单的权重示例&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;upstream backend {
-    server  192.168.1.197:80 backup;
-    server  192.168.1.196:80 weight=1;
-    server  192.168.1.197:80 weight=3;
-    # ip_hash;
-}
-
-server {
-    location / {
-        proxy_pass http://backend;
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Nginx自带的负载均衡策略有轮询（默认），权重和ip_hash，第三方的有fair和url_hash等配置方式。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;62-负载参数说明&quot;&gt;6.2 负载参数说明&lt;/h3&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;名称&lt;/th&gt;
-      &lt;th&gt;含义&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;down&lt;/td&gt;
-      &lt;td&gt;表示当前server不参与负载&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;weight&lt;/td&gt;
-      &lt;td&gt;默认为1，weight越大，负载的权重就越大，分发到的请求就越多&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;max_fails&lt;/td&gt;
-      &lt;td&gt;允许请求失败的次数，默认为1，当超过最大次数时，返回proxy_next_upstream 模块定义的错误&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;fail_timeout&lt;/td&gt;
-      &lt;td&gt;max_fails多少次失败后，暂停请求的时间&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;backup&lt;/td&gt;
-      &lt;td&gt;其它所有的非backup机器down或者忙的时候，请求backup机器。所以这台机器压力会最轻&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-</description>  
-               <pubDate>Sat, 11 Mar 2017 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2017/03/nginx-general-config/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2017/03/nginx-general-config/</guid>  
-               </item>  
-          
-            <item>  
-               <title>Centos7文本界面与图形界面的切换</title>  
-               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#centos7文本界面与图形界面的切换&quot; id=&quot;markdown-toc-centos7文本界面与图形界面的切换&quot;&gt;Centos7文本界面与图形界面的切换&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#文本模式&quot; id=&quot;markdown-toc-文本模式&quot;&gt;文本模式&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#图形模式&quot; id=&quot;markdown-toc-图形模式&quot;&gt;图形模式&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h1 id=&quot;centos7文本界面与图形界面的切换&quot;&gt;Centos7文本界面与图形界面的切换&lt;/h1&gt;
-
-&lt;h2 id=&quot;文本模式&quot;&gt;文本模式&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;systemctl &lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt;-default multi-user.target
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;图形模式&quot;&gt;图形模式&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;systemctl &lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt;-default graphical.target
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;使用命令&lt;code class=&quot;highlighter-rouge&quot;&gt;reboot&lt;/code&gt;重启即可&lt;/p&gt;
-&lt;/blockquote&gt;
-
-</description>  
-               <pubDate>Fri, 10 Mar 2017 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2017/03/centos7-text-graphics/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2017/03/centos7-text-graphics/</guid>  
-               </item>  
-          
-            <item>  
-               <title>Centos7安装zabbix-agent监控客户端</title>  
-               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#centos7安装zabbix-agent监控客户端&quot; id=&quot;markdown-toc-centos7安装zabbix-agent监控客户端&quot;&gt;Centos7安装zabbix-agent监控客户端&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#1-下载zabbix仓库并安装&quot; id=&quot;markdown-toc-1-下载zabbix仓库并安装&quot;&gt;1. 下载zabbix仓库并安装&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#2-yum安装zabbix-agent客户端&quot; id=&quot;markdown-toc-2-yum安装zabbix-agent客户端&quot;&gt;2. yum安装zabbix-agent客户端&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#3-编辑zabbix-agent配置文件&quot; id=&quot;markdown-toc-3-编辑zabbix-agent配置文件&quot;&gt;3. 编辑zabbix-agent配置文件&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#4-检查服务端口的有效性&quot; id=&quot;markdown-toc-4-检查服务端口的有效性&quot;&gt;4. 检查服务端口的有效性&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#5-启动zabbix-agent客户端服务&quot; id=&quot;markdown-toc-5-启动zabbix-agent客户端服务&quot;&gt;5. 启动zabbix-agent客户端服务&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#6-检查服务是否正常启动&quot; id=&quot;markdown-toc-6-检查服务是否正常启动&quot;&gt;6. 检查服务是否正常启动&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h1 id=&quot;centos7安装zabbix-agent监控客户端&quot;&gt;Centos7安装zabbix-agent监控客户端&lt;/h1&gt;
-
-&lt;h2 id=&quot;1-下载zabbix仓库并安装&quot;&gt;1. 下载zabbix仓库并安装&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rpm -ivh http://repo.zabbix.com/zabbix/2.4/rhel/6/x86_64/zabbix-release-2.4-1.el6.noarch.rpm
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;2-yum安装zabbix-agent客户端&quot;&gt;2. yum安装zabbix-agent客户端&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;yum install -y zabbix-agent
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;3-编辑zabbix-agent配置文件&quot;&gt;3. 编辑zabbix-agent配置文件&lt;/h2&gt;
-
-&lt;p&gt;使用&lt;code class=&quot;highlighter-rouge&quot;&gt;vi /etc/zabbix/zabbixd.conf&lt;/code&gt;编辑打开文件，修改的内容如下：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Hostname		= 客户端主机名称
-SourceIP		= 客户端主机IP
-Server			= Zabbix Server的IP地址
-ServerActive		= Zabbix Server的IP地址
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;4-检查服务端口的有效性&quot;&gt;4. 检查服务端口的有效性&lt;/h2&gt;
-
-&lt;p&gt;编辑&lt;code class=&quot;highlighter-rouge&quot;&gt;vi /etc/services&lt;/code&gt;文件，检查是否存在并添加zabbix客户端端口，如下：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;zabbix-agent    10050/tcp  Zabbix Agent
-zabbix-agent    10050/udp  Zabbix Agent
-zabbix-trapper  10051/tcp  Zabbix Trapper
-zabbix-trapper  10051/udp  Zabbix Trapper
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;若服务器有配置防火墙规则，则添加zabbix-agent端口的出入站规则：&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;iptables -A INPUT -s 139.196.14.112 -p tcp --dport 10050 -j ACCEPT
-iptables -A OUTPUT -p tcp --sport 10050 -j ACCEPT
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;5-启动zabbix-agent客户端服务&quot;&gt;5. 启动zabbix-agent客户端服务&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;zabbix_agentd start
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;启动后应该使用&lt;code class=&quot;highlighter-rouge&quot;&gt;netstat -an | grep 10050&lt;/code&gt;查看&lt;strong&gt;10050&lt;/strong&gt;端口是否正常，若不正常，应该在查看 &lt;strong&gt;/var/log/zabbix/zabbix_agentd.log&lt;/strong&gt; 日志文件查看异常原因。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;出现 &lt;strong&gt;zabbix_agentd [6954]: cannot create PID file [/var/run/zabbix/zabbix_agentd.pid]: [2] No such file or directory&lt;/strong&gt; 错误。&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mkdir  -p /var/run/zabbix/
-chown zabbix.zabbix /var/run/zabbix/
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;6-检查服务是否正常启动&quot;&gt;6. 检查服务是否正常启动&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 检查是否存在zabbix-agent进程&lt;/span&gt;
-ps -ef | grep zabbix
-
-&lt;span class=&quot;c&quot;&gt;# 检查10050端口是否处于监听状态&lt;/span&gt;
-netstat -an | grep 10050
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-</description>  
-               <pubDate>Wed, 15 Feb 2017 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2017/02/zabbix-agent-install/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2017/02/zabbix-agent-install/</guid>  
-               </item>  
-          
-            <item>  
-               <title>Centos7安装zabbix-server监控服务端</title>  
-               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#centos7安装zabbix-server监控服务端&quot; id=&quot;markdown-toc-centos7安装zabbix-server监控服务端&quot;&gt;Centos7安装zabbix-server监控服务端&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#1-安装zabbix仓库源&quot; id=&quot;markdown-toc-1-安装zabbix仓库源&quot;&gt;1. 安装zabbix仓库源&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#2-使用yum安装zabbix组件&quot; id=&quot;markdown-toc-2-使用yum安装zabbix组件&quot;&gt;2. 使用yum安装zabbix组件&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#3-安装mysql数据库服务器&quot; id=&quot;markdown-toc-3-安装mysql数据库服务器&quot;&gt;3. 安装mysql数据库服务器&lt;/a&gt;        &lt;ul&gt;
-          &lt;li&gt;&lt;a href=&quot;#31-检查本机是否已经安装mysql&quot; id=&quot;markdown-toc-31-检查本机是否已经安装mysql&quot;&gt;3.1 检查本机是否已经安装mysql&lt;/a&gt;&lt;/li&gt;
-          &lt;li&gt;&lt;a href=&quot;#32-安装mysql官方源&quot; id=&quot;markdown-toc-32-安装mysql官方源&quot;&gt;3.2 安装mysql官方源&lt;/a&gt;&lt;/li&gt;
-          &lt;li&gt;&lt;a href=&quot;#33-使用yum安装mysql&quot; id=&quot;markdown-toc-33-使用yum安装mysql&quot;&gt;3.3 使用yum安装mysql&lt;/a&gt;&lt;/li&gt;
-          &lt;li&gt;&lt;a href=&quot;#34-启动mysql服务器&quot; id=&quot;markdown-toc-34-启动mysql服务器&quot;&gt;3.4 启动mysql服务器&lt;/a&gt;&lt;/li&gt;
-          &lt;li&gt;&lt;a href=&quot;#35-修改root默认密码&quot; id=&quot;markdown-toc-35-修改root默认密码&quot;&gt;3.5 修改root默认密码&lt;/a&gt;&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#4-创建zabbix数据库及用户&quot; id=&quot;markdown-toc-4-创建zabbix数据库及用户&quot;&gt;4. 创建zabbix数据库及用户&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#5-初始化zabbix表及相关数据&quot; id=&quot;markdown-toc-5-初始化zabbix表及相关数据&quot;&gt;5. 初始化zabbix表及相关数据&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#6-配置zabbix服务的配置文件&quot; id=&quot;markdown-toc-6-配置zabbix服务的配置文件&quot;&gt;6. 配置zabbix服务的配置文件&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#7-编辑zabbix的php配置文件&quot; id=&quot;markdown-toc-7-编辑zabbix的php配置文件&quot;&gt;7. 编辑zabbix的php配置文件&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#8-启动zabbix服务&quot; id=&quot;markdown-toc-8-启动zabbix服务&quot;&gt;8. 启动zabbix服务&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#9-启动http服务&quot; id=&quot;markdown-toc-9-启动http服务&quot;&gt;9. 启动http服务&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#10-开放相应的防火墙规则&quot; id=&quot;markdown-toc-10-开放相应的防火墙规则&quot;&gt;10. 开放相应的防火墙规则&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#11-浏览器打开web控制台&quot; id=&quot;markdown-toc-11-浏览器打开web控制台&quot;&gt;11. 浏览器打开web控制台&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#附录a邮件脚步报警&quot; id=&quot;markdown-toc-附录a邮件脚步报警&quot;&gt;附录A：邮件脚步报警&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h1 id=&quot;centos7安装zabbix-server监控服务端&quot;&gt;Centos7安装zabbix-server监控服务端&lt;/h1&gt;
-
-&lt;h2 id=&quot;1-安装zabbix仓库源&quot;&gt;1. 安装zabbix仓库源&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rpm -ivh http://repo.zabbix.com/zabbix/3.2/rhel/7/x86_64/zabbix-release-3.2-1.el7.noarch.rpm
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;2-使用yum安装zabbix组件&quot;&gt;2. 使用yum安装zabbix组件&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;yum install -y zabbix-server-mysql zabbix-web-mysql
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;3-安装mysql数据库服务器&quot;&gt;3. 安装mysql数据库服务器&lt;/h2&gt;
-
-&lt;h3 id=&quot;31-检查本机是否已经安装mysql&quot;&gt;3.1 检查本机是否已经安装mysql&lt;/h3&gt;
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rpm -qa | grep mysql
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;32-安装mysql官方源&quot;&gt;3.2 安装mysql官方源&lt;/h3&gt;
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rpm -ivh http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;33-使用yum安装mysql&quot;&gt;3.3 使用yum安装mysql&lt;/h3&gt;
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;yum install -y mysql mysql-server
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;34-启动mysql服务器&quot;&gt;3.4 启动mysql服务器&lt;/h3&gt;
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;systemctl start mysqld.service
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;35-修改root默认密码&quot;&gt;3.5 修改root默认密码&lt;/h3&gt;
-&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;root&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;update&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;user&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;password&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;password&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'root'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'root'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;4-创建zabbix数据库及用户&quot;&gt;4. 创建zabbix数据库及用户&lt;/h2&gt;
-&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;create&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;database&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;zabbix&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;character&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;utf8&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;collate&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;utf8_bin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;grant&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;all&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;privileges&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;on&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;zabbix&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;zabbix&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;localhost&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;identified&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;by&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'zabbix'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;flush&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;privileges&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;quit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;5-初始化zabbix表及相关数据&quot;&gt;5. 初始化zabbix表及相关数据&lt;/h2&gt;
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;zcat /usr/share/doc/zabbix-server-mysql-3.2.&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;/create.sql.gz | mysql -uzabbix -p zabbix
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;6-配置zabbix服务的配置文件&quot;&gt;6. 配置zabbix服务的配置文件&lt;/h2&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# vi /etc/zabbix/zabbix_server.conf
-DBHost=localhost
-DBName=zabbix
-DBUser=zabbix
-DBPassword=zabbix
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;7-编辑zabbix的php配置文件&quot;&gt;7. 编辑zabbix的php配置文件&lt;/h2&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# vi /etc/httpd/conf.d/zabbix.conf
-php_value max_execution_time 300
-php_value memory_limit 128M
-php_value post_max_size 16M
-php_value upload_max_filesize 2M
-php_value max_input_time 300
-php_value always_populate_raw_post_data -1
-# 时区配置
-php_value date.timezone Asia/Shanghai
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;8-启动zabbix服务&quot;&gt;8. 启动zabbix服务&lt;/h2&gt;
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;systemctl start zabbix-server.service
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;若出现 &lt;strong&gt;zabbix-server.service never wrote its PID file. Failing.&lt;/strong&gt; 的错误，在终端执行&lt;code class=&quot;highlighter-rouge&quot;&gt;setenforce 0&lt;/code&gt;命令即可。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;9-启动http服务&quot;&gt;9. 启动http服务&lt;/h2&gt;
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;systemctl start httpd
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;10-开放相应的防火墙规则&quot;&gt;10. 开放相应的防火墙规则&lt;/h2&gt;
-
-&lt;p&gt;防火墙规则不是必须的，若服务器配置了防火墙规则则应加上如下的规则。&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 运行localhost访问任意端口服务&lt;/span&gt;
-iptables -A INPUT -i lo -j ACCEPT
-iptables -A OUTPUT -o lo -j ACCEPT
-&lt;span class=&quot;c&quot;&gt;# 调用agent客户端端口&lt;/span&gt;
-iptables -A OUTPUT -p tcp --dport 10050 -j ACCEPT
-iptables -A INPUT -p tcp --sport 10050 -j ACCEPT
-&lt;span class=&quot;c&quot;&gt;# 邮件报警端口&lt;/span&gt;
-iptables -A OUTPUT -p tcp --dport 25 -j ACCEPT
-iptables -A INPUT -p tcp --sport 25 -j ACCEPT
-&lt;span class=&quot;c&quot;&gt;# web监控时http和https端口&lt;/span&gt;
-iptables -A OUTPUT -p tcp --dport 80 -j ACCEPT
-iptables -A INPUT -p tcp --sport 80 -j ACCEPT
-iptables -A OUTPUT -p tcp --dport 443 -j ACCEPT
-iptables -A INPUT -p tcp --sport 443 -j ACCEPT
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;11-浏览器打开web控制台&quot;&gt;11. 浏览器打开web控制台&lt;/h2&gt;
-
-&lt;p&gt;输入连接 &lt;strong&gt;http://xxx.xxx.xxx.xxx/zabbix&lt;/strong&gt; 进行界面配置即可完成。默认的用户名密码是 &lt;strong&gt;Admin&lt;/strong&gt;/&lt;strong&gt;zabbix&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;h2 id=&quot;附录a邮件脚步报警&quot;&gt;附录A：邮件脚步报警&lt;/h2&gt;
-
-&lt;p&gt;对于自定义的媒介脚本，应该放在”&lt;strong&gt;/usr/local/zabbix/share/zabbix/alertscripts&lt;/strong&gt;“目录中，这样在配置自定义媒介时，zabbix-server才会识别到。&lt;/p&gt;
-
-&lt;p&gt;下面是python语言编写的自动发送邮件的脚本&lt;strong&gt;mail.py&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#coding:utf-8&lt;/span&gt;
-
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;smtplib&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;email.mime.text&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MIMEText&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sys&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;mail_host&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'smtp.163.com'&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;mail_user&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'vinny@163.com'&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;mail_pass&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'vinny123'&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;mail_postfix&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'163.com'&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;send_mail&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;subject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;me&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Zabbix监控告警平台&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mail_user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;@&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mail_postfix&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;gt;&quot;&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MIMEText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'plain'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'utf-8'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Subject'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;subject&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'From'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;me&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'to'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;to_list&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;smtplib&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SMTP&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;connect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mail_host&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;login&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mail_user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mail_pass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sendmail&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;me&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;as_string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;except&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Exception&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;False&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__name__&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;__main__&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;send_mail&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-</description>  
-               <pubDate>Tue, 14 Feb 2017 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2017/02/zabbix-server-install/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2017/02/zabbix-server-install/</guid>  
                </item>  
           
     </channel>  

@@ -3,7 +3,6 @@ layout: default
 ---
 
 <section>
-
 	{% for post in paginator.posts %}
 		<ul>
 			<li>
@@ -11,7 +10,7 @@ layout: default
 					<span>{{ post.date | date: "%F" }}</span>
 				</div>
 				<div class="title">
-				    <span>[+]</span>
+				    <span>{{ flag }}[+]</span>
 					<a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
 				</div>
 			</li>

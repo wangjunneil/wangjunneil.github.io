@@ -24,6 +24,7 @@ $(document).ready(function(){
     });
 });
 
+hacker_mode = true;    // 黑客模式
 command_mode = false;   // 标识命令模式
 
 function suggest(posts) {

@@ -7,8 +7,8 @@ $(document).ready(function(){
 
                 var left = $("article").position().left;
                 var width = $("article").width();
-                $(".w-catalog").css('left', left + width + 10 + 'px');
-                $(".w-search").css('left', left + width + 10 + 'px');
+                $(".w-catalog").css('right', '10px');
+                $(".w-search").css('right', '10px');
             }else{
                 $(".w-catalog").fadeOut(500);
                 $(".w-search").fadeOut(500);

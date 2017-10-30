@@ -29,7 +29,7 @@
 
 &lt;h2 id=&quot;下载使用&quot;&gt;下载使用&lt;/h2&gt;
 
-&lt;p&gt;下载地址：https://github.com/gitbucket/gitbucket/releases (需要翻墙)&lt;/p&gt;
+&lt;p&gt;下载地址：&lt;a href=&quot;https://github.com/gitbucket/gitbucket/releases&quot;&gt;https://github.com/gitbucket/gitbucket/releases&lt;/a&gt; (需要翻墙)&lt;/p&gt;
 
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 启动&lt;/span&gt;
 java -jar gitbucket.war

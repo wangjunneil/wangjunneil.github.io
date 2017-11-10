@@ -1,0 +1,134 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="baidu-site-verification" content="gDf3P6sfyW" /><meta name="360-site-verification" content="0c91ee58977e5924d92896a89289b668" /><meta name="sogou_site_verification" content="jHNtHqKt34"/><meta name="google-site-verification" content="An2eGWQakKFcIZ1YuwZSilNuSYlfHs1zH0Hr-OMW6oQ" /><title>Python中的web.py一个简单且功能强大的Python web框架</title><meta name="description" content="Python中的web.py功能强大的Python web框架"><meta name="keywords" content="web.py"><link rel="icon" href="/assets/favicon.ico"><link rel="apple-touch-icon" href="/assets/touch-icon.png"><link rel="stylesheet" href="/assets/core.css"><link rel="canonical" href="/2016/03/python-web-py/"><link rel="alternate" type="application/atom+xml" title="Vinny Wong's Blog" href="/feed.xml" /></head><body> <!-- search --><div class="searchform"> <label class="mk">$> </label> <input type="text" id="keyword"/> <a href="javascript:void(0);" class="clear"></a><ul class="suggest"></ul></div><script src="//lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script> <script src="/assets/main.js"></script><nav class="header-nav"> <a class="page-link" href="/">HOME</a> / <a class="page-link" href="/categories/">CATEGORY</a> / <a class="page-link" href="/feed.xml">FEED</a> / <a class="page-link" href="/about/">ABOUT</a></nav><main> <noscript><style> article .footnotes { display: block; }</style></noscript><article><div class="center"><h1>Python中的web.py一个简单且功能强大的Python web框架</h1><time>2016-03-18</time></div><div class="divider"></div><h1 id="python中的webpy功能强大的python-web框架">Python中的web.py功能强大的Python web框架</h1><h2 id="介绍">介绍</h2><p><strong><a href="http://webpy.org/">web.py</a></strong>是python的一个前段web框架，它比java简单小巧，功能毫不逊色于java上的web开发，不需要外置的容器，简单小巧实用强大是web.py的优点所在。</p><h2 id="安装">安装</h2><p>安装web.py有三种方式</p><ul><li>下载<a href="http://webpy.org/static/web.py-0.37.tar.gz">http://webpy.org/static/web.py-0.37.tar.gz</a>，拷贝到应用目录即可。若要所有应用都可以使用，则需要执行<code class="highlighter-rouge">python setup.py install</code></li><li>使用<strong>easy_install</strong>的方式安装，<code class="highlighter-rouge">easy_install web.py</code></li><li>使用pip方式安装，<code class="highlighter-rouge">pip install web.py</code></li></ul><h2 id="简单的restful风格应用">简单的RESTFUl风格应用</h2><div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">web</span>
+
+<span class="n">urls</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s">'/(.*)'</span><span class="p">,</span> <span class="s">'hello'</span>
+<span class="p">)</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">application</span><span class="p">(</span><span class="n">urls</span><span class="p">,</span> <span class="nb">globals</span><span class="p">())</span>
+
+<span class="k">class</span> <span class="nc">hello</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">GET</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s">'World'</span>
+        <span class="k">return</span> <span class="s">'Hello, '</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s">'!'</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div><h2 id="测试上面简单的应用">测试上面简单的应用</h2><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># 模拟请求</span>
+curl http://localhost:8080/wangjun
+</code></pre></div><h2 id="静态html模板">静态html模板</h2><p>上面的小例子请求返回的只是一串字符串，在python中写html代码不是一个很好的选择，正常的web应用少不了html文件。使用python的模板功能可以让你在html文件中像写python脚本一样，具体请看下节动态html模板，这节只讨论静态html模板。 首先在应用目录创建一个template的文件夹用于存放html文件，这里我们编写一个名叫abc.html的文件，内容如下：</p><div class="language-html highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;h3&gt;</span>Hello<span class="nt">&lt;/h3&gt;</span>, world!
+</code></pre></div><p>可以看见这个html文件很简单，只是输出一串文字，但”Hello“的字符串使用了html的标记H3，下面的我们改造下第2节的python应用代码，如下：</p><div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c">#!/usr/bin/python</span>
+
+<span class="kn">import</span> <span class="nn">web</span>
+
+<span class="c"># 告诉python去哪里找html模板</span>
+<span class="n">render</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s">'templates/'</span><span class="p">)</span>
+
+<span class="n">urls</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s">'/(.*)'</span><span class="p">,</span><span class="s">'hello'</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">application</span><span class="p">(</span><span class="n">urls</span><span class="p">,</span> <span class="nb">globals</span><span class="p">())</span>
+
+<span class="k">class</span> <span class="nc">hello</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">GET</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s">'World'</span>
+        <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s">"abc"</span><span class="p">:</span>
+            <span class="c"># 使用"render.模板名称"定位模板，例如上面创建的abc.html</span>
+            <span class="k">return</span> <span class="n">render</span><span class="o">.</span><span class="n">abc</span><span class="p">()</span>
+        <span class="k">return</span> <span class="s">"Hello, "</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s">"!"</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div><h2 id="动态html模板">动态html模板</h2><p>动态html模板的含义是我们可以在html模板中使用变量、循环、判断等逻辑表达式操作模板的具体显示内容，类似于java中的freemarker或者velocity。为了更好的说明，我们将abc.html文件改造如下：</p><div class="language-html highlighter-rouge"><pre class="highlight"><code>$def with (name)
+
+$if name:
+    <span class="nt">&lt;b&gt;</span>Hello<span class="nt">&lt;/b&gt;</span>, $name
+$else:
+    <span class="nt">&lt;b&gt;</span>Hello<span class="nt">&lt;/b&gt;</span>, World!
+</code></pre></div><div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c">#!/usr/bin/python</span>
+
+<span class="kn">import</span> <span class="nn">web</span>
+
+<span class="n">render</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s">'templates/'</span><span class="p">)</span>
+
+<span class="n">urls</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s">'/(.*)'</span><span class="p">,</span><span class="s">'hello'</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">application</span><span class="p">(</span><span class="n">urls</span><span class="p">,</span> <span class="nb">globals</span><span class="p">())</span>
+
+<span class="k">class</span> <span class="nc">hello</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">GET</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s">'World'</span>
+        <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s">"abc"</span><span class="p">:</span>
+            <span class="c"># 这里定义一个变量name，用于模板中的使用</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s">'WangJun'</span>
+            <span class="c"># 将name变量传入abc模板中，注意变量的名称需要和模板的def名称匹配</span>
+            <span class="k">return</span> <span class="n">render</span><span class="o">.</span><span class="n">abc</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s">"Hello, "</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s">"!"</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div><p>更多模板的高级语法请<a href="http://webpy.org/docs/0.3/templetor">点击</a>参看。</p><h2 id="获取用户输入">获取用户输入</h2><div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c">#!/usr/bin/python</span>
+<span class="c">#coding:utf-8</span>
+ 
+<span class="kn">import</span> <span class="nn">web</span>
+ 
+<span class="n">render</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s">'templates/'</span><span class="p">)</span>
+ 
+<span class="n">urls</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s">'/(.*)'</span><span class="p">,</span><span class="s">'hello'</span><span class="p">,</span>
+<span class="p">)</span>
+ 
+<span class="n">app</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">application</span><span class="p">(</span><span class="n">urls</span><span class="p">,</span> <span class="nb">globals</span><span class="p">())</span>
+ 
+<span class="k">class</span> <span class="nc">hello</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">GET</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s">'World'</span>
+        <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s">"abc"</span><span class="p">:</span>
+            <span class="c"># 请求地址 http://localhost:8080/abc?email=kowww@gmail.com</span>
+            <span class="c"># 获取用户输入</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="nb">input</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">render</span><span class="o">.</span><span class="n">abc</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">email</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s">"Hello, "</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s">"!"</span>
+ 
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div><h2 id="数据库操作">数据库操作</h2><div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c">#!/usr/bin/python</span>
+<span class="c">#coding:utf-8</span>
+ 
+<span class="kn">import</span> <span class="nn">web</span>
+ 
+<span class="n">render</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s">'templates/'</span><span class="p">)</span>
+<span class="c"># 获取数据库对象</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">database</span><span class="p">(</span><span class="n">dbn</span><span class="o">=</span><span class="s">"mysql"</span><span class="p">,</span><span class="n">user</span><span class="o">=</span><span class="s">"root"</span><span class="p">,</span><span class="n">pw</span><span class="o">=</span><span class="s">"root"</span><span class="p">,</span><span class="n">db</span><span class="o">=</span><span class="s">"wangjunneil"</span><span class="p">,</span><span class="n">host</span><span class="o">=</span><span class="s">"192.168.1.180"</span><span class="p">,</span><span class="n">port</span><span class="o">=</span><span class="mi">3306</span><span class="p">)</span>
+ 
+<span class="n">urls</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s">'/(.*)'</span><span class="p">,</span><span class="s">'hello'</span><span class="p">,</span>
+<span class="p">)</span>
+ 
+<span class="n">app</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">application</span><span class="p">(</span><span class="n">urls</span><span class="p">,</span> <span class="nb">globals</span><span class="p">())</span>
+ 
+<span class="k">class</span> <span class="nc">hello</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">GET</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s">'World'</span>
+        <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s">"abc"</span><span class="p">:</span>
+            <span class="c"># 查询wordpress的所有文章并传入模板中</span>
+            <span class="n">posts</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s">'wp_posts'</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">render</span><span class="o">.</span><span class="n">abc</span><span class="p">(</span><span class="n">posts</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s">"Hello, "</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s">"!"</span>
+ 
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div><div class="language-html highlighter-rouge"><pre class="highlight"><code>$def with (posts)
+ 
+<span class="nt">&lt;ul&gt;</span>
+    $for post in posts:
+        <span class="nt">&lt;li</span> <span class="na">id=</span><span class="s">"$post.ID"</span><span class="nt">&gt;</span>$post.post_title<span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span>
+</code></pre></div><p>更多的高级使用方法请自行参考<a href="http://webpy.org/cookbook/index.zh-cn">在线中文版cookbook</a>。</p><div class="divider"></div><blockquote id='by-nc-nd'><div> 版权所有，本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">知识共享署名-非商业性使用 3.0 未本地化版本许可协议</a>进行许可。转载请注明出处：<a href="http://localhost:4000//2016/03/python-web-py/" akt="">http://localhost:4000//2016/03/python-web-py/</a></div></blockquote><div class="divider"></div><a class="w-search active" href="#" title="forward to search">⊙</a> <a class="w-catalog active" href="javascript:void(0);" title="open to catalog">≣</a></article><div class="page-navigation"> <a class="next" href="/2016/03/python-mysql-db/" title="NEXT: Python中对mysql数据库的增删改查的基本数据库操作">&lt;&lt;</a> <span> &middot; </span> <a class="home" href="/" title="Back to Homepage">Home</a> <span> &middot; </span> <a class="prev" href="/2016/03/python-chinese-encoding/" title="PREV: Python里中文注释中文编码的问题">&gt;&gt;</a></div></main><div class="footer"> <!-- <span class="block">Made with &hearts; using <a href="http://jekyllrb.com/">Jekyll</a> &amp; <a href="https://github.com/heiswayi/the-plain" title="The Plain theme by Heiswayi Nrird">The Plain</a> &middot; &lt;/&gt; on <a href="https://github.com/wangjunneil" title="Hosted on GitHub">GitHub</a></span> --> <span class="block"><a href="https://vinny.cc">Vinny's Blog</a> © 2017 - All Rights Reserved</span></div><!-- include baidu_tongji.html include baidu_push.html include 360_push.html include google_analytics.html --></body></html>

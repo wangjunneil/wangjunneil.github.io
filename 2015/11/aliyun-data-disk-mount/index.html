@@ -1,0 +1,92 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="baidu-site-verification" content="gDf3P6sfyW" /><meta name="360-site-verification" content="0c91ee58977e5924d92896a89289b668" /><meta name="sogou_site_verification" content="jHNtHqKt34"/><meta name="google-site-verification" content="An2eGWQakKFcIZ1YuwZSilNuSYlfHs1zH0Hr-OMW6oQ" /><title>阿里云Linux服务器数据盘挂载</title><meta name="description" content="阿里云Linux服务器数据盘挂载"><meta name="keywords" content="阿里云,mount"><link rel="icon" href="/assets/favicon.ico"><link rel="apple-touch-icon" href="/assets/touch-icon.png"><link rel="stylesheet" href="/assets/core.css"><link rel="canonical" href="/2015/11/aliyun-data-disk-mount/"><link rel="alternate" type="application/atom+xml" title="Vinny Wong's Blog" href="/feed.xml" /></head><body> <!-- search --><div class="searchform"> <label class="mk">$> </label> <input type="text" id="keyword"/> <a href="javascript:void(0);" class="clear"></a><ul class="suggest"></ul></div><script src="//lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script> <script src="/assets/main.js"></script><nav class="header-nav"> <a class="page-link" href="/">HOME</a> / <a class="page-link" href="/categories/">CATEGORY</a> / <a class="page-link" href="/feed.xml">FEED</a> / <a class="page-link" href="/about/">ABOUT</a></nav><main> <noscript><style> article .footnotes { display: block; }</style></noscript><article><div class="center"><h1>阿里云Linux服务器数据盘挂载</h1><time>2015-11-29</time></div><div class="divider"></div><h1 id="阿里云linux服务器数据盘挂载">阿里云Linux服务器数据盘挂载</h1><h2 id="背景">背景</h2><p>购买的阿里云centos服务器，配置是linux系统送20G系统盘，另外配置了200G数据盘。 本以为200G数据盘是已经挂载好，安装程序当超过20G会自动使用200G的数据盘，但往往不是，这点阿里云一点不人性化。 悲剧的是系统运行一段时间后，当数据库数据增多时才发现需要挂在数据盘，此时不得不重新安装数据库然后做数据迁移。</p><h2 id="步骤">步骤</h2><h3 id="1-检测磁盘状态">1. 检测磁盘状态</h3><p>查看当前磁盘使用情况以确定云盘是否被挂载，这里看到整个系统只有20G的空间</p><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="o">[</span>root@iZ256uevkn8Z ~]# df -hP
+Filesystem            Size  Used Avail Use% Mounted on
+/dev/hda1              20G  1.5G   17G   8% /
+tmpfs                 4.0G     0  4.0G   0% /dev/shm
+</code></pre></div><h3 id="2-查找云盘位置">2. 查找云盘位置</h3><p>查找云盘，这里找到的云盘是”<strong>/dev/xvdb</strong>“，容量是”<strong>107.3GB</strong>“，最后一行显示其没有在分区中</p><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="o">[</span>root@xxxxxxxxxxx ~]# fdisk -l
+
+Disk /dev/hda: 21.4 GB, 21474836480 bytes
+224 heads, 56 sectors/track, 3343 cylinders
+Units <span class="o">=</span> cylinders of 12544 <span class="k">*</span> 512 <span class="o">=</span> 6422528 bytes
+
+   Device Boot      Start         End      Blocks   Id  System
+/dev/hda1   <span class="k">*</span>           1        3343    20963801   83  Linux
+Partition 1 does not end on cylinder boundary.
+
+Disk /dev/xvdb: 107.3 GB, 107374182400 bytes
+224 heads, 56 sectors/track, 16718 cylinders
+Units <span class="o">=</span> cylinders of 12544 <span class="k">*</span> 512 <span class="o">=</span> 6422528 bytes
+
+Disk /dev/xvdb doesn<span class="s1">'t contain a valid partition table
+</span></code></pre></div><h3 id="3-云盘分区操作">3. 云盘分区操作</h3><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="o">[</span>root@iZ256uevkn8Z ~]# fdisk /dev/xvdb
+Device contains neither a valid DOS partition table, nor Sun, SGI or OSF disklabel
+Building a new DOS disklabel. Changes will remain <span class="k">in </span>memory only,
+<span class="k">until </span>you decide to write them. After that, of course, the previous
+content won<span class="s1">'t be recoverable.
+
+The number of cylinders for this disk is set to 16718.
+There is nothing wrong with that, but this is larger than 1024,
+and could in certain setups cause problems with:
+1) software that runs at boot time (e.g., old versions of LILO)
+2) booting and partitioning software from other OSs
+   (e.g., DOS FDISK, OS/2 FDISK)
+Warning: invalid flag 0x0000 of partition table 4 will be corrected by w(rite)
+
+Command (m for help): n
+Command action
+   e   extended
+   p   primary partition (1-4)
+p
+Partition number (1-4): 1
+First cylinder (1-16718, default 1):
+Using default value 1
+Last cylinder or +size or +sizeM or +sizeK (1-16718, default 16718):
+Using default value 16718
+</span></code></pre></div><h3 id="4-检测云盘状态">4. 检测云盘状态</h3><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="o">[</span>root@iZ256uevkn8Z ~]# fdisk -l
+
+Disk /dev/hda: 21.4 GB, 21474836480 bytes
+224 heads, 56 sectors/track, 3343 cylinders
+Units <span class="o">=</span> cylinders of 12544 <span class="k">*</span> 512 <span class="o">=</span> 6422528 bytes
+
+   Device Boot      Start         End      Blocks   Id  System
+/dev/hda1   <span class="k">*</span>           1        3343    20963801   83  Linux
+Partition 1 does not end on cylinder boundary.
+
+Disk /dev/xvdb: 107.3 GB, 107374182400 bytes
+224 heads, 56 sectors/track, 16718 cylinders
+Units <span class="o">=</span> cylinders of 12544 <span class="k">*</span> 512 <span class="o">=</span> 6422528 bytes
+
+    Device Boot      Start         End      Blocks   Id  System
+/dev/xvdb1               1       16718   104855268   83  Linux
+</code></pre></div><h3 id="5-新分区进行格式化">5. 新分区进行格式化</h3><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="o">[</span>root@iZ256uevkn8Z ~]# mkfs.ext3 /dev/xvdb1
+mke2fs 1.39 <span class="o">(</span>29-May-2006<span class="o">)</span>
+Filesystem <span class="nv">label</span><span class="o">=</span>
+OS <span class="nb">type</span>: Linux
+Block <span class="nv">size</span><span class="o">=</span>4096 <span class="o">(</span><span class="nv">log</span><span class="o">=</span>2<span class="o">)</span>
+Fragment <span class="nv">size</span><span class="o">=</span>4096 <span class="o">(</span><span class="nv">log</span><span class="o">=</span>2<span class="o">)</span>
+13107200 inodes, 26213817 blocks
+1310690 blocks <span class="o">(</span>5.00%<span class="o">)</span> reserved <span class="k">for </span>the super user
+First data <span class="nv">block</span><span class="o">=</span>0
+Maximum filesystem <span class="nv">blocks</span><span class="o">=</span>4294967296
+800 block groups
+32768 blocks per group, 32768 fragments per group
+16384 inodes per group
+Superblock backups stored on blocks:
+    32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632, 2654208,
+    4096000, 7962624, 11239424, 20480000, 23887872
+
+Writing inode tables: <span class="k">done
+</span>Creating journal <span class="o">(</span>32768 blocks<span class="o">)</span>: <span class="k">done
+</span>Writing superblocks and filesystem accounting information:
+<span class="k">done
+
+</span>This filesystem will be automatically checked every 28 mounts or
+180 days, whichever comes first.  Use tune2fs -c or -i to override.
+</code></pre></div><h3 id="6-挂载数据盘并检查状态">6. 挂载数据盘并检查状态</h3><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="o">[</span>root@iZ256uevkn8Z /]# <span class="nb">cd</span> /
+<span class="o">[</span>root@iZ256uevkn8Z /]# mkdir bosyun
+<span class="o">[</span>root@iZ256uevkn8Z /]# mount /dev/xvdb1 /bosyun/
+<span class="o">[</span>root@iZ256uevkn8Z /]# df -hP
+Filesystem            Size  Used Avail Use% Mounted on
+/dev/hda1              20G  1.5G   17G   8% /
+tmpfs                 4.0G     0  4.0G   0% /dev/shm
+/dev/xvdb1             99G  188M   94G   1% /bosyun
+</code></pre></div><p>此时操作基本已经完成，一些程序或者数据库的安装位置应该指定你挂载的目录，这里的例子是”<strong>/bosyun</strong>“，非必要情况不要在系统盘进行操作。</p><div class="divider"></div><blockquote id='by-nc-nd'><div> 版权所有，本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">知识共享署名-非商业性使用 3.0 未本地化版本许可协议</a>进行许可。转载请注明出处：<a href="http://localhost:4000//2015/11/aliyun-data-disk-mount/" akt="">http://localhost:4000//2015/11/aliyun-data-disk-mount/</a></div></blockquote><div class="divider"></div><a class="w-search active" href="#" title="forward to search">⊙</a> <a class="w-catalog active" href="javascript:void(0);" title="open to catalog">≣</a></article><div class="page-navigation"> <a class="next" href="/2015/12/crunch-password-dic/" title="NEXT: Crunch密码字典生成器">&lt;&lt;</a> <span> &middot; </span> <a class="home" href="/" title="Back to Homepage">Home</a> <span> &middot; </span> <a class="prev" href="/2015/11/apache-virtual-host-lookup/" title="PREV: Apache虚拟主机的各种配置寻址方式">&gt;&gt;</a></div></main><div class="footer"> <!-- <span class="block">Made with &hearts; using <a href="http://jekyllrb.com/">Jekyll</a> &amp; <a href="https://github.com/heiswayi/the-plain" title="The Plain theme by Heiswayi Nrird">The Plain</a> &middot; &lt;/&gt; on <a href="https://github.com/wangjunneil" title="Hosted on GitHub">GitHub</a></span> --> <span class="block"><a href="https://vinny.cc">Vinny's Blog</a> © 2017 - All Rights Reserved</span></div><!-- include baidu_tongji.html include baidu_push.html include 360_push.html include google_analytics.html --></body></html>

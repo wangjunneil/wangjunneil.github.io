@@ -1,0 +1,50 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="baidu-site-verification" content="gDf3P6sfyW" /><meta name="360-site-verification" content="0c91ee58977e5924d92896a89289b668" /><meta name="sogou_site_verification" content="jHNtHqKt34"/><meta name="google-site-verification" content="An2eGWQakKFcIZ1YuwZSilNuSYlfHs1zH0Hr-OMW6oQ" /><title>使用denyhosts阻止服务被暴力破解</title><meta name="description" content=""><meta name="keywords" content="暴力破解,ssh暴力破解,denyhosts"><link rel="icon" href="/assets/favicon.ico"><link rel="apple-touch-icon" href="/assets/touch-icon.png"><link rel="stylesheet" href="/assets/core.css"><link rel="canonical" href="/2016/07/use-denyhosts-brute/"><link rel="alternate" type="application/atom+xml" title="Vinny Wong's Blog" href="/feed.xml" /></head><body> <!-- search --><div class="searchform"> <label class="mk">$> </label> <input type="text" id="keyword"/> <a href="javascript:void(0);" class="clear"></a><ul class="suggest"></ul></div><script src="//lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script> <script src="/assets/main.js"></script><nav class="header-nav"> <a class="page-link" href="/">HOME</a> / <a class="page-link" href="/categories/">CATEGORY</a> / <a class="page-link" href="/feed.xml">FEED</a> / <a class="page-link" href="/about/">ABOUT</a></nav><main> <noscript><style> article .footnotes { display: block; }</style></noscript><article><div class="center"><h1>使用denyhosts阻止服务被暴力破解</h1><time>2016-07-13</time></div><div class="divider"></div><ul id="markdown-toc"><li><a href="#使用denyhosts阻止服务被暴力破解" id="markdown-toc-使用denyhosts阻止服务被暴力破解">使用denyhosts阻止服务被暴力破解</a><ul><li><a href="#通常服务器遇到暴力破解时解决的步骤" id="markdown-toc-通常服务器遇到暴力破解时解决的步骤">通常服务器遇到暴力破解时解决的步骤</a><ul><li><a href="#1-查询攻击者ip" id="markdown-toc-1-查询攻击者ip">1. 查询攻击者IP</a></li><li><a href="#2-加入到拒绝文件" id="markdown-toc-2-加入到拒绝文件">2. 加入到拒绝文件</a></li></ul></li><li><a href="#使用denyhosts阻止暴力破解" id="markdown-toc-使用denyhosts阻止暴力破解">使用Denyhosts阻止暴力破解</a><ul><li><a href="#1-下载解压并安装" id="markdown-toc-1-下载解压并安装">1. 下载解压并安装</a></li><li><a href="#2-修配置文件名称" id="markdown-toc-2-修配置文件名称">2. 修配置文件名称</a></li><li><a href="#3-常用的配置项说明" id="markdown-toc-3-常用的配置项说明">3. 常用的配置项说明</a></li><li><a href="#4-启动denyhost" id="markdown-toc-4-启动denyhost">4. 启动DenyHost</a></li></ul></li></ul></li></ul><hr /><h1 id="使用denyhosts阻止服务被暴力破解">使用denyhosts阻止服务被暴力破解</h1><h2 id="通常服务器遇到暴力破解时解决的步骤">通常服务器遇到暴力破解时解决的步骤</h2><h3 id="1-查询攻击者ip">1. 查询攻击者IP</h3><p>查询到相关服务登录授权日志，如ssh登录日志在<strong>/var/log/secure</strong>，找到相关IP尝试的登录次数，如使用命令</p><div class="language-shell highlighter-rouge"><pre class="highlight"><code>cat /var/log/secure | awk ‘/Failed/<span class="o">{</span>print <span class="k">$(</span>NF-3<span class="k">)</span><span class="o">}</span>’ | sort | uniq -c | awk ‘<span class="o">{</span>print <span class="nv">$2</span>″ <span class="o">=</span> “<span class="nv">$1</span>;<span class="o">}</span>’
+</code></pre></div><h3 id="2-加入到拒绝文件">2. 加入到拒绝文件</h3><p>将异常的IP地址增加到<strong>/etc/hosts.deny</strong>文件中。</p><blockquote><p>以上的这一切是基于手动配置的，使用<code class="highlighter-rouge">denyhosts</code>可以实现自动化的异常IP屏蔽</p></blockquote><h2 id="使用denyhosts阻止暴力破解">使用Denyhosts阻止暴力破解</h2><h3 id="1-下载解压并安装">1. 下载解压并安装</h3><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># 下载DenyHost</span>
+wget http://soft.vpser.net/security/denyhosts/DenyHosts-2.6.tar.gz# tar zxvf DenyHosts-2.6.tar.gz
+<span class="c"># 解压缩DenyHosts-2.6.tar.gz</span>
+tar -zxvf DenyHosts-2.6.tar.gz
+<span class="c"># 进入DenyHosts-2.6</span>
+<span class="nb">cd </span>DenyHosts-2.6
+<span class="c"># 执行安装（默认安装后的目录是/usr/share/denyhosts/）</span>
+python setup.py install
+</code></pre></div><h3 id="2-修配置文件名称">2. 修配置文件名称</h3><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># 进入DenyHost安装目录</span>
+<span class="nb">cd</span> /usr/share/denyhosts/
+<span class="c"># 更改启动和配置文件名称</span>
+cp denyhosts.cfg-dist denyhosts.cfg
+cp daemon-control-dist daemon-control
+</code></pre></div><h3 id="3-常用的配置项说明">3. 常用的配置项说明</h3><div class="highlighter-rouge"><pre class="highlight"><code># denyhosts.cfg的配置内容看似很多，如果仔细阅读其实配置十分简单，具体如下：
+
+# ssh登录日志路径
+SECURE_LOG = /var/log/secure
+
+# 拒绝主机的文件路径
+HOSTS_DENY = /etc/hosts.deny
+
+# 清除拒绝主机的时效，为空表示永久不清除
+PURGE_DENY =
+
+# 定义主机最多清除几次，超过指定次数将永不清除
+PURGE_THRESHOLD = 0
+
+# 禁止的服务名称
+BLOCK_SERVICE  = sshd
+
+# 允许无效用户失败的次数
+DENY_THRESHOLD_INVALID = 5
+
+# 允许有效用户失败的次数
+DENY_THRESHOLD_VALID = 10
+
+# 允许root登陆失败的次数
+DENY_THRESHOLD_ROOT = 1
+
+# 设置DenyHost写入资料文件
+DENY_THRESHOLD_RESTRICTED = 1
+
+# 拒绝的主机或IP记录的路径
+WORK_DIR = /usr/share/denyhosts/data
+</code></pre></div><h3 id="4-启动denyhost">4. 启动DenyHost</h3><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># 启动脚本赋予执行权限</span>
+chmod u+x daemon-control
+<span class="c"># 启动DenyHost</span>
+./daemon-control start
+</code></pre></div><div class="divider"></div><blockquote id='by-nc-nd'><div> 版权所有，本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">知识共享署名-非商业性使用 3.0 未本地化版本许可协议</a>进行许可。转载请注明出处：<a href="http://localhost:4000//2016/07/use-denyhosts-brute/" akt="">http://localhost:4000//2016/07/use-denyhosts-brute/</a></div></blockquote><div class="divider"></div><a class="w-search active" href="#" title="forward to search">⊙</a> <a class="w-catalog active" href="javascript:void(0);" title="open to catalog">≣</a></article><div class="page-navigation"> <a class="next" href="/2016/07/apt-get-err-lock/" title="NEXT: apt-get安装或更新时的错误Could not get lock /var/lib/dpkg/lock">&lt;&lt;</a> <span> &middot; </span> <a class="home" href="/" title="Back to Homepage">Home</a> <span> &middot; </span> <a class="prev" href="/2016/06/sql-developer-mysql/" title="PREV: SQLDeveloper启用对mysql管理模式">&gt;&gt;</a></div></main><div class="footer"> <!-- <span class="block">Made with &hearts; using <a href="http://jekyllrb.com/">Jekyll</a> &amp; <a href="https://github.com/heiswayi/the-plain" title="The Plain theme by Heiswayi Nrird">The Plain</a> &middot; &lt;/&gt; on <a href="https://github.com/wangjunneil" title="Hosted on GitHub">GitHub</a></span> --> <span class="block"><a href="https://vinny.cc">Vinny's Blog</a> © 2017 - All Rights Reserved</span></div><!-- include baidu_tongji.html include baidu_push.html include 360_push.html include google_analytics.html --></body></html>

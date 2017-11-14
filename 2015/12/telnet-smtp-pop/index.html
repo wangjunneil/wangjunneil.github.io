@@ -1,0 +1,45 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="baidu-site-verification" content="gDf3P6sfyW" /><meta name="360-site-verification" content="0c91ee58977e5924d92896a89289b668" /><meta name="sogou_site_verification" content="jHNtHqKt34"/><meta name="google-site-verification" content="An2eGWQakKFcIZ1YuwZSilNuSYlfHs1zH0Hr-OMW6oQ" /><title>Telnet命令方式收发邮件</title><meta name="description" content="Telnet命令方式收发邮件"><meta name="keywords" content="telnet"><link rel="icon" href="/assets/favicon.ico"><link rel="apple-touch-icon" href="/assets/touch-icon.png"><link rel="stylesheet" href="/assets/core.css"><link rel="canonical" href="/2015/12/telnet-smtp-pop/"><link rel="alternate" type="application/atom+xml" title="Vinny Wong's Blog" href="/feed.xml" /></head><body> <!-- search --><div class="searchform"> <label class="mk">$> </label> <input type="text" id="keyword"/> <a href="javascript:void(0);" class="clear"></a><ul class="suggest"></ul></div><script src="//lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script> <script src="/assets/main.js"></script><nav class="header-nav"> <a class="page-link" href="/">HOME</a> / <a class="page-link" href="/categories/">CATEGORY</a> / <a class="page-link" href="/feed.xml">FEED</a> / <a class="page-link" href="/about/">ABOUT</a></nav><main> <noscript><style> article .footnotes { display: block; }</style></noscript><article><div class="center"><h1>Telnet命令方式收发邮件</h1><time>2015-12-08</time></div><div class="divider"></div><h1 id="telnet命令方式收发邮件">Telnet命令方式收发邮件</h1><h2 id="telnet收邮件">Telnet收邮件</h2><div class="highlighter-rouge"><pre class="highlight"><code># telnet连接邮件服务器，默认端口110
+&gt; telnet pop3.qiye.163.com 110
+# 邮件user命令后输入登录名称（不需要）
+user xxx@163.com
+# 邮件pass命令后输入登录密码
+pass 12345678
+# 邮件stat命令列出邮件总数和占用空间大小
+stat
+# 邮件list命令列出邮件中所有邮件，也可以使用uidl命令
+list
+# 邮件retr命令读取指定id的邮件
+retr 312
+# 邮件dele命令删除指定id邮件，quit后提交
+dele 312
+# 退出邮箱服务器
+quit
+</code></pre></div><h2 id="telnet发邮件">Telnet发邮件</h2><div class="highlighter-rouge"><pre class="highlight"><code># telnet连接邮件服务器，默认端口25
+&gt; telnet smtp.qiye.163.com 25
+# 邮件ehlo访问命令
+ehlo li
+# 请求登录
+auth login
+# base64编码的用户名
+anVuLndhbmdAwq1nY7hpbmEuY29tLmNu
+# base64编码的用户密码
+d2o0NzksNacx
+# 邮件发自那里
+mail from: &lt;jun.wang@imgchina.com.cn&gt;
+＃ 邮件发给谁
+rcpt to: &lt;297489@qq.com&gt;
+# 邮件data命令输入内容
+data
+＃ 定义邮件消息头
+Date:2015-12-6 21:40
+To: 8888888@qq.com
+Cc: 9999999@qq.com
+Subject: a test
+Content-Type: text/html
+# 回车换行，输入正文
+&lt;h1&gt;Hello&lt;/h1&gt;
+# 回车换行，输入点"."结束邮件正文输入
+.
+# quit退出
+quit
+</code></pre></div><div class="divider"></div><blockquote id='by-nc-nd'><div> 版权所有，本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">知识共享署名-非商业性使用 3.0 未本地化版本许可协议</a>进行许可。转载请注明出处：<a href="http://www.vinny.cc//2015/12/telnet-smtp-pop/" akt="">http://www.vinny.cc//2015/12/telnet-smtp-pop/</a></div></blockquote><div class="divider"></div><a class="w-search active" href="#" title="forward to search">⊙</a> <a class="w-catalog active" href="javascript:void(0);" title="open to catalog">≣</a></article><div class="page-navigation"> <a class="next" href="/2015/12/linux-startup-mount-disk/" title="NEXT: linux启动挂载分区设定">&lt;&lt;</a> <span> &middot; </span> <a class="home" href="/" title="Back to Homepage">Home</a> <span> &middot; </span> <a class="prev" href="/2015/12/http-content-disposition/" title="PREV: Http的Header中Content-disposition消息头下载文件的备注">&gt;&gt;</a></div></main><div class="footer"> <!-- <span class="block">Made with &hearts; using <a href="http://jekyllrb.com/">Jekyll</a> &amp; <a href="https://github.com/heiswayi/the-plain" title="The Plain theme by Heiswayi Nrird">The Plain</a> &middot; &lt;/&gt; on <a href="https://github.com/wangjunneil" title="Hosted on GitHub">GitHub</a></span> --> <span class="block"><a href="https://vinny.cc">Vinny's Blog</a> © 2017 - All Rights Reserved</span></div><!-- include baidu_tongji.html include baidu_push.html include 360_push.html include google_analytics.html --></body></html>

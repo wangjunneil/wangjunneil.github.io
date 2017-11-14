@@ -1,0 +1,85 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="baidu-site-verification" content="gDf3P6sfyW" /><meta name="360-site-verification" content="0c91ee58977e5924d92896a89289b668" /><meta name="sogou_site_verification" content="jHNtHqKt34"/><meta name="google-site-verification" content="An2eGWQakKFcIZ1YuwZSilNuSYlfHs1zH0Hr-OMW6oQ" /><title>C#无焦点扫码实现方案</title><meta name="description" content=""><meta name="keywords" content="扫码,无焦点扫码,c#,c"><link rel="icon" href="/assets/favicon.ico"><link rel="apple-touch-icon" href="/assets/touch-icon.png"><link rel="stylesheet" href="/assets/core.css"><link rel="canonical" href="/2017/07/no-focus-scan/"><link rel="alternate" type="application/atom+xml" title="Vinny Wong's Blog" href="/feed.xml" /></head><body> <!-- search --><div class="searchform"> <label class="mk">$> </label> <input type="text" id="keyword"/> <a href="javascript:void(0);" class="clear"></a><ul class="suggest"></ul></div><script src="//lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script> <script src="/assets/main.js"></script><nav class="header-nav"> <a class="page-link" href="/">HOME</a> / <a class="page-link" href="/categories/">CATEGORY</a> / <a class="page-link" href="/feed.xml">FEED</a> / <a class="page-link" href="/about/">ABOUT</a></nav><main> <noscript><style> article .footnotes { display: block; }</style></noscript><article><div class="center"><h1>C#无焦点扫码实现方案</h1><time>2017-07-15</time></div><div class="divider"></div><ul id="markdown-toc"><li><a href="#c无焦点扫码实现方案" id="markdown-toc-c无焦点扫码实现方案">C#无焦点扫码实现方案</a><ul><li><a href="#1-背景说明" id="markdown-toc-1-背景说明">1. 背景说明</a></li><li><a href="#2-程序说明" id="markdown-toc-2-程序说明">2. 程序说明</a></li><li><a href="#3-调用方法" id="markdown-toc-3-调用方法">3. 调用方法</a></li><li><a href="#3-中文问题" id="markdown-toc-3-中文问题">3. 中文问题</a></li><li><a href="#4-源码下载" id="markdown-toc-4-源码下载">4. 源码下载</a></li></ul></li></ul><hr /><h1 id="c无焦点扫码实现方案">C#无焦点扫码实现方案</h1><h2 id="1-背景说明">1. 背景说明</h2><p><strong>无焦点扫码</strong> 的意思是在没有选择输出源载体的情况下捕获扫枪的扫码事件，即没有聚焦输出源（记事本、文本框等）获取条码／二维码中的内容。</p><h2 id="2-程序说明">2. 程序说明</h2><ul><li><code class="highlighter-rouge">BarCodeHook</code>类是用于全局注册键盘钩子的核心类，一般不需要更改，直接放到工程中。</li><li><code class="highlighter-rouge">ScanCodeForm</code>类是具体调用BarCodeHook类的窗体，为了便于测试此窗体中输出使用无焦点的Label控件。</li></ul><h2 id="3-调用方法">3. 调用方法</h2><p>下面<code class="highlighter-rouge">ScanCodeForm</code>源码是具体怎么调用<code class="highlighter-rouge">BarCodeHook</code>类的窗体代码，此窗体含有两个Label，一个用于最终输出条码/二维码内容的<strong>codeLabel</strong>，一个是临时的<strong>tempLabel</strong>，这个临时的<strong>tempLabel</strong>不需要显示，设置为不可见即可，只是用于临时保存扫枪的字符数据，使用时你的窗体必须包含此控件，通过它的<em>textChange</em>事件最终拿到扫枪的输入值。</p><div class="language-c# highlighter-rouge"><pre class="highlight"><code><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Collections.Generic</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.ComponentModel</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Data</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Drawing</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Linq</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Text</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Windows.Forms</span><span class="p">;</span>
+
+<span class="k">namespace</span> <span class="nn">NoFocusScan</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">partial</span> <span class="k">class</span> <span class="nc">ScanCodeForm</span> <span class="p">:</span> <span class="n">Form</span>
+    <span class="p">{</span>
+	<span class="c1">// 定义BarCodeHook对象及其委托方法
+</span>        <span class="k">private</span> <span class="n">BarCodeHook</span> <span class="n">barCodeHook</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">BarCodeHook</span><span class="p">();</span>
+        <span class="k">private</span> <span class="k">delegate</span> <span class="k">void</span> <span class="nf">ShowInfoDelegate</span><span class="p">(</span><span class="n">BarCodeHook</span><span class="p">.</span><span class="n">BarCodes</span> <span class="n">barCode</span><span class="p">);</span>
+
+        <span class="k">public</span> <span class="nf">ScanCodeForm</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="nf">InitializeComponent</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="k">private</span> <span class="k">void</span> <span class="nf">ScanCodeForm_Load</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">EventArgs</span> <span class="n">e</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// 注册扫枪委托事件
+</span>            <span class="n">barCodeHook</span><span class="p">.</span><span class="n">BarCodeEvent</span> <span class="p">+=</span> <span class="k">new</span> <span class="n">BarCodeHook</span><span class="p">.</span><span class="nf">BarCodeDeletegate</span><span class="p">(</span><span class="n">BarCodeEvent</span><span class="p">);</span>
+
+            <span class="c1">// 启动扫码钩子
+</span>            <span class="kt">bool</span> <span class="n">status</span> <span class="p">=</span> <span class="n">barCodeHook</span><span class="p">.</span><span class="nf">Start</span><span class="p">();</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">status</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">this</span><span class="p">.</span><span class="n">codeLabel</span><span class="p">.</span><span class="n">Text</span> <span class="p">=</span> <span class="s">"等待扫码..."</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="k">this</span><span class="p">.</span><span class="n">codeLabel</span><span class="p">.</span><span class="n">Text</span> <span class="p">=</span> <span class="s">"启动失败"</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">private</span> <span class="k">void</span> <span class="nf">BarCodeEvent</span><span class="p">(</span><span class="n">BarCodeHook</span><span class="p">.</span><span class="n">BarCodes</span> <span class="n">barCode</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="nf">ShowInfo</span><span class="p">(</span><span class="n">barCode</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">private</span> <span class="k">void</span> <span class="nf">ShowInfo</span><span class="p">(</span><span class="n">BarCodeHook</span><span class="p">.</span><span class="n">BarCodes</span> <span class="n">barCode</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">InvokeRequired</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">this</span><span class="p">.</span><span class="nf">BeginInvoke</span><span class="p">(</span><span class="k">new</span> <span class="nf">ShowInfoDelegate</span><span class="p">(</span><span class="n">ShowInfo</span><span class="p">),</span> <span class="k">new</span> <span class="kt">object</span><span class="p">[]</span> <span class="p">{</span> <span class="n">barCode</span> <span class="p">});</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="c1">// 使用隐藏的tempLabel来储存扫码字符，扫码读取会改变隐藏label的字符，
+</span>		<span class="c1">// 同时触发自身的tempLabel_TextChanged事件
+</span>                <span class="n">tempLabel</span><span class="p">.</span><span class="n">Text</span> <span class="p">+=</span> <span class="n">barCode</span><span class="p">.</span><span class="n">IsValid</span> <span class="p">?</span> <span class="n">barCode</span><span class="p">.</span><span class="n">BarCode</span> <span class="p">:</span> <span class="s">""</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="c1">/// &lt;summary&gt;
+</span>        <span class="c1">/// Form窗体关闭事件
+</span>        <span class="c1">/// &lt;/summary&gt;
+</span>        <span class="k">private</span> <span class="k">void</span> <span class="nf">ScanCodeForm_FormClosed</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">FormClosedEventArgs</span> <span class="n">e</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// 卸载注册的钩子
+</span>            <span class="n">barCodeHook</span><span class="p">.</span><span class="nf">Stop</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="c1">/// &lt;summary&gt;
+</span>        <span class="c1">/// 扫码读取的字符事件
+</span>        <span class="c1">/// &lt;/summary&gt;
+</span>        <span class="k">private</span> <span class="k">void</span> <span class="nf">tempLabel_TextChanged</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">EventArgs</span> <span class="n">e</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// 这里code就是最终得到的条码/二维码字符
+</span>            <span class="kt">string</span> <span class="n">code</span> <span class="p">=</span> <span class="n">tempLabel</span><span class="p">.</span><span class="n">Text</span><span class="p">;</span>
+
+            <span class="n">codeLabel</span><span class="p">.</span><span class="n">Text</span> <span class="p">=</span> <span class="n">tempLabel</span><span class="p">.</span><span class="n">Text</span><span class="p">;</span>
+
+            <span class="c1">// 扫完得到二维码就清空临时tempLabel，避免再次进入textchange事件
+</span>            <span class="k">this</span><span class="p">.</span><span class="n">tempLabel</span><span class="p">.</span><span class="n">TextChanged</span> <span class="p">-=</span> <span class="k">new</span> <span class="nf">EventHandler</span><span class="p">(</span><span class="n">tempLabel_TextChanged</span><span class="p">);</span>
+            <span class="k">this</span><span class="p">.</span><span class="n">tempLabel</span><span class="p">.</span><span class="n">Text</span> <span class="p">=</span> <span class="s">""</span><span class="p">;</span>
+            <span class="k">this</span><span class="p">.</span><span class="n">tempLabel</span><span class="p">.</span><span class="n">TextChanged</span> <span class="p">+=</span> <span class="k">new</span> <span class="nf">EventHandler</span><span class="p">(</span><span class="n">tempLabel_TextChanged</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><h2 id="3-中文问题">3. 中文问题</h2><p>条形码的输出是字母或者数字，不会有问题。二维码可能含有中文或Unicode等字符时，一般不能正常读取到。首先确认的是二维码扫枪是否支持中文解码，支持中文的二维码扫枪因为需要内置解码器所以成本较高，市面上目前现在大部分的二维码扫枪都不可以支持中文。</p><blockquote><p><code class="highlighter-rouge">BarCodeHook</code>类未测试支持中文的二维码扫枪</p></blockquote><h2 id="4-源码下载">4. 源码下载</h2><p>链接: <a href="http://pan.baidu.com/s/1o8oLe7w">http://pan.baidu.com/s/1o8oLe7w</a> 密码: <strong>tdei</strong></p><blockquote><p><strong>NoFocusScan.zip</strong>源码保存在个人百度网盘的<strong>博客保存的源码</strong>目录中（给自己看的）</p></blockquote><div class="divider"></div><blockquote id='by-nc-nd'><div> 版权所有，本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">知识共享署名-非商业性使用 3.0 未本地化版本许可协议</a>进行许可。转载请注明出处：<a href="http://www.vinny.cc//2017/07/no-focus-scan/" akt="">http://www.vinny.cc//2017/07/no-focus-scan/</a></div></blockquote><div class="divider"></div><a class="w-search active" href="#" title="forward to search">⊙</a> <a class="w-catalog active" href="javascript:void(0);" title="open to catalog">≣</a></article><div class="page-navigation"> <a class="next" href="/2017/07/gitlab-reset-admin-pwd/" title="NEXT: Gitlab重置管理员密码">&lt;&lt;</a> <span> &middot; </span> <a class="home" href="/" title="Back to Homepage">Home</a> <span> &middot; </span> <a class="prev" href="/2017/07/serial-port-weight/" title="PREV: C#串口获取称重设备的实现方案">&gt;&gt;</a></div></main><div class="footer"> <!-- <span class="block">Made with &hearts; using <a href="http://jekyllrb.com/">Jekyll</a> &amp; <a href="https://github.com/heiswayi/the-plain" title="The Plain theme by Heiswayi Nrird">The Plain</a> &middot; &lt;/&gt; on <a href="https://github.com/wangjunneil" title="Hosted on GitHub">GitHub</a></span> --> <span class="block"><a href="https://vinny.cc">Vinny's Blog</a> © 2017 - All Rights Reserved</span></div><!-- include baidu_tongji.html include baidu_push.html include 360_push.html include google_analytics.html --></body></html>

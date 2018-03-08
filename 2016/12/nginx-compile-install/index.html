@@ -1,41 +1,41 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="baidu-site-verification" content="gDf3P6sfyW" /><meta name="360-site-verification" content="0c91ee58977e5924d92896a89289b668" /><meta name="sogou_site_verification" content="jHNtHqKt34"/><meta name="google-site-verification" content="An2eGWQakKFcIZ1YuwZSilNuSYlfHs1zH0Hr-OMW6oQ" /><title>在Centos7下的nginx编译安装</title><meta name="description" content=""><meta name="keywords" content="nginx,nginx安装,nginx编译"><link rel="icon" href="/assets/favicon.ico"><link rel="apple-touch-icon" href="/assets/touch-icon.png"><link rel="stylesheet" href="/assets/core.css"><link rel="canonical" href="/2016/12/nginx-compile-install/"><link rel="alternate" type="application/atom+xml" title="Vinny Wong's Blog" href="/feed.xml" /></head><body> <!-- search --><div class="searchform"> <label class="mk">$> </label> <input type="text" id="keyword"/> <a href="javascript:void(0);" class="clear"></a><ul class="suggest"></ul></div><script src="//lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script> <script src="/assets/main.js"></script><nav class="header-nav"> <a class="page-link" href="/">HOME</a> / <a class="page-link" href="/categories/">CATEGORY</a> / <a class="page-link" href="/feed.xml">FEED</a> / <a class="page-link" href="/about/">ABOUT</a></nav><main> <noscript><style> article .footnotes { display: block; }</style></noscript><article><div class="center"><h1>在Centos7下的nginx编译安装</h1><time>2016-12-26</time></div><div class="divider"></div><ul id="markdown-toc"><li><a href="#在centos7下的nginx编译安装" id="markdown-toc-在centos7下的nginx编译安装">在Centos7下的nginx编译安装</a><ul><li><a href="#1-安装依赖" id="markdown-toc-1-安装依赖">1. 安装依赖</a></li><li><a href="#2-创建用户和组" id="markdown-toc-2-创建用户和组">2. 创建用户和组</a></li><li><a href="#3-下载安装包" id="markdown-toc-3-下载安装包">3. 下载安装包</a></li><li><a href="#4-编译配置与安装" id="markdown-toc-4-编译配置与安装">4. 编译配置与安装</a></li><li><a href="#5-安装路径" id="markdown-toc-5-安装路径">5. 安装路径</a></li><li><a href="#6-centos6服务脚本" id="markdown-toc-6-centos6服务脚本">6. centos6服务脚本</a></li><li><a href="#7-centos7服务脚本" id="markdown-toc-7-centos7服务脚本">7. centos7服务脚本</a></li></ul></li></ul><h1 id="在centos7下的nginx编译安装">在Centos7下的nginx编译安装</h1><h2 id="1-安装依赖">1. 安装依赖</h2><div class="language-shell highlighter-rouge"><pre class="highlight"><code>yum -y install gcc gcc-c++ autoconf automake
-yum -y install zlib zlib-devel openssl openssl-devel pcre-devel
-</code></pre></div><h2 id="2-创建用户和组">2. 创建用户和组</h2><div class="language-shell highlighter-rouge"><pre class="highlight"><code>groupadd -r nginx
-useradd -s /sbin/nologin -g nginx -r nginx
-</code></pre></div><h2 id="3-下载安装包">3. 下载安装包</h2><div class="language-shell highlighter-rouge"><pre class="highlight"><code>wget http://nginx.org/download/nginx-1.10.2.tar.gz
-</code></pre></div><h2 id="4-编译配置与安装">4. 编译配置与安装</h2><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># 解压缩</span>
-tar -zxvf nginx-1.10.2.tar.gz
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="baidu-site-verification" content="gDf3P6sfyW" /><meta name="360-site-verification" content="0c91ee58977e5924d92896a89289b668" /><meta name="sogou_site_verification" content="jHNtHqKt34"/><meta name="google-site-verification" content="An2eGWQakKFcIZ1YuwZSilNuSYlfHs1zH0Hr-OMW6oQ" /><title>在Centos7下的nginx编译安装</title><meta name="description" content=""><meta name="keywords" content="nginx,nginx安装,nginx编译"><link rel="icon" href="/assets/favicon.ico"><link rel="apple-touch-icon" href="/assets/touch-icon.png"><link rel="stylesheet" href="/assets/core.css"><link rel="canonical" href="/2016/12/nginx-compile-install/"><link rel="alternate" type="application/atom+xml" title="Vinny Wong's Blog" href="/feed.xml" /></head><body> <!-- search --><div class="searchform"> <label class="mk">$> </label> <input type="text" id="keyword"/> <a href="javascript:void(0);" class="clear"></a><ul class="suggest"></ul></div><script src="//lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script> <script src="/assets/main.js"></script><nav class="header-nav"> <a class="page-link" href="/">HOME</a> / <a class="page-link" href="/categories/">CATEGORY</a> / <a class="page-link" href="/feed.xml">FEED</a> / <a class="page-link" href="/about/">ABOUT</a></nav><main> <noscript><style> article .footnotes { display: block; }</style></noscript><article><div class="center"><h1>在Centos7下的nginx编译安装</h1><time>2016-12-26</time></div><div class="divider"></div><ul id="markdown-toc"><li><a href="#在centos7下的nginx编译安装" id="markdown-toc-在centos7下的nginx编译安装">在Centos7下的nginx编译安装</a><ul><li><a href="#1-安装依赖" id="markdown-toc-1-安装依赖">1. 安装依赖</a></li><li><a href="#2-创建用户和组" id="markdown-toc-2-创建用户和组">2. 创建用户和组</a></li><li><a href="#3-下载安装包" id="markdown-toc-3-下载安装包">3. 下载安装包</a></li><li><a href="#4-编译配置与安装" id="markdown-toc-4-编译配置与安装">4. 编译配置与安装</a></li><li><a href="#5-安装路径" id="markdown-toc-5-安装路径">5. 安装路径</a></li><li><a href="#6-centos6服务脚本" id="markdown-toc-6-centos6服务脚本">6. centos6服务脚本</a></li><li><a href="#7-centos7服务脚本" id="markdown-toc-7-centos7服务脚本">7. centos7服务脚本</a></li></ul></li></ul><h1 id="在centos7下的nginx编译安装">在Centos7下的nginx编译安装</h1><h2 id="1-安装依赖">1. 安装依赖</h2><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum <span class="nt">-y</span> <span class="nb">install </span>gcc gcc-c++ autoconf automake
+yum <span class="nt">-y</span> <span class="nb">install </span>zlib zlib-devel openssl openssl-devel pcre-devel
+</code></pre></div></div><h2 id="2-创建用户和组">2. 创建用户和组</h2><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>groupadd <span class="nt">-r</span> nginx
+useradd <span class="nt">-s</span> /sbin/nologin <span class="nt">-g</span> nginx <span class="nt">-r</span> nginx
+</code></pre></div></div><h2 id="3-下载安装包">3. 下载安装包</h2><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget http://nginx.org/download/nginx-1.10.2.tar.gz
+</code></pre></div></div><h2 id="4-编译配置与安装">4. 编译配置与安装</h2><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 解压缩</span>
+<span class="nb">tar</span> <span class="nt">-zxvf</span> nginx-1.10.2.tar.gz
 
 <span class="c"># 进入压缩目录</span>
 <span class="nb">cd </span>nginx-1.10.2
 
 <span class="c"># 进行模块配置</span>
 ./configure <span class="se">\</span>
-  --prefix<span class="o">=</span>/usr <span class="se">\</span>
-  --sbin-path<span class="o">=</span>/usr/sbin/nginx <span class="se">\</span>
-  --conf-path<span class="o">=</span>/etc/nginx/nginx.conf <span class="se">\</span>
-  --error-log-path<span class="o">=</span>/var/log/nginx/error.log <span class="se">\</span>
-  --http-log-path<span class="o">=</span>/var/log/nginx/access.log <span class="se">\</span>
-  --pid-path<span class="o">=</span>/var/run/nginx/nginx.pid  <span class="se">\</span>
-  --lock-path<span class="o">=</span>/var/lock/nginx.lock <span class="se">\</span>
-  --user<span class="o">=</span>nginx <span class="se">\</span>
-  --group<span class="o">=</span>nginx <span class="se">\</span>
-  --with-http_ssl_module <span class="se">\</span>
-  --with-http_flv_module <span class="se">\</span>
-  --with-http_stub_status_module <span class="se">\</span>
-  --with-http_gzip_static_module <span class="se">\</span>
-  --http-client-body-temp-path<span class="o">=</span>/var/tmp/nginx/client/ <span class="se">\</span>
-  --http-proxy-temp-path<span class="o">=</span>/var/tmp/nginx/proxy/ <span class="se">\</span>
-  --http-fastcgi-temp-path<span class="o">=</span>/var/tmp/nginx/fcgi/ <span class="se">\</span>
-  --http-uwsgi-temp-path<span class="o">=</span>/var/tmp/nginx/uwsgi <span class="se">\</span>
-  --http-scgi-temp-path<span class="o">=</span>/var/tmp/nginx/scgi <span class="se">\</span>
-  --with-pcre
+  <span class="nt">--prefix</span><span class="o">=</span>/usr <span class="se">\</span>
+  <span class="nt">--sbin-path</span><span class="o">=</span>/usr/sbin/nginx <span class="se">\</span>
+  <span class="nt">--conf-path</span><span class="o">=</span>/etc/nginx/nginx.conf <span class="se">\</span>
+  <span class="nt">--error-log-path</span><span class="o">=</span>/var/log/nginx/error.log <span class="se">\</span>
+  <span class="nt">--http-log-path</span><span class="o">=</span>/var/log/nginx/access.log <span class="se">\</span>
+  <span class="nt">--pid-path</span><span class="o">=</span>/var/run/nginx/nginx.pid  <span class="se">\</span>
+  <span class="nt">--lock-path</span><span class="o">=</span>/var/lock/nginx.lock <span class="se">\</span>
+  <span class="nt">--user</span><span class="o">=</span>nginx <span class="se">\</span>
+  <span class="nt">--group</span><span class="o">=</span>nginx <span class="se">\</span>
+  <span class="nt">--with-http_ssl_module</span> <span class="se">\</span>
+  <span class="nt">--with-http_flv_module</span> <span class="se">\</span>
+  <span class="nt">--with-http_stub_status_module</span> <span class="se">\</span>
+  <span class="nt">--with-http_gzip_static_module</span> <span class="se">\</span>
+  <span class="nt">--http-client-body-temp-path</span><span class="o">=</span>/var/tmp/nginx/client/ <span class="se">\</span>
+  <span class="nt">--http-proxy-temp-path</span><span class="o">=</span>/var/tmp/nginx/proxy/ <span class="se">\</span>
+  <span class="nt">--http-fastcgi-temp-path</span><span class="o">=</span>/var/tmp/nginx/fcgi/ <span class="se">\</span>
+  <span class="nt">--http-uwsgi-temp-path</span><span class="o">=</span>/var/tmp/nginx/uwsgi <span class="se">\</span>
+  <span class="nt">--http-scgi-temp-path</span><span class="o">=</span>/var/tmp/nginx/scgi <span class="se">\</span>
+  <span class="nt">--with-pcre</span>
 
 <span class="c"># 编译安装</span>
-make <span class="o">&amp;&amp;</span> make install
-</code></pre></div><h2 id="5-安装路径">5. 安装路径</h2><table><thead><tr><th>名称</th><th>路径</th></tr></thead><tbody><tr><td>日志目录</td><td>/var/log/nginx</td></tr><tr><td>配置目录</td><td>/etc/nginx</td></tr><tr><td>PID文件</td><td>/var/run/nginx/nginx.pid</td></tr><tr><td>启动文件</td><td>/usr/sbin/nginx</td></tr></tbody></table><h2 id="6-centos6服务脚本">6. centos6服务脚本</h2><p><strong>创建文件</strong></p><div class="language-shell highlighter-rouge"><pre class="highlight"><code>touch /etc/rc.d/init.d/nginx
-chmod +x /etc/rc.d/init.d/nginx
-</code></pre></div><p><strong>启动脚本</strong></p><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c">#!/bin/sh  </span>
+make <span class="o">&amp;&amp;</span> make <span class="nb">install</span>
+</code></pre></div></div><h2 id="5-安装路径">5. 安装路径</h2><table><thead><tr><th>名称</th><th>路径</th></tr></thead><tbody><tr><td>日志目录</td><td>/var/log/nginx</td></tr><tr><td>配置目录</td><td>/etc/nginx</td></tr><tr><td>PID文件</td><td>/var/run/nginx/nginx.pid</td></tr><tr><td>启动文件</td><td>/usr/sbin/nginx</td></tr></tbody></table><h2 id="6-centos6服务脚本">6. centos6服务脚本</h2><p><strong>创建文件</strong></p><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">touch</span> /etc/rc.d/init.d/nginx
+<span class="nb">chmod</span> +x /etc/rc.d/init.d/nginx
+</code></pre></div></div><p><strong>启动脚本</strong></p><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/sh  </span>
 <span class="c">#  </span>
 <span class="c"># nginx - this script starts and stops the nginx daemon  </span>
 <span class="c">#  </span>
@@ -45,16 +45,16 @@ chmod +x /etc/rc.d/init.d/nginx
 <span class="c"># processname: nginx  </span>
   
 <span class="c"># Source function library.  </span>
-. /etc/rc.d/init.d/functions  
+<span class="nb">.</span> /etc/rc.d/init.d/functions  
   
 <span class="c"># Source networking configuration.  </span>
-. /etc/sysconfig/network  
+<span class="nb">.</span> /etc/sysconfig/network  
   
 <span class="c"># Check that networking is up.  </span>
 <span class="o">[</span> <span class="s2">"</span><span class="nv">$NETWORKING</span><span class="s2">"</span> <span class="o">=</span> <span class="s2">"no"</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nb">exit </span>0  
   
 <span class="nv">nginx</span><span class="o">=</span><span class="s2">"/usr/sbin/nginx"</span>  
-<span class="nv">prog</span><span class="o">=</span><span class="k">$(</span>basename <span class="nv">$nginx</span><span class="k">)</span>  
+<span class="nv">prog</span><span class="o">=</span><span class="k">$(</span><span class="nb">basename</span> <span class="nv">$nginx</span><span class="k">)</span>  
   
 <span class="nv">sysconfig</span><span class="o">=</span><span class="s2">"/etc/sysconfig/</span><span class="nv">$prog</span><span class="s2">"</span>  
 <span class="nv">lockfile</span><span class="o">=</span><span class="s2">"/var/lock/nginx.lock"</span>  
@@ -62,25 +62,25 @@ chmod +x /etc/rc.d/init.d/nginx
   
 <span class="nv">NGINX_CONF_FILE</span><span class="o">=</span><span class="s2">"/etc/nginx/nginx.conf"</span>  
   
-<span class="o">[</span> -f <span class="nv">$sysconfig</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> . <span class="nv">$sysconfig</span>  
+<span class="o">[</span> <span class="nt">-f</span> <span class="nv">$sysconfig</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nb">.</span> <span class="nv">$sysconfig</span>  
   
 start<span class="o">()</span> <span class="o">{</span>  
-    <span class="o">[</span> -x <span class="nv">$nginx</span> <span class="o">]</span> <span class="o">||</span> <span class="nb">exit </span>5  
-    <span class="o">[</span> -f <span class="nv">$NGINX_CONF_FILE</span> <span class="o">]</span> <span class="o">||</span> <span class="nb">exit </span>6  
-    <span class="nb">echo</span> -n <span class="s2">$"Starting </span><span class="nv">$prog</span><span class="s2">: "</span>  
-    daemon <span class="nv">$nginx</span> -c <span class="nv">$NGINX_CONF_FILE</span>  
+    <span class="o">[</span> <span class="nt">-x</span> <span class="nv">$nginx</span> <span class="o">]</span> <span class="o">||</span> <span class="nb">exit </span>5  
+    <span class="o">[</span> <span class="nt">-f</span> <span class="nv">$NGINX_CONF_FILE</span> <span class="o">]</span> <span class="o">||</span> <span class="nb">exit </span>6  
+    <span class="nb">echo</span> <span class="nt">-n</span> <span class="s2">$"Starting </span><span class="nv">$prog</span><span class="s2">: "</span>  
+    daemon <span class="nv">$nginx</span> <span class="nt">-c</span> <span class="nv">$NGINX_CONF_FILE</span>  
     <span class="nv">retval</span><span class="o">=</span><span class="nv">$?</span>  
     <span class="nb">echo</span>  
-    <span class="o">[</span> <span class="nv">$retval</span> -eq 0 <span class="o">]</span> <span class="o">&amp;&amp;</span> touch <span class="nv">$lockfile</span>  
+    <span class="o">[</span> <span class="nv">$retval</span> <span class="nt">-eq</span> 0 <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nb">touch</span> <span class="nv">$lockfile</span>  
     <span class="k">return</span> <span class="nv">$retval</span>  
 <span class="o">}</span>  
   
 stop<span class="o">()</span> <span class="o">{</span>  
-    <span class="nb">echo</span> -n <span class="s2">$"Stopping </span><span class="nv">$prog</span><span class="s2">: "</span>  
-    killproc -p <span class="nv">$pidfile</span> <span class="nv">$prog</span>  
+    <span class="nb">echo</span> <span class="nt">-n</span> <span class="s2">$"Stopping </span><span class="nv">$prog</span><span class="s2">: "</span>  
+    killproc <span class="nt">-p</span> <span class="nv">$pidfile</span> <span class="nv">$prog</span>  
     <span class="nv">retval</span><span class="o">=</span><span class="nv">$?</span>  
     <span class="nb">echo</span>  
-    <span class="o">[</span> <span class="nv">$retval</span> -eq 0 <span class="o">]</span> <span class="o">&amp;&amp;</span> rm -f <span class="nv">$lockfile</span>  
+    <span class="o">[</span> <span class="nv">$retval</span> <span class="nt">-eq</span> 0 <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nb">rm</span> <span class="nt">-f</span> <span class="nv">$lockfile</span>  
     <span class="k">return</span> <span class="nv">$retval</span>  
 <span class="o">}</span>  
   
@@ -92,17 +92,17 @@ restart<span class="o">()</span> <span class="o">{</span>
   
 reload<span class="o">()</span> <span class="o">{</span>  
     configtest_q <span class="o">||</span> <span class="k">return </span>6  
-    <span class="nb">echo</span> -n <span class="s2">$"Reloading </span><span class="nv">$prog</span><span class="s2">: "</span>  
-    killproc -p <span class="nv">$pidfile</span> <span class="nv">$prog</span> -HUP  
+    <span class="nb">echo</span> <span class="nt">-n</span> <span class="s2">$"Reloading </span><span class="nv">$prog</span><span class="s2">: "</span>  
+    killproc <span class="nt">-p</span> <span class="nv">$pidfile</span> <span class="nv">$prog</span> <span class="nt">-HUP</span>  
     <span class="nb">echo</span>  
 <span class="o">}</span>  
   
 configtest<span class="o">()</span> <span class="o">{</span>  
-    <span class="nv">$nginx</span> -t -c <span class="nv">$NGINX_CONF_FILE</span>  
+    <span class="nv">$nginx</span> <span class="nt">-t</span> <span class="nt">-c</span> <span class="nv">$NGINX_CONF_FILE</span>  
 <span class="o">}</span>  
   
 configtest_q<span class="o">()</span> <span class="o">{</span>  
-    <span class="nv">$nginx</span> -t -q -c <span class="nv">$NGINX_CONF_FILE</span>  
+    <span class="nv">$nginx</span> <span class="nt">-t</span> <span class="nt">-q</span> <span class="nt">-c</span> <span class="nv">$NGINX_CONF_FILE</span>  
 <span class="o">}</span>  
   
 rh_status<span class="o">()</span> <span class="o">{</span>  
@@ -110,7 +110,7 @@ rh_status<span class="o">()</span> <span class="o">{</span>
 <span class="o">}</span>  
   
 rh_status_q<span class="o">()</span> <span class="o">{</span>  
-    rh_status &gt;/dev/null 2&gt;&amp;1  
+    rh_status <span class="o">&gt;</span>/dev/null 2&gt;&amp;1  
 <span class="o">}</span>  
   
 <span class="c"># Upgrade the binary with no downtime.  </span>
@@ -118,12 +118,12 @@ upgrade<span class="o">()</span> <span class="o">{</span>
     <span class="nb">local </span><span class="nv">oldbin_pidfile</span><span class="o">=</span><span class="s2">"</span><span class="k">${</span><span class="nv">pidfile</span><span class="k">}</span><span class="s2">.oldbin"</span>  
   
     configtest_q <span class="o">||</span> <span class="k">return </span>6  
-    <span class="nb">echo</span> -n <span class="s2">$"Upgrading </span><span class="nv">$prog</span><span class="s2">: "</span>  
-    killproc -p <span class="nv">$pidfile</span> <span class="nv">$prog</span> -USR2  
+    <span class="nb">echo</span> <span class="nt">-n</span> <span class="s2">$"Upgrading </span><span class="nv">$prog</span><span class="s2">: "</span>  
+    killproc <span class="nt">-p</span> <span class="nv">$pidfile</span> <span class="nv">$prog</span> <span class="nt">-USR2</span>  
     <span class="nv">retval</span><span class="o">=</span><span class="nv">$?</span>  
-    sleep 1  
-    <span class="k">if</span> <span class="o">[[</span> -f <span class="k">${</span><span class="nv">oldbin_pidfile</span><span class="k">}</span> <span class="o">&amp;&amp;</span> -f <span class="k">${</span><span class="nv">pidfile</span><span class="k">}</span> <span class="o">]]</span>;  <span class="k">then  
-        </span>killproc -p <span class="nv">$oldbin_pidfile</span> <span class="nv">$prog</span> -QUIT  
+    <span class="nb">sleep </span>1  
+    <span class="k">if</span> <span class="o">[[</span> <span class="nt">-f</span> <span class="k">${</span><span class="nv">oldbin_pidfile</span><span class="k">}</span> <span class="o">&amp;&amp;</span> <span class="nt">-f</span> <span class="k">${</span><span class="nv">pidfile</span><span class="k">}</span> <span class="o">]]</span><span class="p">;</span>  <span class="k">then  
+        </span>killproc <span class="nt">-p</span> <span class="nv">$oldbin_pidfile</span> <span class="nv">$prog</span> <span class="nt">-QUIT</span>  
         success <span class="s2">$"</span><span class="nv">$prog</span><span class="s2"> online upgrade"</span>  
         <span class="nb">echo   
         </span><span class="k">return </span>0  
@@ -137,8 +137,8 @@ upgrade<span class="o">()</span> <span class="o">{</span>
 <span class="c"># Tell nginx to reopen logs  </span>
 reopen_logs<span class="o">()</span> <span class="o">{</span>  
     configtest_q <span class="o">||</span> <span class="k">return </span>6  
-    <span class="nb">echo</span> -n <span class="s2">$"Reopening </span><span class="nv">$prog</span><span class="s2"> logs: "</span>  
-    killproc -p <span class="nv">$pidfile</span> <span class="nv">$prog</span> -USR1  
+    <span class="nb">echo</span> <span class="nt">-n</span> <span class="s2">$"Reopening </span><span class="nv">$prog</span><span class="s2"> logs: "</span>  
+    killproc <span class="nt">-p</span> <span class="nv">$pidfile</span> <span class="nv">$prog</span> <span class="nt">-USR1</span>  
     <span class="nv">retval</span><span class="o">=</span><span class="nv">$?</span>  
     <span class="nb">echo  
     </span><span class="k">return</span> <span class="nv">$retval</span>  
@@ -175,29 +175,29 @@ reopen_logs<span class="o">()</span> <span class="o">{</span>
         <span class="nb">echo</span> <span class="s2">$"Usage: </span><span class="nv">$0</span><span class="s2"> {start|stop|reload|configtest|status|force-reload|upgrade|restart|reopen_logs}"</span>
         <span class="nb">exit </span>2
 <span class="k">esac</span>
-</code></pre></div><p><strong>开机启动方式</strong></p><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># 开机启动</span>
-chkconfig --add nginx
-chkconfig --level 345 nginx on
-chkconfig --list nginx
+</code></pre></div></div><p><strong>开机启动方式</strong></p><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 开机启动</span>
+chkconfig <span class="nt">--add</span> nginx
+chkconfig <span class="nt">--level</span> 345 nginx on
+chkconfig <span class="nt">--list</span> nginx
 
 <span class="c"># 开机不启动</span>
 chkconfig nginx off
-chkconfig --list nginx
-</code></pre></div><h2 id="7-centos7服务脚本">7. centos7服务脚本</h2><p><strong>创建文件</strong></p><div class="language-shell highlighter-rouge"><pre class="highlight"><code>touch /usr/lib/systemd/system/nginx.service
-</code></pre></div><p><strong>启动脚本</strong></p><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="o">[</span>Unit]
+chkconfig <span class="nt">--list</span> nginx
+</code></pre></div></div><h2 id="7-centos7服务脚本">7. centos7服务脚本</h2><p><strong>创建文件</strong></p><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">touch</span> /usr/lib/systemd/system/nginx.service
+</code></pre></div></div><p><strong>启动脚本</strong></p><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>Unit]
 <span class="nv">Description</span><span class="o">=</span>nginx
 <span class="nv">After</span><span class="o">=</span>network.target remote-fs.target nss-lookup.target
 
 <span class="o">[</span>Service]
 <span class="nv">Type</span><span class="o">=</span>forking
 <span class="nv">ExecStart</span><span class="o">=</span>/usr/sbin/nginx
-<span class="nv">ExecReload</span><span class="o">=</span>/usr/local/nginx/sbin/nginx -s reload
-<span class="nv">ExecStop</span><span class="o">=</span>/usr/local/nginx/sbin/nginx -s stop
+<span class="nv">ExecReload</span><span class="o">=</span>/usr/local/nginx/sbin/nginx <span class="nt">-s</span> reload
+<span class="nv">ExecStop</span><span class="o">=</span>/usr/local/nginx/sbin/nginx <span class="nt">-s</span> stop
 <span class="nv">PrivateTmp</span><span class="o">=</span><span class="nb">true</span>
 
 <span class="o">[</span>Install]
 <span class="nv">WantedBy</span><span class="o">=</span>multi-user.target
-</code></pre></div><p><strong>开机启动方式</strong></p><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># 开机启动</span>
+</code></pre></div></div><p><strong>开机启动方式</strong></p><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 开机启动</span>
 systemctl <span class="nb">enable </span>nginx.service
 
 <span class="c"># 开机不启动</span>
@@ -205,4 +205,4 @@ systemctl disable nginx.service
 
 <span class="c"># 其他操作</span>
 systemcl <span class="o">(</span> status | start | stop | reload | restart <span class="o">)</span> nginx.service
-</code></pre></div><div class="divider"></div><blockquote id='by-nc-nd'><div> 版权所有，本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">知识共享署名-非商业性使用 3.0 未本地化版本许可协议</a>进行许可。转载请注明出处：<a href="http://www.vinny.cc//2016/12/nginx-compile-install/" akt="">http://www.vinny.cc//2016/12/nginx-compile-install/</a></div></blockquote><div class="divider"></div><a class="w-search active" href="#" title="forward to search">⊙</a> <a class="w-catalog active" href="javascript:void(0);" title="open to catalog">≣</a></article><div class="page-navigation"> <a class="next" href="/2017/01/how-to-use-derby/" title="NEXT: 怎样使用Derby数据库">&lt;&lt;</a> <span> &middot; </span> <a class="home" href="/" title="Back to Homepage">Home</a> <span> &middot; </span> <a class="prev" href="/2016/12/activemq-zookeeper-cluster/" title="PREV: ActiveMQ + Zookeeper 集群模式的配置整理">&gt;&gt;</a></div></main><div class="footer"> <!-- <span class="block">Made with &hearts; using <a href="http://jekyllrb.com/">Jekyll</a> &amp; <a href="https://github.com/heiswayi/the-plain" title="The Plain theme by Heiswayi Nrird">The Plain</a> &middot; &lt;/&gt; on <a href="https://github.com/wangjunneil" title="Hosted on GitHub">GitHub</a></span> --> <span class="block"><a href="https://vinny.cc">Vinny's Blog</a> © 2017 - All Rights Reserved</span></div></body></html>
+</code></pre></div></div><div class="divider"></div><blockquote id='by-nc-nd'><div> 版权所有，本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">知识共享署名-非商业性使用 3.0 未本地化版本许可协议</a>进行许可。转载请注明出处：<a href="http://localhost:4000//2016/12/nginx-compile-install/" akt="">http://localhost:4000//2016/12/nginx-compile-install/</a></div></blockquote><div class="divider"></div><a class="w-search active" href="#" title="forward to search">⊙</a> <a class="w-catalog active" href="javascript:void(0);" title="open to catalog">≣</a></article><div class="page-navigation"> <a class="next" href="/2017/01/how-to-use-derby/" title="NEXT: 怎样使用Derby数据库">&lt;&lt;</a> <span> &middot; </span> <a class="home" href="/" title="Back to Homepage">Home</a> <span> &middot; </span> <a class="prev" href="/2016/12/activemq-zookeeper-cluster/" title="PREV: ActiveMQ + Zookeeper 集群模式的配置整理">&gt;&gt;</a></div></main><div class="footer"> <!-- <span class="block">Made with &hearts; using <a href="http://jekyllrb.com/">Jekyll</a> &amp; <a href="https://github.com/heiswayi/the-plain" title="The Plain theme by Heiswayi Nrird">The Plain</a> &middot; &lt;/&gt; on <a href="https://github.com/wangjunneil" title="Hosted on GitHub">GitHub</a></span> --> <span class="block"><a href="https://vinny.cc">Vinny's Blog</a> © 2018 - All Rights Reserved</span></div></body></html>

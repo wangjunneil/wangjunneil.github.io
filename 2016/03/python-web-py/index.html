@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="baidu-site-verification" content="gDf3P6sfyW" /><meta name="360-site-verification" content="0c91ee58977e5924d92896a89289b668" /><meta name="sogou_site_verification" content="jHNtHqKt34"/><meta name="google-site-verification" content="An2eGWQakKFcIZ1YuwZSilNuSYlfHs1zH0Hr-OMW6oQ" /><title>Python中的web.py一个简单且功能强大的Python web框架</title><meta name="description" content="Python中的web.py功能强大的Python web框架"><meta name="keywords" content="web.py"><link rel="icon" href="/assets/favicon.ico"><link rel="apple-touch-icon" href="/assets/touch-icon.png"><link rel="stylesheet" href="/assets/core.css"><link rel="canonical" href="/2016/03/python-web-py/"><link rel="alternate" type="application/atom+xml" title="Vinny Wong's Blog" href="/feed.xml" /></head><body> <!-- search --><div class="searchform"> <label class="mk">$> </label> <input type="text" id="keyword"/> <a href="javascript:void(0);" class="clear"></a><ul class="suggest"></ul></div><script src="//lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script> <script src="/assets/main.js"></script><nav class="header-nav"> <a class="page-link" href="/">HOME</a> / <a class="page-link" href="/categories/">CATEGORY</a> / <a class="page-link" href="/feed.xml">FEED</a> / <a class="page-link" href="/about/">ABOUT</a></nav><main> <noscript><style> article .footnotes { display: block; }</style></noscript><article><div class="center"><h1>Python中的web.py一个简单且功能强大的Python web框架</h1><time>2016-03-18</time></div><div class="divider"></div><h1 id="python中的webpy功能强大的python-web框架">Python中的web.py功能强大的Python web框架</h1><h2 id="介绍">介绍</h2><p><strong><a href="http://webpy.org/">web.py</a></strong>是python的一个前段web框架，它比java简单小巧，功能毫不逊色于java上的web开发，不需要外置的容器，简单小巧实用强大是web.py的优点所在。</p><h2 id="安装">安装</h2><p>安装web.py有三种方式</p><ul><li>下载<a href="http://webpy.org/static/web.py-0.37.tar.gz">http://webpy.org/static/web.py-0.37.tar.gz</a>，拷贝到应用目录即可。若要所有应用都可以使用，则需要执行<code class="highlighter-rouge">python setup.py install</code></li><li>使用<strong>easy_install</strong>的方式安装，<code class="highlighter-rouge">easy_install web.py</code></li><li>使用pip方式安装，<code class="highlighter-rouge">pip install web.py</code></li></ul><h2 id="简单的restful风格应用">简单的RESTFUl风格应用</h2><div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">web</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="baidu-site-verification" content="gDf3P6sfyW" /><meta name="360-site-verification" content="0c91ee58977e5924d92896a89289b668" /><meta name="sogou_site_verification" content="jHNtHqKt34"/><meta name="google-site-verification" content="An2eGWQakKFcIZ1YuwZSilNuSYlfHs1zH0Hr-OMW6oQ" /><title>Python中的web.py一个简单且功能强大的Python web框架</title><meta name="description" content="Python中的web.py功能强大的Python web框架"><meta name="keywords" content="web.py"><link rel="icon" href="/assets/favicon.ico"><link rel="apple-touch-icon" href="/assets/touch-icon.png"><link rel="stylesheet" href="/assets/core.css"><link rel="canonical" href="/2016/03/python-web-py/"><link rel="alternate" type="application/atom+xml" title="Vinny Wong's Blog" href="/feed.xml" /></head><body> <!-- search --><div class="searchform"> <label class="mk">$> </label> <input type="text" id="keyword"/> <a href="javascript:void(0);" class="clear"></a><ul class="suggest"></ul></div><script src="//lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script> <script src="/assets/main.js"></script><nav class="header-nav"> <a class="page-link" href="/">HOME</a> / <a class="page-link" href="/categories/">CATEGORY</a> / <a class="page-link" href="/feed.xml">FEED</a> / <a class="page-link" href="/about/">ABOUT</a></nav><main> <noscript><style> article .footnotes { display: block; }</style></noscript><article><div class="center"><h1>Python中的web.py一个简单且功能强大的Python web框架</h1><time>2016-03-18</time></div><div class="divider"></div><h1 id="python中的webpy功能强大的python-web框架">Python中的web.py功能强大的Python web框架</h1><h2 id="介绍">介绍</h2><p><strong><a href="http://webpy.org/">web.py</a></strong>是python的一个前段web框架，它比java简单小巧，功能毫不逊色于java上的web开发，不需要外置的容器，简单小巧实用强大是web.py的优点所在。</p><h2 id="安装">安装</h2><p>安装web.py有三种方式</p><ul><li>下载<a href="http://webpy.org/static/web.py-0.37.tar.gz">http://webpy.org/static/web.py-0.37.tar.gz</a>，拷贝到应用目录即可。若要所有应用都可以使用，则需要执行<code class="highlighter-rouge">python setup.py install</code></li><li>使用<strong>easy_install</strong>的方式安装，<code class="highlighter-rouge">easy_install web.py</code></li><li>使用pip方式安装，<code class="highlighter-rouge">pip install web.py</code></li></ul><h2 id="简单的restful风格应用">简单的RESTFUl风格应用</h2><div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">web</span>
 
 <span class="n">urls</span> <span class="o">=</span> <span class="p">(</span>
     <span class="s">'/(.*)'</span><span class="p">,</span> <span class="s">'hello'</span>
@@ -14,10 +14,10 @@
 
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
     <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
-</code></pre></div><h2 id="测试上面简单的应用">测试上面简单的应用</h2><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># 模拟请求</span>
+</code></pre></div></div><h2 id="测试上面简单的应用">测试上面简单的应用</h2><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 模拟请求</span>
 curl http://localhost:8080/wangjun
-</code></pre></div><h2 id="静态html模板">静态html模板</h2><p>上面的小例子请求返回的只是一串字符串，在python中写html代码不是一个很好的选择，正常的web应用少不了html文件。使用python的模板功能可以让你在html文件中像写python脚本一样，具体请看下节动态html模板，这节只讨论静态html模板。 首先在应用目录创建一个template的文件夹用于存放html文件，这里我们编写一个名叫abc.html的文件，内容如下：</p><div class="language-html highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;h3&gt;</span>Hello<span class="nt">&lt;/h3&gt;</span>, world!
-</code></pre></div><p>可以看见这个html文件很简单，只是输出一串文字，但”Hello“的字符串使用了html的标记H3，下面的我们改造下第2节的python应用代码，如下：</p><div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c">#!/usr/bin/python</span>
+</code></pre></div></div><h2 id="静态html模板">静态html模板</h2><p>上面的小例子请求返回的只是一串字符串，在python中写html代码不是一个很好的选择，正常的web应用少不了html文件。使用python的模板功能可以让你在html文件中像写python脚本一样，具体请看下节动态html模板，这节只讨论静态html模板。 首先在应用目录创建一个template的文件夹用于存放html文件，这里我们编写一个名叫abc.html的文件，内容如下：</p><div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;h3&gt;</span>Hello<span class="nt">&lt;/h3&gt;</span>, world!
+</code></pre></div></div><p>可以看见这个html文件很简单，只是输出一串文字，但”Hello“的字符串使用了html的标记H3，下面的我们改造下第2节的python应用代码，如下：</p><div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/usr/bin/python</span>
 
 <span class="kn">import</span> <span class="nn">web</span>
 
@@ -41,13 +41,13 @@ curl http://localhost:8080/wangjun
 
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
     <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
-</code></pre></div><h2 id="动态html模板">动态html模板</h2><p>动态html模板的含义是我们可以在html模板中使用变量、循环、判断等逻辑表达式操作模板的具体显示内容，类似于java中的freemarker或者velocity。为了更好的说明，我们将abc.html文件改造如下：</p><div class="language-html highlighter-rouge"><pre class="highlight"><code>$def with (name)
+</code></pre></div></div><h2 id="动态html模板">动态html模板</h2><p>动态html模板的含义是我们可以在html模板中使用变量、循环、判断等逻辑表达式操作模板的具体显示内容，类似于java中的freemarker或者velocity。为了更好的说明，我们将abc.html文件改造如下：</p><div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$def with (name)
 
 $if name:
     <span class="nt">&lt;b&gt;</span>Hello<span class="nt">&lt;/b&gt;</span>, $name
 $else:
     <span class="nt">&lt;b&gt;</span>Hello<span class="nt">&lt;/b&gt;</span>, World!
-</code></pre></div><div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c">#!/usr/bin/python</span>
+</code></pre></div></div><div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/usr/bin/python</span>
 
 <span class="kn">import</span> <span class="nn">web</span>
 
@@ -72,7 +72,7 @@ $else:
 
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
     <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
-</code></pre></div><p>更多模板的高级语法请<a href="http://webpy.org/docs/0.3/templetor">点击</a>参看。</p><h2 id="获取用户输入">获取用户输入</h2><div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c">#!/usr/bin/python</span>
+</code></pre></div></div><p>更多模板的高级语法请<a href="http://webpy.org/docs/0.3/templetor">点击</a>参看。</p><h2 id="获取用户输入">获取用户输入</h2><div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/usr/bin/python</span>
 <span class="c">#coding:utf-8</span>
  
 <span class="kn">import</span> <span class="nn">web</span>
@@ -98,7 +98,7 @@ $else:
  
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
     <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
-</code></pre></div><h2 id="数据库操作">数据库操作</h2><div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c">#!/usr/bin/python</span>
+</code></pre></div></div><h2 id="数据库操作">数据库操作</h2><div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/usr/bin/python</span>
 <span class="c">#coding:utf-8</span>
  
 <span class="kn">import</span> <span class="nn">web</span>
@@ -125,15 +125,15 @@ $else:
  
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
     <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
-</code></pre></div><div class="language-html highlighter-rouge"><pre class="highlight"><code>$def with (posts)
+</code></pre></div></div><div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$def with (posts)
  
 <span class="nt">&lt;ul&gt;</span>
     $for post in posts:
         <span class="nt">&lt;li</span> <span class="na">id=</span><span class="s">"$post.ID"</span><span class="nt">&gt;</span>$post.post_title<span class="nt">&lt;/li&gt;</span>
 <span class="nt">&lt;/ul&gt;</span>
-</code></pre></div><h2 id="使用基本布局">使用基本布局</h2><p>基本布局的含义是所有页面头尾使用同一模板，中间内容自定义，父页面引用子页面定义的变量。</p><p>**[AppServ.py] 主应用文件 **</p><div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c"># 指定基本布局名称，与其对应的是layout.html</span>
+</code></pre></div></div><h2 id="使用基本布局">使用基本布局</h2><p>基本布局的含义是所有页面头尾使用同一模板，中间内容自定义，父页面引用子页面定义的变量。</p><p>**[AppServ.py] 主应用文件 **</p><div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 指定基本布局名称，与其对应的是layout.html</span>
 <span class="n">render</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s">'www/'</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="s">'layout'</span><span class="p">)</span>
-</code></pre></div><p><strong>[layout.html] 布局文件</strong></p><div class="language-html highlighter-rouge"><pre class="highlight"><code>[layout.html]
+</code></pre></div></div><p><strong>[layout.html] 布局文件</strong></p><div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[layout.html]
 $def with (content)
 <span class="nt">&lt;html&gt;</span>
 <span class="nt">&lt;head&gt;</span>
@@ -147,32 +147,32 @@ $def with (content)
 $:content
 <span class="nt">&lt;/body&gt;</span>
 <span class="nt">&lt;/html&gt;</span>
-</code></pre></div><p><strong>[index.html] 子页面</strong></p><div class="language-html highlighter-rouge"><pre class="highlight"><code>$var title: This index title
+</code></pre></div></div><p><strong>[index.html] 子页面</strong></p><div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$var title: This index title
 $var cssfiles: css/style.css css/main.css
 <span class="nt">&lt;h5&gt;</span>The Server is Running...<span class="nt">&lt;/h5&gt;</span>
-</code></pre></div><p>在子页面可以看出定义的变量<code class="highlighter-rouge">title</code>和<code class="highlighter-rouge">cssfiles</code>在 <strong>layout.html</strong> 中的到的引用，而子页面只需要编写<code class="highlighter-rouge">&lt;body&gt;</code> 标签中的内容即可。</p><h2 id="模板串联">模板串联</h2><div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">render</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s">'templates'</span><span class="p">)</span>
+</code></pre></div></div><p>在子页面可以看出定义的变量<code class="highlighter-rouge">title</code>和<code class="highlighter-rouge">cssfiles</code>在 <strong>layout.html</strong> 中的到的引用，而子页面只需要编写<code class="highlighter-rouge">&lt;body&gt;</code> 标签中的内容即可。</p><h2 id="模板串联">模板串联</h2><div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">render</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s">'templates'</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">GET</span><span class="p">():</span>
     <span class="n">article</span> <span class="o">=</span> <span class="n">render</span><span class="o">.</span><span class="n">article</span><span class="p">()</span> <span class="c"># article.html</span>
     <span class="n">comments</span> <span class="o">=</span> <span class="n">render</span><span class="o">.</span><span class="n">comments</span><span class="p">()</span> <span class="c"># comments.html</span>
     <span class="k">return</span> <span class="n">render</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">unicode</span><span class="p">(</span><span class="n">article</span><span class="p">),</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">comments</span><span class="p">))</span>
-</code></pre></div><blockquote><p>使用模板串联就不能使用基本布局</p></blockquote><h2 id="重定向使用">重定向使用</h2><div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Sms</span><span class="p">:</span>
+</code></pre></div></div><blockquote><p>使用模板串联就不能使用基本布局</p></blockquote><h2 id="重定向使用">重定向使用</h2><div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Sms</span><span class="p">:</span>
     <span class="k">def</span> <span class="nf">GET</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c"># raise web.seeother('/')</span>
         <span class="k">raise</span> <span class="n">web</span><span class="o">.</span><span class="n">redirect</span><span class="p">(</span><span class="s">'/'</span><span class="p">)</span>
-</code></pre></div><h2 id="响应xml内容">响应xml内容</h2><p>**[AppServ.py] 主应用文件 **</p><div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="k">class</span> <span class="nc">index</span><span class="p">:</span>
+</code></pre></div></div><h2 id="响应xml内容">响应xml内容</h2><p>**[AppServ.py] 主应用文件 **</p><div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">index</span><span class="p">:</span>
     <span class="k">def</span> <span class="nf">GET</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">):</span>
         <span class="n">web</span><span class="o">.</span><span class="n">header</span><span class="p">(</span><span class="s">'Content-Type'</span><span class="p">,</span> <span class="s">'text/xml'</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">render</span><span class="o">.</span><span class="n">response</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
-</code></pre></div><p><strong>[response.xml]</strong></p><div class="language-xml highlighter-rouge"><pre class="highlight"><code>$def with (code)
+</code></pre></div></div><p><strong>[response.xml]</strong></p><div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$def with (code)
 <span class="cp">&lt;?xml version="1.0"?&gt;</span>
 <span class="nt">&lt;RequestNotification-Response&gt;</span>
 	<span class="nt">&lt;Status&gt;</span>$code<span class="nt">&lt;/Status&gt;</span>
 <span class="nt">&lt;/RequestNotification-Response&gt;</span>
-</code></pre></div><h2 id="处理二进制请求">处理二进制请求</h2><div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">lass</span> <span class="n">RequestHandler</span><span class="p">():</span>
+</code></pre></div></div><h2 id="处理二进制请求">处理二进制请求</h2><div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">lass</span> <span class="n">RequestHandler</span><span class="p">():</span>
     <span class="k">def</span> <span class="nf">POST</span><span class="p">():</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">data</span><span class="p">()</span>
-</code></pre></div><h2 id="拦截器和钩子">拦截器和钩子</h2><div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c"># 请求拦截器</span>
+</code></pre></div></div><h2 id="拦截器和钩子">拦截器和钩子</h2><div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 请求拦截器</span>
 <span class="k">def</span> <span class="nf">request_process</span><span class="p">(</span><span class="n">handler</span><span class="p">):</span>
     <span class="k">print</span> <span class="s">'before handling'</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">handler</span><span class="p">()</span>
@@ -186,7 +186,7 @@ $var cssfiles: css/style.css css/main.css
     <span class="n">web</span><span class="o">.</span><span class="n">header</span><span class="p">(</span><span class="s">'Content-type'</span><span class="p">,</span> <span class="s">"text/html; charset=utf-8"</span><span class="p">)</span>
 
 <span class="n">app</span><span class="o">.</span><span class="n">add_processor</span><span class="p">(</span><span class="n">web</span><span class="o">.</span><span class="n">loadhook</span><span class="p">(</span><span class="n">my_loadhook</span><span class="p">))</span>
-</code></pre></div><h2 id="自定义notfound信息">自定义NotFound信息</h2><div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">not_found</span><span class="p">():</span>
+</code></pre></div></div><h2 id="自定义notfound信息">自定义NotFound信息</h2><div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">not_found</span><span class="p">():</span>
     <span class="c"># return web.notfound("Sorry, the page you were looking for was not found.")</span>
     <span class="k">return</span> <span class="n">web</span><span class="o">.</span><span class="n">notfound</span><span class="p">(</span><span class="n">render</span><span class="o">.</span><span class="n">notfound</span><span class="p">())</span> <span class="c"># notfound.html</span>
 <span class="n">app</span><span class="o">.</span><span class="n">notfound</span> <span class="o">=</span> <span class="n">not_found</span>
@@ -195,14 +195,14 @@ $var cssfiles: css/style.css css/main.css
 <span class="k">def</span> <span class="nf">internalerror</span><span class="p">():</span>
     <span class="k">return</span> <span class="n">web</span><span class="o">.</span><span class="n">internalerror</span><span class="p">(</span><span class="s">"Bad, bad server. No donut for you."</span><span class="p">)</span>
 <span class="n">app</span><span class="o">.</span><span class="n">internalerror</span> <span class="o">=</span> <span class="n">internalerror</span>
-</code></pre></div><h1 id="使用ssl安全证书">使用ssl安全证书</h1><div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">web.wsgiserver</span> <span class="kn">import</span> <span class="n">CherryPyWSGIServer</span>
+</code></pre></div></div><h1 id="使用ssl安全证书">使用ssl安全证书</h1><div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">web.wsgiserver</span> <span class="kn">import</span> <span class="n">CherryPyWSGIServer</span>
 
 <span class="n">CherryPyWSGIServer</span><span class="o">.</span><span class="n">ssl_certificate</span> <span class="o">=</span> <span class="s">"/root/Downloads/server.crt"</span>
 <span class="n">CherryPyWSGIServer</span><span class="o">.</span><span class="n">ssl_private_key</span> <span class="o">=</span> <span class="s">"/root/Downloads/server.key"</span>
-</code></pre></div><blockquote><p>证书的生成请参看<a href="http://vinny.cc/2017/03/nginx-general-config/">Nginx常用配置汇总</a>里的<strong>HTTPS证书生成</strong>章节。</p></blockquote><h2 id="session会话的使用">Session会话的使用</h2><div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">session</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">web</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">DiskStore</span><span class="p">(</span><span class="s">'session'</span><span class="p">))</span>
-</code></pre></div><blockquote><p>这里使用的是磁盘存储，也可以使用数据库存储session的方式</p></blockquote><h2 id="模板中使用session">模板中使用Session</h2><div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">render</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s">'templates'</span><span class="p">,</span> <span class="nb">globals</span><span class="o">=</span><span class="p">{</span><span class="s">'context'</span><span class="p">:</span> <span class="n">session</span><span class="p">})</span>
-</code></pre></div><div class="language-html highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;span&gt;</span>You are logged in as <span class="nt">&lt;b&gt;</span>$context.username<span class="nt">&lt;/b&gt;&lt;/span&gt;</span>
-</code></pre></div><h2 id="使用基本http授权">使用基本Http授权</h2><div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">web</span>
+</code></pre></div></div><blockquote><p>证书的生成请参看<a href="http://vinny.cc/2017/03/nginx-general-config/">Nginx常用配置汇总</a>里的<strong>HTTPS证书生成</strong>章节。</p></blockquote><h2 id="session会话的使用">Session会话的使用</h2><div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">session</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">web</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">DiskStore</span><span class="p">(</span><span class="s">'session'</span><span class="p">))</span>
+</code></pre></div></div><blockquote><p>这里使用的是磁盘存储，也可以使用数据库存储session的方式</p></blockquote><h2 id="模板中使用session">模板中使用Session</h2><div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">render</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s">'templates'</span><span class="p">,</span> <span class="nb">globals</span><span class="o">=</span><span class="p">{</span><span class="s">'context'</span><span class="p">:</span> <span class="n">session</span><span class="p">})</span>
+</code></pre></div></div><div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;span&gt;</span>You are logged in as <span class="nt">&lt;b&gt;</span>$context.username<span class="nt">&lt;/b&gt;&lt;/span&gt;</span>
+</code></pre></div></div><h2 id="使用基本http授权">使用基本Http授权</h2><div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">web</span>
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">base64</span>
 
@@ -246,4 +246,4 @@ $var cssfiles: css/style.css css/main.css
 
 <span class="k">if</span> <span class="n">__name__</span><span class="o">==</span><span class="s">'__main__'</span><span class="p">:</span>
     <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
-</code></pre></div><p>更多的高级使用方法请自行参考<a href="http://webpy.org/cookbook/index.zh-cn">在线中文版cookbook</a>。</p><div class="divider"></div><blockquote id='by-nc-nd'><div> 版权所有，本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">知识共享署名-非商业性使用 3.0 未本地化版本许可协议</a>进行许可。转载请注明出处：<a href="http://www.vinny.cc//2016/03/python-web-py/" akt="">http://www.vinny.cc//2016/03/python-web-py/</a></div></blockquote><div class="divider"></div><a class="w-search active" href="#" title="forward to search">⊙</a> <a class="w-catalog active" href="javascript:void(0);" title="open to catalog">≣</a></article><div class="page-navigation"> <a class="next" href="/2016/03/python-mysql-db/" title="NEXT: Python中对mysql数据库的增删改查的基本数据库操作">&lt;&lt;</a> <span> &middot; </span> <a class="home" href="/" title="Back to Homepage">Home</a> <span> &middot; </span> <a class="prev" href="/2016/03/python-chinese-encoding/" title="PREV: Python里中文注释中文编码的问题">&gt;&gt;</a></div></main><div class="footer"> <!-- <span class="block">Made with &hearts; using <a href="http://jekyllrb.com/">Jekyll</a> &amp; <a href="https://github.com/heiswayi/the-plain" title="The Plain theme by Heiswayi Nrird">The Plain</a> &middot; &lt;/&gt; on <a href="https://github.com/wangjunneil" title="Hosted on GitHub">GitHub</a></span> --> <span class="block"><a href="https://vinny.cc">Vinny's Blog</a> © 2017 - All Rights Reserved</span></div></body></html>
+</code></pre></div></div><p>更多的高级使用方法请自行参考<a href="http://webpy.org/cookbook/index.zh-cn">在线中文版cookbook</a>。</p><div class="divider"></div><blockquote id='by-nc-nd'><div> 版权所有，本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">知识共享署名-非商业性使用 3.0 未本地化版本许可协议</a>进行许可。转载请注明出处：<a href="http://localhost:4000//2016/03/python-web-py/" akt="">http://localhost:4000//2016/03/python-web-py/</a></div></blockquote><div class="divider"></div><a class="w-search active" href="#" title="forward to search">⊙</a> <a class="w-catalog active" href="javascript:void(0);" title="open to catalog">≣</a></article><div class="page-navigation"> <a class="next" href="/2016/03/python-mysql-db/" title="NEXT: Python中对mysql数据库的增删改查的基本数据库操作">&lt;&lt;</a> <span> &middot; </span> <a class="home" href="/" title="Back to Homepage">Home</a> <span> &middot; </span> <a class="prev" href="/2016/03/python-chinese-encoding/" title="PREV: Python里中文注释中文编码的问题">&gt;&gt;</a></div></main><div class="footer"> <!-- <span class="block">Made with &hearts; using <a href="http://jekyllrb.com/">Jekyll</a> &amp; <a href="https://github.com/heiswayi/the-plain" title="The Plain theme by Heiswayi Nrird">The Plain</a> &middot; &lt;/&gt; on <a href="https://github.com/wangjunneil" title="Hosted on GitHub">GitHub</a></span> --> <span class="block"><a href="https://vinny.cc">Vinny's Blog</a> © 2018 - All Rights Reserved</span></div></body></html>

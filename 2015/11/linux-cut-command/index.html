@@ -1,56 +1,56 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="baidu-site-verification" content="gDf3P6sfyW" /><meta name="360-site-verification" content="0c91ee58977e5924d92896a89289b668" /><meta name="sogou_site_verification" content="jHNtHqKt34"/><meta name="google-site-verification" content="An2eGWQakKFcIZ1YuwZSilNuSYlfHs1zH0Hr-OMW6oQ" /><title>Linux中cut命令使用详解</title><meta name="description" content=""><meta name="keywords" content="cut"><link rel="icon" href="/assets/favicon.ico"><link rel="apple-touch-icon" href="/assets/touch-icon.png"><link rel="stylesheet" href="/assets/core.css"><link rel="canonical" href="/2015/11/linux-cut-command/"><link rel="alternate" type="application/atom+xml" title="Vinny Wong's Blog" href="/feed.xml" /></head><body> <!-- search --><div class="searchform"> <label class="mk">$> </label> <input type="text" id="keyword"/> <a href="javascript:void(0);" class="clear"></a><ul class="suggest"></ul></div><script src="//lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script> <script src="/assets/main.js"></script><nav class="header-nav"> <a class="page-link" href="/">HOME</a> / <a class="page-link" href="/categories/">CATEGORY</a> / <a class="page-link" href="/feed.xml">FEED</a> / <a class="page-link" href="/about/">ABOUT</a></nav><main> <noscript><style> article .footnotes { display: block; }</style></noscript><article><div class="center"><h1>Linux中cut命令使用详解</h1><time>2015-11-22</time></div><div class="divider"></div><ul id="markdown-toc"><li><a href="#linux中cut命令使用详解" id="markdown-toc-linux中cut命令使用详解">Linux中cut命令使用详解</a><ul><li><a href="#介绍" id="markdown-toc-介绍">介绍</a></li><li><a href="#格式" id="markdown-toc-格式">格式</a></li><li><a href="#参数解释" id="markdown-toc-参数解释">参数解释</a></li><li><a href="#案例详解" id="markdown-toc-案例详解">案例详解</a></li></ul></li></ul><hr /><h1 id="linux中cut命令使用详解">Linux中cut命令使用详解</h1><h2 id="介绍">介绍</h2><p><strong>cut</strong>是一个选取命令，就是将一段数据经过分析，取出我们想要的。一般来说，选取信息通常是针对“行”来进行分析的，并不是整篇信息分析的。</p><h2 id="格式">格式</h2><div class="highlighter-rouge"><pre class="highlight"><code>cut [-bn] [file]
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="baidu-site-verification" content="gDf3P6sfyW" /><meta name="360-site-verification" content="0c91ee58977e5924d92896a89289b668" /><meta name="sogou_site_verification" content="jHNtHqKt34"/><meta name="google-site-verification" content="An2eGWQakKFcIZ1YuwZSilNuSYlfHs1zH0Hr-OMW6oQ" /><title>Linux中cut命令使用详解</title><meta name="description" content=""><meta name="keywords" content="cut"><link rel="icon" href="/assets/favicon.ico"><link rel="apple-touch-icon" href="/assets/touch-icon.png"><link rel="stylesheet" href="/assets/core.css"><link rel="canonical" href="/2015/11/linux-cut-command/"><link rel="alternate" type="application/atom+xml" title="Vinny Wong's Blog" href="/feed.xml" /></head><body> <!-- search --><div class="searchform"> <label class="mk">$> </label> <input type="text" id="keyword"/> <a href="javascript:void(0);" class="clear"></a><ul class="suggest"></ul></div><script src="//lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script> <script src="/assets/main.js"></script><nav class="header-nav"> <a class="page-link" href="/">HOME</a> / <a class="page-link" href="/categories/">CATEGORY</a> / <a class="page-link" href="/feed.xml">FEED</a> / <a class="page-link" href="/about/">ABOUT</a></nav><main> <noscript><style> article .footnotes { display: block; }</style></noscript><article><div class="center"><h1>Linux中cut命令使用详解</h1><time>2015-11-22</time></div><div class="divider"></div><ul id="markdown-toc"><li><a href="#linux中cut命令使用详解" id="markdown-toc-linux中cut命令使用详解">Linux中cut命令使用详解</a><ul><li><a href="#介绍" id="markdown-toc-介绍">介绍</a></li><li><a href="#格式" id="markdown-toc-格式">格式</a></li><li><a href="#参数解释" id="markdown-toc-参数解释">参数解释</a></li><li><a href="#案例详解" id="markdown-toc-案例详解">案例详解</a></li></ul></li></ul><hr /><h1 id="linux中cut命令使用详解">Linux中cut命令使用详解</h1><h2 id="介绍">介绍</h2><p><strong>cut</strong>是一个选取命令，就是将一段数据经过分析，取出我们想要的。一般来说，选取信息通常是针对“行”来进行分析的，并不是整篇信息分析的。</p><h2 id="格式">格式</h2><div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cut [-bn] [file]
 cut [-c] [file]
 cut [-df] [file]
-</code></pre></div><h2 id="参数解释">参数解释</h2><div class="highlighter-rouge"><pre class="highlight"><code>-b : 以字节为单位进行分割。这些字节位置将忽略多字节字符边界，除非也指定了 -n 标志。
+</code></pre></div></div><h2 id="参数解释">参数解释</h2><div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-b : 以字节为单位进行分割。这些字节位置将忽略多字节字符边界，除非也指定了 -n 标志。
 -c : 以字符为单位进行分割。
 -d : 自定义分隔符，默认为制表符。
 -f : 与-d一起使用，指定显示哪个区域。
-</code></pre></div><h2 id="案例详解">案例详解</h2><div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># 以who的输出为案例</span>
-wangjun[192] /Volumes/TOD/download <span class="nv">$ </span>who
-wangjun  console  Nov 20 18:39
+</code></pre></div></div><h2 id="案例详解">案例详解</h2><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 以who的输出为案例</span>
+wangjun[192] /Volumes/TOD/download <span class="nv">$ </span><span class="nb">who
+</span>wangjun  console  Nov 20 18:39
 wangjun  ttys000  Nov 22 20:03
 
 <span class="c"># 截取每一行第4个字节</span>
-wangjun[192] /Volumes/TOD/download <span class="nv">$ </span>who | cut -b 4
+wangjun[192] /Volumes/TOD/download <span class="nv">$ </span><span class="nb">who</span> | <span class="nb">cut</span> <span class="nt">-b</span> 4
 g
 g
 
 <span class="c"># 截取每一行第4个和第7个字节</span>
-wangjun[192] /Volumes/TOD/download <span class="nv">$ </span>who | cut -b 4,7
+wangjun[192] /Volumes/TOD/download <span class="nv">$ </span><span class="nb">who</span> | <span class="nb">cut</span> <span class="nt">-b</span> 4,7
 gn
 gn
 
 <span class="c"># 截取每一行第1到第7个字节</span>
-wangjun[192] /Volumes/TOD/download <span class="nv">$ </span>who | cut -b 1-7
+wangjun[192] /Volumes/TOD/download <span class="nv">$ </span><span class="nb">who</span> | <span class="nb">cut</span> <span class="nt">-b</span> 1-7
 wangjun
 wangjun
 
 <span class="c"># 截取每一行第1个字节和第5到第第7个字节</span>
-wangjun[192] /Volumes/TOD/download <span class="nv">$ </span>who | cut -b 1,5-7
+wangjun[192] /Volumes/TOD/download <span class="nv">$ </span><span class="nb">who</span> | <span class="nb">cut</span> <span class="nt">-b</span> 1,5-7
 wjun
 wjun
 
 <span class="c"># 截取每一行从第7个字节开始一直到最后</span>
-wangjun[192] /Volumes/TOD/download <span class="nv">$ </span>who | cut -b 7-
+wangjun[192] /Volumes/TOD/download <span class="nv">$ </span><span class="nb">who</span> | <span class="nb">cut</span> <span class="nt">-b</span> 7-
 n  console  Nov 20 18:39
 n  ttys000  Nov 22 20:03
 
 <span class="c"># 以空格为分隔符取第1块区域</span>
-wangjun[192] /Volumes/TOD/download <span class="nv">$ </span>who | cut -f1 -d <span class="s2">" "</span>
+wangjun[192] /Volumes/TOD/download <span class="nv">$ </span><span class="nb">who</span> | <span class="nb">cut</span> <span class="nt">-f1</span> <span class="nt">-d</span> <span class="s2">" "</span>
 wangjun
 wangjun
 
 <span class="c"># 以空格为分隔符取第3块区域（第2块区域是空格）</span>
-wangjun[192] /Volumes/TOD/download <span class="nv">$ </span>who | cut -f3 -d <span class="s2">" "</span>
+wangjun[192] /Volumes/TOD/download <span class="nv">$ </span><span class="nb">who</span> | <span class="nb">cut</span> <span class="nt">-f3</span> <span class="nt">-d</span> <span class="s2">" "</span>
 console
 ttys000
 
 <span class="c"># 以冒号为分隔符取第一块区域</span>
-wangjun[192] /Volumes/TOD/download <span class="nv">$ </span>cat /etc/passwd | cut -f1 -d <span class="s2">":"</span>
+wangjun[192] /Volumes/TOD/download <span class="nv">$ </span><span class="nb">cat</span> /etc/passwd | <span class="nb">cut</span> <span class="nt">-f1</span> <span class="nt">-d</span> <span class="s2">":"</span>
 
 <span class="c"># 查看访问量排名前10的ip地址</span>
 <span class="c"># 查看access.log文件 | 以空格取第1块内容 | 自然排序 | 去重 | 排序 | 取前10条</span>
-cat access.log | cut -f1 -d <span class="s2">" "</span> | sort | uniq -c | sort -k 1 -n -r | head -10
+<span class="nb">cat </span>access.log | <span class="nb">cut</span> <span class="nt">-f1</span> <span class="nt">-d</span> <span class="s2">" "</span> | <span class="nb">sort</span> | <span class="nb">uniq</span> <span class="nt">-c</span> | <span class="nb">sort</span> <span class="nt">-k</span> 1 <span class="nt">-n</span> <span class="nt">-r</span> | <span class="nb">head</span> <span class="nt">-10</span>
 <span class="c"># 查看访问量排名前10的url</span>
-cat access.log | cut -f4 -d <span class="s2">" "</span> | sort | uniq -c | sort -k 1 -n -r | head -10
-</code></pre></div><div class="divider"></div><blockquote id='by-nc-nd'><div> 版权所有，本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">知识共享署名-非商业性使用 3.0 未本地化版本许可协议</a>进行许可。转载请注明出处：<a href="http://www.vinny.cc//2015/11/linux-cut-command/" akt="">http://www.vinny.cc//2015/11/linux-cut-command/</a></div></blockquote><div class="divider"></div><a class="w-search active" href="#" title="forward to search">⊙</a> <a class="w-catalog active" href="javascript:void(0);" title="open to catalog">≣</a></article><div class="page-navigation"> <a class="next" href="/2015/11/angular-ng-file-upload/" title="NEXT: Angular使用ng-file-upload组件ajax上传文件">&lt;&lt;</a> <span> &middot; </span> <a class="home" href="/" title="Back to Homepage">Home</a> <span> &middot; </span> <a class="prev" href="/2015/11/linux-curl-command/" title="PREV: Linux中curl命令使用详解">&gt;&gt;</a></div></main><div class="footer"> <!-- <span class="block">Made with &hearts; using <a href="http://jekyllrb.com/">Jekyll</a> &amp; <a href="https://github.com/heiswayi/the-plain" title="The Plain theme by Heiswayi Nrird">The Plain</a> &middot; &lt;/&gt; on <a href="https://github.com/wangjunneil" title="Hosted on GitHub">GitHub</a></span> --> <span class="block"><a href="https://vinny.cc">Vinny's Blog</a> © 2017 - All Rights Reserved</span></div></body></html>
+<span class="nb">cat </span>access.log | <span class="nb">cut</span> <span class="nt">-f4</span> <span class="nt">-d</span> <span class="s2">" "</span> | <span class="nb">sort</span> | <span class="nb">uniq</span> <span class="nt">-c</span> | <span class="nb">sort</span> <span class="nt">-k</span> 1 <span class="nt">-n</span> <span class="nt">-r</span> | <span class="nb">head</span> <span class="nt">-10</span>
+</code></pre></div></div><div class="divider"></div><blockquote id='by-nc-nd'><div> 版权所有，本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">知识共享署名-非商业性使用 3.0 未本地化版本许可协议</a>进行许可。转载请注明出处：<a href="http://localhost:4000//2015/11/linux-cut-command/" akt="">http://localhost:4000//2015/11/linux-cut-command/</a></div></blockquote><div class="divider"></div><a class="w-search active" href="#" title="forward to search">⊙</a> <a class="w-catalog active" href="javascript:void(0);" title="open to catalog">≣</a></article><div class="page-navigation"> <a class="next" href="/2015/11/angular-ng-file-upload/" title="NEXT: Angular使用ng-file-upload组件ajax上传文件">&lt;&lt;</a> <span> &middot; </span> <a class="home" href="/" title="Back to Homepage">Home</a> <span> &middot; </span> <a class="prev" href="/2015/11/linux-curl-command/" title="PREV: Linux中curl命令使用详解">&gt;&gt;</a></div></main><div class="footer"> <!-- <span class="block">Made with &hearts; using <a href="http://jekyllrb.com/">Jekyll</a> &amp; <a href="https://github.com/heiswayi/the-plain" title="The Plain theme by Heiswayi Nrird">The Plain</a> &middot; &lt;/&gt; on <a href="https://github.com/wangjunneil" title="Hosted on GitHub">GitHub</a></span> --> <span class="block"><a href="https://vinny.cc">Vinny's Blog</a> © 2018 - All Rights Reserved</span></div></body></html>

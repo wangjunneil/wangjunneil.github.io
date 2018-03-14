@@ -1,0 +1,11 @@
+---
+layout: page
+title: Post Category
+permalink: /categories/
+---
+
+{% for category in site.categories %}
+  <div class='category clearfix' onclick="location.href='{{ category[0] }}'">
+    <a href='{{ category[0] }}'>○ {{ category[0] }}</a>
+  </div>
+{% endfor %}

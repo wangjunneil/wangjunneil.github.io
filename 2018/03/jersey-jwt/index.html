@@ -1,0 +1,199 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="baidu-site-verification" content="gDf3P6sfyW" /><meta name="360-site-verification" content="0c91ee58977e5924d92896a89289b668" /><meta name="sogou_site_verification" content="jHNtHqKt34"/><meta name="google-site-verification" content="An2eGWQakKFcIZ1YuwZSilNuSYlfHs1zH0Hr-OMW6oQ" /><title>使用jersey实现jwt认证</title><meta name="description" content=""><meta name="keywords" content="jersey,jwt"><link rel="icon" href="/assets/favicon.ico"><link rel="apple-touch-icon" href="/assets/touch-icon.png"><link rel="stylesheet" href="/assets/core.css"><link rel="canonical" href="/2018/03/jersey-jwt/"><link rel="alternate" type="application/atom+xml" title="Vinny Wong's Blog" href="/feed.xml" /></head><body> <!-- search --><div class="searchform"> <label class="mk">$> </label> <input type="text" id="keyword"/> <a href="javascript:void(0);" class="clear"></a><ul class="suggest"></ul></div><script src="//lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script> <script src="/assets/main.js"></script><nav class="header-nav"> <a class="page-link" href="/">HOME</a> / <a class="page-link" href="/categories/">CATEGORY</a> / <a class="page-link" href="/feed.xml">FEED</a> / <a class="page-link" href="/about/">ABOUT</a></nav><main> <noscript><style> article .footnotes { display: block; }</style></noscript><article><div class="center"><h1>使用jersey实现jwt认证</h1><time>2018-03-14</time></div><div class="divider"></div><ul id="markdown-toc"><li><a href="#1-授权流程" id="markdown-toc-1-授权流程">1. 授权流程</a></li><li><a href="#2-实现方式" id="markdown-toc-2-实现方式">2. 实现方式</a><ul><li><a href="#21-使用maven创建webapp工程" id="markdown-toc-21-使用maven创建webapp工程">2.1 使用maven创建webapp工程</a></li><li><a href="#22-maven的pomxml添加相关依赖" id="markdown-toc-22-maven的pomxml添加相关依赖">2.2 maven的pom.xml添加相关依赖</a></li><li><a href="#23-在webxml中配置jersey" id="markdown-toc-23-在webxml中配置jersey">2.3 在web.xml中配置jersey</a></li><li><a href="#24-编写获取token的rest服务" id="markdown-toc-24-编写获取token的rest服务">2.4 编写获取token的rest服务</a></li><li><a href="#25-编写拦截器对业务资源进行授权拦截" id="markdown-toc-25-编写拦截器对业务资源进行授权拦截">2.5 编写拦截器对业务资源进行授权拦截</a></li><li><a href="#26-业务资源的rest实现" id="markdown-toc-26-业务资源的rest实现">2.6 业务资源的rest实现</a></li></ul></li></ul><hr /><p>使用maven创建一个普通的webapp工程，restful方面使用实现了JAX-RS的<strong>jersey</strong>库，jwt授权实现使用<strong>jjwt</strong>(<a href="https://github.com/jwtk/jjwt">https://github.com/jwtk/jjwt</a>)。</p><ul><li><strong>jersey</strong>，<a href="https://jersey.github.io">https://jersey.github.io/</a></li><li><strong>jwt</strong>，<a href="https://jwt.io">https://jwt.io/</a></li></ul><h2 id="1-授权流程">1. 授权流程</h2><p><img src="http://ohdpyqlwy.bkt.clouddn.com/JWT_tokens_EN.png" alt="jwt" /></p><h2 id="2-实现方式">2. 实现方式</h2><h3 id="21-使用maven创建webapp工程">2.1 使用maven创建webapp工程</h3><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>mvn archetype:generate
+</code></pre></div></div><h3 id="22-maven的pomxml添加相关依赖">2.2 maven的pom.xml添加相关依赖</h3><div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;dependency&gt;</span> <span class="c">&lt;!-- jersey --&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.glassfish.jersey.containers<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>jersey-container-servlet<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>2.17<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+<span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.glassfish.jersey.core<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>jersey-client<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>2.17<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+<span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.glassfish.jersey.media<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>jersey-media-json-jackson<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>2.17<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+
+<span class="nt">&lt;dependency&gt;</span> <span class="c">&lt;!-- jwt --&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>io.jsonwebtoken<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>jjwt<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>0.7.0<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div></div><h3 id="23-在webxml中配置jersey">2.3 在web.xml中配置jersey</h3><div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;servlet&gt;</span>
+    <span class="nt">&lt;servlet-name&gt;</span>jersey-restful<span class="nt">&lt;/servlet-name&gt;</span>
+    <span class="nt">&lt;servlet-class&gt;</span>org.glassfish.jersey.servlet.ServletContainer<span class="nt">&lt;/servlet-class&gt;</span>
+    <span class="nt">&lt;init-param&gt;</span>
+        <span class="nt">&lt;param-name&gt;</span>jersey.config.server.provider.packages<span class="nt">&lt;/param-name&gt;</span>
+        <span class="nt">&lt;param-value&gt;</span>cc.vinny.jersey<span class="nt">&lt;/param-value&gt;</span> <span class="c">&lt;!-- restful实现的package --&gt;</span>
+    <span class="nt">&lt;/init-param&gt;</span>
+    <span class="nt">&lt;load-on-startup&gt;</span>1<span class="nt">&lt;/load-on-startup&gt;</span>
+<span class="nt">&lt;/servlet&gt;</span>
+<span class="nt">&lt;servlet-mapping&gt;</span>
+    <span class="nt">&lt;servlet-name&gt;</span>jersey-restful<span class="nt">&lt;/servlet-name&gt;</span>
+    <span class="nt">&lt;url-pattern&gt;</span>/rest/*<span class="nt">&lt;/url-pattern&gt;</span> <span class="c">&lt;!-- restful的rootpath --&gt;</span>
+<span class="nt">&lt;/servlet-mapping&gt;</span>
+</code></pre></div></div><h3 id="24-编写获取token的rest服务">2.4 编写获取token的rest服务</h3><p><code class="highlighter-rouge">AuthenticationResource.java</code> 是一个标准的rest实现类，其中<code class="highlighter-rouge">POST /login</code>方法根据输入的用户名、密码生成授权jwt的token值。</p><div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="n">cc</span><span class="o">.</span><span class="na">vinny</span><span class="o">.</span><span class="na">jersey</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">io.jsonwebtoken.Jwts</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.jsonwebtoken.SignatureAlgorithm</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.ws.rs.POST</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.ws.rs.Path</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.ws.rs.Produces</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.ws.rs.core.MediaType</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.ws.rs.core.Response</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Date</span><span class="o">;</span>
+
+<span class="nd">@Path</span><span class="o">(</span><span class="s">"authentication"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">AuthenticationResource</span> <span class="o">{</span>
+
+    <span class="nd">@POST</span>
+    <span class="nd">@Path</span><span class="o">(</span><span class="s">"/login"</span><span class="o">)</span>
+    <span class="nd">@Produces</span><span class="o">(</span><span class="n">MediaType</span><span class="o">.</span><span class="na">APPLICATION_JSON</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="n">Response</span> <span class="nf">authLogin</span><span class="o">(</span><span class="n">User</span> <span class="n">user</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">String</span> <span class="n">username</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="na">getUsername</span><span class="o">();</span>
+        <span class="n">String</span> <span class="n">password</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="na">getPassword</span><span class="o">();</span>
+
+        <span class="c1">// TODO 进行授权登录验证操作，这里做示例</span>
+        <span class="k">if</span> <span class="o">(</span><span class="s">"admin"</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">username</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="s">"admin"</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">password</span><span class="o">))</span> <span class="o">{</span>
+            <span class="kt">long</span> <span class="n">currentTimeMillis</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">();</span>
+            <span class="n">Date</span> <span class="n">now</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Date</span><span class="o">(</span><span class="n">currentTimeMillis</span><span class="o">);</span>
+            <span class="n">Date</span> <span class="n">expireTime</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Date</span><span class="o">(</span><span class="n">currentTimeMillis</span> <span class="o">+</span> <span class="mi">86400000</span><span class="o">);</span>   <span class="c1">// 失效时间24小时后</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">now</span> <span class="o">+</span> <span class="s">" ~ "</span> <span class="o">+</span> <span class="n">expireTime</span><span class="o">);</span>
+
+            <span class="n">String</span> <span class="n">jwt</span> <span class="o">=</span> <span class="n">Jwts</span><span class="o">.</span><span class="na">builder</span><span class="o">()</span>
+                    <span class="o">.</span><span class="na">setId</span><span class="o">(</span><span class="s">"1"</span><span class="o">)</span> <span class="c1">// 设置版本</span>
+                    <span class="o">.</span><span class="na">setAudience</span><span class="o">(</span><span class="s">"user"</span><span class="o">)</span>    <span class="c1">// 设置角色</span>
+                    <span class="o">.</span><span class="na">signWith</span><span class="o">(</span><span class="n">SignatureAlgorithm</span><span class="o">.</span><span class="na">HS256</span><span class="o">,</span> <span class="s">"THIS_SECURITY_KEY"</span><span class="o">)</span>    <span class="c1">// 设置加密类型及密钥</span>
+                    <span class="o">.</span><span class="na">setSubject</span><span class="o">(</span><span class="n">username</span><span class="o">)</span>   <span class="c1">// 设置标题</span>
+                    <span class="o">.</span><span class="na">setIssuedAt</span><span class="o">(</span><span class="n">now</span><span class="o">)</span>       <span class="c1">// 设置签发时间</span>
+                    <span class="o">.</span><span class="na">setExpiration</span><span class="o">(</span><span class="n">expireTime</span><span class="o">)</span>  <span class="c1">// 设置过期时间</span>
+                    <span class="o">.</span><span class="na">claim</span><span class="o">(</span><span class="s">"email"</span><span class="o">,</span> <span class="s">"abc@gmail.com"</span><span class="o">)</span>    <span class="c1">// 可以自定义属性</span>
+                    <span class="o">.</span><span class="na">compact</span><span class="o">();</span>
+
+            <span class="k">return</span> <span class="n">Response</span><span class="o">.</span><span class="na">status</span><span class="o">(</span><span class="n">Response</span><span class="o">.</span><span class="na">Status</span><span class="o">.</span><span class="na">CREATED</span><span class="o">).</span><span class="na">entity</span><span class="o">(</span><span class="s">"{\"jwt\":\""</span> <span class="o">+</span> <span class="n">jwt</span> <span class="o">+</span> <span class="s">"\"}"</span><span class="o">).</span><span class="na">build</span><span class="o">();</span>
+        <span class="o">}</span>
+
+        <span class="k">return</span> <span class="n">Response</span><span class="o">.</span><span class="na">status</span><span class="o">(</span><span class="n">Response</span><span class="o">.</span><span class="na">Status</span><span class="o">.</span><span class="na">UNAUTHORIZED</span><span class="o">).</span><span class="na">build</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div><p>客户端进行鉴权操作，得到jwt的token值</p><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-X</span> POST <span class="nt">-H</span> <span class="s2">"Content-Type: application/json"</span> http://localhost:8080/web/rest/authentication/login <span class="nt">-d</span> <span class="s1">'
+{
+        "username" : "admin",
+        "password" : "admin"
+}'</span>
+</code></pre></div></div><h3 id="25-编写拦截器对业务资源进行授权拦截">2.5 编写拦截器对业务资源进行授权拦截</h3><p><code class="highlighter-rouge">ResourceFilter.java</code>对所有请求进行授权拦截，在请求头中是否包含<code class="highlighter-rouge">Authorization</code>的验证，以判断该请求的合法性。</p><div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="n">cc</span><span class="o">.</span><span class="na">vinny</span><span class="o">.</span><span class="na">jersey</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">io.jsonwebtoken.Claims</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.jsonwebtoken.ExpiredJwtException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.jsonwebtoken.Jwts</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.glassfish.jersey.server.ContainerRequest</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">javax.annotation.Priority</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.ws.rs.Priorities</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.ws.rs.container.ContainerRequestContext</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.ws.rs.container.ContainerRequestFilter</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.ws.rs.core.Response</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.ws.rs.ext.Provider</span><span class="o">;</span>
+
+<span class="nd">@Provider</span>
+<span class="nd">@Priority</span><span class="o">(</span><span class="n">Priorities</span><span class="o">.</span><span class="na">AUTHENTICATION</span><span class="o">)</span>    <span class="c1">// 过滤器的最高优先级</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ResourceFilter</span> <span class="kd">implements</span> <span class="n">ContainerRequestFilter</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">filter</span><span class="o">(</span><span class="n">ContainerRequestContext</span> <span class="n">ctx</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">String</span> <span class="n">method</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="na">getMethod</span><span class="o">().</span><span class="na">toLowerCase</span><span class="o">();</span>
+        <span class="n">String</span> <span class="n">path</span> <span class="o">=</span> <span class="o">((</span><span class="n">ContainerRequest</span><span class="o">)</span> <span class="n">ctx</span><span class="o">).</span><span class="na">getPath</span><span class="o">(</span><span class="kc">true</span><span class="o">).</span><span class="na">toLowerCase</span><span class="o">();</span>
+        <span class="c1">// 过滤非验证资源，如授权登录、注册等静态资源</span>
+        <span class="k">if</span> <span class="o">(</span><span class="s">"post"</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">method</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="s">"authentication/login"</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">path</span><span class="o">))</span> <span class="o">{</span>
+            <span class="c1">// ctx.setSecurityContext(new SecurityContextAuthorizer(uriInfo,new AuthorPricinple(name), new String[]{"user"}));</span>
+            <span class="k">return</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="n">Response</span> <span class="n">response</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="kd">final</span> <span class="n">String</span> <span class="n">authHeader</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="na">getHeaderString</span><span class="o">(</span><span class="s">"Authorization"</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">authHeader</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="o">!</span><span class="n">authHeader</span><span class="o">.</span><span class="na">startsWith</span><span class="o">(</span><span class="s">"Bearer "</span><span class="o">))</span> <span class="o">{</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">Response</span><span class="o">.</span><span class="na">status</span><span class="o">(</span><span class="n">Response</span><span class="o">.</span><span class="na">Status</span><span class="o">.</span><span class="na">UNAUTHORIZED</span><span class="o">)</span>
+                    <span class="o">.</span><span class="na">entity</span><span class="o">(</span><span class="s">"Missing or invalid Authorization header"</span><span class="o">).</span><span class="na">build</span><span class="o">();</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="kd">final</span> <span class="n">String</span> <span class="n">token</span> <span class="o">=</span> <span class="n">authHeader</span><span class="o">.</span><span class="na">substring</span><span class="o">(</span><span class="mi">7</span><span class="o">);</span>
+            <span class="k">try</span> <span class="o">{</span>
+                <span class="n">Claims</span> <span class="n">jwts</span> <span class="o">=</span> <span class="n">Jwts</span><span class="o">.</span><span class="na">parser</span><span class="o">()</span>
+                        <span class="o">.</span><span class="na">setSigningKey</span><span class="o">(</span><span class="s">"THIS_SECURITY_KEY"</span><span class="o">)</span>
+                        <span class="o">.</span><span class="na">parseClaimsJws</span><span class="o">(</span><span class="n">token</span><span class="o">)</span>
+                        <span class="o">.</span><span class="na">getBody</span><span class="o">();</span>
+
+                <span class="c1">// 根据username查询是否存在此用户</span>
+                <span class="c1">// String username = jwts.getSubject();</span>
+                <span class="c1">// 判断token版本是否一致</span>
+                <span class="c1">// String version = jwts.getId();</span>
+            <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">ExpiredJwtException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">response</span> <span class="o">=</span> <span class="n">Response</span><span class="o">.</span><span class="na">status</span><span class="o">(</span><span class="n">Response</span><span class="o">.</span><span class="na">Status</span><span class="o">.</span><span class="na">FORBIDDEN</span><span class="o">).</span><span class="na">entity</span><span class="o">(</span><span class="s">"Token is expired"</span><span class="o">).</span><span class="na">build</span><span class="o">();</span>
+            <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">response</span> <span class="o">=</span> <span class="n">Response</span><span class="o">.</span><span class="na">status</span><span class="o">(</span><span class="n">Response</span><span class="o">.</span><span class="na">Status</span><span class="o">.</span><span class="na">FORBIDDEN</span><span class="o">).</span><span class="na">entity</span><span class="o">(</span><span class="s">"Token is invalid"</span><span class="o">).</span><span class="na">build</span><span class="o">();</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+
+        <span class="n">ctx</span><span class="o">.</span><span class="na">abortWith</span><span class="o">(</span><span class="n">response</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div><h3 id="26-业务资源的rest实现">2.6 业务资源的rest实现</h3><p><code class="highlighter-rouge">UserResource.java</code>类用于针对普通资源的CRUD操作，对于此类请求，会被<code class="highlighter-rouge">ResourceFilter.java</code>拦截，只有jwt的token符合要求才允许客户端访问资源。</p><div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="n">cc</span><span class="o">.</span><span class="na">vinny</span><span class="o">.</span><span class="na">jersey</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">javax.ws.rs.*</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.ws.rs.core.MediaType</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Arrays</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
+
+<span class="nd">@Path</span><span class="o">(</span><span class="s">"user"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">UserResource</span> <span class="o">{</span>
+
+    <span class="nd">@GET</span>
+    <span class="nd">@Path</span><span class="o">(</span><span class="s">"/list"</span><span class="o">)</span>
+    <span class="nd">@Produces</span><span class="o">(</span><span class="n">MediaType</span><span class="o">.</span><span class="na">APPLICATION_JSON</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span> <span class="nf">listUsers</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">User</span> <span class="o">[]</span> <span class="n">users</span> <span class="o">=</span> <span class="k">new</span> <span class="n">User</span><span class="o">[]</span> <span class="o">{</span>
+            <span class="k">new</span> <span class="nf">User</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">"john"</span><span class="o">,</span> <span class="s">"123321"</span><span class="o">),</span>
+            <span class="k">new</span> <span class="nf">User</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="s">"smith"</span><span class="o">,</span> <span class="s">"000000"</span><span class="o">)</span>
+        <span class="o">};</span>
+        <span class="k">return</span> <span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="n">users</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@DELETE</span>
+    <span class="nd">@Path</span><span class="o">(</span><span class="s">"/{userId}"</span><span class="o">)</span>
+    <span class="nd">@Produces</span><span class="o">(</span><span class="n">MediaType</span><span class="o">.</span><span class="na">APPLICATION_JSON</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">deleteUser</span><span class="o">(</span><span class="nd">@PathParam</span><span class="o">(</span><span class="s">"userId"</span><span class="o">)</span> <span class="n">String</span> <span class="n">userId</span><span class="o">)</span> <span class="o">{</span> <span class="nl">http:</span><span class="c1">//localhost:8080/web/rest/user/1</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">userId</span><span class="o">);</span>
+        <span class="k">return</span> <span class="s">"{\"status\":0}"</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@GET</span>
+    <span class="nd">@Path</span><span class="o">(</span><span class="s">"/{userId}"</span><span class="o">)</span>
+    <span class="nd">@Produces</span><span class="o">(</span><span class="n">MediaType</span><span class="o">.</span><span class="na">APPLICATION_JSON</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="n">User</span> <span class="nf">getUser</span><span class="o">(</span><span class="nd">@PathParam</span><span class="o">(</span><span class="s">"userId"</span><span class="o">)</span> <span class="kt">int</span> <span class="n">userId</span><span class="o">)</span> <span class="o">{</span> <span class="nl">http:</span><span class="c1">//localhost:8080/web/rest/user/1</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">User</span><span class="o">(</span><span class="n">userId</span><span class="o">,</span> <span class="s">"john"</span><span class="o">,</span> <span class="s">"123321"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@POST</span>
+    <span class="nd">@Path</span><span class="o">(</span><span class="s">"/create"</span><span class="o">)</span>
+    <span class="nd">@Produces</span><span class="o">(</span><span class="n">MediaType</span><span class="o">.</span><span class="na">APPLICATION_JSON</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="n">User</span> <span class="nf">createUser</span><span class="o">(</span><span class="n">User</span> <span class="n">user</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">User</span><span class="o">(</span><span class="n">user</span><span class="o">.</span><span class="na">getUserId</span><span class="o">(),</span> <span class="n">user</span><span class="o">.</span><span class="na">getUsername</span><span class="o">(),</span> <span class="n">user</span><span class="o">.</span><span class="na">getPassword</span><span class="o">());</span>
+    <span class="o">}</span>
+
+    <span class="nd">@PUT</span>
+    <span class="nd">@Path</span><span class="o">(</span><span class="s">"/update"</span><span class="o">)</span>
+    <span class="nd">@Produces</span><span class="o">(</span><span class="n">MediaType</span><span class="o">.</span><span class="na">APPLICATION_JSON</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="n">User</span> <span class="nf">updateUser</span><span class="o">(</span><span class="n">User</span> <span class="n">user</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">User</span><span class="o">(</span><span class="n">user</span><span class="o">.</span><span class="na">getUserId</span><span class="o">(),</span> <span class="n">user</span><span class="o">.</span><span class="na">getUsername</span><span class="o">(),</span> <span class="n">user</span><span class="o">.</span><span class="na">getPassword</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div><p>下面是模拟客户端对业务资源请求的访问</p><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-X</span> GET <span class="nt">-H</span> <span class="s2">"Authorization: Bearer xxx.xxx.xxxxxxx"</span> http://localhost:8080/web/rest/user/list
+
+<span class="nv">$ </span>curl <span class="nt">-X</span> DELETE <span class="nt">-H</span> <span class="s2">"Authorization: Bearer xxx.xxx.xxxxxxx"</span> http://localhost:8080/web/rest/user/1
+
+<span class="nv">$ </span>curl <span class="nt">-X</span> POST <span class="nt">-H</span> <span class="s2">"Content-Type: application/json"</span> <span class="nt">-H</span> <span class="s2">"Authorization: Bearer v"</span> http://localhost:8080/web/rest/user/create <span class="nt">-d</span> <span class="s1">'
+{
+"userId" : 3,
+"username" : "wangjun",
+"password" : "123321"
+}'</span>
+</code></pre></div></div><div class="divider"></div><blockquote id='by-nc-nd'><div> 版权所有，本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">知识共享署名-非商业性使用 3.0 未本地化版本许可协议</a>进行许可。转载请注明出处：<a href="http://localhost:4000//2018/03/jersey-jwt/" akt="">http://localhost:4000//2018/03/jersey-jwt/</a></div></blockquote><div class="divider"></div><a class="w-search active" href="#" title="forward to search">⊙</a> <a class="w-catalog active" href="javascript:void(0);" title="open to catalog">≣</a></article><div class="page-navigation"> <a class="home" href="/" title="Back to Homepage">Home</a> <span> &middot; </span> <a class="prev" href="/2017/11/u-link-remote-vulnerability/" title="PREV: 通过U盘使用Link漏洞进行攻击">&gt;&gt;</a></div></main><!--<div class="footer"> --> <!-- <span class="block">Made with &hearts; using <a href="http://jekyllrb.com/">Jekyll</a> &amp; <a href="https://github.com/heiswayi/the-plain" title="The Plain theme by Heiswayi Nrird">The Plain</a> &middot; &lt;/&gt; on <a href="https://github.com/wangjunneil" title="Hosted on GitHub">GitHub</a></span> --> <!-- <span class="block"><a href="https://vinny.cc">Vinny's Blog</a> © 2018 - All Rights Reserved</span></div>--></body></html>

@@ -96,8 +96,8 @@ span[data-note] {
       }
 }
 .searchcommand {
-    .mk {display:inline;padding: 2px;}
-    #keyword {padding-left: 85px;width: 85%;font-weight: 800;font-size: 13px;background-color: #000;color: #00fb00;}
+    .mk {display:inline;padding: 4px;}
+    #keyword {padding-left: 50px;width: 90%;font-weight: 800;font-size: 13px;background-color: #000;color: #00fb00;}
 
 }
 .w-search {
@@ -149,7 +149,7 @@ span[data-note] {
     label {
     display:none;
         position: absolute;
-width: 70px;
+width: 30px;
 background-color: #555;
 text-align: center;
 margin-left: 3px;
@@ -606,7 +606,7 @@ div.highlighter-rouge {
   pre,blockquote {background-color: #393939;}
   // 目录
   #markdown-toc {background-color: #393939;color: #9b9b9b;}
-
+background: none;
   font-weight: bold;
     background-color: #000;
     color: #FFF;

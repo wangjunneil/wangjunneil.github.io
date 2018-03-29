@@ -1,0 +1,117 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="baidu-site-verification" content="gDf3P6sfyW" /><meta name="360-site-verification" content="0c91ee58977e5924d92896a89289b668" /><meta name="sogou_site_verification" content="jHNtHqKt34"/><meta name="google-site-verification" content="An2eGWQakKFcIZ1YuwZSilNuSYlfHs1zH0Hr-OMW6oQ" /><title>Git-flow最佳实践方法</title><meta name="description" content=""><meta name="keywords" content="git,gitflow"><link rel="icon" href="/assets/favicon.ico"><link rel="apple-touch-icon" href="/assets/touch-icon.png"><link rel="stylesheet" href="/assets/core.css"><link rel="canonical" href="/2018/03/git-flow/"><link rel="alternate" type="application/atom+xml" title="Vinny Wong's Blog" href="/feed.xml" /></head><body> <!-- search --><div class="searchform"> <label class="mk">$> </label> <input type="text" id="keyword"/> <a href="javascript:void(0);" class="clear"></a><ul class="suggest"></ul></div><script src="//lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script> <script src="/assets/main.js"></script><nav class="header-nav"> <a class="page-link" href="/">HOME</a> / <a class="page-link" href="/categories/">CATEGORY</a> / <a class="page-link" href="/feed.xml">FEED</a> / <a class="page-link" href="/about/">ABOUT</a></nav><main> <noscript><style> article .footnotes { display: block; }</style></noscript><article><div class="center"><h1>Git-flow最佳实践方法</h1><time>2018-03-28</time></div><div class="divider"></div><ul id="markdown-toc"><li><a href="#1-原则" id="markdown-toc-1-原则">1. 原则</a></li><li><a href="#2-操作步骤" id="markdown-toc-2-操作步骤">2. 操作步骤</a><ul><li><a href="#21-初始阶段" id="markdown-toc-21-初始阶段">2.1 初始阶段</a><ul><li><a href="#211-主要的步骤" id="markdown-toc-211-主要的步骤">2.1.1 主要的步骤</a></li></ul></li><li><a href="#22-开发阶段" id="markdown-toc-22-开发阶段">2.2 开发阶段</a><ul><li><a href="#221-新功能开发" id="markdown-toc-221-新功能开发">2.2.1 新功能开发</a></li><li><a href="#222-本地编码提交" id="markdown-toc-222-本地编码提交">2.2.2 本地编码提交</a></li><li><a href="#223-合并开发分支" id="markdown-toc-223-合并开发分支">2.2.3 合并开发分支</a></li><li><a href="#224-发布release分支" id="markdown-toc-224-发布release分支">2.2.4 发布release分支</a></li><li><a href="#225-合并到主分支上" id="markdown-toc-225-合并到主分支上">2.2.5 合并到主分支上</a></li><li><a href="#226-打标签正式发布" id="markdown-toc-226-打标签正式发布">2.2.6 打标签正式发布</a></li></ul></li><li><a href="#23-上线阶段" id="markdown-toc-23-上线阶段">2.3 上线阶段</a><ul><li><a href="#231-创建hotfix分支" id="markdown-toc-231-创建hotfix分支">2.3.1 创建hotfix分支</a></li><li><a href="#232-合并到主分支中" id="markdown-toc-232-合并到主分支中">2.3.2 合并到主分支中</a></li><li><a href="#233-主分支打标签发布" id="markdown-toc-233-主分支打标签发布">2.3.3 主分支打标签发布</a></li></ul></li></ul></li><li><a href="#附录a-分支命名规范" id="markdown-toc-附录a-分支命名规范">附录A 分支命名规范</a><ul><li><a href="#格式规定" id="markdown-toc-格式规定">格式规定</a></li><li><a href="#格式含义" id="markdown-toc-格式含义">格式含义</a></li></ul></li><li><a href="#附录b-提交描述规范" id="markdown-toc-附录b-提交描述规范">附录B 提交描述规范</a><ul><li><a href="#header" id="markdown-toc-header">Header</a></li><li><a href="#body" id="markdown-toc-body">Body</a></li><li><a href="#footer" id="markdown-toc-footer">Footer</a></li></ul></li><li><a href="#附录c-标签命名规范" id="markdown-toc-附录c-标签命名规范">附录C 标签命名规范</a><ul><li><a href="#tag命名规范" id="markdown-toc-tag命名规范">Tag命名规范</a></li><li><a href="#希腊字母版本号" id="markdown-toc-希腊字母版本号">希腊字母版本号</a></li></ul></li><li><a href="#附录d-git-flow工具" id="markdown-toc-附录d-git-flow工具">附录D Git-flow工具</a><ul><li><a href="#安装方式" id="markdown-toc-安装方式">安装方式</a></li><li><a href="#使用步骤" id="markdown-toc-使用步骤">使用步骤</a></li></ul></li></ul><hr /><h2 id="1-原则">1. 原则</h2><ul><li><p><strong>master</strong> 为保护分支，存储正式版本的发布历史，是最稳定的版本，禁止在此分支中进行代码修改和版本提交，所有的提交应该都是基于tag的。</p></li><li><p><strong>develop</strong> 为功能集成分支，所有的功能开发都应该从此分支中checkout，某些时候develop分支的内容应大于master主分支。</p></li></ul><h2 id="2-操作步骤">2. 操作步骤</h2><h3 id="21-初始阶段">2.1 初始阶段</h3><p>项目刚开始时，核心开发人员在本地搭建好基础架构，保证基本运行。此时应初始化git仓库，并进行远程仓库的关联，master分支自动创建，后基于master分支创建好develop分支。</p><h4 id="211-主要的步骤">2.1.1 主要的步骤</h4><ul><li>在远程仓库创建好相关的issue类型</li><li>使用额外的工具强制进行规范化约束</li><li>创建好基本的两个分支master和develop</li></ul><p><strong>为提交信息做规范化约束，进入工程根目录执行以下命令</strong></p><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>npm init
+
+<span class="c"># 所有的"git commit"全部使用"git cz"的方式进行提交</span>
+<span class="nv">$ </span>npm <span class="nb">install</span> <span class="nt">-g</span> commitizen
+<span class="c"># 使此工程的提交格式以angular的范式进行约束</span>
+<span class="nv">$ </span>commitizen init cz-conventional-changelog <span class="nt">--save</span> <span class="nt">--save-exact</span>
+
+<span class="c"># 安装生成CHANGELOG的cli工具，开发人员可以选择不安装，配置管理人员需要进行安装</span>
+<span class="nv">$ </span>npm <span class="nb">install</span> <span class="nt">-g</span> conventional-changelog-cli
+</code></pre></div></div><p><strong>本地工程结构创建，初始化本地git并关联远程仓库</strong></p><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"# HelloWorld"</span> <span class="o">&gt;&gt;</span> README.md
+<span class="nv">$ </span>git init
+<span class="nv">$ </span>git add <span class="nt">-all</span>
+<span class="nv">$ </span>git commit <span class="nt">-m</span> <span class="s2">"初始版本提交"</span>
+<span class="nv">$ </span>git remote add origin git@github.com:wangjunneil/HelloWorld.git
+<span class="nv">$ </span>git push <span class="nt">-u</span> origin master
+</code></pre></div></div><p>执行完上述命令后，默认会在远程仓库中创建主干 <em>master</em> 分支。</p><p><strong>基于主干分支创建开发分支develop</strong></p><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>git branch develop
+<span class="nv">$ </span>git push <span class="nt">-u</span> origin develop
+
+<span class="nv">$ </span>git branch <span class="c"># 查看本地分支</span>
+<span class="nv">$ </span>git branch <span class="nt">-a</span> <span class="c"># 查看本地和远程分支</span>
+<span class="nv">$ </span>git branch <span class="nt">-r</span> <span class="c"># 查看远程分支</span>
+
+</code></pre></div></div><p><em>develop</em> 分支包含了项目的全部历史，此时远程仓库应该有 <em>master</em> 和 <em>develop</em> 两个最主要的分支。</p><h3 id="22-开发阶段">2.2 开发阶段</h3><p>开发人员从git中clone出项目源码，创建好develop分支的跟踪分支，准备进行功能开发。</p><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>git clone git@github.com:wangjunneil/HelloWorld.git
+<span class="nv">$ </span>git checkout <span class="nt">-b</span> develop origin/develop
+</code></pre></div></div><h4 id="221-新功能开发">2.2.1 新功能开发</h4><p>所有新功能的开发都需要在develop分支中checkout一个功能分支feature，功能的分支的命名规范见 <strong>附录A 分支命名规范</strong>。</p><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>git checkout <span class="nt">-b</span> feature_20170811_personal develop
+</code></pre></div></div><h4 id="222-本地编码提交">2.2.2 本地编码提交</h4><p>开发人员每次提交都应该保证功能单元的完成，功能的开发一直处于本地git环境中，不push远程仓库。特殊情况是此功能分支由两人开发或者处于交接状态，应该将功能分支push到远程仓库中。</p><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>git status
+<span class="nv">$ </span>git add XXX-FILES
+<span class="nv">$ </span>git cz <span class="c"># 安装了commitizen</span>
+
+<span class="c"># 可选，查看提交记录</span>
+<span class="nv">$ </span>git log <span class="nt">--pretty</span><span class="o">=</span>format:<span class="s2">"%ad || %h || %s || Author:%an "</span> <span class="nt">--date</span><span class="o">=</span>short | <span class="nb">sort</span> <span class="nt">-r</span>
+<span class="nv">$ </span>git log v1.0.0..v2.0.1 <span class="nt">--pretty</span><span class="o">=</span>format:<span class="s2">"%ad || %h || %s || Author:%an "</span> <span class="nt">--date</span><span class="o">=</span>short | <span class="nb">sort</span> <span class="nt">-r</span>
+
+<span class="c"># 可选，将功能分支发布到版本库中</span>
+<span class="nv">$ </span>git push <span class="nt">-u</span> origin feature_20170811_personal
+</code></pre></div></div><p>虽然使用了”commitizen”工具进行了约束，但还是建议参看 <strong>附录B 提交描述格式</strong></p><h4 id="223-合并开发分支">2.2.3 合并开发分支</h4><p>当开发人员在本地git中完成了功能的开发并已经自己测试过，此时需要合并到总的开发分支上</p><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>git pull origin develop <span class="c"># 首先保证本地develop分支为最新版本</span>
+<span class="nv">$ </span>git checkout develop <span class="c"># 切换到develop分支上</span>
+<span class="nv">$ </span>git merge <span class="nt">--no-ff</span> feature_20170811_personal <span class="c"># 合并功能分支</span>
+<span class="nv">$ </span>git push origin develop <span class="c"># 提交develop分支的远程版本</span>
+
+<span class="c"># 可选，删除远程分支</span>
+<span class="nv">$ </span>git push origin <span class="nt">--delete</span> feature_20170811_personal
+</code></pre></div></div><p>开发人员完成了功能开发后，继续循环从 <strong>2.2.1 新功能开发</strong> 开始做新功能。</p><h4 id="224-发布release分支">2.2.4 发布release分支</h4><p>当develop分支汇集了足够的新功能和bug修复代码之后，项目组决定可以发布release版本进行测试了（所以release也叫做测试分支），此时从develop分支上发布release分支，用于持续集成和服务器上测试，测试包括集成测试和手动用户接受测试。对于测试中发现的问题，直接在release上修改，完成后再次部署测试。这个分支应该只做bug修复、文档生成和其他面向发布任务。</p><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>git checkout <span class="nt">-b</span> release-0.1.0 develop
+</code></pre></div></div><h4 id="225-合并到主分支上">2.2.5 合并到主分支上</h4><p>当release代码通过测试后，开始进行分支合并，<strong>合并前需要做好代码评审，而非事后</strong></p><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>git checkout master
+<span class="nv">$ </span>git merge <span class="nt">--no-ff</span> release-0.1.0
+<span class="nv">$ </span>git push origin master
+
+<span class="nv">$ </span>git checkout develop
+<span class="nv">$ </span>git merge <span class="nt">--no-ff</span> release-0.1.0
+<span class="nv">$ </span>git push origin develop
+
+<span class="c"># 可选</span>
+<span class="nv">$ </span>git branch <span class="nt">-d</span> release-0.1.0
+<span class="nv">$ </span>git push origin <span class="nt">--delete</span> release-0.1.0
+</code></pre></div></div><h4 id="226-打标签正式发布">2.2.6 打标签正式发布</h4><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>git tag <span class="nt">-a</span> v0.1.0 <span class="nt">-m</span> <span class="s2">"initial public release"</span> master
+<span class="nv">$ </span>git push origin v0.1.0
+</code></pre></div></div><p>打完标签后，远程仓库中已经包含此标签的基本信息，但作为发布版本，需要清楚的描述出此版本修复了哪些问题以及增加了哪些新的功能。</p><p>此时需要生成此版本的CHANGELOG信息，将信息编辑进release note中。要生成规范的CHANGELOG信息，需要 <strong>按照标准的提交格式进行提交</strong></p><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 生成CHANGELOG明细并进行修改</span>
+<span class="nv">$ </span>conventional-changelog <span class="nt">-p</span> angular <span class="nt">-i</span> CHANGELOG.md <span class="nt">-w</span> <span class="nt">-r</span> 0
+</code></pre></div></div><p>生成的CHANGELOG信息，作为”release note”后的效果如下图：</p><p><img src="http://ohdpyqlwy.bkt.clouddn.com/Screen%20Shot%202018-03-29%20at%201.13.27%20AM.png" alt="release-note" /></p><blockquote><p>关于标签命名规范请参看 <strong>附录C 标签命名规范</strong></p></blockquote><h3 id="23-上线阶段">2.3 上线阶段</h3><p>在线上运行的master标签版本，难免会出现bug，接受客户的ticket进行修复，直接在master分支上checkout出hotfix的维护分支，维护分支或说是热修复分支用于生成快速给产品发布版本打补丁，这是唯一从master中fork出来的分支。</p><h4 id="231-创建hotfix分支">2.3.1 创建hotfix分支</h4><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>git checkout <span class="nt">-b</span> hotfix-0.1.1 master
+</code></pre></div></div><h4 id="232-合并到主分支中">2.3.2 合并到主分支中</h4><p>完成hotfix的bug修复后，合并到master分支及develop分支（master分支存在此问题，则develop分支肯定也有）</p><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>git checkout master
+<span class="nv">$ </span>git merge <span class="nt">--no-ff</span> hotfix-0.1.1
+<span class="nv">$ </span>git push origin master
+
+<span class="nv">$ </span>git checkout develop
+<span class="nv">$ </span>git merge <span class="nt">--no-ff</span> hotfix-0.1.1
+<span class="nv">$ </span>git push origin develop
+
+<span class="nv">$ </span>git branch <span class="nt">-d</span> hotfix-0.1.1
+</code></pre></div></div><h4 id="233-主分支打标签发布">2.3.3 主分支打标签发布</h4><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git tag <span class="nt">-a</span> v0.1.1 master
+git push <span class="nt">--tags</span>
+</code></pre></div></div><h2 id="附录a-分支命名规范">附录A 分支命名规范</h2><h3 id="格式规定">格式规定</h3><p>分支类型_创建时间_分支功能，例如：feature_20180311_personal</p><h3 id="格式含义">格式含义</h3><table><thead><tr><th>分支类型</th><th>创建时间</th><th>分支功能</th></tr></thead><tbody><tr><td>新的功能（feature）<br />问题修复（hotfix）<br />功能重构（refactor）</td><td>年月日，8位有效数字</td><td>简要描述此分支的作用，不超过10字</td></tr></tbody></table><h2 id="附录b-提交描述规范">附录B 提交描述规范</h2><p>提交禁止使用<code class="highlighter-rouge">git commit -m "xxx"</code>的方式，因为这种方式不能准确描述出本地提交的目的、结果。</p><p>使用<code class="highlighter-rouge">git commit</code>方式可以以文本的方式来描述本次提交的具体信息，这对于后续追溯和问题的发现有很大的帮助。</p><p><strong>commit message格式</strong></p><p>提交信息包含三个部分，Header、Body和Footer，如下：</p><div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;type&gt;(&lt;scope&gt;): &lt;subject&gt;
+
+&lt;body&gt;
+
+&lt;footer&gt;
+</code></pre></div></div><p>其中Header是必须的，在变更范围不是很大的情况下，Body和Footer可以省略。</p><h3 id="header">Header</h3><p>Header部分只有一行，包括三个字段：type（必需）、scope（可选）和subject（必需）。</p><p><strong>(1) type</strong></p><p>type用于说明 commit 的类别，允许使用下面7个标识。</p><table><tbody><tr><td>feat</td><td>新功能（feature）</td></tr><tr><td>fix</td><td>修补的问题（bug）</td></tr><tr><td>docs</td><td>文档变更（documentation）</td></tr><tr><td>style</td><td>格式变更（不影响代码运行的变动）</td></tr><tr><td>refactor</td><td>重构（既不是新增功能，也不是修改bug）</td></tr><tr><td>test</td><td>增加测试</td></tr><tr><td>chore</td><td>构建过程或辅助工具的变更</td></tr></tbody></table><p>若type为feat和fix，则该 commit 将肯定出现在 Change log 之中。</p><p><strong>(2) scope</strong></p><p>scope用于说明 commit 影响的范围，比如数据层、控制层、视图层等等，视项目不同而不同。<u>建议项目初期定义好相关枚举</u></p><p><strong>(3) subject</strong></p><p>subject是 commit 目的的简短描述，不超过50个字符。</p><h3 id="body">Body</h3><p>Body 部分是对本次 commit 的详细描述，可以分成多行，也可以分文件描述变更明细。</p><h3 id="footer">Footer</h3><p>Footer 部分只用于两种情况。</p><p><strong>(1) 不兼容的变动</strong></p><p>如果当前代码与上一个版本不兼容，则 Footer 部分以BREAKING CHANGE开头，后面是对变动的描述、以及变动理由和迁移方法。</p><p>如下的例子：</p><div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>BREAKING CHANGE: isolate scope bindings definition has changed.
+
+    To migrate the code follow the example below:
+
+    Before:
+
+    scope: {
+      myAttr: 'attribute',
+    }
+
+    After:
+
+    scope: {
+      myAttr: '@',
+    }
+
+    The removed `inject` wasn't generaly useful for directives so there should be no code using it.
+</code></pre></div></div><p><strong>(2) 关闭issue</strong></p><p>如果当前 commit 针对某个issue，那么可以在 Footer 部分关闭这个 issue 。</p><div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>closes #214
+</code></pre></div></div><p>也可以一次关闭多个issue</p><div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Closes #123, #245, #992
+</code></pre></div></div><h2 id="附录c-标签命名规范">附录C 标签命名规范</h2><p>标签版本号包含三位数字，前缀使用”v”，如v1.2.31-alpha</p><h3 id="tag命名规范">Tag命名规范</h3><table><thead><tr><th>位数</th><th>描述</th></tr></thead><tbody><tr><td>第一位</td><td>主版本号，功能模块有较大变动，如多个模块或者整体架构有变化</td></tr><tr><td>第二位</td><td>功能有一定的增加变化，如增加了权限控制、自定义视图等</td></tr><tr><td>第三位</td><td>问题bug修改的版本，每修改一个bug增加1</td></tr><tr><td>第四位</td><td>希腊字母版本号，取值alpha、beta、rc、release</td></tr></tbody></table><h3 id="希腊字母版本号">希腊字母版本号</h3><table><tbody><tr><td><strong>alpha</strong></td><td>也叫α版，此版本主要是以实现软件功能为主，通常只在软件开发者内部交流，一般而言，该版本软件的Bug较多，需要继续修改。</td></tr><tr><td><strong>beta</strong></td><td>此版本相对于α版已经有了很大的改进，消除了严重的错误，但还是存在着一些缺陷，需要经过多次测试来进一步消除，此版本主要的修改对像是软件的UI。</td></tr><tr><td><strong>rc</strong></td><td>此版本已经相当成熟了，基本上不存在导致错误的BUG，与即将发行的正式版相差无几，测试人员基本通过的版本。</td></tr><tr><td><strong>release</strong></td><td>此版本意味着“最终版本”、“上线版本”，在前面版本的一系列测试版之后，终归会有一个正式版本，是最终交付用户使用的一个版本。</td></tr></tbody></table><h2 id="附录d-git-flow工具">附录D Git-flow工具</h2><p>可以使用工具实现git-flow流程</p><h3 id="安装方式">安装方式</h3><table><thead><tr><th>操作系统</th><th>安装方式</th></tr></thead><tbody><tr><td>OSX</td><td>brew install git-flow</td></tr><tr><td>Linux</td><td>apt-get install git-flow</td></tr><tr><td>Windows</td><td>wget -q -O - –no-check-certificate https://github.com/nvie/gitflow/raw/develop/contrib/gitflow-installer.sh | bash</td></tr><tr><td>IDEA</td><td>Git Flow Integration</td></tr></tbody></table><h3 id="使用步骤">使用步骤</h3><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 初始化</span>
+<span class="nv">$ </span>git flow init
+<span class="c"># 开始新Feature</span>
+<span class="nv">$ </span>git flow feature start MYFEATURE
+<span class="c"># Publish一个Feature(也就是push到远程)</span>
+<span class="nv">$ </span>git flow feature publish MYFEATURE
+<span class="c"># 获取Publish的Feature</span>
+<span class="nv">$ </span>git flow feature pull origin MYFEATURE
+<span class="c"># 完成一个Feature</span>
+<span class="nv">$ </span>git flow feature finish MYFEATURE
+<span class="c"># 开始一个Release</span>
+<span class="nv">$ </span>git flow release start RELEASE <span class="o">[</span>BASE]
+<span class="c"># Publish一个Release</span>
+<span class="nv">$ </span>git flow release publish RELEASE
+<span class="c"># 发布Release</span>
+<span class="nv">$ </span>git flow release finish RELEASE
+<span class="c"># 发布标签</span>
+<span class="nv">$ </span>git push <span class="nt">--tags</span>
+<span class="c"># 开始一个Hotfix</span>
+<span class="nv">$ </span>git flow hotfix start VERSION <span class="o">[</span>BASENAME]
+<span class="c"># 发布一个Hotfix </span>
+<span class="nv">$ </span>git flow hotfix finish VERSION
+</code></pre></div></div><div class="divider"></div><blockquote id='by-nc-nd'><div> 版权所有，本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">知识共享署名-非商业性使用 3.0 未本地化版本许可协议</a>进行许可。转载请注明出处：<a href="http://localhost:4000//2018/03/git-flow/" akt="">http://localhost:4000//2018/03/git-flow/</a></div></blockquote><div class="divider"></div><a class="w-search active" href="#" title="forward to search">⊙</a> <a class="w-catalog active" href="javascript:void(0);" title="open to catalog">≣</a></article><div class="page-navigation"> <a class="home" href="/" title="Back to Homepage">Home</a> <span> &middot; </span> <a class="prev" href="/2018/03/how-to-create-chrome-extension/" title="PREV: 怎样快速创建一个chrome扩展并进行发布">&gt;&gt;</a></div></main><!--<div class="footer"> --> <!-- <span class="block">Made with &hearts; using <a href="http://jekyllrb.com/">Jekyll</a> &amp; <a href="https://github.com/heiswayi/the-plain" title="The Plain theme by Heiswayi Nrird">The Plain</a> &middot; &lt;/&gt; on <a href="https://github.com/wangjunneil" title="Hosted on GitHub">GitHub</a></span> --> <!-- <span class="block"><a href="https://vinny.cc">Vinny's Blog</a> © 2018 - All Rights Reserved</span></div>--></body></html>

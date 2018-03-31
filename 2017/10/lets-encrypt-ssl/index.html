@@ -17,8 +17,8 @@ tiger.csr
 tiger.chained.crt
 tiger.com.key
 </code></pre></div></div><h2 id="配置证书安装">配置证书安装</h2><p>这里使用nginx进行证书安装的服务器</p><div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>server {
-	listen       443;
-	server_name  test.tiger.com;
+    listen       443;
+    server_name  test.tiger.com;
 
     ssl on;
     ssl_certificate tiger.chained.crt;

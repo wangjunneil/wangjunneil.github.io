@@ -8,6 +8,21 @@
         <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />  
           
             <item>  
+               <title>使用"apt-get update"签名错误"invalid signature"的处理</title>  
+               <description>
+&lt;hr /&gt;
+
+&lt;p&gt;在kali中更新执行”apt-get update”出现”&lt;strong&gt;Invalid signature for Kali Linux repositories&lt;/strong&gt;“的解决方法&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;wget &lt;span class=&quot;nt&quot;&gt;-q&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-O&lt;/span&gt; - https://archive.kali.org/archive-key.asc | apt-key add
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>  
+               <pubDate>Sat, 31 Mar 2018 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2018/03/kali-invalid-signature/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2018/03/kali-invalid-signature/</guid>  
+               </item>  
+          
+            <item>  
                <title>Git-flow最佳实践方法</title>  
                <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
   &lt;li&gt;&lt;a href=&quot;#1-原则&quot; id=&quot;markdown-toc-1-原则&quot;&gt;1. 原则&lt;/a&gt;&lt;/li&gt;
@@ -1269,51 +1284,6 @@ C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;INDOWS&amp;gt; nc &lt;span cla
                <pubDate>Sat, 11 Nov 2017 00:00:00 +0800</pubDate>  
                <link>http://localhost:4000/2017/11/netcat-general/</link>  
                <guid isPermaLink="true">http://localhost:4000/2017/11/netcat-general/</guid>  
-               </item>  
-          
-            <item>  
-               <title>使用gitbucker快速搭建git服务器</title>  
-               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#使用gitbucker快速搭建git服务器&quot; id=&quot;markdown-toc-使用gitbucker快速搭建git服务器&quot;&gt;使用gitbucker快速搭建git服务器&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#介绍&quot; id=&quot;markdown-toc-介绍&quot;&gt;介绍&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#下载使用&quot; id=&quot;markdown-toc-下载使用&quot;&gt;下载使用&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#访问地址&quot; id=&quot;markdown-toc-访问地址&quot;&gt;访问地址&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#丰富特性&quot; id=&quot;markdown-toc-丰富特性&quot;&gt;丰富特性&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h1 id=&quot;使用gitbucker快速搭建git服务器&quot;&gt;使用gitbucker快速搭建git服务器&lt;/h1&gt;
-
-&lt;h2 id=&quot;介绍&quot;&gt;介绍&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://gitbucket.github.io/&quot;&gt;Gitbucker&lt;/a&gt; 是用Scala语言编写的开源git服务器，安装和使用非常简单。适合个人或者小型团队成员使用。&lt;/p&gt;
-
-&lt;h2 id=&quot;下载使用&quot;&gt;下载使用&lt;/h2&gt;
-
-&lt;p&gt;下载地址：&lt;a href=&quot;https://github.com/gitbucket/gitbucket/releases&quot;&gt;https://github.com/gitbucket/gitbucket/releases&lt;/a&gt; (需要翻墙)&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 启动&lt;/span&gt;
-java &lt;span class=&quot;nt&quot;&gt;-jar&lt;/span&gt; gitbucket.war
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;访问地址&quot;&gt;访问地址&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;Gitbucker&lt;/strong&gt; 启动后默认的端口是8080，登录的用户名密码都是 root。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/screenshot-repository_viewer.png&quot; alt=&quot;gitbucker&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;丰富特性&quot;&gt;丰富特性&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;Gitbucker&lt;/strong&gt; 除了具备基本的git服务器功能外，还提供了强大的插件系统，允许安装更多的插件以满足更多的项目要求。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/screenshot-plugin_system.png&quot; alt=&quot;gitbucker&quot; /&gt;&lt;/p&gt;
-</description>  
-               <pubDate>Mon, 30 Oct 2017 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2017/10/quick-build-gitbucker/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2017/10/quick-build-gitbucker/</guid>  
                </item>  
           
     </channel>  

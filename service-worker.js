@@ -48,7 +48,7 @@ function onFetch(e) {
     )
 }
 
-var CACHE_VERSION = "V1.0.0";
+var CACHE_VERSION = "V1.0.1";
 var CACHE_NAME = CACHE_VERSION + ":sw-cache::";
 var URL_TO_CACHE = [
     "/",
@@ -58,6 +58,7 @@ var URL_TO_CACHE = [
     "/assets/core.css",
     "/assets/header.png",
     "/assets/offline.gif",
+    "/assets/search.png",
     "/assets/main.js",
     "/assets/hacker.jpg",
     "/assets/5-13050G31J7.gif",

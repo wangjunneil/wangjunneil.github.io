@@ -48,7 +48,7 @@ function onFetch(e) {
     )
 }
 
-var CACHE_VERSION = "V1.0.0";
+var CACHE_VERSION = "V1.0.1";
 var CACHE_NAME = CACHE_VERSION + ":sw-cache::";
 var URL_TO_CACHE = [
     "/",

@@ -1,158 +1,132 @@
-$(document).ready(function(){
-    $(function () {
-        $(window).scroll(function(){
-            if ($(window).scrollTop()>600){
-                $(".w-catalog").fadeIn(500);
-                $(".w-search").fadeIn(500);
+(function() {
+    'use strict';
 
-                var left = $("article").position().left;
-                var width = $("article").width();
-                $(".w-catalog").css('right', '10px');
-                $(".w-search").css('right', '10px');
-            }else{
-                $(".w-catalog").fadeOut(500);
-                $(".w-search").fadeOut(500);
-            }
-        });
-        $(".w-search").click(function(){
-            $('body,html').animate({scrollTop:0},200);
-            $("#keyword").focus();
-        });
-        $(".w-catalog").click(function(){
-            $("#markdown-toc").toggle();
-        });
-    });
-});
-
-hacker_mode = true;    // 黑客模式
-command_mode = false;   // 标识命令模式
-
-function suggest(posts) {
-    var keyword = $("#keyword").val();
-    var flag = false;   // 标识是否有搜索到数据
-    $(".suggest").empty();
-    $.each(posts, function(key, value) {
-        var title = value.title;
-        if (title.indexOf(keyword) != -1) {
-            var li = $("<li><a href='" + value.url + "'>"
-             + title.substring(0, title.indexOf('_')).replace(keyword, "<span class='hilight'>" + keyword + "</span>")
-             + "</a></li>");
-            $(".suggest").append(li);
-            flag = true;
-        }
-    });
-    if (!flag) {    // 没有搜索到文章
-        var li = $("<li><span>Cannot find out anything article ......</span></li>");
-        li.css("background-color", "rgb(0, 116, 54)");
-        li.css("cursor", "crosshair");
-        $(".suggest").append(li);
+    var app = {
+        search_input : document.getElementById('keyword'),
+        search_clear_btn : document.querySelector('.clear'),
+        suggest_div : document.querySelector('.suggest')        
     }
-    $(".suggest").children().first().addClass("hover");
-    $(".suggest").show();
-    $("body").addClass("hackmode");
-}
 
-$(function () {
-    $(".clear").bind("click", function () {
+    app.suggest = (posts) => {
+        let keyword = app.search_input.value;
+        let suggest = app.suggest_div;
+
+        while (suggest.firstChild)
+            suggest.removeChild(suggest.firstChild);
+
+        let suggest_posts = posts.filter((post) => post.title.indexOf(keyword) != -1);
+
+        // 没有检索到数据
+        if (suggest_posts.length == 0) {
+            var li = $("<li><span>Cannot find out anything article ......</span></li>");
+            li.css("background-color", "rgb(0, 116, 54)");
+            li.css("cursor", "crosshair");
+            $(".suggest").append(li);            
+        }
+
+        // 检索到数据
+        suggest_posts.forEach((post) => {
+            var li = $("<li><a href='" + post.url + "'>"
+                 + post.title.substring(0, post.title.indexOf('_')).replace(keyword, "<span class='hilight'>" + keyword + "</span>")
+                 + "</a></li>");
+            $(".suggest").append(li);
+        });
+
+        $(".suggest").children().first().addClass("hover");
+        $(".suggest").show();
+        $("body").addClass("hackmode");
+    }
+
+    app.clearSuggest = () => {
         $("#keyword").val('');
         $(".suggest").empty();
         $(".suggest").hide();
         $("body").removeClass("hackmode");
-    });
+    }
 
-    $("#keyword").bind("input", function () {
-        if (command_mode) {
-            return;
-        }
-
-        var keyword = $("#keyword").val();
-        if (keyword == null || keyword == "") {
+    app.toggleSearch = async () => {
+        let keyword = app.search_input.value;
+        
+        if (keyword === null || keyword === '') {
             $(".suggest").empty();
             $(".suggest").hide();
             $("body").removeClass("hackmode");
             return;
-        } else if (keyword.indexOf(":") != -1) {
-            $(".searchform").addClass("searchcommand");
-            $("#keyword").val('');
-            $("#keyword").attr("placeholder", "");
-            command_mode = true;
-            return;
-        } else {
-            if (window.sessionStorage) {
-                posts = sessionStorage.posts;
-                if (posts != null && posts != "" && posts != "undefined") {
-                    suggest(JSON.parse(posts));
-                    return;
-                }
-            }
-
-            $.getJSON("/data/index.html",function(result){
-                var posts = result.data;
-                if (posts.length != 0) {
-                    if (window.sessionStorage) {
-                        sessionStorage.posts = JSON.stringify(posts);
-                        suggest(posts);
-                    }
-                }
-            });
         }
+
+        const response = await fetch('/data/index.html', { headers : { 'Content-type' : 'application/json' } });
+        const posts = await response.json();
+        if (posts.length != 0) {
+            app.suggest(posts);
+        }
+    }
+
+    /**********************************************
+    *
+    * Event listeners for UI elements
+    *
+    **********************************************/
+
+    app.search_clear_btn.addEventListener('click', () => {
+        app.clearSuggest();
     });
 
-    $("#keyword").bind("keyup", function (evt) {
-        var k = window.event ? evt.keyCode : evt.which;
-        if (k == 38) {
-            $(".suggest li.hover").prev().addClass("hover");
-            $(".suggest li.hover").next().removeClass("hover");
-            // if (isSearchData()) {
+    // 搜索框关键字模糊搜索
+    app.search_input.addEventListener('input', () => {
+        app.toggleSearch();
+    });
+
+    app.search_input.addEventListener('keyup', (evt) => {
+        let k = window.event ? evt.keyCode : evt.which;
+        switch (k) {
+            case 40: // 上键
+                $(".suggest li.hover").next().addClass("hover");
+                $(".suggest li.hover").prev().removeClass("hover");
                 $("#keyword").val($(".suggest li.hover").text());
-            // }
-        } else if (k == 40) {
-            $(".suggest li.hover").next().addClass("hover");
-            $(".suggest li.hover").prev().removeClass("hover");
-            // if (isSearchData()) {
+                break;
+            case 38: // 下键
+                $(".suggest li.hover").prev().addClass("hover");
+                $(".suggest li.hover").next().removeClass("hover");
                 $("#keyword").val($(".suggest li.hover").text());
-            // }
-        } else if (k == 13) {
-            if (command_mode) {
-                var keyword = $("#keyword").val();
-                if (keyword == null || keyword == "")
+                break;
+            case 13: // 回车键
+                // 没有检索到文章，回车事件忽略
+                if ($(".hover span").length == 0) { 
                     return;
-                command_process();
-            // } else if (!isSearchData()) { // 没有检索到文章，回车事件忽略
-            //    return;
-            } else {
+                }
+
                 var url = $(".suggest li.hover a").attr("href");
                 $("#keyword").val('');
                 location.href = url;
-            }
-        } else if (k == 8) {
-            var keyword = $("#keyword").val();
-            if (keyword.length == "") {
-                $(".searchform").removeClass("searchcommand");
-                command_mode = false
-            }
+                break;
+            default:
+                break;
         }
     });
-});
+    
+    // 移动端头固定
+    window.addEventListener('scroll', () => {
+        let header_nav = document.querySelector('.header-nav');
+        let sticky = header_nav.offsetTop;         
+        if (window.pageYOffset >= sticky) {
+            header_nav.classList.add("sticky");
+        } else {
+            header_nav.classList.remove("sticky");
+        }
+    });
 
-function isSearchData() {
-    return $(".hover span").length == 0;
-}
+    // 注册service-worker
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', (e) => {
+            navigator.serviceWorker.register('/service-worker.js').then(registration => {
+                console.log('Service Worker registration success with scope: ', registration.scope);
+            })
+            .catch(err => {
+                console.log('Service Worker registration failed: ', err);
+            });
+        });
+    }    
 
-function command_process() {
-    var command = $("#keyword").val();
-    switch (command) {
-        case "getip":
-            getip();
-            break;
-        default:
-            $("#keyword").val('Unknown command');
-            break;
-    }
-}
-
-function getip() {
-
-}
+})();
 
 

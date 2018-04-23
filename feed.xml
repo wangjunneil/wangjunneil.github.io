@@ -4,8 +4,8 @@
         <title></title>  
         <description>王俊博客，软件改变世界！王俊博客是作者个人知识库、是记录历程回顾的笔记本、是经验教训的资源池， 旨在促进软件开发领域知识与创新的传播，为软件开发中提供帮助。更多是作者本人的经验积累。
 </description>  
-        <link>http://localhost:4000</link>  
-        <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />  
+        <link>http://www.vinny.cc</link>  
+        <atom:link href="http://www.vinny.cc/feed.xml" rel="self" type="application/rss+xml" />  
           
             <item>  
                <title>使用 apt-get update 签名错误 invalid signature 的处理</title>  
@@ -18,8 +18,8 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>  
                <pubDate>Sat, 31 Mar 2018 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2018/03/kali-invalid-signature/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2018/03/kali-invalid-signature/</guid>  
+               <link>http://www.vinny.cc/2018/03/kali-invalid-signature/</link>  
+               <guid isPermaLink="true">http://www.vinny.cc/2018/03/kali-invalid-signature/</guid>  
                </item>  
           
             <item>  
@@ -516,8 +516,8 @@ git push &lt;span class=&quot;nt&quot;&gt;--tags&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>  
                <pubDate>Wed, 28 Mar 2018 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2018/03/git-flow/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2018/03/git-flow/</guid>  
+               <link>http://www.vinny.cc/2018/03/git-flow/</link>  
+               <guid isPermaLink="true">http://www.vinny.cc/2018/03/git-flow/</guid>  
                </item>  
           
             <item>  
@@ -603,8 +603,8 @@ git push &lt;span class=&quot;nt&quot;&gt;--tags&lt;/span&gt;
 &lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/chrome_extension_4.png&quot; alt=&quot;chrome_extension_1&quot; /&gt;&lt;/p&gt;
 </description>  
                <pubDate>Sun, 18 Mar 2018 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2018/03/how-to-create-chrome-extension/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2018/03/how-to-create-chrome-extension/</guid>  
+               <link>http://www.vinny.cc/2018/03/how-to-create-chrome-extension/</link>  
+               <guid isPermaLink="true">http://www.vinny.cc/2018/03/how-to-create-chrome-extension/</guid>  
                </item>  
           
             <item>  
@@ -874,8 +874,8 @@ git push &lt;span class=&quot;nt&quot;&gt;--tags&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>  
                <pubDate>Wed, 14 Mar 2018 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2018/03/jersey-jwt/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2018/03/jersey-jwt/</guid>  
+               <link>http://www.vinny.cc/2018/03/jersey-jwt/</link>  
+               <guid isPermaLink="true">http://www.vinny.cc/2018/03/jersey-jwt/</guid>  
                </item>  
           
             <item>  
@@ -957,8 +957,8 @@ msf exploit&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;42382&lt;span class=&qu
 &lt;p&gt;将U盘插入目标windows机器中，打开U盘就会出发远程link漏洞，在Metasploit控制台中得到目标主机的shell&lt;/p&gt;
 </description>  
                <pubDate>Sun, 12 Nov 2017 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2017/11/u-link-remote-vulnerability/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2017/11/u-link-remote-vulnerability/</guid>  
+               <link>http://www.vinny.cc/2017/11/u-link-remote-vulnerability/</link>  
+               <guid isPermaLink="true">http://www.vinny.cc/2017/11/u-link-remote-vulnerability/</guid>  
                </item>  
           
             <item>  
@@ -997,8 +997,8 @@ msf exploit&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;42382&lt;span class=&qu
 &lt;p&gt;此时U盘中只会看见一个”18++”的”文件夹”，其实是伪装的脚本木马程序。&lt;/p&gt;
 </description>  
                <pubDate>Sun, 12 Nov 2017 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2017/11/u-fake-attacker/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2017/11/u-fake-attacker/</guid>  
+               <link>http://www.vinny.cc/2017/11/u-fake-attacker/</link>  
+               <guid isPermaLink="true">http://www.vinny.cc/2017/11/u-fake-attacker/</guid>  
                </item>  
           
             <item>  
@@ -1039,8 +1039,8 @@ python3 ./mimipenguin.py
 
 </description>  
                <pubDate>Sun, 12 Nov 2017 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2017/11/dump-password-linux/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2017/11/dump-password-linux/</guid>  
+               <link>http://www.vinny.cc/2017/11/dump-password-linux/</link>  
+               <guid isPermaLink="true">http://www.vinny.cc/2017/11/dump-password-linux/</guid>  
                </item>  
           
             <item>  
@@ -1133,8 +1133,8 @@ python3 ./mimipenguin.py
 &lt;p&gt;在windows登录界面右下角，点击辅助程序即可打开windows命令行程序，使用命令&lt;code class=&quot;highlighter-rouge&quot;&gt;net user&lt;/code&gt;查看当前用户，&lt;code class=&quot;highlighter-rouge&quot;&gt;net user vinny *&lt;/code&gt;创建一个不带密码的用户，重启即可进入。&lt;/p&gt;
 </description>  
                <pubDate>Sun, 12 Nov 2017 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2017/11/crack-windows-password/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2017/11/crack-windows-password/</guid>  
+               <link>http://www.vinny.cc/2017/11/crack-windows-password/</link>  
+               <guid isPermaLink="true">http://www.vinny.cc/2017/11/crack-windows-password/</guid>  
                </item>  
           
             <item>  
@@ -1181,8 +1181,8 @@ python3 ./mimipenguin.py
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>  
                <pubDate>Sun, 12 Nov 2017 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2017/11/brute-crack-dir-in-web/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2017/11/brute-crack-dir-in-web/</guid>  
+               <link>http://www.vinny.cc/2017/11/brute-crack-dir-in-web/</link>  
+               <guid isPermaLink="true">http://www.vinny.cc/2017/11/brute-crack-dir-in-web/</guid>  
                </item>  
           
             <item>  
@@ -1282,8 +1282,8 @@ C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;INDOWS&amp;gt; nc &lt;span cla
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>  
                <pubDate>Sat, 11 Nov 2017 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2017/11/netcat-general/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2017/11/netcat-general/</guid>  
+               <link>http://www.vinny.cc/2017/11/netcat-general/</link>  
+               <guid isPermaLink="true">http://www.vinny.cc/2017/11/netcat-general/</guid>  
                </item>  
           
     </channel>  

@@ -58,6 +58,7 @@ var URL_TO_CACHE = [
     "/assets/core.css",
     "/assets/header.png",
     "/assets/offline.gif",
+    "/assets/search.png",
     "/assets/main.js",
     "/assets/hacker.jpg",
     "/assets/5-13050G31J7.gif",

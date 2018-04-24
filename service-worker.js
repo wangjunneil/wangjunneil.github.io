@@ -48,6 +48,20 @@ function onFetch(e) {
     )
 }
 
+function onPush(event) {
+    console.log('[Service Worker] Push Received.');
+    console.log(`[Service Worker] Push had this data: "${event.data.text()}"`);
+
+    const title = 'Push Codelab';
+    const options = {
+        body: 'Yay it works.',
+        icon: 'images/icon.png',
+        badge: 'images/badge.png'
+    };
+
+    event.waitUntil(self.registration.showNotification(title, options));
+}
+
 var CACHE_VERSION = "V1.0.1";
 var CACHE_NAME = CACHE_VERSION + ":sw-cache::";
 var URL_TO_CACHE = [
@@ -65,4 +79,7 @@ var URL_TO_CACHE = [
     "/assets/clear.png"
 ];
 // Service Worker 事件注册
-self.addEventListener("install", onInstall), self.addEventListener("activate", onActivate), self.addEventListener("fetch", onFetch); 
+self.addEventListener("install", onInstall), 
+self.addEventListener("activate", onActivate), 
+self.addEventListener("fetch", onFetch),
+self.addEventListener('push', onPush); 

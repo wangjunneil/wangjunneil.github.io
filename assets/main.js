@@ -2,10 +2,25 @@
     'use strict';
 
     var app = {
-        registration : null, // 注册Service Worker是赋值
+        applicationServerPublicKey : 'BJPZgjlU6dpFwaFEDzjNLPaMG5Zs-3R1fnem7tlrQufKkNXPfmJFXkDOiXYcVJBDVqVM50jJfGLPHR6DqfkQfRE',
         search_input : document.getElementById('keyword'),
         search_clear_btn : document.querySelector('.clear'),
         suggest_div : document.querySelector('.suggest')
+    }
+
+    app.urlB64ToUint8Array = (base64String) => {
+        const padding = '='.repeat((4 - base64String.length % 4) % 4);
+        const base64 = (base64String + padding)
+            .replace(/\-/g, '+')
+            .replace(/_/g, '/');
+
+        const rawData = window.atob(base64);
+        const outputArray = new Uint8Array(rawData.length);
+
+        for (let i = 0; i < rawData.length; ++i) {
+            outputArray[i] = rawData.charCodeAt(i);
+        }
+        return outputArray;
     }
 
     app.suggest = (posts) => {
@@ -64,8 +79,32 @@
 
     // 注册通知
     app.notification = (registration) => {
-        registration.pushManager.getSubscription().then(subscription => {
-            console.log(subscription);
+        // 获取用户订阅状态
+        registration.pushManager.getSubscription().then(status => {
+            if (status === null) {
+                console.log('User is NOT subscribed.');
+
+                // 解码 https://web-push-codelab.glitch.me/
+                const applicationServerKey = app.urlB64ToUint8Array(app.applicationServerPublicKey);
+                // 订阅
+                registration.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: applicationServerKey
+                })
+                .then(subscription => {
+                    console.log('User is subscribed:', subscription);
+
+                    // 实际会将此json发送给后端，测试时也用
+                    let subscription_json = JSON.stringify(subscription);
+                    console.log(subscription_json);
+                })
+                .catch(err => {
+                    console.log('Failed to subscribe the user: ', err);
+                });
+            } else {
+                // 已经订阅的忽略                
+                console.log('User IS subscribed.');
+            }
         });
     }
 

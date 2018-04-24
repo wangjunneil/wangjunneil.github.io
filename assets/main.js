@@ -2,9 +2,10 @@
     'use strict';
 
     var app = {
+        registration : null, // 注册Service Worker是赋值
         search_input : document.getElementById('keyword'),
         search_clear_btn : document.querySelector('.clear'),
-        suggest_div : document.querySelector('.suggest')        
+        suggest_div : document.querySelector('.suggest')
     }
 
     app.suggest = (posts) => {
@@ -61,6 +62,13 @@
         }
     }
 
+    // 注册通知
+    app.notification = (registration) => {
+        registration.pushManager.getSubscription().then(subscription => {
+            console.log(subscription);
+        });
+    }
+
     /**********************************************
     *
     * Event listeners for UI elements
@@ -103,6 +111,8 @@
                 break;
         }
     });
+
+
     
     // 移动端头固定
     window.addEventListener('scroll', () => {
@@ -119,7 +129,11 @@
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', (e) => {
             navigator.serviceWorker.register('/service-worker.js').then(registration => {
-                console.log('Service Worker registration success with scope: ', registration.scope);
+                console.log('Service Worker registration success with scope: ', registration.scope);                
+
+                if ('PushManager' in window) {  // 订阅通知
+                    app.notification(registration);
+                }
             })
             .catch(err => {
                 console.log('Service Worker registration failed: ', err);

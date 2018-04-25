@@ -79,6 +79,18 @@
 
     // 注册通知
     app.notification = (registration) => {
+        /*
+        Notification.permission
+        "default"
+
+        Notification.permission
+        "granted"
+
+        Notification.permission
+        "denied"
+        */
+
+
         // 获取用户订阅状态
         registration.pushManager.getSubscription().then(subscription => {
             // "subscription"为空，表示用户还没有订阅此网站的通知

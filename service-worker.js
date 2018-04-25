@@ -48,13 +48,13 @@ function onFetch(e) {
     )
 }
 
+// 接收推送消息
 function onPush(event) {
-    console.log('[Service Worker] Push Received.');
-    console.log(`[Service Worker] Push had this data: "${event.data.text()}"`);
+    let push_message = event.data.text();
 
     const title = 'Push Codelab';
     const options = {
-        body: 'Yay it works.',
+        body: push_message,
         icon: '/assets/push/icon.png',
         badge: '/assets/push/badge.png'
     };

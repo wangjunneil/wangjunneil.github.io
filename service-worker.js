@@ -55,11 +55,22 @@ function onPush(event) {
     const title = 'Push Codelab';
     const options = {
         body: 'Yay it works.',
-        icon: 'images/icon.png',
-        badge: 'images/badge.png'
+        icon: '/assets/push/icon.png',
+        badge: '/assets/push/badge.png'
     };
 
     event.waitUntil(self.registration.showNotification(title, options));
+}
+
+// 通知点击事件
+function onNotificationClick(event) {
+    console.log('[Service Worker] Notification click Received.');
+
+    event.notification.close();
+
+    event.waitUntil(
+        clients.openWindow('https://www.google.com');
+    );
 }
 
 var CACHE_VERSION = "V1.0.1";
@@ -82,4 +93,5 @@ var URL_TO_CACHE = [
 self.addEventListener("install", onInstall), 
 self.addEventListener("activate", onActivate), 
 self.addEventListener("fetch", onFetch),
-self.addEventListener('push', onPush); 
+self.addEventListener('push', onPush),
+self.addEventListener('notificationclick', onNotificationClick);

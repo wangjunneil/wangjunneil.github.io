@@ -80,8 +80,9 @@
     // 注册通知
     app.notification = (registration) => {
         // 获取用户订阅状态
-        registration.pushManager.getSubscription().then(status => {
-            if (status === null) {
+        registration.pushManager.getSubscription().then(subscription => {
+            // "subscription"为空，表示用户还没有订阅此网站的通知
+            if (subscription === null) {
                 console.log('User is NOT subscribed.');
 
                 // 解码 https://web-push-codelab.glitch.me/
@@ -99,10 +100,22 @@
                     console.log(subscription_json);
                 })
                 .catch(err => {
+                    // 用户拒绝订阅通知
+                    // err = DOMException: Registration failed - permission denied
                     console.log('Failed to subscribe the user: ', err);
                 });
             } else {
-                // 已经订阅的忽略                
+                // "subscription"不为空，用户订阅了此网站
+                /**
+                    {
+                      "endpoint": "https://fcm.googleapis.com/fcm/send/feF6jNioNGM:APA91bGyYsIllhaiixGFVGKE0mOW290UZEmPNHnjfRcmr9dQeQYKScxIHJWV6cXgtDOASZK46atOf7hop1YB9T9EADeHl_OxpoZykj3KGtyhf8qikLrYGaC7ob89dgdotEo4G2yw9UMd",
+                      "expirationTime": null,
+                      "keys": {
+                        "p256dh": "BI08L7Cft99rUwCGRq0P8DKQlzSETE4BIohzlwCa96-0sebDk4TGAqQGtGeJ4uKNW32i6NLyzYWHcNolhZUrC48=",
+                        "auth": "vF5wFnZPMoDLfpuAN3o2UQ=="
+                      }
+                    }
+                **/
                 console.log('User IS subscribed.');
             }
         });

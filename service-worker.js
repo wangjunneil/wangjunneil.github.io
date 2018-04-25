@@ -69,7 +69,7 @@ function onNotificationClick(event) {
     event.notification.close();
 
     event.waitUntil(
-        clients.openWindow('https://www.google.com');
+        clients.openWindow('https://developers.google.com/web/')
     );
 }
 

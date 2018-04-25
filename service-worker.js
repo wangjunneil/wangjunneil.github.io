@@ -52,10 +52,10 @@ function onFetch(e) {
 function onPush(event) {
     let push_message = event.data.text();
 
-    const title = 'Push Codelab';
+    const title = "Vinny's Blog";
     const options = {
         body: push_message,
-        icon: '/assets/push/icon.png',
+        icon: '/assets/hacker.jpg',
         badge: '/assets/push/badge.png'
     };
 

@@ -244,7 +244,7 @@
             navigator.serviceWorker.register('/service-worker.js').then(registration => {
                 console.log('Service Worker registration success with scope: ', registration.scope);                
 
-                有新的更新
+                // 有新的更新
                 registration.onupdatefound = () => {
                     const installWorker = registration.installing;
                     installWorker.onstatechange = () => {

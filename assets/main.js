@@ -10,7 +10,7 @@
 
     // 定位用户位置
     app.geolocation = () => {
-        navigator.geolocation.Geolocation.getCurrentPosition((position) => {
+        navigator.geolocation.getCurrentPosition((position) => {
             let latitude = position.coords.latitude;    // 维度
             let longitude = position.coords.longitude;  // 经度
 
@@ -257,7 +257,7 @@
                 //                     // no update available
                 //                     resolve(false);
                 //                 }
-                                
+
                 //                 break;
                 //             default:
                 //                 break;

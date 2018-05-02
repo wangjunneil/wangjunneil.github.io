@@ -30,7 +30,7 @@
         while (suggest.firstChild)
             suggest.removeChild(suggest.firstChild);
 
-        let suggest_posts = posts.filter((post) => post.title.indexOf(keyword) != -1);
+        let suggest_posts = posts.filter((post) => post.title.toLowerCase().indexOf(keyword) != -1);
 
         // 没有检索到数据
         if (suggest_posts.length == 0) {

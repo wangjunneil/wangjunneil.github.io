@@ -107,7 +107,7 @@
                 .then(subscription => {
                     console.log('User is subscribed:', subscription);
 
-                    // 实际会将此json发送给后端，测试时也用
+                    // 实际会将此json发送给后端，测试时也用，这个值每次都会有变化
                     let subscription_json = JSON.stringify(subscription);
                     console.log(subscription_json);
                 })
@@ -187,6 +187,12 @@
         } else {
             header_nav.classList.remove("sticky");
         }
+    });
+
+    // 加载完关闭loading
+    window.addEventListener('load', () => {
+        let loading = document.querySelector('.loading');
+        loading.style.display = 'none';
     });
 
     // 注册service-worker

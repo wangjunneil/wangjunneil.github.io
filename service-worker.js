@@ -52,12 +52,17 @@ function onFetch(e) {
 function onPush(event) {
     let push_message = event.data.text();
 
-    const title = "Vinny's Blog";
+    const title = "New Message from Vinny's Blog";
+    const actions = [
+        { action: 'like', title: '👍Like' },
+        { action: 'reply', title: '⤻ Reply' }
+    ];
     const options = {
         body: push_message,
         icon: '/assets/hacker.jpg',
-        badge: '/assets/push/badge.png'
-    };
+        badge: '/assets/push/badge.png',
+        actions: actions
+    };    
 
     event.waitUntil(self.registration.showNotification(title, options));
 }
@@ -66,11 +71,21 @@ function onPush(event) {
 function onNotificationClick(event) {
     console.log('[Service Worker] Notification click Received.');
 
+    // event.notification.close();
+
+    // event.waitUntil(
+    //     clients.openWindow('https://developers.google.com/web/')
+    // );
+
+    var messageId = event.notification.data;
+
     event.notification.close();
 
-    event.waitUntil(
-        clients.openWindow('https://developers.google.com/web/')
-    );
+    if (event.action == 'like') {
+        // TODO
+    } else if (event.action == 'reply') {
+        // TODO
+    }
 }
 
 var CACHE_VERSION = "V1.0.1";

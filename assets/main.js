@@ -8,6 +8,39 @@
         suggest_div : document.querySelector('.suggest')
     }
 
+    // 定位用户位置
+    app.geolocation = () => {
+        navigator.geolocation.Geolocation.getCurrentPosition((position) => {
+            let latitude = position.coords.latitude;    // 维度
+            let longitude = position.coords.longitude;  // 经度
+
+            console.log(`current position: ${latitude}, ${longitude}`);
+
+            // http://lbsyun.baidu.com/index.php?title=webapi/guide/webservice-geocoding-abroad
+        }, (err) => { // 错误处理
+            let errorMessage;
+
+            switch (error.code) {
+                case 0:
+                    errorMessage = 'unknown error';
+                    break;
+                case 1:
+                    errorMessage = 'permission denied';
+                    break;
+                case 2:
+                    errorMessage = 'position unavailable';
+                    break;
+                case 3:
+                    errorMessage = 'timed out';
+                    break;
+                default:
+                    break;
+            }
+
+            console.log(`Error occurred. Error code: ${errorMessage}`);
+        });
+    }
+
     app.urlB64ToUint8Array = (base64String) => {
         const padding = '='.repeat((4 - base64String.length % 4) % 4);
         const base64 = (base64String + padding)
@@ -30,7 +63,7 @@
         while (suggest.firstChild)
             suggest.removeChild(suggest.firstChild);
 
-        let suggest_posts = posts.filter((post) => post.title.toLowerCase().indexOf(keyword) != -1);
+        let suggest_posts = posts.filter((post) => post.title.indexOf(keyword.toLowerCase()) != -1);
 
         // 没有检索到数据
         if (suggest_posts.length == 0) {
@@ -190,9 +223,19 @@
     });
 
     // 加载完关闭loading
+    // 获取定位
     window.addEventListener('load', () => {
         let loading = document.querySelector('.loading');
         loading.style.display = 'none';
+
+        // GeoLocation
+        if (navigator.geolocation) {    // 判断当前浏览器是否支持定位服务
+            console.log('Geolocation is supported!');
+
+            app.geolocation();
+        } else {
+            console.log('Geolocation is not supported for this Browser/OS.');
+        }
     });
 
     // 注册service-worker
@@ -200,6 +243,27 @@
         window.addEventListener('load', (e) => {
             navigator.serviceWorker.register('/service-worker.js').then(registration => {
                 console.log('Service Worker registration success with scope: ', registration.scope);                
+
+                // 有新的更新
+                // registration.onupdatefound = () => {
+                //     const installWorker = registration.installing;
+                //     installWorker.onstatechange = () => {
+                //         switch (installWorker.state) {
+                //             case 'installed':
+                //                 if (navigator.serviceWorker.controller) {
+                //                     // new update available
+                //                     resolve(true);
+                //                 } else {
+                //                     // no update available
+                //                     resolve(false);
+                //                 }
+                                
+                //                 break;
+                //             default:
+                //                 break;
+                //         }
+                //     }
+                // }
 
                 if ('PushManager' in window) {  // 订阅通知
                     app.notification(registration);

@@ -1,7 +1,7 @@
 function onInstall(e) {
     e.waitUntil(caches.open(CACHE_NAME).then(e => {
         return e.addAll(URL_TO_CACHE).then(() => {
-            console.log("SERVICE WORKER: Install completed")
+            console.log("SERVICE WORKER: Install completed.")
         })
     }))
 }
@@ -88,7 +88,7 @@ function onNotificationClick(event) {
     }
 }
 
-var CACHE_VERSION = "V1.0.6";
+var CACHE_VERSION = "V1.0.7";
 var CACHE_NAME = CACHE_VERSION + ":sw-cache::";
 var URL_TO_CACHE = [
     "/",

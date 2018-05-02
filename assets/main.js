@@ -17,7 +17,7 @@
             console.log(`current position: ${latitude}, ${longitude}`);
 
             // http://lbsyun.baidu.com/index.php?title=webapi/guide/webservice-geocoding-abroad
-        }, (err) => { // 错误处理
+        }, (error) => { // 错误处理
             let errorMessage;
 
             switch (error.code) {
@@ -244,26 +244,26 @@
             navigator.serviceWorker.register('/service-worker.js').then(registration => {
                 console.log('Service Worker registration success with scope: ', registration.scope);                
 
-                // 有新的更新
-                // registration.onupdatefound = () => {
-                //     const installWorker = registration.installing;
-                //     installWorker.onstatechange = () => {
-                //         switch (installWorker.state) {
-                //             case 'installed':
-                //                 if (navigator.serviceWorker.controller) {
-                //                     // new update available
-                //                     resolve(true);
-                //                 } else {
-                //                     // no update available
-                //                     resolve(false);
-                //                 }
+                有新的更新
+                registration.onupdatefound = () => {
+                    const installWorker = registration.installing;
+                    installWorker.onstatechange = () => {
+                        switch (installWorker.state) {
+                            case 'installed':
+                                if (navigator.serviceWorker.controller) {
+                                    console.log('new update available');
+                                    resolve(true);
+                                } else {
+                                    console.log('no update available');
+                                    resolve(false);
+                                }
 
-                //                 break;
-                //             default:
-                //                 break;
-                //         }
-                //     }
-                // }
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
 
                 if ('PushManager' in window) {  // 订阅通知
                     app.notification(registration);

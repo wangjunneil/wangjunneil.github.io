@@ -196,7 +196,7 @@
                 break;
             case 13: // 回车键
                 // 没有检索到文章，回车事件忽略
-                if ($(".hover span").length == 0) { 
+                if ($(".hover a").length == 0) { 
                     return;
                 }
 

@@ -226,7 +226,9 @@
     // 获取定位
     window.addEventListener('load', () => {
         let loading = document.querySelector('.loading');
+        // let body = document.querySelector('body');        
         loading.style.display = 'none';
+        // body.style.padding = '20px';
 
         // GeoLocation
         if (navigator.geolocation) {    // 判断当前浏览器是否支持定位服务

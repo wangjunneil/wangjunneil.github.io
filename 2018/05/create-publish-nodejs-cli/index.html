@@ -1,0 +1,198 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"> <!-- pwa meta begin --><link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#000"><meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"><meta name="format-detection" content="telephone=no"><meta name="msapplication-tap-highlight" content="no"> <!-- IOS不会读取manifest中的icon，用此配置进行适配 --><link rel="apple-touch-icon" href="assets/icons/icon-96x96.png"><link rel="apple-touch-icon" sizes="152x152" href="/assets/icons/icon-152x152.png"><link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/icon-180x180.png"><link rel="apple-touch-icon" sizes="167x167" href="/assets/icons/icon-167x167.png"> <!-- ios修复splash黑屏 --><link href="/assets/icons/apple_splash_1125.png" sizes="1125x2436" rel="apple-touch-startup-image" /><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"> <!-- pwa meta end --><title>从零开始创建并发布NPM Cli的应用</title><meta name="description" content=""><meta name="keywords" content="npm,cli,nodejs,进度,气温,雅虎"><link rel="icon" href="/assets/favicon.ico"><link rel="stylesheet" href="/assets/core.css"><link rel="canonical" href="/2018/05/create-publish-nodejs-cli/"><link rel="alternate" type="application/atom+xml" title="Vinny Wong's Blog" href="/feed.xml" /></head><body> <!-- 全局页面loading --><div class="loading"><div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div><!-- search --><div class="searchform"> <a href="javascript:void(0);" class="searchicon"></a> <input type="text" id="keyword"/> <a href="javascript:void(0);" class="clear"></a><ul class="suggest"></ul></div><script src="/assets/jquery-1.9.1.min.js"></script> <script src="/assets/main.js"></script><nav class="header-nav"> <a class="page-link" href="/">HOME</a> / <a class="page-link" href="/categories/">CATEGORY</a> / <a class="page-link" href="/feed.xml">FEED</a> / <a class="page-link" href="/about/">ABOUT</a></nav><main> <noscript><style> article .footnotes { display: block; }</style></noscript><article> <!-- 目录导航，在nav,js中进行渲染 --><div class="w-catalog"></div><div class="w-catalog-btn">目录</div><div class="center"><h1>从零开始创建并发布NPM Cli的应用</h1><time>2018-05-08</time></div><div class="divider"></div><ul id="markdown-toc"><li><a href="#1-背景" id="markdown-toc-1-背景">1. 背景</a></li><li><a href="#2-前提" id="markdown-toc-2-前提">2. 前提</a></li><li><a href="#3-hello-world" id="markdown-toc-3-hello-world">3. Hello World</a><ul><li><a href="#3-1-创建工程基本结构" id="markdown-toc-3-1-创建工程基本结构">3. 1 创建工程基本结构</a></li><li><a href="#32-创建一个bin文件" id="markdown-toc-32-创建一个bin文件">3.2 创建一个Bin文件</a></li></ul></li><li><a href="#4-气温应用" id="markdown-toc-4-气温应用">4. 气温应用</a><ul><li><a href="#41-命令行参数" id="markdown-toc-41-命令行参数">4.1 命令行参数</a></li><li><a href="#42-运行命令" id="markdown-toc-42-运行命令">4.2 运行命令</a></li><li><a href="#43-预期与容错" id="markdown-toc-43-预期与容错">4.3 预期与容错</a></li><li><a href="#44-进度与请求" id="markdown-toc-44-进度与请求">4.4 进度与请求</a></li><li><a href="#45-错误与退出码" id="markdown-toc-45-错误与退出码">4.5 错误与退出码</a></li></ul></li><li><a href="#5-发布到npm仓库" id="markdown-toc-5-发布到npm仓库">5. 发布到NPM仓库</a></li></ul><h2 id="1-背景">1. 背景</h2><p>当下 javascript 大行其道，无论从传统web、手机端还是桌面程序，javacsript 无所不能。ES6 的定义 以及 nodejs 大大推动了 javascript 的发展。而大部分的应用都离不开 <strong>npm</strong>，很多应用都使用 nodejs cli 的方式进行初始化等操作。</p><p>本篇文章将创建一个简单的 <strong>nodejs cli</strong> 的气温应用，以便熟悉如何自己创建 <strong>cli</strong> 命令行程序。</p><h2 id="2-前提">2. 前提</h2><ul><li>安装好 nodejs 环境</li><li>具有 javascript 编程经验，最好熟悉 ES5 或者 ES6 的规范</li><li>好的编辑器，比如 visual code 后者 sublime</li></ul><h2 id="3-hello-world">3. Hello World</h2><h3 id="3-1-创建工程基本结构">3. 1 创建工程基本结构</h3><p>和很多 javascript 工程一样，需要一个 <code class="highlighter-rouge">package.json</code> 文件以及一个入口的 <code class="highlighter-rouge">index.js</code> 文件，这里强调简单的应用，所以尽量不做过多依赖库。</p><p><strong>[package.json]</strong></p><div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"weather-cli"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.0.0"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"license"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MIT"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w">
+  </span><span class="s2">"devDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w">
+  </span><span class="s2">"dependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div><p><strong>[index.js]</strong></p><div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Welcome to the weather app!'</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div><h3 id="32-创建一个bin文件">3.2 创建一个Bin文件</h3><p>我们需要一种方法来调用新开发的 javascript 程序并显示欢迎信息，并将其加入到系统路径中，以便在任何地方都可以调用它，bin 文件是实现此目的的好方法。</p><p><strong>[bin/weather]</strong></p><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/usr/bin/env node</span>
+require<span class="o">(</span><span class="s1">'../'</span><span class="o">)()</span>
+</code></pre></div></div><p>使用 bin 文件运行程序，使用命令 <code class="highlighter-rouge">cd bin</code> 进入bin目录，并给 <strong>weather</strong> 文件赋予执行权限 <code class="highlighter-rouge">chmod u+x ./weather</code>，直接执行 <code class="highlighter-rouge">./weather</code> 就可以显示欢迎信息。</p><p>但这不是我们想要的，我们需要在任何路径下都可以执行，也就是使用 npm 全局安装的方式 <code class="highlighter-rouge">npm install -g weather</code>，所以需要将 bin 文件配置到 package.json 中。</p><p><strong>[package.json]</strong></p><div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"weather-cli"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.0.0"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"license"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MIT"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"bin"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"weather"</span><span class="p">:</span><span class="w"> </span><span class="s2">"bin/weather"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w">
+  </span><span class="s2">"devDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w">
+  </span><span class="s2">"dependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div><p>增加好之后，在工程根路径下执行 <code class="highlighter-rouge">npm link</code> 命令会将二进制文件符号链接到系统路径，使其可以在任何地方通过在外部运行访问。</p><p><strong>此时你可以在任何路径下都可以执行 <code class="highlighter-rouge">weaher</code> 命令了。</strong></p><p>到此为止的工程结构为：</p><div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>weather-cli/
+	|- package.json
+	|- index.js
+	|- bin
+		|- weather
+</code></pre></div></div><h2 id="4-气温应用">4. 气温应用</h2><h3 id="41-命令行参数">4.1 命令行参数</h3><p>如何处理接受的命令行参数，这里使用 <strong><a href="https://github.com/substack/minimist">minimist</a></strong> 的解析库，在根路径下使用 <code class="highlighter-rouge">npm install --save minimist</code> 进行安装</p><p><strong>[index.js]</strong></p><div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">minimist</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'minimist'</span><span class="p">)</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="c1">// slice(2) 删除前两个参数，因为第一个参数是解释器，第二个参数是文件名</span>
+    <span class="kd">const</span> <span class="nx">args</span> <span class="o">=</span> <span class="nx">minimist</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">argv</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">args</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div><p>现在运行 <code class="highlighter-rouge">weather today --location "NanJing, ZH"</code>，它将会输出 <code class="highlighter-rouge">{ _: [ 'today' ], location: 'NanJing, ZH' } </code>，从输出结果可以得知，这是一个清晰的 json 结构，到此我们建立了第一个解析命令行参数的 cli 程序。</p><h3 id="42-运行命令">4.2 运行命令</h3><p>将每个命令代码分隔到不同文件中，需要的时候进行加载。这会防止加载不必要的模块并减少启动程序的时间，在这种设置下，每个命令文件都应该导出一个函数，并将参数传递给它。</p><p><strong>[index.js]</strong></p><div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">minimist</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'minimist'</span><span class="p">)</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="c1">// slice(2) 删除前两个参数，因为第一个参数是解释器，第二个参数是文件名</span>
+    <span class="kd">const</span> <span class="nx">args</span> <span class="o">=</span> <span class="nx">minimist</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">argv</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span>
+    <span class="c1">// args = { _: [ 'today' ], location: 'NanJing, ZH' }</span>
+    <span class="c1">// 取第一个命令</span>
+    <span class="kd">const</span> <span class="nx">cmd</span> <span class="o">=</span> <span class="nx">args</span><span class="p">.</span><span class="nx">_</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+
+    <span class="k">switch</span> <span class="p">(</span><span class="nx">cmd</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="s1">'today'</span><span class="p">:</span>
+            <span class="c1">// 需要的时候加载运行并把参数进行传递</span>
+            <span class="nx">require</span><span class="p">(</span><span class="s1">'./cmds/today'</span><span class="p">)(</span><span class="nx">args</span><span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="nl">default</span><span class="p">:</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s2">`"</span><span class="p">${</span><span class="nx">cmd</span><span class="p">}</span><span class="s2">" is not a valid command!`</span><span class="p">)</span>
+            <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div><p><strong>[cmds/today.js]</strong></p><div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'today is sunny'</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div><p>现在如果运行 <code class="highlighter-rouge">weather today</code> 则会输出 “today is sunny”，若运行 <code class="highlighter-rouge">weather hello</code> 则会输出错误的信息 “hello is not a valid command!”，</p><h3 id="43-预期与容错">4.3 预期与容错</h3><p>除了程序用命令，还需要额外处理如 <code class="highlighter-rouge">version</code> 和 <code class="highlighter-rouge">help</code> 此类的命令，当用户输入错误的参数应该会得到正确的反馈信息，以提示用户正确的进行参数的输入。</p><p><strong>[index.js]</strong></p><div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">minimist</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'minimist'</span><span class="p">)</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">args</span> <span class="o">=</span> <span class="nx">minimist</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">argv</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span>
+    <span class="c1">// 取第一个参数命令，若没有获取到则默认使用 help 命令</span>
+    <span class="kd">let</span> <span class="nx">cmd</span> <span class="o">=</span> <span class="nx">args</span><span class="p">.</span><span class="nx">_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">||</span> <span class="s1">'help'</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">args</span><span class="p">.</span><span class="nx">version</span> <span class="o">||</span> <span class="nx">args</span><span class="p">.</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">cmd</span> <span class="o">=</span> <span class="s1">'version'</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">args</span><span class="p">.</span><span class="nx">help</span> <span class="o">||</span> <span class="nx">args</span><span class="p">.</span><span class="nx">h</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">cmd</span> <span class="o">=</span> <span class="s1">'help'</span>
+    <span class="p">}</span>
+
+    <span class="k">switch</span> <span class="p">(</span><span class="nx">cmd</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="s1">'today'</span><span class="p">:</span>
+            <span class="nx">require</span><span class="p">(</span><span class="s1">'./cmds/today'</span><span class="p">)(</span><span class="nx">args</span><span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="s1">'version'</span><span class="p">:</span>
+            <span class="nx">require</span><span class="p">(</span><span class="s1">'./cmds/version'</span><span class="p">)(</span><span class="nx">args</span><span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="s1">'help'</span><span class="p">:</span>
+            <span class="nx">require</span><span class="p">(</span><span class="s1">'./cmds/help'</span><span class="p">)(</span><span class="nx">args</span><span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="nl">default</span><span class="p">:</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s2">`"</span><span class="p">${</span><span class="nx">cmd</span><span class="p">}</span><span class="s2">" is not a valid command!`</span><span class="p">)</span>
+            <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div><p><strong>[cmds/version]</strong></p><div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="p">{</span> <span class="nx">version</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'../package.json'</span><span class="p">)</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`v</span><span class="p">${</span><span class="nx">version</span><span class="p">}</span><span class="s2">`</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div><p><strong>[cmds/help]</strong></p><div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">menus</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">main</span> <span class="p">:</span> <span class="s2">`
+        weather [command] &lt;options&gt;
+
+        today   ........... show weather for today
+        version ........... show program version
+        help    ........... show help menu for a command
+    `</span><span class="p">,</span>
+
+    <span class="na">today</span> <span class="p">:</span> <span class="s2">`
+        weather today &lt;options&gt;
+
+        --location, -l .... the location to use
+    `</span><span class="p">,</span>    
+<span class="p">}</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">subCmd</span> <span class="o">=</span> <span class="nx">args</span><span class="p">.</span><span class="nx">_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">===</span> <span class="s1">'help'</span> <span class="p">?</span> <span class="nx">args</span><span class="p">.</span><span class="nx">_</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">:</span> <span class="nx">args</span><span class="p">.</span><span class="nx">_</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">menus</span><span class="p">[</span><span class="nx">subCmd</span><span class="p">]</span> <span class="o">||</span> <span class="nx">menus</span><span class="p">.</span><span class="nx">main</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div><p>此时如果运行 <code class="highlighter-rouge">weather help today</code> 或者 <code class="highlighter-rouge">weather today -h</code>，将会看见 <strong>today</strong> 命令的帮助信息。运行 <code class="highlighter-rouge">weather</code> 或者 <code class="highlighter-rouge">weather -h</code> 将会输出主菜单帮助信息。</p><h3 id="44-进度与请求">4.4 进度与请求</h3><p>某些命令可能会执行很长时间，为了让用户得到正在运行的反馈状态，应该在执行时显示 <strong>进度</strong>，使用命令 <code class="highlighter-rouge">npm install --save axios ora</code> 安装第三方的进度与网络请求的库。</p><ul><li>进度 ora 的更多用法请参看 <a href="https://www.npmjs.com/package/ora">https://www.npmjs.com/package/ora</a></li><li>请求 axios 的更多用法请参看 <a href="https://www.npmjs.com/package/axios">https://www.npmjs.com/package/axios</a></li></ul><p>现在我们开始请求天气，使用的是 <strong>雅虎</strong> 的 API，此 API 使用的 <strong>“YQL”</strong> 的语法查询，关键的是它不需要 <strong>API Key</strong> 就可以直接进行接口的调用，非常方便。</p><p><strong>[utils/yahoo.js]</strong></p><div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">axios</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'axios'</span><span class="p">)</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="k">async</span> <span class="p">(</span><span class="nx">location</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">results</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">axios</span><span class="p">({</span>
+        <span class="na">method</span> <span class="p">:</span> <span class="s1">'get'</span><span class="p">,</span>
+        <span class="na">url</span> <span class="p">:</span> <span class="s1">'https://query.yahooapis.com/v1/public/yql'</span><span class="p">,</span>
+        <span class="na">params</span> <span class="p">:</span> <span class="p">{</span>
+            <span class="na">format</span> <span class="p">:</span> <span class="s1">'json'</span><span class="p">,</span>
+            <span class="na">q</span><span class="p">:</span> <span class="s2">`select item from weather.forecast where woeid in
+            (select woeid from geo.places(1) where text="</span><span class="p">${</span><span class="nx">location</span><span class="p">}</span><span class="s2">")`</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
+
+    <span class="k">return</span> <span class="nx">results</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">results</span><span class="p">.</span><span class="nx">channel</span><span class="p">.</span><span class="nx">item</span>
+<span class="p">}</span>
+</code></pre></div></div><p><strong>[cmds/today.js]</strong></p><div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">ora</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'ora'</span><span class="p">)</span>
+<span class="kd">const</span> <span class="nx">getWeather</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'../utils/yahoo'</span><span class="p">)</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="k">async</span> <span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="c1">// 开启进度</span>
+    <span class="kd">const</span> <span class="nx">spinner</span> <span class="o">=</span> <span class="nx">ora</span><span class="p">().</span><span class="nx">start</span><span class="p">()</span>
+
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">location</span> <span class="o">=</span> <span class="nx">args</span><span class="p">.</span><span class="nx">location</span> <span class="o">||</span> <span class="nx">args</span><span class="p">.</span><span class="nx">l</span>
+        <span class="kd">const</span> <span class="nx">weather</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">getWeather</span><span class="p">(</span><span class="nx">location</span><span class="p">)</span>
+
+        <span class="c1">// 关闭进度</span>
+        <span class="nx">spinner</span><span class="p">.</span><span class="nx">stop</span><span class="p">()</span>
+
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`Current conditions in </span><span class="p">${</span><span class="nx">location</span><span class="p">}</span><span class="s2">:`</span><span class="p">)</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`\t</span><span class="p">${</span><span class="nx">weather</span><span class="p">.</span><span class="nx">condition</span><span class="p">.</span><span class="nx">temp</span><span class="p">}</span><span class="s2">° </span><span class="p">${</span><span class="nx">weather</span><span class="p">.</span><span class="nx">condition</span><span class="p">.</span><span class="nx">text</span><span class="p">}</span><span class="s2">`</span><span class="p">)</span>
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// 关闭进度</span>
+        <span class="nx">spinner</span><span class="p">.</span><span class="nx">stop</span><span class="p">()</span>
+
+        <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div><p>这里在 <strong>yahoo.js</strong> 中封装了调用温度的接口，在命令文件 <strong>today.js</strong> 中进行调用，加载进度并解析返回值，当输入 <code class="highlighter-rouge">weather today --location "BeiJing, ZH" </code> 时，将会输出指定城市的气温，注意这里只是个示例，只取了返回值的 temp 字段。</p><h3 id="45-错误与退出码">4.5 错误与退出码</h3><p>至此我们的程序结束了吗？没有。如果你的 cli 程序有严重错误，应该使用 <code class="highlighter-rouge">process.exit(1)</code> 的方式进行退出，这可以告诉终端此进程异常终止。</p><p><strong>[utils/error.js]</strong></p><div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">(</span><span class="nx">message</span><span class="p">,</span> <span class="nx">exit</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">message</span><span class="p">)</span>
+    <span class="nx">exit</span> <span class="o">&amp;&amp;</span> <span class="nx">process</span><span class="p">.</span><span class="nx">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div><p><strong>[index.js]</strong></p><div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// ...</span>
+<span class="kd">const</span> <span class="nx">error</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'./utils/error'</span><span class="p">)</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="c1">// ...</span>
+  <span class="na">default</span><span class="p">:</span>
+    <span class="c1">// console.error(`"${cmd}" is not a valid command!`)</span>
+    <span class="nx">error</span><span class="p">(</span><span class="s2">`"</span><span class="p">${</span><span class="nx">cmd</span><span class="p">}</span><span class="s2">" is not a valid command!`</span><span class="p">,</span> <span class="kc">true</span><span class="p">)</span>
+    <span class="k">break</span>
+    <span class="c1">// ...</span>
+<span class="p">}</span>
+</code></pre></div></div><h2 id="5-发布到npm仓库">5. 发布到NPM仓库</h2><p>为了让更多人可以使用到你编写的 nodejs 库，应该上传到 npm 仓库中，当然这只是个例子，为了能够上传，需要完善 <strong>package.json</strong> 文件</p><div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"weather-cli"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.0.0"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"A cli app that gives you the weather"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"license"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MIT"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"homepage"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://github.com/wangjunneil/weather-cli"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"repository"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"git"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"git+https://github.com/wangjunneil/weather-cli"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"engines"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"node"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&gt;=8"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"keywords"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="s2">"weather"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vinny"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"javascript"</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="s2">"preferGlobal"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"bin"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"weather"</span><span class="p">:</span><span class="w"> </span><span class="s2">"bin/weather"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w">
+  </span><span class="s2">"devDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w">
+  </span><span class="s2">"dependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"axios"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^0.18.0"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"minimist"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^1.2.0"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"ora"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^2.1.0"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div><ul><li>engine 设置告诉安装人员使用 node 的最新版本，由于使用了 async 和 await 语法，因此需要8.0或更高的版本。</li><li>preferGlobal 的设置是若用户使用 <code class="highlighter-rouge">npm install --save</code> 而不是 <code class="highlighter-rouge">npm install --gobal</code> 的方式进行安装，将会发出警告。</li></ul><p>首次上传的话你需要有 npm 的账号信息，若没有请去 <a href="https://www.npmjs.com/">https://www.npmjs.com/</a> 进行注册，注册完成后，先使用 <code class="highlighter-rouge">npm adduser</code> 将账号信息在电脑中进行验证，最后在根路径中执行 <code class="highlighter-rouge">npm publish</code> 命令进行发布即可。</p><blockquote><p>本文中所有的示例代码在 <a href="https://github.com/wangjunneil/weather-cli">https://github.com/wangjunneil/weather-cli</a> 可以获取到</p></blockquote><div class="divider"></div><blockquote id='by-nc-nd'><div> 版权所有，本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">知识共享署名-非商业性使用 3.0 未本地化版本许可协议</a>进行许可。转载请注明出处：<a href="http://www.vinny.cc//2018/05/create-publish-nodejs-cli/" akt="">http://www.vinny.cc//2018/05/create-publish-nodejs-cli/</a></div></blockquote><div class="divider"></div></article><div class="page-navigation"> <a class="next" href="/2018/05/pwa-app/" title="NEXT: Progressive Web App 汇总使用说明">&lt;&lt;</a> <span> &middot; </span> <a class="home" href="/" title="Back to Homepage">Home</a> <span> &middot; </span> <a class="prev" href="/2018/05/http-server-ways/" title="PREV: 快速创建简易HTTP服务器的方式">&gt;&gt;</a></div><!-- 书签处理 --> <script type="text/javascript" src="/assets/js/zepto.min.js"></script> <script type="text/javascript" src="/assets/js/nav.js"></script></main><!--<div class="footer"> --> <!--</div>--></body></html>

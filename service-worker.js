@@ -1,7 +1,7 @@
 function onInstall(e) {
     e.waitUntil(caches.open(CACHE_NAME).then(e => {
         return e.addAll(URL_TO_CACHE).then(() => {
-            console.log("SERVICE WORKER: Install completed")
+            console.log("SERVICE WORKER: Install completed.")
         })
     }))
 }
@@ -48,7 +48,47 @@ function onFetch(e) {
     )
 }
 
-var CACHE_VERSION = "V1.0.1";
+// 接收推送消息
+function onPush(event) {
+    let push_message = event.data.text();
+
+    const title = "New Message from Vinny's Blog";
+    const actions = [
+        { action: 'like', title: '👍Like' },
+        { action: 'reply', title: '⤻ Reply' }
+    ];
+    const options = {
+        body: push_message,
+        icon: '/assets/hacker.jpg',
+        badge: '/assets/push/badge.png',
+        actions: actions
+    };    
+
+    event.waitUntil(self.registration.showNotification(title, options));
+}
+
+// 通知点击事件
+function onNotificationClick(event) {
+    console.log('[Service Worker] Notification click Received.');
+
+    // event.notification.close();
+
+    // event.waitUntil(
+    //     clients.openWindow('https://developers.google.com/web/')
+    // );
+
+    var messageId = event.notification.data;
+
+    event.notification.close();
+
+    if (event.action == 'like') {
+        // TODO
+    } else if (event.action == 'reply') {
+        // TODO
+    }
+}
+
+var CACHE_VERSION = "V1.1.0";
 var CACHE_NAME = CACHE_VERSION + ":sw-cache::";
 var URL_TO_CACHE = [
     "/",
@@ -56,6 +96,8 @@ var URL_TO_CACHE = [
     "/manifest.json",
     "/assets/jquery-1.9.1.min.js",
     "/assets/core.css",
+    "/assets/js/nav.js",
+    "/assets/js/zepto.min.js",
     "/assets/header.png",
     "/assets/offline.gif",
     "/assets/search.png",
@@ -65,4 +107,8 @@ var URL_TO_CACHE = [
     "/assets/clear.png"
 ];
 // Service Worker 事件注册
-self.addEventListener("install", onInstall), self.addEventListener("activate", onActivate), self.addEventListener("fetch", onFetch); 
+self.addEventListener("install", onInstall), 
+self.addEventListener("activate", onActivate), 
+self.addEventListener("fetch", onFetch),
+self.addEventListener('push', onPush),
+self.addEventListener('notificationclick', onNotificationClick);

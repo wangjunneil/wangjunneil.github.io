@@ -14,6 +14,10 @@ layout: default
 
 <article>
 
+    <!-- 目录导航，在nav,js中进行渲染 -->
+    <div class="w-catalog"></div>
+    <div class="w-catalog-btn">目录</div>
+
 	<div class="center">
 		<h1>{{ page.title }}</h1>
 		<time>{{ page.date | date: "%F" }}</time>
@@ -26,9 +30,6 @@ layout: default
     {% include cc.html %}
 
     <div class="divider"></div>
-
-    <a class="w-search active" href="#" title="forward to search">⊙</a>
-    <a class="w-catalog active" href="javascript:void(0);" title="open to catalog">≣</a>
 
 </article>
 

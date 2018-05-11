@@ -10,6 +10,14 @@ layout: compress
 	</head>
 
 	<body>
+        <!-- 全局页面loading -->
+        <div class="loading">
+            <div class="spinner">
+                <div class="bounce1"></div>
+                <div class="bounce2"></div>
+                <div class="bounce3"></div>
+            </div>
+        </div>
 
         {% if page.url == '/index.html'
             or page.url == '/'
@@ -23,8 +31,14 @@ layout: compress
 		{% include menu.html %}
 
 
-		<main>
+		<main>            
 			{{ content | replace: '&#8617;', '&#8617;&#xfe0e;' }}
+
+             <!-- 书签处理 -->
+            {% if page.layout == 'post' %}
+                <script type="text/javascript" src="/assets/js/zepto.min.js"></script>
+                <script type="text/javascript" src="/assets/js/nav.js"></script>
+            {% endif %}
 		</main>
 
 		{% include footer.html %}
@@ -36,7 +50,7 @@ layout: compress
 				<script async src="{{site.baseurl}}/assets/footnotes.js"></script>
 			{% endif %}
 
-		{% endif %}
+		{% endif %} 
 	</body>
 
 </html>

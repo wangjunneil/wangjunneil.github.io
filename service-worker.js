@@ -87,7 +87,7 @@ function onNotificationClick(event) {
     // }
 }
 
-var CACHE_VERSION = "V1.1.1";
+var CACHE_VERSION = "V1.1.2";
 var CACHE_NAME = CACHE_VERSION + ":sw-cache::";
 var URL_TO_CACHE = [
     "/",
@@ -105,9 +105,11 @@ var URL_TO_CACHE = [
     "/assets/5-13050G31J7.gif",
     "/assets/clear.png"
 ];
+
 // Service Worker 事件注册
 self.addEventListener("install", onInstall), 
 self.addEventListener("activate", onActivate), 
 self.addEventListener("fetch", onFetch),
 self.addEventListener('push', onPush),
 self.addEventListener('notificationclick', onNotificationClick);
+

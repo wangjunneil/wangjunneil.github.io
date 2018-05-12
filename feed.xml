@@ -10,12 +10,160 @@
             <item>  
                <title>使用 sw-precache 构建 Progressive Web App</title>  
                <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#1-pwa是什么&quot; id=&quot;markdown-toc-1-pwa是什么&quot;&gt;1. PWA是什么&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#1-sw-precache-介绍&quot; id=&quot;markdown-toc-1-sw-precache-介绍&quot;&gt;1. Sw-Precache 介绍&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#2-sw-precache-安装&quot; id=&quot;markdown-toc-2-sw-precache-安装&quot;&gt;2. Sw-Precache 安装&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#3-编写gulpfilejs文件&quot; id=&quot;markdown-toc-3-编写gulpfilejs文件&quot;&gt;3. 编写gulpfile.js文件&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#4-生成service-worker文件&quot; id=&quot;markdown-toc-4-生成service-worker文件&quot;&gt;4. 生成service-worker文件&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#5-首页文件注册serviceworker&quot; id=&quot;markdown-toc-5-首页文件注册serviceworker&quot;&gt;5. 首页文件注册serviceworker&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#6-sw-precache-使用总结&quot; id=&quot;markdown-toc-6-sw-precache-使用总结&quot;&gt;6. Sw-Precache 使用总结&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#参考文献&quot; id=&quot;markdown-toc-参考文献&quot;&gt;参考文献&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&quot;1-pwa是什么&quot;&gt;1. PWA是什么&lt;/h2&gt;
 
-&lt;p&gt;&lt;strong&gt;Progressive Web App&lt;/strong&gt;，简称 &lt;strong&gt;pwa&lt;/strong&gt;，中文名称为 &lt;em&gt;渐进式网页应用&lt;/em&gt;。它的目的是利用web的技术给移动端的设备提供原生App的体验。&lt;/p&gt;
+&lt;p&gt;上一篇文章 &lt;a href=&quot;https://vinny.cc/2018/05/pwa-app/&quot;&gt;什么是 Progressive Web App 及其使用&lt;/a&gt; 中主要说明了基本 PWA 应用的构成及其实现，基本可以达到 PWA 应用的标准。&lt;/p&gt;
 
+&lt;p&gt;本篇将会结合 &lt;a href=&quot;https://github.com/GoogleChromeLabs/sw-precache&quot;&gt;sw-precache&lt;/a&gt; 工具实现自动化的 PWA 应用。&lt;/p&gt;
+
+&lt;h2 id=&quot;1-sw-precache-介绍&quot;&gt;1. Sw-Precache 介绍&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;sw-precache&lt;/strong&gt; 是 Google 提供的 PWA 应用增强的构建工具，可以根据配置自动生成 &lt;em&gt;service-worker.js&lt;/em&gt; 文件，构建的过程中根据配置的缓存文件 hash 值更新服务工作线程文件，免去了每次需要修改 &lt;em&gt;service-worker.js&lt;/em&gt; 的版本号或者其他信息，以要求浏览器进行缓存的更新。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;缓存的更新原则&lt;/strong&gt;：若下载的服务工作线程文件与当前的服务器工作线程文件存在字节的差异，则视为新的服务工作线程。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;2-sw-precache-安装&quot;&gt;2. Sw-Precache 安装&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;sw-precache&lt;/strong&gt; 需要结合 &lt;a href=&quot;http://gulpjs.com/&quot;&gt;Grunt&lt;/a&gt; 或者 &lt;a href=&quot;http://gruntjs.com/&quot;&gt;Gulp&lt;/a&gt; 等 javascript 构建工具进行工作，这里使用的是 Gulp。&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;npm &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;gulp-cli &lt;span class=&quot;nt&quot;&gt;-g&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# 安装gulp的cli命令行工具&lt;/span&gt;
+
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;pwa_demo_proj &lt;span class=&quot;c&quot;&gt;# 进入工程根路径&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;npm init &lt;span class=&quot;c&quot;&gt;# 初始化工程&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;npm &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;gulp &lt;span class=&quot;nt&quot;&gt;--save-dev&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# 安装gulp依赖&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;npm &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--save-dev&lt;/span&gt; sw-precache &lt;span class=&quot;c&quot;&gt;# 安装sw-precache依赖&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;3-编写gulpfilejs文件&quot;&gt;3. 编写gulpfile.js文件&lt;/h2&gt;
+
+&lt;p&gt;在工程根路径创建 &lt;em&gt;gulpfile.js&lt;/em&gt; 文件，编写构建任务，明细如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;s1&quot;&gt;'use strict'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;gulp&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'gulp'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;path&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'path'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;swPrecache&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'sw-precache'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;gulp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;task&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'generate-service-worker'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;callback&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// 定义html文件根路径&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;rootDir&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'.'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    
+    &lt;span class=&quot;c1&quot;&gt;// 生成 service-worker.js 文件的 gulp 任务&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;swPrecache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;rootDir&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'service-worker.js'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+        &lt;span class=&quot;c1&quot;&gt;// ---------------------- 预缓存内容定义 ------------------------&lt;/span&gt;
+        
+        &lt;span class=&quot;c1&quot;&gt;// 缓存的静态资源，支持模糊匹配&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;staticFileGlobs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+			&lt;span class=&quot;nx&quot;&gt;rootDir&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'/*.html'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+			&lt;span class=&quot;nx&quot;&gt;rootDir&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'/page/*.html'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+			&lt;span class=&quot;nx&quot;&gt;rootDir&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'/assets/js/*.js'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+			&lt;span class=&quot;nx&quot;&gt;rootDir&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'/assets/js/**/*.{js,css}'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+			&lt;span class=&quot;nx&quot;&gt;rootDir&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'/assets/css/*.css'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+			&lt;span class=&quot;nx&quot;&gt;rootDir&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'/assets/img/*.{css,png,jpg,gif}'&lt;/span&gt;            
+		&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
+        
+        &lt;span class=&quot;c1&quot;&gt;// 跳过的前缀&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;stripPrefix&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;rootDir&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; 
+
+        &lt;span class=&quot;c1&quot;&gt;// 在servicerworker中引入js的文件&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;importScripts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'config.js'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'sync.js'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;  
+
+        &lt;span class=&quot;c1&quot;&gt;// 在资源请求失败时默认的离线页面&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;navigateFallback&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'offline.html'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+
+        &lt;span class=&quot;c1&quot;&gt;// ---------------------- 运行时缓存定义 ------------------------&lt;/span&gt;
+        
+        &lt;span class=&quot;cm&quot;&gt;/*
+         * 运行时缓存（runtimeCaching）即在运行时请求的外部资源，对于不常变化的使用缓存有限策略，
+         * 反之使用网络优先策略。
+         * urlPattern: 支持以正则的形式捕获http请求
+         * handler: 处理请求的策略，cacheOnly, networkOnly, cacheFirst, networkFirst,  Fastest
+         * options: 可选参数，这里我们给每一类缓存用不同的缓存名称存储，方便查找
+         */&lt;/span&gt;
+        
+        &lt;span class=&quot;na&quot;&gt;runtimeCaching&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;na&quot;&gt;urlPattern&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/https:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\/\/&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;jsonplaceholder&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;typicode&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;com&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\/&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;users/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,,&lt;/span&gt;
+            &lt;span class=&quot;na&quot;&gt;handler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'cacheOnly'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;na&quot;&gt;options&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;na&quot;&gt;cache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                    &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'users'&lt;/span&gt;
+                &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;na&quot;&gt;urlPattern&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/https:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\/\/&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;jsonplaceholder&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;typicode&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;com&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\/&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;posts/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,,&lt;/span&gt;
+            &lt;span class=&quot;na&quot;&gt;handler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'networkFirst'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;na&quot;&gt;options&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;na&quot;&gt;cache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                    &lt;span class=&quot;na&quot;&gt;maxEntries&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                    &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'posts'&lt;/span&gt;
+                &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}],&lt;/span&gt;
+        
+        &lt;span class=&quot;na&quot;&gt;verbose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// 为每个缓存打出日志&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;callback&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;4-生成service-worker文件&quot;&gt;4. 生成service-worker文件&lt;/h2&gt;
+
+&lt;p&gt;使用 gulp cli 运行定义在 gulpfile.js 中的 &lt;code class=&quot;highlighter-rouge&quot;&gt;generate-service-worker&lt;/code&gt; 命令，执行完成后，会在路径下生成 &lt;em&gt;service-worker.js&lt;/em&gt; 文件，在控制台输出中也会详细输出预缓存的文件列表及缓存大小。&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;gulp generate-service-worker
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;只需要把配置规则定义好，基本上不需要编写 &lt;em&gt;service-worker.js&lt;/em&gt; 文件。&lt;/p&gt;
+
+&lt;h2 id=&quot;5-首页文件注册serviceworker&quot;&gt;5. 首页文件注册serviceworker&lt;/h2&gt;
+
+&lt;p&gt;在脚本文件中对生成的 &lt;em&gt;service-worker.js&lt;/em&gt; 文件进行注册&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'serviceWorker'&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;navigator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addEventListener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'load'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// 注册&quot;serviceWorker&quot;&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;navigator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;serviceWorker&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;register&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'/service-worker.js'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;registration&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Service Worker registration success with scope: '&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;registration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;scope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;catch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Service Worker registration failed: '&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;这里值得注意的是，&lt;strong&gt;sw-precache&lt;/strong&gt; 只是用于生成 &lt;em&gt;serviceworker&lt;/em&gt;，其他如 &lt;em&gt;manifest.json&lt;/em&gt; 文件还是需要自行编写的。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;6-sw-precache-使用总结&quot;&gt;6. Sw-Precache 使用总结&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;不需要去管 &lt;em&gt;service-worker.js&lt;/em&gt; 文件的编写，在 &lt;em&gt;gulpfile.js&lt;/em&gt; 文件中定义好 &lt;strong&gt;预缓存&lt;/strong&gt; 和 &lt;strong&gt;运行时缓存&lt;/strong&gt; 规则，然后就交给 gulp 去做。&lt;/li&gt;
+  &lt;li&gt;每次在编写完业务代码，在发布到服务器时，都需要执行一次 &lt;code class=&quot;highlighter-rouge&quot;&gt;gulp generate-service-worker&lt;/code&gt; 的命令，让其重新生成服务工作线程文件，更重要的是重新对文件进行哈希。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;参考文献&quot;&gt;参考文献&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/GoogleChromeLabs/sw-precache&quot;&gt;https://github.com/GoogleChromeLabs/sw-precache&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://codelabs.developers.google.com/codelabs/sw-precache&quot;&gt;https://codelabs.developers.google.com/codelabs/sw-precache&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://developers.google.com/web/updates/2015/02/offline-first-with-sw-precache&quot;&gt;https://developers.google.com/web/updates/2015/02/offline-first-with-sw-precache&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 </description>  
                <pubDate>Sat, 12 May 2018 00:00:00 +0800</pubDate>  
                <link>http://www.vinny.cc/2018/05/pwa-sw-precache/</link>  
@@ -66,7 +214,7 @@
 &lt;p&gt;断网或网络差，基于常驻后台的 &lt;strong&gt;Service Worker&lt;/strong&gt; 实现数据离线存储与通知推送。&lt;/p&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;关于各个浏览器针对于 &lt;em&gt;pwa&lt;/em&gt; 应用缓存的大小限制，请参看 &lt;strong&gt;附录A 不同浏览器对 PWA 应用缓存的限制&lt;/strong&gt;。&lt;/p&gt;
+  &lt;p&gt;关于各个浏览器针对于 &lt;em&gt;pwa&lt;/em&gt; 应用缓存的大小限制，请参看 &lt;strong&gt;&lt;a href=&quot;#附录a-不同浏览器对-pwa-应用缓存的限制&quot;&gt;附录A 不同浏览器对 PWA 应用缓存的限制&lt;/a&gt;&lt;/strong&gt;。&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;h2 id=&quot;4-编写原生的pwa应用&quot;&gt;4. 编写原生的PWA应用&lt;/h2&gt;
@@ -163,7 +311,7 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;这样的配置对于 &lt;strong&gt;Chrome&lt;/strong&gt; 浏览器足够使用了，但对于 IOS 系统的 &lt;strong&gt;safari&lt;/strong&gt; 浏览器仍然不行，IOS 系统在 11.3 版本之后才开始对 PWA 应用的支持，但仍然有不少问题，具体在如何适配请参看 &lt;strong&gt;附录B PWA在IOS中的问题与解决方法&lt;/strong&gt;&lt;/p&gt;
+  &lt;p&gt;这样的配置对于 &lt;strong&gt;Chrome&lt;/strong&gt; 浏览器足够使用了，但对于 IOS 系统的 &lt;strong&gt;safari&lt;/strong&gt; 浏览器仍然不行，IOS 系统在 11.3 版本之后才开始对 PWA 应用的支持，但仍然有不少问题，具体在如何适配请参看 &lt;strong&gt;&lt;a href=&quot;#附录b-pwa在ios中的问题与解决方法&quot;&gt;附录B PWA在IOS中的问题与解决方法&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;h3 id=&quot;43-服务工作文件&quot;&gt;4.3 服务工作文件&lt;/h3&gt;
@@ -171,7 +319,7 @@
 &lt;p&gt;&lt;strong&gt;ServiceWorker&lt;/strong&gt; 即工作线程，简称 &lt;strong&gt;sw&lt;/strong&gt;，当访问站点时会以此域名将 &lt;strong&gt;sw&lt;/strong&gt; 进行注册，一旦进行注册则会在浏览器中形成常驻的工作线程。值得注意的是 &lt;strong&gt;sw&lt;/strong&gt; 不能直接操作 DOM 元素，它更像个代理程序，用来转发数据。&lt;/p&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;查看当前浏览器已经注册的服务工作线程 &lt;strong&gt;chrome://serviceworker-internals&lt;/strong&gt;&lt;/p&gt;
+  &lt;p&gt;查看当前浏览器已经注册的服务工作线程 &lt;strong&gt;&lt;a href=&quot;chrome://serviceworker-internals&quot;&gt;chrome://serviceworker-internals&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;在工程根路径中创建 &lt;strong&gt;service-worker.js&lt;/strong&gt; 文件，文件的所在路径与作用域 scope 相关，注册在那个路径里，就只能对此路径有访问权限，在根路径中表示对整个站点有效。&lt;/p&gt;
@@ -215,7 +363,7 @@
 
 &lt;h3 id=&quot;45-发布到服务器中&quot;&gt;4.5 发布到服务器中&lt;/h3&gt;
 
-&lt;p&gt;按章节 &lt;strong&gt;3. 基本组成结构&lt;/strong&gt; 中的图，至此准备工作结束，一个基本的 &lt;strong&gt;PWA&lt;/strong&gt; 应用已经完成，现在可以将整个站点发布到 nginx、apache等服务器中。&lt;/p&gt;
+&lt;p&gt;按章节 &lt;strong&gt;&lt;a href=&quot;#3-基本组成结构&quot;&gt;3. 基本组成结构&lt;/a&gt;&lt;/strong&gt; 中的图，至此准备工作结束，一个基本的 &lt;strong&gt;PWA&lt;/strong&gt; 应用已经完成，现在可以将整个站点发布到 nginx、apache等服务器中。&lt;/p&gt;
 
 &lt;p&gt;这里值得一提的是，&lt;strong&gt;&lt;u&gt;正确的 PWA 应用应该部署在 HTTPS 的环境下，即你需要安全证书&lt;/u&gt;&lt;/strong&gt;，不支持自签名证书，关于如何获取免费的 HTTPS 证书请参看另一篇文章 &lt;a href=&quot;https://vinny.cc/2017/10/lets-encrypt-ssl/&quot;&gt;使用Lets Encrypt为站点快速部署SSL证书&lt;/a&gt;。&lt;/p&gt;
 
@@ -417,7 +565,7 @@
 
 &lt;p&gt;IOS 的 Safari 浏览器暂时不支持读取 manifest.json 文件的 icon 配置信息，当添加到桌面时，只是页面的缩略图，对用户不是很友好，具体的改善步骤为，在 index.html 中的 head 标签内添加适配信息&lt;/p&gt;
 
-&lt;p style=&quot;text-align:center;&quot;&gt;&lt;img src=&quot;https://www.netguru.co/hs-fs/hubfs/white_splash_small.gif?t=1526027228428&amp;amp;width=300&amp;amp;height=537&amp;amp;name=white_splash_small.gif&quot; style=&quot;height:300px;margin:0 auto;&quot; /&gt;&lt;/p&gt;
+&lt;p style=&quot;text-align:center;&quot;&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/white_splash_small.gif&quot; style=&quot;height:300px;margin:0 auto;&quot; /&gt;&lt;/p&gt;
 
 &lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;link&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;rel=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;apple-touch-icon&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/assets/icons/icon-96x96.png&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;nt&quot;&gt;&amp;lt;link&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;rel=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;apple-touch-icon&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;sizes=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;152x152&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/assets/icons/icon-152x152.png&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
@@ -450,9 +598,9 @@
 
 &lt;p style=&quot;text-align:center;&quot;&gt;
 
-&lt;img src=&quot;https://www.netguru.co/hs-fs/hubfs/add_to_homescreen_small.gif?t=1526027228428&amp;amp;width=300&amp;amp;name=add_to_homescreen_small.gif&quot; style=&quot;height:300px;&quot; /&gt;
+&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/add_to_homescreen_small.gif&quot; style=&quot;height:300px;&quot; /&gt;
 
-&lt;img src=&quot;https://www.netguru.co/hs-fs/hubfs/Simulator%20Screen%20Shot%20-%20iPhone%206s%20-%202018-04-04%20at%2010.14.00.png?t=1526027228428&amp;amp;width=300&amp;amp;height=534&amp;amp;name=Simulator%20Screen%20Shot%20-%20iPhone%206s%20-%202018-04-04%20at%2010.14.00.png&quot; style=&quot;height:300px;&quot; /&gt;
+&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/apple-add-home.png&quot; style=&quot;height:300px;&quot; /&gt;
 
 &lt;/p&gt;
 

@@ -71,24 +71,23 @@ function onPush(event) {
 function onNotificationClick(event) {
     console.log('[Service Worker] Notification click Received.');
 
+    event.notification.close();
+    event.waitUntil(
+        clients.openWindow('https://developers.google.com/web/')
+    );
+
+    // var messageId = event.notification.data;
+
     // event.notification.close();
 
-    // event.waitUntil(
-    //     clients.openWindow('https://developers.google.com/web/')
-    // );
-
-    var messageId = event.notification.data;
-
-    event.notification.close();
-
-    if (event.action == 'like') {
-        // TODO
-    } else if (event.action == 'reply') {
-        // TODO
-    }
+    // if (event.action == 'like') {
+    //     // TODO
+    // } else if (event.action == 'reply') {
+    //     // TODO
+    // }
 }
 
-var CACHE_VERSION = "V1.1.0";
+var CACHE_VERSION = "V1.1.1";
 var CACHE_NAME = CACHE_VERSION + ":sw-cache::";
 var URL_TO_CACHE = [
     "/",

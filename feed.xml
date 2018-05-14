@@ -172,6 +172,41 @@
                </item>  
           
             <item>  
+               <title>使用 ionic dev app 在真机上进行测试</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#下载devapp&quot; id=&quot;markdown-toc-下载devapp&quot;&gt;下载DevApp&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#同一网络环境&quot; id=&quot;markdown-toc-同一网络环境&quot;&gt;同一网络环境&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#启动ionic工程&quot; id=&quot;markdown-toc-启动ionic工程&quot;&gt;启动ionic工程&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#打开devapp&quot; id=&quot;markdown-toc-打开devapp&quot;&gt;打开DevApp&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;**&amp;lt;https://ionicframework.com/docs/pro/devapp/&amp;gt;**&quot;&gt;ionic dev app&lt;/a&gt;&lt;/strong&gt; 是移动开发的一整套解决方案，涵盖测试、版本管理、更新和监控等功能，本篇文章使用的是其最有用的真机测试功能，使用此功能可以不必执行构建打包等工作，即可模拟实际测试情况。&lt;/p&gt;
+
+&lt;h2 id=&quot;下载devapp&quot;&gt;下载DevApp&lt;/h2&gt;
+
+&lt;p&gt;首先手机中需要安装 ionic devapp 的应用，进行注册登录后，以后所有真机测试在此 app 上完成&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/ionic_devapp.png&quot; alt=&quot;ionic_devapp&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;同一网络环境&quot;&gt;同一网络环境&lt;/h2&gt;
+
+&lt;p&gt;手机与开发者的 PC 电脑处于同一网络环境中，连接同一个 wifi 热点就好。&lt;/p&gt;
+
+&lt;h2 id=&quot;启动ionic工程&quot;&gt;启动ionic工程&lt;/h2&gt;
+
+&lt;p&gt;进入 ionic 工程根路径下，执行命令 &lt;code class=&quot;highlighter-rouge&quot;&gt;ionic serve -c&lt;/code&gt; 启动工程。&lt;/p&gt;
+
+&lt;h2 id=&quot;打开devapp&quot;&gt;打开DevApp&lt;/h2&gt;
+
+&lt;p&gt;在手机上打开已经下载好的 &lt;strong&gt;ionic dev app&lt;/strong&gt; 应用，&lt;strong&gt;ionic dev app&lt;/strong&gt; 会自动发现在同一网络下运行的 ionic 工程，点击工程即可进行真机调试。&lt;/p&gt;
+
+&lt;p style=&quot;text-align:center;&quot;&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/ionic_devapp.gif&quot; style=&quot;height:400px;&quot; /&gt;&lt;/p&gt;
+</description>  
+               <pubDate>Mon, 14 May 2018 00:00:00 +0800</pubDate>  
+               <link>http://www.vinny.cc/2018/05/ionic-dev-app/</link>  
+               <guid isPermaLink="true">http://www.vinny.cc/2018/05/ionic-dev-app/</guid>  
+               </item>  
+          
+            <item>  
                <title>让 ionic 中 sidemenu 选中的菜单高亮显示</title>  
                <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
   &lt;li&gt;&lt;a href=&quot;#工程准备&quot; id=&quot;markdown-toc-工程准备&quot;&gt;工程准备&lt;/a&gt;&lt;/li&gt;
@@ -1685,21 +1720,6 @@ python3 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; http.server 8000
                <pubDate>Sun, 06 May 2018 00:00:00 +0800</pubDate>  
                <link>http://www.vinny.cc/2018/05/analysis-thread-cpu/</link>  
                <guid isPermaLink="true">http://www.vinny.cc/2018/05/analysis-thread-cpu/</guid>  
-               </item>  
-          
-            <item>  
-               <title>使用 apt-get update 签名错误 invalid signature 的处理</title>  
-               <description>
-&lt;hr /&gt;
-
-&lt;p&gt;在kali中更新执行”apt-get update”出现”&lt;strong&gt;Invalid signature for Kali Linux repositories&lt;/strong&gt;“的解决方法&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;wget &lt;span class=&quot;nt&quot;&gt;-q&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-O&lt;/span&gt; - https://archive.kali.org/archive-key.asc | apt-key add
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-</description>  
-               <pubDate>Sat, 31 Mar 2018 00:00:00 +0800</pubDate>  
-               <link>http://www.vinny.cc/2018/03/kali-invalid-signature/</link>  
-               <guid isPermaLink="true">http://www.vinny.cc/2018/03/kali-invalid-signature/</guid>  
                </item>  
           
     </channel>  

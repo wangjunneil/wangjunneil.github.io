@@ -87,7 +87,7 @@ function onNotificationClick(event) {
     // }
 }
 
-var CACHE_VERSION = "V1.1.7";
+var CACHE_VERSION = "V1.1.8";
 var CACHE_NAME = CACHE_VERSION + ":sw-cache::";
 var URL_TO_CACHE = [
     "/",
@@ -112,4 +112,4 @@ self.addEventListener("activate", onActivate),
 self.addEventListener("fetch", onFetch),
 self.addEventListener('push', onPush),
 self.addEventListener('notificationclick', onNotificationClick);
-
+// ...

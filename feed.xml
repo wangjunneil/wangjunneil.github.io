@@ -172,7 +172,7 @@
                </item>  
           
             <item>  
-               <title>使用 ionic dev app 在真机上进行测试</title>  
+               <title>让 ionic 使用 ionic dev app 在真机上进行测试</title>  
                <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
   &lt;li&gt;&lt;a href=&quot;#下载devapp&quot; id=&quot;markdown-toc-下载devapp&quot;&gt;下载DevApp&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;#同一网络环境&quot; id=&quot;markdown-toc-同一网络环境&quot;&gt;同一网络环境&lt;/a&gt;&lt;/li&gt;
@@ -491,6 +491,90 @@ export class MaterialModule {  }
                <pubDate>Sun, 13 May 2018 00:00:00 +0800</pubDate>  
                <link>http://www.vinny.cc/2018/05/ionic-material/</link>  
                <guid isPermaLink="true">http://www.vinny.cc/2018/05/ionic-material/</guid>  
+               </item>  
+          
+            <item>  
+               <title>在 ionic 中集成 bootstrap 框架</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#安装bootstrap依赖&quot; id=&quot;markdown-toc-安装bootstrap依赖&quot;&gt;安装bootstrap依赖&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#配置复制任务&quot; id=&quot;markdown-toc-配置复制任务&quot;&gt;配置复制任务&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#创建任务文件&quot; id=&quot;markdown-toc-创建任务文件&quot;&gt;创建任务文件&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#导入bootstrap样式&quot; id=&quot;markdown-toc-导入bootstrap样式&quot;&gt;导入bootstrap样式&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#使用bootstrap组件&quot; id=&quot;markdown-toc-使用bootstrap组件&quot;&gt;使用bootstrap组件&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://getbootstrap.com/&quot;&gt;Bootstrap&lt;/a&gt;&lt;/strong&gt; 是流行的前端 UI 框架，具备丰富的组件库及色彩搭配。当你觉得 ionic 原生组件不满足于要求时，可以尝试下使用 Bootstrap 来进行页面构建。&lt;/p&gt;
+
+&lt;p&gt;本文以认为你已经准备好了一个标准的 ionic 工程了。&lt;/p&gt;
+
+&lt;h2 id=&quot;安装bootstrap依赖&quot;&gt;安装bootstrap依赖&lt;/h2&gt;
+
+&lt;p&gt;进入 ionic 项目根路径，执行以下 &lt;code class=&quot;highlighter-rouge&quot;&gt;npm&lt;/code&gt; 命令进行 boostrap 的安装&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;npm &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;bootstrap &lt;span class=&quot;nt&quot;&gt;--save&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;安装好之后检查下 &lt;em&gt;package.json&lt;/em&gt; 文件，bootstrap 是否已经安装好以及其版本是否正确。&lt;/p&gt;
+
+&lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;dependencies&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;bootstrap&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;^4.1.1&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;配置复制任务&quot;&gt;配置复制任务&lt;/h2&gt;
+
+&lt;p&gt;编辑根路径下的 &lt;em&gt;package.json&lt;/em&gt; 文件，在文件末尾增加 &lt;strong&gt;config&lt;/strong&gt; 任务，此任务用于在构建时拷贝相关样式。&lt;/p&gt;
+
+&lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;s2&quot;&gt;&quot;config&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ionic_sass&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;./sass.config.js&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;创建任务文件&quot;&gt;创建任务文件&lt;/h2&gt;
+
+&lt;p&gt;在项目根路径下创建 &lt;em&gt;sass.config.js&lt;/em&gt; 文件，内容如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-typescript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nx&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;exports&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;includePaths&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+    &lt;span class=&quot;s1&quot;&gt;'node_modules/ionic-angular/themes'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s1&quot;&gt;'node_modules/ionic-angular/fonts'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s1&quot;&gt;'node_modules/ionicons/dist/scss'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s1&quot;&gt;'node_modules/bootstrap/scss'&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;导入bootstrap样式&quot;&gt;导入bootstrap样式&lt;/h2&gt;
+
+&lt;p&gt;在 &lt;em&gt;src/theme/variables.scss&lt;/em&gt; 文件中使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;@import&lt;/code&gt; 命令导入 bootstrap 样式表&lt;/p&gt;
+
+&lt;div class=&quot;language-scss highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nc&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;bootstrap&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nc&quot;&gt;...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;使用bootstrap组件&quot;&gt;使用bootstrap组件&lt;/h2&gt;
+
+&lt;p&gt;上述操作完成后，就可以在 &lt;a href=&quot;https://getbootstrap.com/docs/4.1/components/buttons/&quot;&gt;bootstrap components&lt;/a&gt; 中选择需要的组件直接在 html 页面中使用即可。&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;ion-content&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;padding&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;container&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;row&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;button&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;button&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;btn btn-primary btn-lg btn-block&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Block level button&lt;span class=&quot;nt&quot;&gt;&amp;lt;/button&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;button&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;button&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;btn btn-secondary btn-lg btn-block&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Block level button&lt;span class=&quot;nt&quot;&gt;&amp;lt;/button&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+    
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/ion-content&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</description>  
+               <pubDate>Sun, 13 May 2018 00:00:00 +0800</pubDate>  
+               <link>http://www.vinny.cc/2018/05/ionic-bootstrap/</link>  
+               <guid isPermaLink="true">http://www.vinny.cc/2018/05/ionic-bootstrap/</guid>  
                </item>  
           
             <item>  
@@ -1685,41 +1769,6 @@ python3 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; http.server 8000
                <pubDate>Mon, 07 May 2018 00:00:00 +0800</pubDate>  
                <link>http://www.vinny.cc/2018/05/http-server-ways/</link>  
                <guid isPermaLink="true">http://www.vinny.cc/2018/05/http-server-ways/</guid>  
-               </item>  
-          
-            <item>  
-               <title>Linux分析Java进程中哪个线程占用了大量的CPU</title>  
-               <description>
-&lt;p&gt;当运行在服务器中的 Java 程序越来越慢，&lt;code class=&quot;highlighter-rouge&quot;&gt;top&lt;/code&gt; 查看 CPU 的使用率非常高，确定是某个 Java 进程在占用过多的 CPU，此时定位是哪部分代码或者业务导致。&lt;/p&gt;
-
-&lt;p&gt;主要分为以下几个步骤实现：&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;1. 使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;top -H -p [pid]&lt;/code&gt; 命令列出进程的所有线程&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/cpu_1.png&quot; alt=&quot;cpu_1&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;通过上述命令，这里假定发现ID为”&lt;strong&gt;5171&lt;/strong&gt;“的线程占用了 75% 的CPU&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;2. 使用计算器将十进制的线程ID”5171”转换成16进制&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;这里计算后的结果是 “&lt;strong&gt;0x1433&lt;/strong&gt;”&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/cpu_2.png&quot; alt=&quot;cpu_2&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;3. 使用命令 &lt;code class=&quot;highlighter-rouge&quot;&gt;jstack [pid] &amp;gt; jstack.txt&lt;/code&gt; 导出进程中所有线程上下文&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/cpu_3.png&quot; alt=&quot;cpu_3&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;4. 使用命令 &lt;code class=&quot;highlighter-rouge&quot;&gt;cat jstack.txt | grep -i 1433&lt;/code&gt; 查找匹配的线程ID&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/cpu_4.png&quot; alt=&quot;cpu_4&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;从上述输出的信息可以直接得出执行的堆栈，从而确定哪部分代码出现了问题&lt;/p&gt;
-
-</description>  
-               <pubDate>Sun, 06 May 2018 00:00:00 +0800</pubDate>  
-               <link>http://www.vinny.cc/2018/05/analysis-thread-cpu/</link>  
-               <guid isPermaLink="true">http://www.vinny.cc/2018/05/analysis-thread-cpu/</guid>  
                </item>  
           
     </channel>  

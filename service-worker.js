@@ -20,32 +20,32 @@ function onActivate(e) {
 }
 
 function onFetch(e) {
-    // e.respondWith(
-    //     caches.match(e.request).then(resp => {
-    //         // 缓存命中直接返回
-    //         if (resp) {
-    //             return resp;
-    //         }
+    e.respondWith(
+        caches.match(e.request).then(resp => {
+            // 缓存命中直接返回
+            if (resp) {
+                return resp;
+            }
 
-    //         var fetchRequest = e.request.clone();
-    //         return fetch(fetchRequest).then(response => {
-    //             // 检查是否收到无效的响应
-    //             if (!response || response.status !== 200 || response.type !== 'basic') {
-    //                 return response || caches.match("/offline.html");
-    //             }
+            var fetchRequest = e.request.clone();
+            return fetch(fetchRequest).then(response => {
+                // 检查是否收到无效的响应
+                if (!response || response.status !== 200 || response.type !== 'basic') {
+                    return response || caches.match("/offline.html");
+                }
 
-    //             var responseToCache = response.clone();
-    //             caches.open(CACHE_NAME).then(cache => {
-    //                 cache.put(e.request, responseToCache);
-    //             });
+                var responseToCache = response.clone();
+                caches.open(CACHE_NAME).then(cache => {
+                    cache.put(e.request, responseToCache);
+                });
 
-    //             return response;
-    //         })
-    //         .catch (err => {
-    //             return caches.match('/offline.html');
-    //         });
-    //     })
-    // )
+                return response;
+            })
+            .catch (err => {
+                return caches.match('/offline.html');
+            });
+        })
+    )
 }
 
 // 接收推送消息
@@ -86,7 +86,8 @@ function onNotificationClick(event) {
     //     // TODO
     // }
 }
-var CACHE_VERSION = "V1.1.6";
+
+var CACHE_VERSION = "V1.1.7";
 var CACHE_NAME = CACHE_VERSION + ":sw-cache::";
 var URL_TO_CACHE = [
     "/",
@@ -104,6 +105,7 @@ var URL_TO_CACHE = [
     "/assets/5-13050G31J7.gif",
     "/assets/clear.png"
 ];
+
 // Service Worker 事件注册
 self.addEventListener("install", onInstall), 
 self.addEventListener("activate", onActivate), 

@@ -48,7 +48,7 @@
 
 &lt;p&gt;安装完成后，默认的安装目录是 &lt;em&gt;/usr/local/openresty&lt;/em&gt;，进入 &lt;em&gt;/usr/local/openresty/nginx/sbin&lt;/em&gt; 目录，使用命令 &lt;code class=&quot;highlighter-rouge&quot;&gt;./nginx&lt;/code&gt; 启动nginx，打开网页查看安装是否成功。&lt;/p&gt;
 
-&lt;p&gt;&lt;img class=&quot;lozad&quot; data-src=&quot;http://ohdpyqlwy.bkt.clouddn.com/openresty.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/openresty.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;安装redis&quot;&gt;安装redis&lt;/h3&gt;
 
@@ -296,7 +296,7 @@
 
 &lt;p&gt;在 &lt;a href=&quot;https://console.firebase.google.com/&quot;&gt;firebase console&lt;/a&gt; 中创建一个工程，记住工程名称，如这里创建一个 &lt;em&gt;pwademo&lt;/em&gt; 的工程&lt;/p&gt;
 
-&lt;p&gt;&lt;img class=&quot;lozad&quot; data-src=&quot;http://ohdpyqlwy.bkt.clouddn.com/firebase_console.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/firebase_console.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;安装-firebase-并授权&quot;&gt;安装 firebase 并授权&lt;/h2&gt;
 
@@ -314,9 +314,9 @@
 &lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;firebase init
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;&lt;img class=&quot;lozad&quot; data-src=&quot;http://ohdpyqlwy.bkt.clouddn.com/firebase_hosting.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/firebase_hosting.png&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img class=&quot;lozad&quot; data-src=&quot;http://ohdpyqlwy.bkt.clouddn.com/firebase_project.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/firebase_project.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;在使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;firebase init&lt;/code&gt; 之后会在当前目录下生成 &lt;strong&gt;.firebaserc&lt;/strong&gt; 和 &lt;strong&gt;firebase.json&lt;/strong&gt; 两个文件，这两个文件关联了创建的 firebase 的环境。&lt;/p&gt;
 
@@ -327,7 +327,7 @@
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;firebase deploy
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;&lt;img class=&quot;lozad&quot; data-src=&quot;http://ohdpyqlwy.bkt.clouddn.com/firebase_https_url.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/firebase_https_url.png&quot; /&gt;&lt;/p&gt;
 </description>  
                <pubDate>Fri, 18 May 2018 00:00:00 +0800</pubDate>  
                <link>http://www.vinny.cc/2018/05/firebase-https/</link>  
@@ -491,7 +491,7 @@
 
 &lt;h2 id=&quot;最后实现效果如图&quot;&gt;最后实现效果如图&lt;/h2&gt;
 
-&lt;p style=&quot;text-align:center&quot;&gt;&lt;img class=&quot;lozad&quot; data-src=&quot;http://ohdpyqlwy.bkt.clouddn.com/ionic_change_theme.gif&quot; /&gt;&lt;/p&gt;
+&lt;p style=&quot;text-align:center&quot;&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/ionic_change_theme.gif&quot; /&gt;&lt;/p&gt;
 </description>  
                <pubDate>Mon, 14 May 2018 00:00:00 +0800</pubDate>  
                <link>http://www.vinny.cc/2018/05/ionic-dynamic-theme/</link>  
@@ -512,7 +512,7 @@
 
 &lt;p&gt;首先手机中需要安装 ionic devapp 的应用，进行注册登录后，以后所有真机测试在此 app 上完成&lt;/p&gt;
 
-&lt;p&gt;&lt;img class=&quot;lozad&quot; data-src=&quot;http://ohdpyqlwy.bkt.clouddn.com/ionic_devapp.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/ionic_devapp.png&quot; alt=&quot;ionic_devapp&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;同一网络环境&quot;&gt;同一网络环境&lt;/h2&gt;
 
@@ -526,7 +526,7 @@
 
 &lt;p&gt;在手机上打开已经下载好的 &lt;strong&gt;ionic dev app&lt;/strong&gt; 应用，&lt;strong&gt;ionic dev app&lt;/strong&gt; 会自动发现在同一网络下运行的 ionic 工程，点击工程即可进行真机调试。&lt;/p&gt;
 
-&lt;p style=&quot;text-align:center;&quot;&gt;&lt;img class=&quot;lozad&quot; data-src=&quot;http://ohdpyqlwy.bkt.clouddn.com/ionic_devapp.gif&quot; style=&quot;height:400px;&quot; /&gt;&lt;/p&gt;
+&lt;p style=&quot;text-align:center;&quot;&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/ionic_devapp.gif&quot; style=&quot;height:400px;&quot; /&gt;&lt;/p&gt;
 </description>  
                <pubDate>Mon, 14 May 2018 00:00:00 +0800</pubDate>  
                <link>http://www.vinny.cc/2018/05/ionic-dev-app/</link>  
@@ -548,7 +548,7 @@
 
 &lt;p&gt;现在默认已经有 &lt;strong&gt;sidemenu&lt;/strong&gt; 布局的 ionic 工程，如果没有的话，可以使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;ionic start myapp sidemenu&lt;/code&gt; 进行创建，运行后如下，默认菜单选中不会高亮显示。&lt;/p&gt;
 
-&lt;p&gt;&lt;img class=&quot;lozad&quot; data-src=&quot;http://ohdpyqlwy.bkt.clouddn.com/ionic_sidemenu_normal.gif&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/ionic_sidemenu_normal.gif&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;添加高亮样式&quot;&gt;添加高亮样式&lt;/h2&gt;
 
@@ -608,7 +608,7 @@
 
 &lt;h2 id=&quot;最后的完成效果&quot;&gt;最后的完成效果&lt;/h2&gt;
 
-&lt;p&gt;&lt;img class=&quot;lozad&quot; data-src=&quot;http://ohdpyqlwy.bkt.clouddn.com/ionic_sidemenu_highlight.gif&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/ionic_sidemenu_highlight.gif&quot; /&gt;&lt;/p&gt;
 </description>  
                <pubDate>Sun, 13 May 2018 00:00:00 +0800</pubDate>  
                <link>http://www.vinny.cc/2018/05/ionic-menu-highlight/</link>  
@@ -786,7 +786,7 @@ export class MaterialModule {  }
 
 &lt;p&gt;运行 &lt;code class=&quot;highlighter-rouge&quot;&gt;ionic serve -c&lt;/code&gt; 后结果为：&lt;/p&gt;
 
-&lt;p&gt;&lt;img class=&quot;lozad&quot; data-src=&quot;http://ohdpyqlwy.bkt.clouddn.com/ionic_material.gif&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/ionic_material.gif&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;使用material图标&quot;&gt;使用Material图标&lt;/h2&gt;
 
@@ -1205,7 +1205,7 @@ export class MaterialModule {  }
 
 &lt;p&gt;&lt;strong&gt;Progressive Web App&lt;/strong&gt;，简称 &lt;strong&gt;pwa&lt;/strong&gt;，中文名称为 &lt;em&gt;渐进式网页应用&lt;/em&gt;。它的目的是利用web的技术给移动端的设备提供原生App的体验。&lt;/p&gt;
 
-&lt;p&gt;&lt;img class=&quot;lozad&quot; data-src=&quot;http://ohdpyqlwy.bkt.clouddn.com/what-_s_pwa.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/what-_s_pwa.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;2-有什么特性&quot;&gt;2. 有什么特性&lt;/h2&gt;
 
@@ -1219,7 +1219,7 @@ export class MaterialModule {  }
 
 &lt;h2 id=&quot;3-基本组成结构&quot;&gt;3. 基本组成结构&lt;/h2&gt;
 
-&lt;p&gt;&lt;img class=&quot;lozad&quot; data-src=&quot;http://ohdpyqlwy.bkt.clouddn.com/1523604475510f808913f4f.jpeg&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/1523604475510f808913f4f.jpeg&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;断网或网络差，基于常驻后台的 &lt;strong&gt;Service Worker&lt;/strong&gt; 实现数据离线存储与通知推送。&lt;/p&gt;
 
@@ -1384,11 +1384,11 @@ export class MaterialModule {  }
 &lt;p&gt;&lt;strong&gt;访问的截图如下：&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p style=&quot;text-align:center;&quot;&gt;
-&lt;img class=&quot;lozad&quot; data-src=&quot;http://ohdpyqlwy.bkt.clouddn.com/Screenshot_20180418-004321.png&quot; height=&quot;300px&quot; style=&quot;margin-left:5px;&quot; /&gt;
+&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/Screenshot_20180418-004321.png&quot; height=&quot;300px&quot; style=&quot;margin-left:5px;&quot; /&gt;
 
-&lt;img class=&quot;lozad&quot; data-src=&quot;http://ohdpyqlwy.bkt.clouddn.com/Screenshot_20180418-003023.png&quot; height=&quot;300px&quot; style=&quot;margin-left:5px;&quot; /&gt;
+&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/Screenshot_20180418-003023.png&quot; height=&quot;300px&quot; style=&quot;margin-left:5px;&quot; /&gt;
 
-&lt;img class=&quot;lozad&quot; data-src=&quot;http://ohdpyqlwy.bkt.clouddn.com/Screenshot_20180418-003027.png&quot; height=&quot;300px&quot; style=&quot;margin-left:5px;&quot; /&gt;
+&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/Screenshot_20180418-003027.png&quot; height=&quot;300px&quot; style=&quot;margin-left:5px;&quot; /&gt;
 &lt;/p&gt;
 
 &lt;blockquote&gt;
@@ -1509,12 +1509,12 @@ export class MaterialModule {  }
   &lt;li&gt;
     &lt;p&gt;此时，旧服务工作线程仍控制着当前页面，新服务工作线程进入 &lt;strong&gt;waiting&lt;/strong&gt; 状态。&lt;/p&gt;
 
-    &lt;p&gt;&lt;img class=&quot;lozad&quot; data-src=&quot;http://ohdpyqlwy.bkt.clouddn.com/sw11.png&quot; /&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/sw11.png&quot; /&gt;&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;当关掉重新打开 PWA应用 时，就工作线程被终止，新服务线程取得控制权，同时触发 &lt;strong&gt;activate&lt;/strong&gt; 事件，删除旧的缓存&lt;/p&gt;
 
-    &lt;p&gt;&lt;img class=&quot;lozad&quot; data-src=&quot;http://ohdpyqlwy.bkt.clouddn.com/sw12.png&quot; /&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/sw12.png&quot; /&gt;&lt;/p&gt;
 
     &lt;p&gt;&lt;strong&gt;总结激活更新&lt;/strong&gt;&lt;/p&gt;
 
@@ -1528,7 +1528,7 @@ export class MaterialModule {  }
 
 &lt;p&gt;这里我使用我的博客站点进行测试，最后生成的报告如下：&lt;/p&gt;
 
-&lt;p&gt;&lt;img class=&quot;lozad&quot; data-src=&quot;http://ohdpyqlwy.bkt.clouddn.com/lighthouse.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/lighthouse.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;从上述的报告中可以看到，当前 https://vinny.cc 的站点对于 PWA 应用支持的得分为 91，除了有一个问题，就是无法从 HTTP 请求转向到 HTTPS 请求。&lt;/p&gt;
 
@@ -1581,7 +1581,7 @@ export class MaterialModule {  }
 
 &lt;p&gt;IOS 的 Safari 浏览器暂时不支持读取 manifest.json 文件的 icon 配置信息，当添加到桌面时，只是页面的缩略图，对用户不是很友好，具体的改善步骤为，在 index.html 中的 head 标签内添加适配信息&lt;/p&gt;
 
-&lt;p style=&quot;text-align:center;&quot;&gt;&lt;img class=&quot;lozad&quot; data-src=&quot;http://ohdpyqlwy.bkt.clouddn.com/white_splash_small.gif&quot; style=&quot;height:300px;margin:0 auto;&quot; /&gt;&lt;/p&gt;
+&lt;p style=&quot;text-align:center;&quot;&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/white_splash_small.gif&quot; style=&quot;height:300px;margin:0 auto;&quot; /&gt;&lt;/p&gt;
 
 &lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;link&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;rel=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;apple-touch-icon&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/assets/icons/icon-96x96.png&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;nt&quot;&gt;&amp;lt;link&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;rel=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;apple-touch-icon&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;sizes=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;152x152&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/assets/icons/icon-152x152.png&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
@@ -1614,9 +1614,9 @@ export class MaterialModule {  }
 
 &lt;p style=&quot;text-align:center;&quot;&gt;
 
-&lt;img class=&quot;lozad&quot; data-src=&quot;http://ohdpyqlwy.bkt.clouddn.com/add_to_homescreen_small.gif&quot; style=&quot;height:300px;&quot; /&gt;
+&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/add_to_homescreen_small.gif&quot; style=&quot;height:300px;&quot; /&gt;
 
-&lt;img class=&quot;lozad&quot; data-src=&quot;http://ohdpyqlwy.bkt.clouddn.com/apple-add-home.png&quot; style=&quot;height:300px;&quot; /&gt;
+&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/apple-add-home.png&quot; style=&quot;height:300px;&quot; /&gt;
 
 &lt;/p&gt;
 
@@ -1647,7 +1647,7 @@ export class MaterialModule {  }
   &lt;li&gt;
     &lt;p&gt;使用USB线接入电脑或者在手机上安装 ADB 远程调试工具，如 网络adb&lt;/p&gt;
 
-    &lt;p style=&quot;text-align:center;&quot;&gt;&lt;img class=&quot;lozad&quot; data-src=&quot;http://ohdpyqlwy.bkt.clouddn.com/14822209063612928.png&quot; style=&quot;height:300px;&quot; /&gt;&lt;/p&gt;
+    &lt;p style=&quot;text-align:center;&quot;&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/14822209063612928.png&quot; style=&quot;height:300px;&quot; /&gt;&lt;/p&gt;
 
     &lt;p&gt;若使用 远程adb 的方式，则如要使用如下命令建立连接：&lt;/p&gt;
 
@@ -1658,18 +1658,18 @@ export class MaterialModule {  }
   &lt;li&gt;
     &lt;p&gt;在电脑上打开 Chrome 浏览器并打开开发者工具，打开 Remote devices 应可以看见已连接上的Android设备&lt;/p&gt;
 
-    &lt;p&gt;&lt;img class=&quot;lozad&quot; data-src=&quot;http://ohdpyqlwy.bkt.clouddn.com/pwa_debug-1.png&quot; /&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/pwa_debug-1.png&quot; /&gt;&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;在手机中打开 PWA应用，在浏览器开发者工具中就可以看见并进行调试&lt;/p&gt;
 
-    &lt;p&gt;&lt;img class=&quot;lozad&quot; data-src=&quot;http://ohdpyqlwy.bkt.clouddn.com/pwa_debug-2.png&quot; /&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/pwa_debug-2.png&quot; /&gt;&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;p&gt;另外如果 &lt;strong&gt;PWA应用&lt;/strong&gt; 部署在本地，可以通过chrome浏览器的 &lt;code class=&quot;highlighter-rouge&quot;&gt;Port forwarding&lt;/code&gt; 功能将本地 &lt;strong&gt;PWA应用&lt;/strong&gt; 映射到手机上，这样在手机中输入”localhost:8887”即可在调试中出现。&lt;/p&gt;
 
-&lt;p&gt;&lt;img class=&quot;lozad&quot; data-src=&quot;http://ohdpyqlwy.bkt.clouddn.com/pwa_debug-3.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/pwa_debug-3.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;参考文章&quot;&gt;参考文章&lt;/h2&gt;
 

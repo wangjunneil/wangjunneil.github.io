@@ -8,6 +8,298 @@
         <atom:link href="http://www.vinny.cc/feed.xml" rel="self" type="application/rss+xml" />  
           
             <item>  
+               <title>mysql 主备集群方式</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#1-主从模式&quot; id=&quot;markdown-toc-1-主从模式&quot;&gt;1. 主从模式&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#11-master配置&quot; id=&quot;markdown-toc-11-master配置&quot;&gt;1.1 master配置&lt;/a&gt;        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#111-文件配置&quot; id=&quot;markdown-toc-111-文件配置&quot;&gt;1.1.1 文件配置&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#112-创建用户&quot; id=&quot;markdown-toc-112-创建用户&quot;&gt;1.1.2 创建用户&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#113-确保连接有效性&quot; id=&quot;markdown-toc-113-确保连接有效性&quot;&gt;1.1.3 确保连接有效性&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#114-master状态&quot; id=&quot;markdown-toc-114-master状态&quot;&gt;1.1.4 master状态&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#12-slave配置&quot; id=&quot;markdown-toc-12-slave配置&quot;&gt;1.2 slave配置&lt;/a&gt;        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#121-文件配置&quot; id=&quot;markdown-toc-121-文件配置&quot;&gt;1.2.1 文件配置&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#122-配置连接master&quot; id=&quot;markdown-toc-122-配置连接master&quot;&gt;1.2.2 配置连接master&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#123-启动slave模式&quot; id=&quot;markdown-toc-123-启动slave模式&quot;&gt;1.2.3 启动slave模式&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#124-slave状态&quot; id=&quot;markdown-toc-124-slave状态&quot;&gt;1.2.4 slave状态&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#2-主主模式&quot; id=&quot;markdown-toc-2-主主模式&quot;&gt;2. 主主模式&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#21-模式特点&quot; id=&quot;markdown-toc-21-模式特点&quot;&gt;2.1 模式特点&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#22-实现原理&quot; id=&quot;markdown-toc-22-实现原理&quot;&gt;2.2 实现原理&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#23-slave配置&quot; id=&quot;markdown-toc-23-slave配置&quot;&gt;2.3 slave配置&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#24-master配置&quot; id=&quot;markdown-toc-24-master配置&quot;&gt;2.4 master配置&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;两台机器分别安装好 mysql，本文以 mysql5.7 版本为例，安装可参考 &lt;a href=&quot;https://vinny.cc/2018/06/mysql-basic/&quot;&gt;centos7 中 mysql 的安装与配置&lt;/a&gt; 一文。机器环境是，192.168.1.34（master），192.168.1.35（slave）。&lt;/p&gt;
+
+&lt;h2 id=&quot;1-主从模式&quot;&gt;1. 主从模式&lt;/h2&gt;
+
+&lt;h3 id=&quot;11-master配置&quot;&gt;1.1 master配置&lt;/h3&gt;
+
+&lt;h4 id=&quot;111-文件配置&quot;&gt;1.1.1 文件配置&lt;/h4&gt;
+
+&lt;p&gt;编辑 &lt;code class=&quot;highlighter-rouge&quot;&gt;vi /etc/my.cnf&lt;/code&gt; 的mysql配置文件，修改或增加如下配置：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[mysqld]
+server-id=1
+# 没有就增加，有的是注释状态，取消掉注释，有的只有log-bin，没有路径，保持缺省即可
+log-bin=/var/log/mysql/mysql-bin.log
+# 忽略的数据库
+binlog-ignore-db=mysql
+binlog-ignore-db=sys
+binlog-ignore-db=information_schema
+binlog-ignore-db=performance_schema
+
+# binlog-do-db=pets # 需要同步的数据库
+# binlog_format=mixed # 主从复制的格式(mixed,statement,row,默认格式是statement)
+# expire_logs_days=7 # 二进制日志自动删除/过期的天数。默认值为 0,表示不自动删除
+# slave_skip_errors=1062 # 跳过主从复制中遇到的所有错误或指定类型的错误,避免 slave 端复制中断
+# relay_log=edu-mysql-relay-bin # 从服务器时的中继日志
+# log_slave_updates=1 # 表示slave将复制事件写进自己的二进制日志
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;112-创建用户&quot;&gt;1.1.2 创建用户&lt;/h4&gt;
+
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;create&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;user&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'repl'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'%'&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;identified&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;by&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'1q@W3e$R'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;grant&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;replication&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;slave&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;on&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'repl'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'%'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;113-确保连接有效性&quot;&gt;1.1.3 确保连接有效性&lt;/h4&gt;
+
+&lt;p&gt;用户创建好后，可以在 slave 或者别的机器使用此用户远程登录一下，确保创建的用户能正常登录&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;mysql &lt;span class=&quot;nt&quot;&gt;-h&lt;/span&gt; 192.168.1.34 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; repl &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;若远程登录失败或者出现拒绝等信息，应该检查几个地方：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;配置文件的bind-address&lt;/li&gt;
+  &lt;li&gt;防火墙的出入站规则&lt;/li&gt;
+  &lt;li&gt;新建的用户是否具有访问权限，IP或数据库是否有限制&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;114-master状态&quot;&gt;1.1.4 master状态&lt;/h4&gt;
+
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;show&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;master&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;status&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/mysql-master-status.png&quot; alt=&quot;mysql-master-status&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;12-slave配置&quot;&gt;1.2 slave配置&lt;/h3&gt;
+
+&lt;h4 id=&quot;121-文件配置&quot;&gt;1.2.1 文件配置&lt;/h4&gt;
+
+&lt;p&gt;编辑 &lt;code class=&quot;highlighter-rouge&quot;&gt;vi /etc/my.cnf&lt;/code&gt; 的mysql配置文件，修改或增加如下配置：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[mysqld]
+server-id=2
+# read-only=on # 设置从数据库只读，不能进行更新操作
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;122-配置连接master&quot;&gt;1.2.2 配置连接master&lt;/h4&gt;
+
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CHANGE&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;MASTER&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;TO&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;MASTER_HOST&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'192.168.1.34'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;MASTER_USER&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'repl'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;MASTER_PASSWORD&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'1q@W3e$R'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;MASTER_LOG_FILE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'first-bin.000022'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MASTER_LOG_POS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;154&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;这里的 master_log_file 表示 master 中 binlog 的文件名称，master_log_pos 表示从哪个位置点开始同步，这些信息可以在上图看到。&lt;/p&gt;
+
+&lt;h4 id=&quot;123-启动slave模式&quot;&gt;1.2.3 启动slave模式&lt;/h4&gt;
+
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;start&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;slave&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;124-slave状态&quot;&gt;1.2.4 slave状态&lt;/h4&gt;
+
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;show&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;slave&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;status&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;G&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/mysql-slave-status.png&quot; alt=&quot;mysql-slave-status&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;2-主主模式&quot;&gt;2. 主主模式&lt;/h2&gt;
+
+&lt;p&gt;通常主主模式需要搭载高可用的软件，如keepalive，主主并不是就是两台，也会有从。同时主主代表的意思并不是两台同时提供服务，只是为了高可用性，当一台宕机的时候，另一台可以接管。&lt;/p&gt;
+
+&lt;p&gt;基于测试的目的，主主以两台为基准测试。&lt;/p&gt;
+
+&lt;h3 id=&quot;21-模式特点&quot;&gt;2.1 模式特点&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;两台都可读写，互为主备，默认只使用一台读写，另一台备用&lt;/li&gt;
+  &lt;li&gt;两台主库之间互为高可用，可结合keepalive&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;22-实现原理&quot;&gt;2.2 实现原理&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;先搭建一主一从，再反向一次即可&lt;/strong&gt;。这里需要注意的是ID自增长的问题，为了保证切换数据库后插入数据时ID不会冲突，一般两台是奇偶交替。下面的步骤是按照 主从模式 之后进行。&lt;/p&gt;
+
+&lt;h3 id=&quot;23-slave配置&quot;&gt;2.3 slave配置&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[mysqld]
+server-id=2
+log-bin
+binlog-ignore-db=mysql
+binlog-ignore-db=sys
+binlog-ignore-db=information_schema
+binlog-ignore-db=performance_schema
+binlog-do-db=pets
+
+# 主键自增规则，主要解决ID自增长冲突的问题
+auto_increment_increment=2 # mysql服务器数量，10台备份就写10，这里是2台
+auto-increment-offset=2 # 这台服务器的序号，从1开始，不超过auto-increment-increment
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;24-master配置&quot;&gt;2.4 master配置&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[mysqld]
+server-id=1
+log-bin
+binlog-ignore-db=mysql
+binlog-ignore-db=sys
+binlog-ignore-db=information_schema
+binlog-ignore-db=performance_schema
+binlog-do-db=pets
+
+# 主键自增规则，主要解决ID自增长冲突的问题
+auto_increment_increment=2 # mysql服务器数量，10台备份就写10，这里是2台
+auto-increment-offset=1 # 这台服务器的序号，从1开始，不超过auto-increment-increment
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</description>  
+               <pubDate>Tue, 12 Jun 2018 00:00:00 +0800</pubDate>  
+               <link>http://www.vinny.cc/2018/06/mysql-master-slave/</link>  
+               <guid isPermaLink="true">http://www.vinny.cc/2018/06/mysql-master-slave/</guid>  
+               </item>  
+          
+            <item>  
+               <title>centos7 中 mysql 的安装与配置</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#1-配置yum源地址&quot; id=&quot;markdown-toc-1-配置yum源地址&quot;&gt;1. 配置yum源地址&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#2-执行mysql的安装&quot; id=&quot;markdown-toc-2-执行mysql的安装&quot;&gt;2. 执行mysql的安装&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#3-启动与检测mysql&quot; id=&quot;markdown-toc-3-启动与检测mysql&quot;&gt;3. 启动与检测mysql&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#4-设置开机自启动&quot; id=&quot;markdown-toc-4-设置开机自启动&quot;&gt;4. 设置开机自启动&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#5-修改root密码&quot; id=&quot;markdown-toc-5-修改root密码&quot;&gt;5. 修改root密码&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#6--添加远程用户&quot; id=&quot;markdown-toc-6--添加远程用户&quot;&gt;6.  添加远程用户&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#7-修改默认编码&quot; id=&quot;markdown-toc-7-修改默认编码&quot;&gt;7. 修改默认编码&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;1-配置yum源地址&quot;&gt;1. 配置yum源地址&lt;/h2&gt;
+
+&lt;p&gt;centos 中有的版本可以直接运行 &lt;code class=&quot;highlighter-rouge&quot;&gt;yum install mysql mysql-server&lt;/code&gt; 的方式进行安装，但安装的是 MariaDB，MariaDB是mysql的一个分支，这里为了确保安装的是mysql版本，所以配置源地址。&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 下载源地址文件&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;wget http://dev.mysql.com/get/mysql57-community-release-el7-8.noarch.rpm
+&lt;span class=&quot;c&quot;&gt;# 安装mysql的yum源&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;yum localinstall mysql57-community-release-el7-8.noarch.rpm
+&lt;span class=&quot;c&quot;&gt;# 检查mysql源是否安装成功&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;yum repolist enabled | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;mysql.*-community.*&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;上面的源默认是mysql5.7的版本，若希望安装其他版本，如5.6的版本，可以编辑 &lt;code class=&quot;highlighter-rouge&quot;&gt;vi /etc/yum.repo/mysql-community.repo&lt;/code&gt; 的文件，将指定版本的 &lt;strong&gt;enabled&lt;/strong&gt; 更改即可，0 是禁用， 1 是启用，如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/mysql-repo.png&quot; alt=&quot;mysql-repo&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;2-执行mysql的安装&quot;&gt;2. 执行mysql的安装&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;yum &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt; mysql-community-server
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;安装路径与配置文件&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;名称&lt;/th&gt;
+      &lt;th&gt;值&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;配置文件&lt;/td&gt;
+      &lt;td&gt;/etc/my.cnf&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;日志文件&lt;/td&gt;
+      &lt;td&gt;/var/log/mysqld.log&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;启动脚本&lt;/td&gt;
+      &lt;td&gt;/usr/lib/systemd/system/mysqld.service&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;socket文件&lt;/td&gt;
+      &lt;td&gt;/var/lib/mysql/mysql.sock&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;pid文件&lt;/td&gt;
+      &lt;td&gt;/var/run/mysqld/mysqld.pid&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;3-启动与检测mysql&quot;&gt;3. 启动与检测mysql&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;systemctl start mysqld
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;systemctl status mysqld
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;4-设置开机自启动&quot;&gt;4. 设置开机自启动&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;systemctl &lt;span class=&quot;nb&quot;&gt;enable &lt;/span&gt;mysqld
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;systemctl daemon-reload
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;5-修改root密码&quot;&gt;5. 修改root密码&lt;/h2&gt;
+
+&lt;p&gt;mysql 启动后会在 &lt;em&gt;/var/log/mysqld.log&lt;/em&gt; 文件中生成一个默认的root密码，可以使用命令 &lt;code class=&quot;highlighter-rouge&quot;&gt;grep 'temporary password' /var/log/mysqld.log&lt;/code&gt; 找到&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/mysql-default-pwd.png&quot; alt=&quot;mysql-default-pwd&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;使用默认的root密码登录并修改&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;mysql &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; root &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 修改root密码的两种方式&lt;/span&gt;
+mysql&amp;gt; ALTER USER &lt;span class=&quot;s1&quot;&gt;'root'&lt;/span&gt;@&lt;span class=&quot;s1&quot;&gt;'localhost'&lt;/span&gt; IDENTIFIED BY &lt;span class=&quot;s1&quot;&gt;'1q@W3e$R'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+mysql&amp;gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;password &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'root'&lt;/span&gt;@&lt;span class=&quot;s1&quot;&gt;'localhost'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; password&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'MyNewPass4!'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;如果密码设置过于简单会触发mysql的密码安全检查插件(validate_password)，这是5.7默认安装的，如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/mysql-validate-pwd.png&quot; alt=&quot;mysql-validate-pwd&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;可以在mysql环境中使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;show variables like '%password%';&lt;/code&gt; 查看当前的密码策略，这些可以在 my.cnf 中进行修改&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/mysql-password.png&quot; alt=&quot;mysql-password&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;6--添加远程用户&quot;&gt;6.  添加远程用户&lt;/h2&gt;
+
+&lt;p&gt;默认只是允许 root 账号在本地 localhost 上登录，不建议 root 可以远程登录，为了安全起见，应该添加授权一个远程用户&lt;/p&gt;
+
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;GRANT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;ALL&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;PRIVILEGES&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;ON&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;TO&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'vinny'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'%'&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;IDENTIFIED&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;BY&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'1q@w3e$R'&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;WITH&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;GRANT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;OPTION&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;flush&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;privileges&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;7-修改默认编码&quot;&gt;7. 修改默认编码&lt;/h2&gt;
+
+&lt;p&gt;编辑 &lt;code class=&quot;highlighter-rouge&quot;&gt;vi /etc/my.cnf&lt;/code&gt; 配置文件，添加编码配置，如下：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[mysqld]
+character_set_server=utf8
+init_connect='SET NAMES utf8'
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</description>  
+               <pubDate>Mon, 11 Jun 2018 00:00:00 +0800</pubDate>  
+               <link>http://www.vinny.cc/2018/06/mysql-basic/</link>  
+               <guid isPermaLink="true">http://www.vinny.cc/2018/06/mysql-basic/</guid>  
+               </item>  
+          
+            <item>  
                <title>Openresty 的安装使用及案例介绍</title>  
                <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
   &lt;li&gt;&lt;a href=&quot;#环境准备&quot; id=&quot;markdown-toc-环境准备&quot;&gt;环境准备&lt;/a&gt;    &lt;ul&gt;
@@ -1013,678 +1305,6 @@ export class MaterialModule {  }
                <pubDate>Sat, 12 May 2018 00:00:00 +0800</pubDate>  
                <link>http://www.vinny.cc/2018/05/pwa-ionic/</link>  
                <guid isPermaLink="true">http://www.vinny.cc/2018/05/pwa-ionic/</guid>  
-               </item>  
-          
-            <item>  
-               <title>使用 sw-precache 构建 Progressive Web App</title>  
-               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#1-sw-precache-介绍&quot; id=&quot;markdown-toc-1-sw-precache-介绍&quot;&gt;1. Sw-Precache 介绍&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#2-sw-precache-安装&quot; id=&quot;markdown-toc-2-sw-precache-安装&quot;&gt;2. Sw-Precache 安装&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#3-编写gulpfilejs文件&quot; id=&quot;markdown-toc-3-编写gulpfilejs文件&quot;&gt;3. 编写gulpfile.js文件&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#4-生成service-worker文件&quot; id=&quot;markdown-toc-4-生成service-worker文件&quot;&gt;4. 生成service-worker文件&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#5-首页文件注册serviceworker&quot; id=&quot;markdown-toc-5-首页文件注册serviceworker&quot;&gt;5. 首页文件注册serviceworker&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#6-sw-precache-使用总结&quot; id=&quot;markdown-toc-6-sw-precache-使用总结&quot;&gt;6. Sw-Precache 使用总结&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#参考文献&quot; id=&quot;markdown-toc-参考文献&quot;&gt;参考文献&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;上一篇文章 &lt;a href=&quot;https://vinny.cc/2018/05/pwa-app/&quot;&gt;什么是 Progressive Web App 及其使用&lt;/a&gt; 中主要说明了基本 PWA 应用的构成及其实现，基本可以达到 PWA 应用的标准。&lt;/p&gt;
-
-&lt;p&gt;本篇将会结合 &lt;a href=&quot;https://github.com/GoogleChromeLabs/sw-precache&quot;&gt;sw-precache&lt;/a&gt; 工具实现自动化的 PWA 应用。&lt;/p&gt;
-
-&lt;h2 id=&quot;1-sw-precache-介绍&quot;&gt;1. Sw-Precache 介绍&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;sw-precache&lt;/strong&gt; 是 Google 提供的 PWA 应用增强的构建工具，可以根据配置自动生成 &lt;em&gt;service-worker.js&lt;/em&gt; 文件，构建的过程中根据配置的缓存文件 hash 值更新服务工作线程文件，免去了每次需要修改 &lt;em&gt;service-worker.js&lt;/em&gt; 的版本号或者其他信息，以要求浏览器进行缓存的更新。&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;&lt;strong&gt;缓存的更新原则&lt;/strong&gt;：若下载的服务工作线程文件与当前的服务器工作线程文件存在字节的差异，则视为新的服务工作线程。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;2-sw-precache-安装&quot;&gt;2. Sw-Precache 安装&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;sw-precache&lt;/strong&gt; 需要结合 &lt;a href=&quot;http://gulpjs.com/&quot;&gt;Grunt&lt;/a&gt; 或者 &lt;a href=&quot;http://gruntjs.com/&quot;&gt;Gulp&lt;/a&gt; 等 javascript 构建工具进行工作，这里使用的是 Gulp。&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;npm &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;gulp-cli &lt;span class=&quot;nt&quot;&gt;-g&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# 安装gulp的cli命令行工具&lt;/span&gt;
-
-&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;pwa_demo_proj &lt;span class=&quot;c&quot;&gt;# 进入工程根路径&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;npm init &lt;span class=&quot;c&quot;&gt;# 初始化工程&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;npm &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;gulp &lt;span class=&quot;nt&quot;&gt;--save-dev&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# 安装gulp依赖&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;npm &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--save-dev&lt;/span&gt; sw-precache &lt;span class=&quot;c&quot;&gt;# 安装sw-precache依赖&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;3-编写gulpfilejs文件&quot;&gt;3. 编写gulpfile.js文件&lt;/h2&gt;
-
-&lt;p&gt;在工程根路径创建 &lt;em&gt;gulpfile.js&lt;/em&gt; 文件，编写构建任务，明细如下：&lt;/p&gt;
-
-&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;s1&quot;&gt;'use strict'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;gulp&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'gulp'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;path&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'path'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;swPrecache&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'sw-precache'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;gulp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;task&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'generate-service-worker'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;callback&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// 定义html文件根路径&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;rootDir&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'.'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    
-    &lt;span class=&quot;c1&quot;&gt;// 生成 service-worker.js 文件的 gulp 任务&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;swPrecache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;rootDir&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'service-worker.js'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-
-        &lt;span class=&quot;c1&quot;&gt;// ---------------------- 预缓存内容定义 ------------------------&lt;/span&gt;
-        
-        &lt;span class=&quot;c1&quot;&gt;// 缓存的静态资源，支持模糊匹配&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;staticFileGlobs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
-			&lt;span class=&quot;nx&quot;&gt;rootDir&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'/*.html'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-			&lt;span class=&quot;nx&quot;&gt;rootDir&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'/page/*.html'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-			&lt;span class=&quot;nx&quot;&gt;rootDir&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'/assets/js/*.js'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-			&lt;span class=&quot;nx&quot;&gt;rootDir&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'/assets/js/**/*.{js,css}'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-			&lt;span class=&quot;nx&quot;&gt;rootDir&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'/assets/css/*.css'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-			&lt;span class=&quot;nx&quot;&gt;rootDir&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'/assets/img/*.{css,png,jpg,gif}'&lt;/span&gt;            
-		&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
-        
-        &lt;span class=&quot;c1&quot;&gt;// 跳过的前缀&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;stripPrefix&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;rootDir&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; 
-
-        &lt;span class=&quot;c1&quot;&gt;// 在servicerworker中引入js的文件&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;importScripts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'config.js'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'sync.js'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;  
-
-        &lt;span class=&quot;c1&quot;&gt;// 在资源请求失败时默认的离线页面&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;navigateFallback&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'offline.html'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-
-        &lt;span class=&quot;c1&quot;&gt;// ---------------------- 运行时缓存定义 ------------------------&lt;/span&gt;
-        
-        &lt;span class=&quot;cm&quot;&gt;/*
-         * 运行时缓存（runtimeCaching）即在运行时请求的外部资源，对于不常变化的使用缓存有限策略，
-         * 反之使用网络优先策略。
-         * urlPattern: 支持以正则的形式捕获http请求
-         * handler: 处理请求的策略，cacheOnly, networkOnly, cacheFirst, networkFirst,  Fastest
-         * options: 可选参数，这里我们给每一类缓存用不同的缓存名称存储，方便查找
-         */&lt;/span&gt;
-        
-        &lt;span class=&quot;na&quot;&gt;runtimeCaching&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;na&quot;&gt;urlPattern&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/https:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\/\/&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;jsonplaceholder&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;typicode&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;com&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\/&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;users/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,,&lt;/span&gt;
-            &lt;span class=&quot;na&quot;&gt;handler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'cacheOnly'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-            &lt;span class=&quot;na&quot;&gt;options&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                &lt;span class=&quot;na&quot;&gt;cache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                    &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'users'&lt;/span&gt;
-                &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;na&quot;&gt;urlPattern&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/https:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\/\/&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;jsonplaceholder&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;typicode&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;com&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\/&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;posts/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,,&lt;/span&gt;
-            &lt;span class=&quot;na&quot;&gt;handler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'networkFirst'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-            &lt;span class=&quot;na&quot;&gt;options&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                &lt;span class=&quot;na&quot;&gt;cache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                    &lt;span class=&quot;na&quot;&gt;maxEntries&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                    &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'posts'&lt;/span&gt;
-                &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;}],&lt;/span&gt;
-        
-        &lt;span class=&quot;na&quot;&gt;verbose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// 为每个缓存打出日志&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;callback&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;4-生成service-worker文件&quot;&gt;4. 生成service-worker文件&lt;/h2&gt;
-
-&lt;p&gt;使用 gulp cli 运行定义在 gulpfile.js 中的 &lt;code class=&quot;highlighter-rouge&quot;&gt;generate-service-worker&lt;/code&gt; 命令，执行完成后，会在路径下生成 &lt;em&gt;service-worker.js&lt;/em&gt; 文件，在控制台输出中也会详细输出预缓存的文件列表及缓存大小。&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;gulp generate-service-worker
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;只需要把配置规则定义好，基本上不需要编写 &lt;em&gt;service-worker.js&lt;/em&gt; 文件。&lt;/p&gt;
-
-&lt;h2 id=&quot;5-首页文件注册serviceworker&quot;&gt;5. 首页文件注册serviceworker&lt;/h2&gt;
-
-&lt;p&gt;在脚本文件中对生成的 &lt;em&gt;service-worker.js&lt;/em&gt; 文件进行注册&lt;/p&gt;
-
-&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'serviceWorker'&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;navigator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addEventListener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'load'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// 注册&quot;serviceWorker&quot;&lt;/span&gt;
-    &lt;span class=&quot;nb&quot;&gt;navigator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;serviceWorker&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;register&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'/service-worker.js'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-      &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;registration&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Service Worker registration success with scope: '&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;registration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;scope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-      &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-      &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;catch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Service Worker registration failed: '&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-      &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;这里值得注意的是，&lt;strong&gt;sw-precache&lt;/strong&gt; 只是用于生成 &lt;em&gt;serviceworker&lt;/em&gt;，其他如 &lt;em&gt;manifest.json&lt;/em&gt; 文件还是需要自行编写的。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;6-sw-precache-使用总结&quot;&gt;6. Sw-Precache 使用总结&lt;/h2&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;不需要去管 &lt;em&gt;service-worker.js&lt;/em&gt; 文件的编写，在 &lt;em&gt;gulpfile.js&lt;/em&gt; 文件中定义好 &lt;strong&gt;预缓存&lt;/strong&gt; 和 &lt;strong&gt;运行时缓存&lt;/strong&gt; 规则，然后就交给 gulp 去做。&lt;/li&gt;
-  &lt;li&gt;每次在编写完业务代码，在发布到服务器时，都需要执行一次 &lt;code class=&quot;highlighter-rouge&quot;&gt;gulp generate-service-worker&lt;/code&gt; 的命令，让其重新生成服务工作线程文件，更重要的是重新对文件进行哈希。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;参考文献&quot;&gt;参考文献&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/GoogleChromeLabs/sw-precache&quot;&gt;https://github.com/GoogleChromeLabs/sw-precache&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://codelabs.developers.google.com/codelabs/sw-precache&quot;&gt;https://codelabs.developers.google.com/codelabs/sw-precache&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://developers.google.com/web/updates/2015/02/offline-first-with-sw-precache&quot;&gt;https://developers.google.com/web/updates/2015/02/offline-first-with-sw-precache&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>  
-               <pubDate>Fri, 11 May 2018 00:00:00 +0800</pubDate>  
-               <link>http://www.vinny.cc/2018/05/pwa-sw-precache/</link>  
-               <guid isPermaLink="true">http://www.vinny.cc/2018/05/pwa-sw-precache/</guid>  
-               </item>  
-          
-            <item>  
-               <title>什么是 Progressive Web App 及其使用</title>  
-               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#1-pwa是什么&quot; id=&quot;markdown-toc-1-pwa是什么&quot;&gt;1. PWA是什么&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#2-有什么特性&quot; id=&quot;markdown-toc-2-有什么特性&quot;&gt;2. 有什么特性&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#3-基本组成结构&quot; id=&quot;markdown-toc-3-基本组成结构&quot;&gt;3. 基本组成结构&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#4-编写原生的pwa应用&quot; id=&quot;markdown-toc-4-编写原生的pwa应用&quot;&gt;4. 编写原生的PWA应用&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#41-应用描述文件&quot; id=&quot;markdown-toc-41-应用描述文件&quot;&gt;4.1 应用描述文件&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#42-首页文件注册-manifestjson&quot; id=&quot;markdown-toc-42-首页文件注册-manifestjson&quot;&gt;4.2 首页文件注册 manifest.json&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#43-服务工作文件&quot; id=&quot;markdown-toc-43-服务工作文件&quot;&gt;4.3 服务工作文件&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#44-脚本文件中注册-service-workerjs&quot; id=&quot;markdown-toc-44-脚本文件中注册-service-workerjs&quot;&gt;4.4 脚本文件中注册 service-worker.js&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#45-发布到服务器中&quot; id=&quot;markdown-toc-45-发布到服务器中&quot;&gt;4.5 发布到服务器中&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#46-实现基本的离线存储&quot; id=&quot;markdown-toc-46-实现基本的离线存储&quot;&gt;4.6 实现基本的离线存储&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#47-激活更新事件&quot; id=&quot;markdown-toc-47-激活更新事件&quot;&gt;4.7 激活更新事件&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#5-对-pwa-应用进行审计&quot; id=&quot;markdown-toc-5-对-pwa-应用进行审计&quot;&gt;5. 对 PWA 应用进行审计&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#附录a-不同浏览器对-pwa-应用缓存的限制&quot; id=&quot;markdown-toc-附录a-不同浏览器对-pwa-应用缓存的限制&quot;&gt;附录A 不同浏览器对 PWA 应用缓存的限制&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#附录b-pwa在ios中的问题与解决方法&quot; id=&quot;markdown-toc-附录b-pwa在ios中的问题与解决方法&quot;&gt;附录B PWA在IOS中的问题与解决方法&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#附录c-实验中的pwa应用参考&quot; id=&quot;markdown-toc-附录c-实验中的pwa应用参考&quot;&gt;附录C 实验中的PWA应用参考&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#附录d-如何对pwa进行远程调试&quot; id=&quot;markdown-toc-附录d-如何对pwa进行远程调试&quot;&gt;附录D 如何对PWA进行远程调试&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#参考文章&quot; id=&quot;markdown-toc-参考文章&quot;&gt;参考文章&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;1-pwa是什么&quot;&gt;1. PWA是什么&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;Progressive Web App&lt;/strong&gt;，简称 &lt;strong&gt;pwa&lt;/strong&gt;，中文名称为 &lt;em&gt;渐进式网页应用&lt;/em&gt;。它的目的是利用web的技术给移动端的设备提供原生App的体验。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/what-_s_pwa.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;2-有什么特性&quot;&gt;2. 有什么特性&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;离线或网络环境差的情况下也能正常工作&lt;/li&gt;
-  &lt;li&gt;响应的加载速度和原生应用没有区别&lt;/li&gt;
-  &lt;li&gt;界面布局和原生应用相一致&lt;/li&gt;
-  &lt;li&gt;拥有后台运行和推送通知的能力&lt;/li&gt;
-  &lt;li&gt;……&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;3-基本组成结构&quot;&gt;3. 基本组成结构&lt;/h2&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/1523604475510f808913f4f.jpeg&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;断网或网络差，基于常驻后台的 &lt;strong&gt;Service Worker&lt;/strong&gt; 实现数据离线存储与通知推送。&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;关于各个浏览器针对于 &lt;em&gt;pwa&lt;/em&gt; 应用缓存的大小限制，请参看 &lt;strong&gt;&lt;a href=&quot;#附录a-不同浏览器对-pwa-应用缓存的限制&quot;&gt;附录A 不同浏览器对 PWA 应用缓存的限制&lt;/a&gt;&lt;/strong&gt;。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;4-编写原生的pwa应用&quot;&gt;4. 编写原生的PWA应用&lt;/h2&gt;
-
-&lt;p&gt;编写 &lt;strong&gt;PWA&lt;/strong&gt; 应用前，应该已经有一个标准的响应式的 Web站点，可以正常在浏览器中打开。&lt;/p&gt;
-
-&lt;p&gt;另外建议在网站根路径中准备好 &lt;strong&gt;favicon.ico&lt;/strong&gt; 的图标。&lt;/p&gt;
-
-&lt;h3 id=&quot;41-应用描述文件&quot;&gt;4.1 应用描述文件&lt;/h3&gt;
-
-&lt;p&gt;&lt;strong&gt;manifest.json&lt;/strong&gt; 文件是 Web 站点的描述文件，用来告诉浏览器 PWA应用 的基本信息，包括名称、图标、启动页、背景色等等。完整的 manifest.json 配置请参看 &lt;a href=&quot;https://link.zhihu.com/?target=https%3A//developer.mozilla.org/en-US/docs/Web/Manifest&quot;&gt;Web App Manifest properties&lt;/a&gt;。&lt;/p&gt;
-
-&lt;p&gt;在工程的根路径中创建 &lt;strong&gt;manifest.json&lt;/strong&gt; 文件，内容如下：&lt;/p&gt;
-
-&lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;欢迎来到 Vinny Blog&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;short_name&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Vinny Blog&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;start_url&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;.&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;display&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;standalone&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;orientation&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;portrait&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;background_color&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;#ccc&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;theme_color&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;#5FAAE5&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;description&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;这是一个简单测试的pwa应用&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;icons&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-        &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-            &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;src&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/assets/icons/icon-72x72.png&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-            &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;type&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;image/png&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-            &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;sizes&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;72x72&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-        &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-        &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;....&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;省略&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;96&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;128&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;144&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;152&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;192&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;384&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;512&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;像素icon&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;具体属性释义：&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;名称&lt;/th&gt;
-      &lt;th&gt;含义&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;name&lt;/td&gt;
-      &lt;td&gt;显示在”Add Home Screen”的横幅中&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;short_name&lt;/td&gt;
-      &lt;td&gt;桌面app的名称&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;display&lt;/td&gt;
-      &lt;td&gt;为standalone则隐藏浏览器UI，bowser则相反&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;orientation&lt;/td&gt;
-      &lt;td&gt;界面的初始方向，portrait竖屏，landscape横屏&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;background_color&lt;/td&gt;
-      &lt;td&gt;app启动画面的背景颜色&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;theme_color&lt;/td&gt;
-      &lt;td&gt;app状态栏背景色&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;如果觉得手写 &lt;strong&gt;manifest.json&lt;/strong&gt; 文件过于繁琐，可以使用在线生成 &lt;a href=&quot;https://app-manifest.firebaseapp.com/&quot;&gt;Web App Manifest Generator&lt;/a&gt; 的方式。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;42-首页文件注册-manifestjson&quot;&gt;4.2 首页文件注册 manifest.json&lt;/h3&gt;
-
-&lt;p&gt;创建好的 &lt;strong&gt;manifest.json&lt;/strong&gt; 文件，需要在 &lt;strong&gt;index.html&lt;/strong&gt; 首页的 &lt;em&gt;link&lt;/em&gt; 标签中进行定义，这样浏览器才会进行读取。&lt;/p&gt;
-
-&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;head&amp;gt;&lt;/span&gt;
-    ...
-    
-    &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- 注册 manifest.json 文件 --&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;link&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;rel=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;manifest&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/manifest.json&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- 应与 manifest.json 中的 theme_color属性 一致 --&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;meta&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;theme-color&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;content=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;#5FAAE5&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-    
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;meta&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;viewport&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;content=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;meta&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;format-detection&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;content=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;telephone=no&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;meta&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;msapplication-tap-highlight&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;content=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;no&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-    
-    ...
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/head&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;这样的配置对于 &lt;strong&gt;Chrome&lt;/strong&gt; 浏览器足够使用了，但对于 IOS 系统的 &lt;strong&gt;safari&lt;/strong&gt; 浏览器仍然不行，IOS 系统在 11.3 版本之后才开始对 PWA 应用的支持，但仍然有不少问题，具体在如何适配请参看 &lt;strong&gt;&lt;a href=&quot;#附录b-pwa在ios中的问题与解决方法&quot;&gt;附录B PWA在IOS中的问题与解决方法&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;43-服务工作文件&quot;&gt;4.3 服务工作文件&lt;/h3&gt;
-
-&lt;p&gt;&lt;strong&gt;ServiceWorker&lt;/strong&gt; 即工作线程，简称 &lt;strong&gt;sw&lt;/strong&gt;，当访问站点时会以此域名将 &lt;strong&gt;sw&lt;/strong&gt; 进行注册，一旦进行注册则会在浏览器中形成常驻的工作线程。值得注意的是 &lt;strong&gt;sw&lt;/strong&gt; 不能直接操作 DOM 元素，它更像个代理程序，用来转发数据。&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;查看当前浏览器已经注册的服务工作线程 &lt;strong&gt;&lt;a href=&quot;chrome://serviceworker-internals&quot;&gt;chrome://serviceworker-internals&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;在工程根路径中创建 &lt;strong&gt;service-worker.js&lt;/strong&gt; 文件，文件的所在路径与作用域 scope 相关，注册在那个路径里，就只能对此路径有访问权限，在根路径中表示对整个站点有效。&lt;/p&gt;
-
-&lt;p&gt;下面是 &lt;strong&gt;service-worker.js&lt;/strong&gt; 文件是一个简单的实现：&lt;/p&gt;
-
-&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// 安装事件&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addEventListener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'install'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Service Worker Install'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;// 激活事件&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addEventListener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'activate'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Service Worker Activate'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;// 请求事件&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addEventListener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'fetch'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;44-脚本文件中注册-service-workerjs&quot;&gt;4.4 脚本文件中注册 service-worker.js&lt;/h3&gt;
-
-&lt;p&gt;脚本文件是站点的其他 js 文件，在此文件中进行 sw 的注册，才可以正常使用，注册如下：&lt;/p&gt;
-
-&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// 判断浏览器是否支持 ServiceWorker&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'serviceWorker'&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;navigator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addEventListener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'load'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// 注册&quot;serviceWorker&quot;&lt;/span&gt;
-    &lt;span class=&quot;nb&quot;&gt;navigator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;serviceWorker&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;register&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'/service-worker.js'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-      &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;registration&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Service Worker registration success with scope: '&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;registration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;scope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-      &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-      &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;catch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Service Worker registration failed: '&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-      &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;也可以定义成远程的 service-worker.js，如 &lt;code class=&quot;highlighter-rouge&quot;&gt;var sw = &quot;https://xxx.xxx.xxx/caching/sw-cacher.js&quot;;&lt;/code&gt;，然后进行注册 &lt;code class=&quot;highlighter-rouge&quot;&gt;navigator.serviceWorker.register(sw)&lt;/code&gt;，这样就不需要每次对 &lt;em&gt;service-worker.js&lt;/em&gt; 文件进行上传。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;45-发布到服务器中&quot;&gt;4.5 发布到服务器中&lt;/h3&gt;
-
-&lt;p&gt;按章节 &lt;strong&gt;&lt;a href=&quot;#3-基本组成结构&quot;&gt;3. 基本组成结构&lt;/a&gt;&lt;/strong&gt; 中的图，至此准备工作结束，一个基本的 &lt;strong&gt;PWA&lt;/strong&gt; 应用已经完成，现在可以将整个站点发布到 nginx、apache等服务器中。&lt;/p&gt;
-
-&lt;p&gt;这里值得一提的是，&lt;strong&gt;&lt;u&gt;正确的 PWA 应用应该部署在 HTTPS 的环境下，即你需要安全证书&lt;/u&gt;&lt;/strong&gt;，不支持自签名证书，关于如何获取免费的 HTTPS 证书请参看另一篇文章 &lt;a href=&quot;https://vinny.cc/2017/10/lets-encrypt-ssl/&quot;&gt;使用Lets Encrypt为站点快速部署SSL证书&lt;/a&gt;。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;访问的截图如下：&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p style=&quot;text-align:center;&quot;&gt;
-&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/Screenshot_20180418-004321.png&quot; height=&quot;300px&quot; style=&quot;margin-left:5px;&quot; /&gt;
-
-&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/Screenshot_20180418-003023.png&quot; height=&quot;300px&quot; style=&quot;margin-left:5px;&quot; /&gt;
-
-&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/Screenshot_20180418-003027.png&quot; height=&quot;300px&quot; style=&quot;margin-left:5px;&quot; /&gt;
-&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;横幅的弹出，是由浏览器进行控制，条件是”&lt;strong&gt;站点被访问至少两次，这两次访问至少间隔五分钟&lt;/strong&gt;”&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;46-实现基本的离线存储&quot;&gt;4.6 实现基本的离线存储&lt;/h3&gt;
-
-&lt;p&gt;目前我们的 &lt;strong&gt;service-worker.js&lt;/strong&gt; 没有做任何事情，只是在生命周期中进行了输出，现在我们需要实现站点的 &lt;strong&gt;离线存储&lt;/strong&gt;，修改后的脚本如下：&lt;/p&gt;
-
-&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;s2&quot;&gt;&quot;use strict&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;onInstall&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;waitUntil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;caches&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;CACHE_NAME&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addAll&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;URL_TO_CACHE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;WORKER: Install completed&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-            &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;skipWaiting&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;onActivate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;[Serviceworker]&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Activating!&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-    &lt;span class=&quot;c1&quot;&gt;// 这里的&quot;keyList&quot;就是&quot;var CACHE_NAME = CACHE_VERSION + &quot;:sw-cache::&quot;的数组        &lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;waitUntil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;caches&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;keys&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;keyList&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;c1&quot;&gt;// 这里的&quot;key&quot;就是&quot;V1.0.1:sw-cache::&quot;，掉上面缓存名称的遍历&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Promise&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;all&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;keyList&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;key&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;key&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;CACHE_NAME&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'[ServiceWorker] Removing old cache'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-                &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;caches&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;delete&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;}));&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}));&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-
-&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;onFetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// console.log('Fetch event for &amp;gt;&amp;gt;&amp;gt; ', e.request.url);&lt;/span&gt;
-
-    &lt;span class=&quot;c1&quot;&gt;// 调用respondWith()方法劫持GET请求并返回&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;respondWith&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;caches&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;match&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;resp&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-
-            &lt;span class=&quot;c1&quot;&gt;// 缓存命中直接返回&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;resp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;resp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-            &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;warn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Not in Cache... Making Network request for '&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;requet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-            &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fetchRequest&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;clone&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;fetchRequest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;response&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                &lt;span class=&quot;c1&quot;&gt;// 检查是否收到无效的响应&lt;/span&gt;
-                &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;response&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;status&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;200&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!==&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'basic'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;response&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;caches&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;match&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/offline.html&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-                &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-                &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;responseToCache&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;clone&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-                &lt;span class=&quot;nx&quot;&gt;caches&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;CACHE_NAME&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cache&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                    &lt;span class=&quot;nx&quot;&gt;cache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;responseToCache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-                &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-
-                &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-            &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-            &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;catch&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                &lt;span class=&quot;c1&quot;&gt;// 没有检索到应该跳转到离线页面&lt;/span&gt;
-                &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Failed to fetch'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-                &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;caches&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;match&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'/offline.html'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-            &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;// ----------------------------------------------------------------------&lt;/span&gt;
-
-&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;CACHE_VERSION&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;V1.0.1&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;CACHE_NAME&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;CACHE_VERSION&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;:sw-cache::&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;URL_TO_CACHE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
-    &lt;span class=&quot;s2&quot;&gt;&quot;/&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;s2&quot;&gt;&quot;/manifest.json&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;s2&quot;&gt;&quot;/offline.html&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;s2&quot;&gt;&quot;/assets/css/amazeui.min.css&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;s2&quot;&gt;&quot;/assets/css/app.css&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;s2&quot;&gt;&quot;/assets/js/app.js&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;s2&quot;&gt;&quot;/assets/js/jquery.min.js&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;s2&quot;&gt;&quot;/assets/js/amazeui.min.js&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;s2&quot;&gt;&quot;/assets/img/user01.png&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;s2&quot;&gt;&quot;/assets/img/user02.png&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;s2&quot;&gt;&quot;/assets/img/user03.png&quot;&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// .....&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;// Service Worker 事件注册&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addEventListener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;install&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;onInstall&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addEventListener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;activate&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;onActivate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addEventListener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;fetch&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;onFetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;从上述脚本可知，我们对缓存定义了版本，版本主要实现缓存的更新，否则即使站点做了更新，用户在设备上访问的还是旧的内容。&lt;em&gt;URL_TO_CACHE&lt;/em&gt; 定义了需要预缓存的基本结构，又叫 &lt;strong&gt;&lt;a href=&quot;https://developers.google.com/web/fundamentals/architecture/app-shell&quot;&gt;App Shell&lt;/a&gt;&lt;/strong&gt;，在 &lt;strong&gt;install&lt;/strong&gt; 中进行安装，在 &lt;strong&gt;fetch&lt;/strong&gt; 中进行读取，命中则直接返回，否则重新请求。&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;更多完整的 &lt;strong&gt;ServiceWorker&lt;/strong&gt; 生命周期介绍请参看 &lt;a href=&quot;https://developers.google.com/web/fundamentals/primers/service-workers/&quot;&gt;服务工作线程：简介&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;47-激活更新事件&quot;&gt;4.7 激活更新事件&lt;/h3&gt;
-
-&lt;p&gt;当站点的内容更新发布到 HTTPS 服务器中时，用户在手机上访问的 PWA 应用并不会取更新的内容，还是继续从手机缓存中获取，此时就需要触发服务工作线程的更新，也就是 &lt;strong&gt;Active&lt;/strong&gt; 激活动作，将老的缓存删除，重新从服务器中获取新的内容并缓存起来。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;服务工作线程更新的条件&lt;/strong&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;用户打开 PWA应用（可以使chrome中，也可以是桌面），浏览器会尝试从后台重新下载定义服务工作线程的脚本文件。&lt;strong&gt;&lt;u&gt;若下载的服务工作线程文件与当前的服务器工作线程文件存在字节的差异，则视为新的服务工作线程&lt;/u&gt;&lt;/strong&gt;。这意味着想要站点在用户设备上激活更新事件，每次发布都需要修改 &lt;strong&gt;service-worker.js&lt;/strong&gt; 文件，在服务工作线程文件中修改版本号、回车、加个空格都视为字节的变化。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;新服务工作线程会启动，且触发 &lt;strong&gt;install&lt;/strong&gt; 事件&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;此时，旧服务工作线程仍控制着当前页面，新服务工作线程进入 &lt;strong&gt;waiting&lt;/strong&gt; 状态。&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/sw11.png&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;当关掉重新打开 PWA应用 时，就工作线程被终止，新服务线程取得控制权，同时触发 &lt;strong&gt;activate&lt;/strong&gt; 事件，删除旧的缓存&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/sw12.png&quot; /&gt;&lt;/p&gt;
-
-    &lt;p&gt;&lt;strong&gt;总结激活更新&lt;/strong&gt;&lt;/p&gt;
-
-    &lt;p&gt;更新 html 内容，修改 &lt;strong&gt;Service Worker&lt;/strong&gt;，打开 PWA应用，由于服务工作线程已经改变，触发 &lt;strong&gt;install&lt;/strong&gt; 事件，新的缓存被安装，关闭 PWA应用 再重新打开，接手，触发 &lt;strong&gt;activate&lt;/strong&gt; 事件删除老缓存，页面刷新为新的html内容。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;5-对-pwa-应用进行审计&quot;&gt;5. 对 PWA 应用进行审计&lt;/h2&gt;
-
-&lt;p&gt;使用 &lt;a href=&quot;https://github.com/GoogleChrome/lighthouse&quot;&gt;Lighthouse&lt;/a&gt; 工具可以对 PWA 应用进行审计，以检查当前的 PWA 是否正常。此插件可以在 Chrome 浏览器进行安装，安装完成后，在浏览器中输入 PWA 应用的地址，点击 Lighthouse 插件进行审计工作。&lt;/p&gt;
-
-&lt;p&gt;这里我使用我的博客站点进行测试，最后生成的报告如下：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/lighthouse.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;从上述的报告中可以看到，当前 https://vinny.cc 的站点对于 PWA 应用支持的得分为 91，除了有一个问题，就是无法从 HTTP 请求转向到 HTTPS 请求。&lt;/p&gt;
-
-&lt;h2 id=&quot;附录a-不同浏览器对-pwa-应用缓存的限制&quot;&gt;附录A 不同浏览器对 PWA 应用缓存的限制&lt;/h2&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;浏览器&lt;/th&gt;
-      &lt;th&gt;限制&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Chrome&lt;/td&gt;
-      &lt;td&gt;可用空间 &amp;lt; 6%&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;FireFox&lt;/td&gt;
-      &lt;td&gt;可用空间 &amp;lt; 10%&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Safari&lt;/td&gt;
-      &lt;td&gt;可用空间 &amp;lt; 50MB&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;IE10&lt;/td&gt;
-      &lt;td&gt;可用空间 &amp;lt; 250MB&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h2 id=&quot;附录b-pwa在ios中的问题与解决方法&quot;&gt;附录B PWA在IOS中的问题与解决方法&lt;/h2&gt;
-
-&lt;p&gt;IOS在11.3开始支持PWA应用，但兼容性仍然不能达到理想，现阶段智能调用有限的 API，具体主要表现为以下几个问题：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;无法后台同步，也就无法进行消息推送&lt;/li&gt;
-  &lt;li&gt;不支持全屏显示&lt;/li&gt;
-  &lt;li&gt;无法锁定PWA应用方向，竖屏还是横屏&lt;/li&gt;
-  &lt;li&gt;无法改变状态栏颜色&lt;/li&gt;
-  &lt;li&gt;没有启动动画&lt;/li&gt;
-  &lt;li&gt;不支持透明图标&lt;/li&gt;
-  &lt;li&gt;……&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;当然某些问题是可以解决的，如下：&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;桌面图标&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;IOS 的 Safari 浏览器暂时不支持读取 manifest.json 文件的 icon 配置信息，当添加到桌面时，只是页面的缩略图，对用户不是很友好，具体的改善步骤为，在 index.html 中的 head 标签内添加适配信息&lt;/p&gt;
-
-&lt;p style=&quot;text-align:center;&quot;&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/white_splash_small.gif&quot; style=&quot;height:300px;margin:0 auto;&quot; /&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;link&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;rel=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;apple-touch-icon&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/assets/icons/icon-96x96.png&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;link&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;rel=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;apple-touch-icon&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;sizes=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;152x152&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/assets/icons/icon-152x152.png&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;link&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;rel=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;apple-touch-icon&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;sizes=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;180x180&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/assets/icons/icon-180x180.png&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;link&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;rel=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;apple-touch-icon&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;sizes=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;167x167&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/assets/icons/icon-167x167.png&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;启动页面&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;IOS 在启动 PWA应用时，启动页面默认是黑屏或者白屏，对于这个问题可以在 &lt;a href=&quot;https://developer.apple.com/library/content/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html&quot;&gt;apple developer’s page&lt;/a&gt; 找到解决方案，通过加入 &lt;strong&gt;apple-touch-startup-image&lt;/strong&gt; 标签解决，如下：&lt;/p&gt;
-
-&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- 指示浏览器以全屏模式启动页面 --&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;meta&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;apple-mobile-web-app-capable&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;content=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;yes&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;meta&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;apple-mobile-web-app-status-bar-style&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;content=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;black&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;link&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/apple_splash_2048.png&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;sizes=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;2048x2732&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;rel=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;apple-touch-startup-image&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;link&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/apple_splash_1668.png&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;sizes=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;1668x2224&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;rel=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;apple-touch-startup-image&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;link&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/apple_splash_1536.png&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;sizes=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;1536x2048&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;rel=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;apple-touch-startup-image&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;link&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/apple_splash_1125.png&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;sizes=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;1125x2436&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;rel=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;apple-touch-startup-image&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;link&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/apple_splash_1242.png&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;sizes=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;1242x2208&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;rel=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;apple-touch-startup-image&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;link&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/apple_splash_750.png&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;sizes=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;750x1334&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;rel=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;apple-touch-startup-image&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;link&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/apple_splash_640.png&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;sizes=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;640x1136&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;rel=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;apple-touch-startup-image&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;不支持弹出”Add to home screen”的横幅&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;在 Android 系统中，会弹出横幅鼓励用户将 PWA应用 添加到主屏幕中。但是在 IOS 系统中不会有次横幅弹出，想要添加到主屏，需要三个步骤。&lt;/p&gt;
-
-&lt;p&gt;对于这种方式增加到主屏肯定是不友好的，建议设计一个弹出层，以友好的方式提示用户将 PWA 应用添加到主屏中，这里需要注意的是，弹出层需要检查当前 PWA 应用是否是 &lt;strong&gt;window.navigator.standalone&lt;/strong&gt; 的情况。&lt;/p&gt;
-
-&lt;p style=&quot;text-align:center;&quot;&gt;
-
-&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/add_to_homescreen_small.gif&quot; style=&quot;height:300px;&quot; /&gt;
-
-&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/apple-add-home.png&quot; style=&quot;height:300px;&quot; /&gt;
-
-&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;关于导航的问题&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;当在 IOS 下运行 PWA 应用时，若处于 &lt;strong&gt;standalone&lt;/strong&gt; 模式时，由于苹果手机没有返回的按键，因此在设计应用界面时需要确保用户有返回控制键以及可以从任何位置返回到主页上。&lt;/p&gt;
-
-&lt;p&gt;这你可以通过显示后退按钮或者在IOS尚添加更多的菜单栏来实现。&lt;/p&gt;
-
-&lt;h2 id=&quot;附录c-实验中的pwa应用参考&quot;&gt;附录C 实验中的PWA应用参考&lt;/h2&gt;
-
-&lt;p&gt;关于 PWA应用 的完善版，可以参考本站点 &lt;a href=&quot;https://vinny.cc&quot;&gt;vinny.cc&lt;/a&gt; 的实现，关键的文件如下：&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://vinny.cc/manifest.json&quot;&gt;https://vinny.cc/manifest.json&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://vinny.cc/assets/main.js&quot;&gt;https://vinny.cc/assets/main.js&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://vinny.cc/service-worker.js&quot;&gt;https://vinny.cc/service-worker.js&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;附录d-如何对pwa进行远程调试&quot;&gt;附录D 如何对PWA进行远程调试&lt;/h2&gt;
-
-&lt;p&gt;这里的环境是使用Android系统的真机进行 PWA 应用的调试&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;手机的设置中打开 &lt;strong&gt;USB调试模式&lt;/strong&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;使用USB线接入电脑或者在手机上安装 ADB 远程调试工具，如 网络adb&lt;/p&gt;
-
-    &lt;p style=&quot;text-align:center;&quot;&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/14822209063612928.png&quot; style=&quot;height:300px;&quot; /&gt;&lt;/p&gt;
-
-    &lt;p&gt;若使用 远程adb 的方式，则如要使用如下命令建立连接：&lt;/p&gt;
-
-    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;adb connect 192.168.1.198:5555
-&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;adb devices
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;在电脑上打开 Chrome 浏览器并打开开发者工具，打开 Remote devices 应可以看见已连接上的Android设备&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/pwa_debug-1.png&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;在手机中打开 PWA应用，在浏览器开发者工具中就可以看见并进行调试&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/pwa_debug-2.png&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;另外如果 &lt;strong&gt;PWA应用&lt;/strong&gt; 部署在本地，可以通过chrome浏览器的 &lt;code class=&quot;highlighter-rouge&quot;&gt;Port forwarding&lt;/code&gt; 功能将本地 &lt;strong&gt;PWA应用&lt;/strong&gt; 映射到手机上，这样在手机中输入”localhost:8887”即可在调试中出现。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ohdpyqlwy.bkt.clouddn.com/pwa_debug-3.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;参考文章&quot;&gt;参考文章&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;a href=&quot;https://www.netguru.co/codestories/few-tips-that-will-make-your-pwa-on-ios-feel-like-native&quot;&gt;https://www.netguru.co/codestories/few-tips-that-will-make-your-pwa-on-ios-feel-like-native&lt;/a&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://developers.google.com/web/fundamentals/app-install-banners/&quot;&gt;https://developers.google.com/web/fundamentals/app-install-banners/&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://developers.google.com/web/fundamentals/primers/service-workers/&quot;&gt;https://developers.google.com/web/fundamentals/primers/service-workers/&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://developers.google.com/web/tools/lighthouse/?hl=zh-cn&quot;&gt;https://developers.google.com/web/tools/lighthouse/?hl=zh-cn&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>  
-               <pubDate>Thu, 10 May 2018 00:00:00 +0800</pubDate>  
-               <link>http://www.vinny.cc/2018/05/pwa-app/</link>  
-               <guid isPermaLink="true">http://www.vinny.cc/2018/05/pwa-app/</guid>  
                </item>  
           
     </channel>  

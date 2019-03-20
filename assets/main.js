@@ -238,18 +238,6 @@
         } else {
             console.log('Geolocation is not supported for this Browser/OS.');
         }
-
-        // lazy loads elements with default selector as ".lozad"
-        // const observer = lozad();
-        // observer.observe();
-        // lozad('.lozad', {
-        //     load: function(el) {
-        //         el.src = el.dataset.src;
-        //         el.onload = function() {
-        //             el.classList.add('fade')
-        //         }
-        //     }
-        // }).observe()
     });
 
     // 注册service-worker

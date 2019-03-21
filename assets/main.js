@@ -70,7 +70,7 @@
             var li = $("<li><span>Cannot find out anything article ......</span></li>");
             li.css("background-color", "rgb(0, 116, 54)");
             li.css("cursor", "crosshair");
-            $(".suggest").append(li);            
+            $(".suggest").append(li);
         }
 
         // 检索到数据
@@ -95,7 +95,7 @@
 
     app.toggleSearch = async () => {
         let keyword = app.search_input.value;
-        
+
         if (keyword === null || keyword === '') {
             $(".suggest").empty();
             $(".suggest").hide();
@@ -196,7 +196,7 @@
                 break;
             case 13: // 回车键
                 // 没有检索到文章，回车事件忽略
-                if ($(".hover a").length == 0) { 
+                if ($(".hover a").length == 0) {
                     return;
                 }
 
@@ -210,11 +210,11 @@
     });
 
 
-    
+
     // 移动端头固定
     window.addEventListener('scroll', () => {
         let header_nav = document.querySelector('.header-nav');
-        let sticky = header_nav.offsetTop;         
+        let sticky = header_nav.offsetTop;
         if (window.pageYOffset >= sticky) {
             header_nav.classList.add("sticky");
         } else {
@@ -226,7 +226,7 @@
     // 获取定位
     window.addEventListener('load', () => {
         let loading = document.querySelector('.loading');
-        // let body = document.querySelector('body');        
+        // let body = document.querySelector('body');
         loading.style.display = 'none';
         // body.style.padding = '20px';
 
@@ -244,28 +244,28 @@
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', (e) => {
             navigator.serviceWorker.register('/service-worker.js').then(registration => {
-                console.log('Service Worker registration success with scope: ', registration.scope);                
+                console.log('Service Worker registration success with scope: ', registration.scope);
 
                 // 有新的更新
-                // registration.onupdatefound = () => {
-                //     const installWorker = registration.installing;
-                //     installWorker.onstatechange = () => {
-                //         switch (installWorker.state) {
-                //             case 'installed':
-                //                 if (navigator.serviceWorker.controller) {
-                //                     console.log('new update available');
-                //                     // resolve(true);
-                //                 } else {
-                //                     console.log('no update available');
-                //                     // resolve(false);
-                //                 }
+                registration.onupdatefound = () => {
+                    const installWorker = registration.installing;
+                    installWorker.onstatechange = () => {
+                        switch (installWorker.state) {
+                            case 'installed':
+                                if (navigator.serviceWorker.controller) {
+                                    console.log('new update available');
+                                    // resolve(true);
+                                } else {
+                                    console.log('no update available');
+                                    // resolve(false);
+                                }
 
-                //                 break;
-                //             default:
-                //                 break;
-                //         }
-                //     }
-                // }
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
 
                 if ('PushManager' in window) {  // 订阅通知
                     app.notification(registration);
@@ -275,7 +275,7 @@
                 console.log('Service Worker registration failed: ', err);
             });
         });
-    }    
+    }
 
 })();
 

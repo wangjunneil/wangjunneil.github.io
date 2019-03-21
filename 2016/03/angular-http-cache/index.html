@@ -12,7 +12,7 @@
 <span class="c1">// http请求的缓存Id默认为$http，可以通过$cacheFactory对象取出来</span>
 <span class="kd">var</span> <span class="nx">cache</span> <span class="o">=</span> <span class="nx">$cacheFactory</span><span class="p">(</span><span class="s1">'$http'</span><span class="p">);</span>
 <span class="c1">// http请求每个缓存内容的key为请求的url</span>
-<span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">cache</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="s1">'http://www.wangjunneil.com/api/data.json'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">cache</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="s1">'//www.wangjunneil.com/api/data.json'</span><span class="p">);</span>
 
 <span class="c1">// 自定义http缓存对象</span>
 <span class="kd">var</span> <span class="nx">myHttpCache</span> <span class="o">=</span> <span class="nx">$cacheFactory</span><span class="p">(</span><span class="s1">'myHttpCache'</span><span class="p">,</span> <span class="p">{</span><span class="s1">'capacity'</span> <span class="p">:</span> <span class="mi">1000</span><span class="p">});</span>

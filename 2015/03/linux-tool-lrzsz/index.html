@@ -6,7 +6,7 @@ scp wwtsz@192.168.1.170:/home/wwtsz/need-tools.tar.gz need-tools.tar.gz
 </code></pre></div></div><p>这样反复的使用scp上传下载确实浪费了不少时间，这时候可以使用lrzsz的工具解决，由于lrzsz实现的是Zmodem协议协议，所以需要使用一个支持Zmodem协议的客户端，这里使用的是SecureCRT，具体安装和使用的步骤如下。</p><h2 id="2-下载securecrt客户端到本地电脑中">2. 下载SecureCRT客户端到本地电脑中</h2><p>网上下载的地方有很多，win和mac版本的都有。SecureCRT是收费软件，如果你钱包简陋有破解版的下载，此处忽略。</p><h2 id="3-在securecrt中配制服务器地址和上传下载目录">3. 在SecureCRT中配制服务器地址和上传下载目录</h2><p>配置上传和下载目录需要在会话选项（Session Options）中的X/Y/Zmodem里配置，全局选项中没有这个配置。</p><h2 id="4-在服务器中安装lrzsz工具">4. 在服务器中安装lrzsz工具</h2><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># yum 安装lrzsz工具</span>
 yum <span class="nb">install</span> <span class="nt">-y</span> lrzsz
 </code></pre></div></div><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 下载lrzsz-0.12.20.tar.gz</span>
-wget http://www.ohse.de/uwe/releases/lrzsz-0.12.20.tar.gz
+wget //www.ohse.de/uwe/releases/lrzsz-0.12.20.tar.gz
 <span class="c"># 解压缩lrzsz-0.12.20.tar.gz</span>
 <span class="nb">tar </span>zxvf lrzsz-0.12.20.tar.gz <span class="o">&amp;&amp;</span> <span class="nb">cd </span>lrzsz-0.12.20
 <span class="c"># 编译安装（默认把lsz和lrz安装到了/usr/local/bin/目录下）</span>

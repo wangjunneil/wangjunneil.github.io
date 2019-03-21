@@ -23,7 +23,7 @@
 <span class="p">});</span>
 </code></pre></div></div><blockquote><p>此时创建的UserService服务可以在多个控制器Controller里共用，只需要把服务在创建控制器时注入进即可使用</p></blockquote><h2 id="重构注册服务代码">重构注册服务代码</h2><p>将注册服务的通用请求进行封装，减少冗余代码</p><div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 服务注册</span>
 <span class="nx">myApp</span><span class="p">.</span><span class="nx">factory</span><span class="p">(</span><span class="s2">"UserService"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$http</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">rootUrl</span> <span class="o">=</span> <span class="s2">"http://www.xxx.com/"</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">rootUrl</span> <span class="o">=</span> <span class="s2">"//www.xxx.com/"</span><span class="p">;</span>
 
     <span class="kd">var</span> <span class="nx">runUserRequest</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">userId</span><span class="p">,</span> <span class="nx">path</span><span class="p">)</span> <span class="p">{</span>
         <span class="c1">// 通用的请求</span>

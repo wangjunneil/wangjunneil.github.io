@@ -3,7 +3,7 @@
 
 <span class="c"># 下载到PC</span>
 <span class="nv">$ </span>adb pull /sdcard/screen.png
-</code></pre></div></div><h2 id="adb-远程网络调试">ADB 远程/网络调试</h2><ol><li>手机和电脑在同一网络环境下，且手机开始”USB Debug”模式</li></ol><p><img src="http://ohdpyqlwy.bkt.clouddn.com/abd-usbdebug.png" alt="usb_debug" /></p><ol><li>手机启用远程调试的两种方法</li></ol><ul><li><strong>安装远程adb调试工具</strong></li></ul><p><img src="http://ohdpyqlwy.bkt.clouddn.com/adb-remote.png" alt="network_adb" /></p><ul><li><strong>在已root的手机上命令行开启</strong></li></ul><p>打开手机终端terminal，执行以下命令：</p><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>su
+</code></pre></div></div><h2 id="adb-远程网络调试">ADB 远程/网络调试</h2><ol><li>手机和电脑在同一网络环境下，且手机开始”USB Debug”模式</li></ol><p><img src="//vinnycc.oss-cn-shanghai.aliyuncs.com/20190320/abd-usbdebug.png" alt="usb_debug" /></p><ol><li>手机启用远程调试的两种方法</li></ol><ul><li><strong>安装远程adb调试工具</strong></li></ul><p><img src="//vinnycc.oss-cn-shanghai.aliyuncs.com/20190320/adb-remote.png" alt="network_adb" /></p><ul><li><strong>在已root的手机上命令行开启</strong></li></ul><p>打开手机终端terminal，执行以下命令：</p><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>su
 <span class="nv">$ </span>setprop service.adb.tcp.port 5555
 <span class="nv">$ </span>adbd
 </code></pre></div></div><ol><li>在电脑中执行远程连接</li></ol><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>adb connect 192.168.1.10 5555

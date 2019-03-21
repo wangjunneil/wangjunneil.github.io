@@ -53,16 +53,22 @@ function onPush(event) {
     let push_message = event.data.text();
 
     const title = "New Message from Vinny's Blog";
-    const actions = [
-        { action: 'like', title: '👍Like' },
-        { action: 'reply', title: '⤻ Reply' }
-    ];
+    // const actions = [
+    //     { action: 'like', title: '👍Like' },
+    //     { action: 'reply', title: '⤻ Reply' }
+    // ];
     const options = {
-        body: push_message,
+        // body: push_message,
+        body: 'Did you make a $1,000,000 purchase at Dr. Evil...',
         icon: '/assets/hacker.jpg',
+        vibrate: [200, 100, 200, 100, 200, 100, 400],
+        tag: "request",
         badge: '/assets/push/badge.png',
-        actions: actions
-    };    
+        actions: [
+            { "action": "yes", "title": "Yes", "icon": "images/yes.png" },
+            { "action": "no", "title": "No", "icon": "images/no.png" }
+        ]
+    };
 
     event.waitUntil(self.registration.showNotification(title, options));
 }
@@ -107,8 +113,8 @@ var URL_TO_CACHE = [
     "/assets/clear.png"
 ];
 // Service Worker 事件注册
-self.addEventListener("install", onInstall), 
-self.addEventListener("activate", onActivate), 
+self.addEventListener("install", onInstall),
+self.addEventListener("activate", onActivate),
 self.addEventListener("fetch", onFetch),
 self.addEventListener('push', onPush),
 self.addEventListener('notificationclick', onNotificationClick);

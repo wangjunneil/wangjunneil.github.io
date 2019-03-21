@@ -1,4 +1,3 @@
-sitemap: /sitemap.xml
-
-user-agent: EmailCollector
-disallow: /
+User-agent: *
+Disallow:
+Sitemap: https://wangjun.dev/sitemap.xml

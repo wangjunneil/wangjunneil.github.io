@@ -46,7 +46,7 @@
 
 &lt;h2 id=&quot;3-基本组成结构&quot;&gt;3. 基本组成结构&lt;/h2&gt;
 
-&lt;p&gt;&lt;img src=&quot;//ohdpyqlwy.bkt.clouddn.com/1523604475510f808913f4f.jpeg&quot; alt=&quot;pwa组成&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190322/1523604475510f808913f4f.jpeg&quot; alt=&quot;pwa组成&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;断网或网络差，基于常驻后台的 &lt;strong&gt;Service Worker&lt;/strong&gt; 实现数据离线存储与通知推送。&lt;/p&gt;
 
@@ -65,6 +65,8 @@
 &lt;p&gt;&lt;strong&gt;manifest.json&lt;/strong&gt; 文件是 Web 站点的描述文件，用来告诉浏览器 PWA应用 的基本信息，包括名称、图标、启动页、背景色等等。完整的 manifest.json 配置请参看 &lt;a href=&quot;https://link.zhihu.com/?target=https%3A//developer.mozilla.org/en-US/docs/Web/Manifest&quot;&gt;Web App Manifest properties&lt;/a&gt;。&lt;/p&gt;
 
 &lt;p&gt;在工程的根路径中创建 &lt;strong&gt;manifest.json&lt;/strong&gt; 文件，内容如下：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c#&quot; data-lang=&quot;c#&quot;&gt;    &lt;span class=&quot;n&quot;&gt;Console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;WriteLline&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Hello&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
     &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;欢迎来到 Vinny Blog&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
@@ -133,16 +135,16 @@
 
 &lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;head&amp;gt;&lt;/span&gt;
     ...
-    
+
     &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- 注册 manifest.json 文件 --&amp;gt;&lt;/span&gt;
     &lt;span class=&quot;nt&quot;&gt;&amp;lt;link&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;rel=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;manifest&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/manifest.json&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
     &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- 应与 manifest.json 中的 theme_color属性 一致 --&amp;gt;&lt;/span&gt;
     &lt;span class=&quot;nt&quot;&gt;&amp;lt;meta&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;theme-color&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;content=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;#5FAAE5&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-    
+
     &lt;span class=&quot;nt&quot;&gt;&amp;lt;meta&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;viewport&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;content=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
     &lt;span class=&quot;nt&quot;&gt;&amp;lt;meta&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;format-detection&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;content=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;telephone=no&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
     &lt;span class=&quot;nt&quot;&gt;&amp;lt;meta&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;msapplication-tap-highlight&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;content=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;no&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-    
+
     ...
 &lt;span class=&quot;nt&quot;&gt;&amp;lt;/head&amp;gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
@@ -207,11 +209,11 @@
 &lt;p&gt;&lt;strong&gt;访问的截图如下：&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p style=&quot;text-align:center;&quot;&gt;
-&lt;img src=&quot;//ohdpyqlwy.bkt.clouddn.com/Screenshot_20180418-004321.png&quot; height=&quot;300px&quot; style=&quot;margin-left:5px;&quot; /&gt;
+&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190321/Screenshot_20180418-004321.png&quot; height=&quot;300px&quot; style=&quot;margin-left:5px;&quot; /&gt;
 
-&lt;img src=&quot;//ohdpyqlwy.bkt.clouddn.com/Screenshot_20180418-003023.png&quot; height=&quot;300px&quot; style=&quot;margin-left:5px;&quot; /&gt;
+&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190321/Screenshot_20180418-003023.png&quot; height=&quot;300px&quot; style=&quot;margin-left:5px;&quot; /&gt;
 
-&lt;img src=&quot;//ohdpyqlwy.bkt.clouddn.com/Screenshot_20180418-003027.png&quot; height=&quot;300px&quot; style=&quot;margin-left:5px;&quot; /&gt;
+&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190321/Screenshot_20180418-003027.png&quot; height=&quot;300px&quot; style=&quot;margin-left:5px;&quot; /&gt;
 &lt;/p&gt;
 
 &lt;blockquote&gt;
@@ -238,7 +240,7 @@
 &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;onActivate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;[Serviceworker]&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Activating!&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 
-    &lt;span class=&quot;c1&quot;&gt;// 这里的&quot;keyList&quot;就是&quot;var CACHE_NAME = CACHE_VERSION + &quot;:sw-cache::&quot;的数组        &lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// 这里的&quot;keyList&quot;就是&quot;var CACHE_NAME = CACHE_VERSION + &quot;:sw-cache::&quot;的数组&lt;/span&gt;
     &lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;waitUntil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;caches&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;keys&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;keyList&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
         &lt;span class=&quot;c1&quot;&gt;// 这里的&quot;key&quot;就是&quot;V1.0.1:sw-cache::&quot;，掉上面缓存名称的遍历&lt;/span&gt;
         &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Promise&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;all&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;keyList&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;key&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
@@ -307,7 +309,7 @@
     &lt;span class=&quot;c1&quot;&gt;// .....&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
 &lt;span class=&quot;c1&quot;&gt;// Service Worker 事件注册&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addEventListener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;install&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;onInstall&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addEventListener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;activate&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;onActivate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addEventListener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;fetch&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;onFetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; 
+&lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addEventListener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;install&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;onInstall&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addEventListener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;activate&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;onActivate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addEventListener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;fetch&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;onFetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;从上述脚本可知，我们对缓存定义了版本，版本主要实现缓存的更新，否则即使站点做了更新，用户在设备上访问的还是旧的内容。&lt;em&gt;URL_TO_CACHE&lt;/em&gt; 定义了需要预缓存的基本结构，又叫 &lt;strong&gt;&lt;a href=&quot;https://developers.google.com/web/fundamentals/architecture/app-shell&quot;&gt;App Shell&lt;/a&gt;&lt;/strong&gt;，在 &lt;strong&gt;install&lt;/strong&gt; 中进行安装，在 &lt;strong&gt;fetch&lt;/strong&gt; 中进行读取，命中则直接返回，否则重新请求。&lt;/p&gt;
@@ -332,12 +334,12 @@
   &lt;li&gt;
     &lt;p&gt;此时，旧服务工作线程仍控制着当前页面，新服务工作线程进入 &lt;strong&gt;waiting&lt;/strong&gt; 状态。&lt;/p&gt;
 
-    &lt;p&gt;&lt;img src=&quot;//ohdpyqlwy.bkt.clouddn.com/sw11.png&quot; alt=&quot;sw11&quot; /&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190321/sw11.png&quot; alt=&quot;sw11&quot; /&gt;&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;当关掉重新打开 PWA应用 时，就工作线程被终止，新服务线程取得控制权，同时触发 &lt;strong&gt;activate&lt;/strong&gt; 事件，删除旧的缓存&lt;/p&gt;
 
-    &lt;p&gt;&lt;img src=&quot;//ohdpyqlwy.bkt.clouddn.com/sw12.png&quot; alt=&quot;sw12&quot; /&gt;&lt;strong&gt;总结激活更新&lt;/strong&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190321/sw12.png&quot; alt=&quot;sw12&quot; /&gt;&lt;strong&gt;总结激活更新&lt;/strong&gt;&lt;/p&gt;
 
     &lt;p&gt;更新 html 内容，修改 &lt;strong&gt;Service Worker&lt;/strong&gt;，打开 PWA应用，由于服务工作线程已经改变，触发 &lt;strong&gt;install&lt;/strong&gt; 事件，新的缓存被安装，关闭 PWA应用 再重新打开，接手，触发 &lt;strong&gt;activate&lt;/strong&gt; 事件删除老缓存，页面刷新为新的html内容。&lt;/p&gt;
   &lt;/li&gt;
@@ -345,13 +347,13 @@
 
 &lt;h2 id=&quot;5-对-pwa-应用进行审计&quot;&gt;5. 对 PWA 应用进行审计&lt;/h2&gt;
 
-&lt;p&gt;使用 &lt;a href=&quot;https://github.com/GoogleChrome/lighthouse&quot;&gt;Lighthouse&lt;/a&gt; 工具可以对 PWA 应用进行审计，以检查当前的 PWA 是否正常。此插件可以在 Chrome 浏览器进行安装，安装完成后，在浏览器中输入 PWA 应用的地址，点击 Lighthouse 插件进行审计工作。&lt;/p&gt;
+&lt;p&gt;使用 &lt;a href=&quot;//github.com/GoogleChrome/lighthouse&quot;&gt;Lighthouse&lt;/a&gt; 工具可以对 PWA 应用进行审计，以检查当前的 PWA 是否正常。此插件可以在 Chrome 浏览器进行安装，安装完成后，在浏览器中输入 PWA 应用的地址，点击 Lighthouse 插件进行审计工作。&lt;/p&gt;
 
 &lt;p&gt;这里我使用我的博客站点进行测试，最后生成的报告如下：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//ohdpyqlwy.bkt.clouddn.com/lighthouse.png&quot; alt=&quot;lighthouse&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190321/lighthouse.png&quot; alt=&quot;lighthouse&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;从上述的报告中可以看到，当前 https://vinny.cc 的站点对于 PWA 应用支持的得分为 91，除了有一个问题，就是无法从 HTTP 请求转向到 HTTPS 请求。&lt;/p&gt;
+&lt;p&gt;从上述的报告中可以看到，当前 https://wangjun.dev 的站点对于 PWA 应用支持的得分为 91，除了有一个问题，就是无法从 HTTP 请求转向到 HTTPS 请求。&lt;/p&gt;
 
 &lt;h2 id=&quot;附录a-不同浏览器对-pwa-应用缓存的限制&quot;&gt;附录A 不同浏览器对 PWA 应用缓存的限制&lt;/h2&gt;
 
@@ -468,7 +470,7 @@
   &lt;li&gt;
     &lt;p&gt;使用USB线接入电脑或者在手机上安装 ADB 远程调试工具，如 网络adb&lt;/p&gt;
 
-    &lt;p style=&quot;text-align:center;&quot;&gt;&lt;img src=&quot;//ohdpyqlwy.bkt.clouddn.com/14822209063612928.png&quot; style=&quot;height:300px;&quot; /&gt;&lt;/p&gt;
+    &lt;p style=&quot;text-align:center;&quot;&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190321/14822209063612928.png&quot; style=&quot;height:300px;&quot; /&gt;&lt;/p&gt;
 
     &lt;p&gt;若使用 远程adb 的方式，则如要使用如下命令建立连接：&lt;/p&gt;
 
@@ -479,18 +481,18 @@
   &lt;li&gt;
     &lt;p&gt;在电脑上打开 Chrome 浏览器并打开开发者工具，打开 Remote devices 应可以看见已连接上的Android设备&lt;/p&gt;
 
-    &lt;p&gt;&lt;img src=&quot;//ohdpyqlwy.bkt.clouddn.com/pwa_debug-1.png&quot; alt=&quot;pwd-debug-1&quot; /&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190321/pwa_debug-1.png&quot; alt=&quot;pwd-debug-1&quot; /&gt;&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;在手机中打开 PWA应用，在浏览器开发者工具中就可以看见并进行调试&lt;/p&gt;
 
-    &lt;p&gt;&lt;img src=&quot;//ohdpyqlwy.bkt.clouddn.com/pwa_debug-2.png&quot; alt=&quot;pwd-debug-2&quot; /&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190321/pwa_debug-2.png&quot; alt=&quot;pwd-debug-2&quot; /&gt;&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;p&gt;另外如果 &lt;strong&gt;PWA应用&lt;/strong&gt; 部署在本地，可以通过chrome浏览器的 &lt;code class=&quot;highlighter-rouge&quot;&gt;Port forwarding&lt;/code&gt; 功能将本地 &lt;strong&gt;PWA应用&lt;/strong&gt; 映射到手机上，这样在手机中输入”localhost:8887”即可在调试中出现。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//ohdpyqlwy.bkt.clouddn.com/pwa_debug-3.png&quot; alt=&quot;pwa_debug-3&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190321/pwa_debug-3.png&quot; alt=&quot;pwa_debug-3&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;参考文章&quot;&gt;参考文章&lt;/h2&gt;
 
@@ -930,7 +932,7 @@ python3 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; http.server 8000
 
 &lt;p&gt;&lt;strong&gt;1. 使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;top -H -p [pid]&lt;/code&gt; 命令列出进程的所有线程&lt;/strong&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//ohdpyqlwy.bkt.clouddn.com/cpu_1.png&quot; alt=&quot;cpu_1&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190322/cpu_1.png&quot; alt=&quot;cpu_1&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;通过上述命令，这里假定发现ID为”&lt;strong&gt;5171&lt;/strong&gt;“的线程占用了 75% 的CPU&lt;/p&gt;
 
@@ -938,15 +940,15 @@ python3 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; http.server 8000
 
 &lt;p&gt;这里计算后的结果是 “&lt;strong&gt;0x1433&lt;/strong&gt;”&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//ohdpyqlwy.bkt.clouddn.com/cpu_2.png&quot; alt=&quot;cpu_2&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190322/cpu_2.png&quot; alt=&quot;cpu_2&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;3. 使用命令 &lt;code class=&quot;highlighter-rouge&quot;&gt;jstack [pid] &amp;gt; jstack.txt&lt;/code&gt; 导出进程中所有线程上下文&lt;/strong&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//ohdpyqlwy.bkt.clouddn.com/cpu_3.png&quot; alt=&quot;cpu_3&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190322/cpu_3.png&quot; alt=&quot;cpu_3&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;4. 使用命令 &lt;code class=&quot;highlighter-rouge&quot;&gt;cat jstack.txt | grep -i 1433&lt;/code&gt; 查找匹配的线程ID&lt;/strong&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//ohdpyqlwy.bkt.clouddn.com/cpu_4.png&quot; alt=&quot;cpu_4&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190322/cpu_4.png&quot; alt=&quot;cpu_4&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;从上述输出的信息可以直接得出执行的堆栈，从而确定哪部分代码出现了问题&lt;/p&gt;
 
@@ -1170,10 +1172,6 @@ python3 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; http.server 8000
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 生成CHANGELOG明细并进行修改&lt;/span&gt;
 &lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;conventional-changelog &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; angular &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; CHANGELOG.md &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; 0
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;生成的CHANGELOG信息，作为”release note”后的效果如下图：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;//ohdpyqlwy.bkt.clouddn.com/Screen%20Shot%202018-03-29%20at%201.13.27%20AM.png&quot; alt=&quot;release-note&quot; /&gt;&lt;/p&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;关于标签命名规范请参看 &lt;strong&gt;附录C 标签命名规范&lt;/strong&gt;&lt;/p&gt;
@@ -1460,7 +1458,7 @@ git push &lt;span class=&quot;nt&quot;&gt;--tags&lt;/span&gt;
 &lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git push &lt;span class=&quot;nt&quot;&gt;--tags&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# 开始一个Hotfix&lt;/span&gt;
 &lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git flow hotfix start VERSION &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;BASENAME]
-&lt;span class=&quot;c&quot;&gt;# 发布一个Hotfix &lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 发布一个Hotfix&lt;/span&gt;
 &lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git flow hotfix finish VERSION
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>  
@@ -1500,7 +1498,7 @@ git push &lt;span class=&quot;nt&quot;&gt;--tags&lt;/span&gt;
 
 &lt;h3 id=&quot;12-manifest文件&quot;&gt;1.2 manifest文件&lt;/h3&gt;
 
-&lt;p&gt;&lt;strong&gt;manifest.json&lt;/strong&gt;文件主要告知chrome浏览器插件的重要信息，例如名称、权限等。下面是最基本的描述信息，更全的&lt;strong&gt;manifes.jsont&lt;/strong&gt;配置明细，请参看&lt;a href=&quot;https://developer.chrome.com/extensions/manifest&quot;&gt;Manifest File Format&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;manifest.json&lt;/strong&gt;文件主要告知chrome浏览器插件的重要信息，例如名称、权限等。下面是最基本的描述信息，更全的&lt;strong&gt;manifes.jsont&lt;/strong&gt;配置明细，请参看&lt;a href=&quot;//developer.chrome.com/extensions/manifest&quot;&gt;Manifest File Format&lt;/a&gt;。&lt;/p&gt;
 
 &lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
     &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Hello Extensions&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
@@ -1531,25 +1529,25 @@ git push &lt;span class=&quot;nt&quot;&gt;--tags&lt;/span&gt;
   &lt;li&gt;打开chrome浏览器，地址栏输入&lt;code class=&quot;highlighter-rouge&quot;&gt;chrome://extensions&lt;/code&gt;打开扩展列表&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;img src=&quot;//ohdpyqlwy.bkt.clouddn.com/chrome_extension_1.png&quot; alt=&quot;chrome_extension_1&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190322/chrome_extension_1.png&quot; alt=&quot;chrome_extension_1&quot; /&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;勾选右上角的&lt;strong&gt;Developer Mode&lt;/strong&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;img src=&quot;//ohdpyqlwy.bkt.clouddn.com/chrome_extension_2.png&quot; alt=&quot;chrome_extension_1&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190322/chrome_extension_2.png&quot; alt=&quot;chrome_extension_1&quot; /&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;点击&lt;strong&gt;Load Unpacked Extension&lt;/strong&gt;按钮加载到程序目录即可&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;img src=&quot;//ohdpyqlwy.bkt.clouddn.com/chrome_extension_3.png&quot; alt=&quot;chrome_extension_1&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190322/chrome_extension_3.png&quot; alt=&quot;chrome_extension_1&quot; /&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;点击Chrome浏览器扩展栏即可实现基本的程序运行&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;img src=&quot;//ohdpyqlwy.bkt.clouddn.com/chrome_extension_4.png&quot; alt=&quot;chrome_extension_1&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190322/chrome_extension_4.png&quot; alt=&quot;chrome_extension_1&quot; /&gt;&lt;/p&gt;
 </description>  
                <pubDate>Sun, 18 Mar 2018 00:00:00 +0800</pubDate>  
                <link>http://www.vinny.cc/2018/03/how-to-create-chrome-extension/</link>  
@@ -1573,16 +1571,16 @@ git push &lt;span class=&quot;nt&quot;&gt;--tags&lt;/span&gt;
 
 &lt;hr /&gt;
 
-&lt;p&gt;使用maven创建一个普通的webapp工程，restful方面使用实现了JAX-RS的&lt;strong&gt;jersey&lt;/strong&gt;库，jwt授权实现使用&lt;strong&gt;jjwt&lt;/strong&gt;(&lt;a href=&quot;https://github.com/jwtk/jjwt&quot;&gt;https://github.com/jwtk/jjwt&lt;/a&gt;)。&lt;/p&gt;
+&lt;p&gt;使用maven创建一个普通的webapp工程，restful方面使用实现了JAX-RS的&lt;strong&gt;jersey&lt;/strong&gt;库，jwt授权实现使用&lt;strong&gt;jjwt&lt;/strong&gt;(&lt;a href=&quot;//github.com/jwtk/jjwt&quot;&gt;github.com/jwtk/jjwt&lt;/a&gt;)。&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;jersey&lt;/strong&gt;，&lt;a href=&quot;https://jersey.github.io&quot;&gt;https://jersey.github.io/&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;jwt&lt;/strong&gt;，&lt;a href=&quot;https://jwt.io&quot;&gt;https://jwt.io/&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;jersey&lt;/strong&gt;，&lt;a href=&quot;//jersey.github.io&quot;&gt;jersey.github.io/&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;jwt&lt;/strong&gt;，&lt;a href=&quot;//jwt.io&quot;&gt;jwt.io/&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h2 id=&quot;1-授权流程&quot;&gt;1. 授权流程&lt;/h2&gt;
 
-&lt;p&gt;&lt;img src=&quot;//ohdpyqlwy.bkt.clouddn.com/JWT_tokens_EN.png&quot; alt=&quot;jwt&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190322/JWT_tokens_EN.png&quot; alt=&quot;jwt&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;2-实现方式&quot;&gt;2. 实现方式&lt;/h2&gt;
 
@@ -1839,7 +1837,7 @@ git push &lt;span class=&quot;nt&quot;&gt;--tags&lt;/span&gt;
 
 &lt;h2 id=&quot;1-下载漏洞脚本&quot;&gt;1. 下载漏洞脚本&lt;/h2&gt;
 
-&lt;p&gt;从 &lt;strong&gt;&lt;a href=&quot;https://www.exploit-db.com&quot;&gt;exploit-db&lt;/a&gt;&lt;/strong&gt; 下载 &lt;strong&gt;LNK Remote Code Execution Vulnerability&lt;/strong&gt; 漏洞文件&lt;/p&gt;
+&lt;p&gt;从 &lt;strong&gt;&lt;a href=&quot;//www.exploit-db.com&quot;&gt;exploit-db&lt;/a&gt;&lt;/strong&gt; 下载 &lt;strong&gt;LNK Remote Code Execution Vulnerability&lt;/strong&gt; 漏洞文件&lt;/p&gt;
 
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;wget https://www.exploit-db.com/download/42382.rb
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;

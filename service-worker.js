@@ -23,11 +23,11 @@ var URL_TO_CACHE = [
 // --------------------------------------------------------------------
 
 // 安装事件
-self.addEventListener('install', event => {
-    event.waitUntil(
-        caches.open(CACHE_NAME).then((e) => {
-            return e.addAll(URL_TO_CACHE).then(() => {
-                console.log("SERVICE WORKER: Install completed.")
+self.addEventListener('install', e => {
+    e.waitUntil(
+        caches.open(CACHE_NAME).then(function (e) {
+            return e.addAll(URL_TO_CACHE).then(function () {
+                console.log("WORKER: Install completed")
             })
         })
         .then(self.skipWaiting())
@@ -35,11 +35,11 @@ self.addEventListener('install', event => {
 });
 
 // 激活事件
-self.addEventListener('activate', event => {
+self.addEventListener('activate', e => {
     console.log('Service Worker Activate')
 });
 
 // 请求事件
-self.addEventListener('fetch', event => {
-    console.log(event.request.url);
+self.addEventListener('fetch', e => {
+    console.log(e.request.url);
 });

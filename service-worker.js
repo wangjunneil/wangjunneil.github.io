@@ -1,23 +1,9 @@
-// var CACHE_VERSION = "V1.1.0";
-// var CACHE_NAME = CACHE_VERSION + ":sw-cache::";
+var CACHE_NAME = 'my-site-cache-v1';
 var URL_TO_CACHE = [
-    "/",
-    "/offline.html",
-    "/manifest.json",
-    "/assets/jquery-1.9.1.min.js",
-    "/assets/core.css",
-    "/assets/js/nav.js",
-    "/assets/js/zepto.min.js",
-    "/assets/header.png",
-    "/assets/offline.gif",
-    "/assets/search.png",
-    "/assets/main.js",
-    "/assets/hacker.png",
-    "/assets/5-13050G31J7.gif",
-    "/assets/clear.png",
-    "/assets/icons/icon-144x144.png",
-    "/assets/favicon.ico",
-    "/assets/clear.png"
+    '/',
+    '/offline.html',
+    '/manifest.json',
+    '/assets/jquery-1.9.1.min.js'
 ];
 
 // --------------------------------------------------------------------
@@ -25,7 +11,8 @@ var URL_TO_CACHE = [
 // 安装事件
 self.addEventListener('install', function(event) {
     event.waitUntil(
-        caches.open("aass").then(function(cache) {
+        caches.open(CACHE_NAME).then(function(cache) {
+            console.log('Opened cache');
             return cache.addAll(URL_TO_CACHE);
         })
     );

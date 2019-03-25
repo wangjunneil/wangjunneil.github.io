@@ -1,10 +1,22 @@
+// function onInstall(e) {
+//     e.waitUntil(caches.open(CACHE_NAME).then(e => {
+//         return e.addAll(URL_TO_CACHE).then(() => {
+//             console.log("SERVICE WORKER: Install completed.")
+//         })
+//     }));
+// }
+
 function onInstall(e) {
-    e.waitUntil(caches.open(CACHE_NAME).then(e => {
-        return e.addAll(URL_TO_CACHE).then(() => {
-            console.log("SERVICE WORKER: Install completed.")
+    e.waitUntil(
+        caches.open(CACHE_NAME).then(function (e) {
+            return e.addAll(URL_TO_CACHE).then(function () {
+                console.log("SERVICE WORKER: Install completed.")
+            })
         })
-    }));
+        .then(self.skipWaiting())
+    );
 }
+
 
 function onActivate(e) {
     console.log("[Serviceworker]", "Activating!", e);

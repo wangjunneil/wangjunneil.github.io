@@ -267,9 +267,9 @@
                     }
                 }
 
-                if ('PushManager' in window) {  // 订阅通知
-                    app.notification(registration);
-                }
+                // if ('PushManager' in window) {  // 订阅通知
+                //     app.notification(registration);
+                // }
             })
             .catch(err => {
                 console.log('Service Worker registration failed: ', err);

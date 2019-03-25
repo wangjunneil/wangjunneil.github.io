@@ -111,7 +111,7 @@
     }
 
     // 注册通知
-    app.notification = (registration) => {
+    // app.notification = (registration) => {
         /*
         Notification.permission
         "default"
@@ -125,46 +125,46 @@
 
 
         // 获取用户订阅状态
-        registration.pushManager.getSubscription().then(subscription => {
-            // "subscription"为空，表示用户还没有订阅此网站的通知
-            if (subscription === null) {
-                console.log('User is NOT subscribed.');
+        // registration.pushManager.getSubscription().then(subscription => {
+        //     // "subscription"为空，表示用户还没有订阅此网站的通知
+        //     if (subscription === null) {
+        //         console.log('User is NOT subscribed.');
 
-                // 解码 https://web-push-codelab.glitch.me/
-                const applicationServerKey = app.urlB64ToUint8Array(app.applicationServerPublicKey);
-                // 订阅
-                registration.pushManager.subscribe({
-                    userVisibleOnly: true,
-                    applicationServerKey: applicationServerKey
-                })
-                .then(subscription => {
-                    console.log('User is subscribed:', subscription);
+        //         // 解码 https://web-push-codelab.glitch.me/
+        //         const applicationServerKey = app.urlB64ToUint8Array(app.applicationServerPublicKey);
+        //         // 订阅
+        //         registration.pushManager.subscribe({
+        //             userVisibleOnly: true,
+        //             applicationServerKey: applicationServerKey
+        //         })
+        //         .then(subscription => {
+        //             console.log('User is subscribed:', subscription);
 
-                    // 实际会将此json发送给后端，测试时也用，这个值每次都会有变化
-                    let subscription_json = JSON.stringify(subscription);
-                    console.log(subscription_json);
-                })
-                .catch(err => {
-                    // 用户拒绝订阅通知
-                    // err = DOMException: Registration failed - permission denied
-                    console.log('Failed to subscribe the user: ', err);
-                });
-            } else {
-                // "subscription"不为空，用户订阅了此网站
-                /**
-                    {
-                      "endpoint": "https://fcm.googleapis.com/fcm/send/feF6jNioNGM:APA91bGyYsIllhaiixGFVGKE0mOW290UZEmPNHnjfRcmr9dQeQYKScxIHJWV6cXgtDOASZK46atOf7hop1YB9T9EADeHl_OxpoZykj3KGtyhf8qikLrYGaC7ob89dgdotEo4G2yw9UMd",
-                      "expirationTime": null,
-                      "keys": {
-                        "p256dh": "BI08L7Cft99rUwCGRq0P8DKQlzSETE4BIohzlwCa96-0sebDk4TGAqQGtGeJ4uKNW32i6NLyzYWHcNolhZUrC48=",
-                        "auth": "vF5wFnZPMoDLfpuAN3o2UQ=="
-                      }
-                    }
-                **/
-                console.log('User IS subscribed.');
-            }
-        });
-    }
+        //             // 实际会将此json发送给后端，测试时也用，这个值每次都会有变化
+        //             let subscription_json = JSON.stringify(subscription);
+        //             console.log(subscription_json);
+        //         })
+        //         .catch(err => {
+        //             // 用户拒绝订阅通知
+        //             // err = DOMException: Registration failed - permission denied
+        //             console.log('Failed to subscribe the user: ', err);
+        //         });
+        //     } else {
+        //         // "subscription"不为空，用户订阅了此网站
+        //         /**
+        //             {
+        //               "endpoint": "https://fcm.googleapis.com/fcm/send/feF6jNioNGM:APA91bGyYsIllhaiixGFVGKE0mOW290UZEmPNHnjfRcmr9dQeQYKScxIHJWV6cXgtDOASZK46atOf7hop1YB9T9EADeHl_OxpoZykj3KGtyhf8qikLrYGaC7ob89dgdotEo4G2yw9UMd",
+        //               "expirationTime": null,
+        //               "keys": {
+        //                 "p256dh": "BI08L7Cft99rUwCGRq0P8DKQlzSETE4BIohzlwCa96-0sebDk4TGAqQGtGeJ4uKNW32i6NLyzYWHcNolhZUrC48=",
+        //                 "auth": "vF5wFnZPMoDLfpuAN3o2UQ=="
+        //               }
+        //             }
+        //         **/
+        //         console.log('User IS subscribed.');
+        //     }
+        // });
+    // }
 
     /**********************************************
     *

@@ -237,7 +237,7 @@
         //     app.geolocation();
         // } else {
         //     console.log('Geolocation is not supported for this Browser/OS.');
-        }
+        // }
     });
 
     // 注册service-worker

@@ -9,37 +9,37 @@
     }
 
     // 定位用户位置
-    // app.geolocation = () => {
-    //     navigator.geolocation.getCurrentPosition((position) => {
-    //         let latitude = position.coords.latitude;    // 维度
-    //         let longitude = position.coords.longitude;  // 经度
+    app.geolocation = () => {
+        navigator.geolocation.getCurrentPosition((position) => {
+            let latitude = position.coords.latitude;    // 维度
+            let longitude = position.coords.longitude;  // 经度
 
-    //         console.log(`current position: ${latitude}, ${longitude}`);
+            console.log(`current position: ${latitude}, ${longitude}`);
 
-    //         // http://lbsyun.baidu.com/index.php?title=webapi/guide/webservice-geocoding-abroad
-    //     }, (error) => { // 错误处理
-    //         let errorMessage;
+            // http://lbsyun.baidu.com/index.php?title=webapi/guide/webservice-geocoding-abroad
+        }, (error) => { // 错误处理
+            let errorMessage;
 
-    //         switch (error.code) {
-    //             case 0:
-    //                 errorMessage = 'unknown error';
-    //                 break;
-    //             case 1:
-    //                 errorMessage = 'permission denied';
-    //                 break;
-    //             case 2:
-    //                 errorMessage = 'position unavailable';
-    //                 break;
-    //             case 3:
-    //                 errorMessage = 'timed out';
-    //                 break;
-    //             default:
-    //                 break;
-    //         }
+            switch (error.code) {
+                case 0:
+                    errorMessage = 'unknown error';
+                    break;
+                case 1:
+                    errorMessage = 'permission denied';
+                    break;
+                case 2:
+                    errorMessage = 'position unavailable';
+                    break;
+                case 3:
+                    errorMessage = 'timed out';
+                    break;
+                default:
+                    break;
+            }
 
-    //         console.log(`Error occurred. Error code: ${errorMessage}`);
-    //     });
-    // }
+            console.log(`Error occurred. Error code: ${errorMessage}`);
+        });
+    }
 
     app.urlB64ToUint8Array = (base64String) => {
         const padding = '='.repeat((4 - base64String.length % 4) % 4);
@@ -111,7 +111,7 @@
     }
 
     // 注册通知
-    // app.notification = (registration) => {
+    app.notification = (registration) => {
         /*
         Notification.permission
         "default"
@@ -125,46 +125,46 @@
 
 
         // 获取用户订阅状态
-        // registration.pushManager.getSubscription().then(subscription => {
-        //     // "subscription"为空，表示用户还没有订阅此网站的通知
-        //     if (subscription === null) {
-        //         console.log('User is NOT subscribed.');
+        registration.pushManager.getSubscription().then(subscription => {
+            // "subscription"为空，表示用户还没有订阅此网站的通知
+            if (subscription === null) {
+                console.log('User is NOT subscribed.');
 
-        //         // 解码 https://web-push-codelab.glitch.me/
-        //         const applicationServerKey = app.urlB64ToUint8Array(app.applicationServerPublicKey);
-        //         // 订阅
-        //         registration.pushManager.subscribe({
-        //             userVisibleOnly: true,
-        //             applicationServerKey: applicationServerKey
-        //         })
-        //         .then(subscription => {
-        //             console.log('User is subscribed:', subscription);
+                // 解码 https://web-push-codelab.glitch.me/
+                const applicationServerKey = app.urlB64ToUint8Array(app.applicationServerPublicKey);
+                // 订阅
+                registration.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: applicationServerKey
+                })
+                .then(subscription => {
+                    console.log('User is subscribed:', subscription);
 
-        //             // 实际会将此json发送给后端，测试时也用，这个值每次都会有变化
-        //             let subscription_json = JSON.stringify(subscription);
-        //             console.log(subscription_json);
-        //         })
-        //         .catch(err => {
-        //             // 用户拒绝订阅通知
-        //             // err = DOMException: Registration failed - permission denied
-        //             console.log('Failed to subscribe the user: ', err);
-        //         });
-        //     } else {
-        //         // "subscription"不为空，用户订阅了此网站
-        //         /**
-        //             {
-        //               "endpoint": "https://fcm.googleapis.com/fcm/send/feF6jNioNGM:APA91bGyYsIllhaiixGFVGKE0mOW290UZEmPNHnjfRcmr9dQeQYKScxIHJWV6cXgtDOASZK46atOf7hop1YB9T9EADeHl_OxpoZykj3KGtyhf8qikLrYGaC7ob89dgdotEo4G2yw9UMd",
-        //               "expirationTime": null,
-        //               "keys": {
-        //                 "p256dh": "BI08L7Cft99rUwCGRq0P8DKQlzSETE4BIohzlwCa96-0sebDk4TGAqQGtGeJ4uKNW32i6NLyzYWHcNolhZUrC48=",
-        //                 "auth": "vF5wFnZPMoDLfpuAN3o2UQ=="
-        //               }
-        //             }
-        //         **/
-        //         console.log('User IS subscribed.');
-        //     }
-        // });
-    // }
+                    // 实际会将此json发送给后端，测试时也用，这个值每次都会有变化
+                    let subscription_json = JSON.stringify(subscription);
+                    console.log(subscription_json);
+                })
+                .catch(err => {
+                    // 用户拒绝订阅通知
+                    // err = DOMException: Registration failed - permission denied
+                    console.log('Failed to subscribe the user: ', err);
+                });
+            } else {
+                // "subscription"不为空，用户订阅了此网站
+                /**
+                    {
+                      "endpoint": "https://fcm.googleapis.com/fcm/send/feF6jNioNGM:APA91bGyYsIllhaiixGFVGKE0mOW290UZEmPNHnjfRcmr9dQeQYKScxIHJWV6cXgtDOASZK46atOf7hop1YB9T9EADeHl_OxpoZykj3KGtyhf8qikLrYGaC7ob89dgdotEo4G2yw9UMd",
+                      "expirationTime": null,
+                      "keys": {
+                        "p256dh": "BI08L7Cft99rUwCGRq0P8DKQlzSETE4BIohzlwCa96-0sebDk4TGAqQGtGeJ4uKNW32i6NLyzYWHcNolhZUrC48=",
+                        "auth": "vF5wFnZPMoDLfpuAN3o2UQ=="
+                      }
+                    }
+                **/
+                console.log('User IS subscribed.');
+            }
+        });
+    }
 
     /**********************************************
     *
@@ -230,14 +230,14 @@
         loading.style.display = 'none';
         // body.style.padding = '20px';
 
-        // GeoLocation
-        // if (navigator.geolocation) {    // 判断当前浏览器是否支持定位服务
-        //     console.log('Geolocation is supported!');
-        //
-        //     app.geolocation();
-        // } else {
-        //     console.log('Geolocation is not supported for this Browser/OS.');
-        // }
+        GeoLocation
+        if (navigator.geolocation) {    // 判断当前浏览器是否支持定位服务
+            console.log('Geolocation is supported!');
+
+            app.geolocation();
+        } else {
+            console.log('Geolocation is not supported for this Browser/OS.');
+        }
     });
 
     // 注册service-worker
@@ -267,9 +267,9 @@
                     }
                 }
 
-                // if ('PushManager' in window) {  // 订阅通知
-                //     app.notification(registration);
-                // }
+                if ('PushManager' in window) {  // 订阅通知
+                    app.notification(registration);
+                }
             })
             .catch(err => {
                 console.log('Service Worker registration failed: ', err);

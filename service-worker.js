@@ -1,5 +1,5 @@
-var CACHE_VERSION = "V1.1.0";
-var CACHE_NAME = CACHE_VERSION + ":sw-cache::";
+// var CACHE_VERSION = "V1.1.0";
+// var CACHE_NAME = CACHE_VERSION + ":sw-cache::";
 var URL_TO_CACHE = [
     "/",
     "/offline.html",
@@ -25,7 +25,7 @@ var URL_TO_CACHE = [
 // 安装事件
 self.addEventListener('install', function(event) {
     event.waitUntil(
-        caches.open(CACHE_NAME).then(function(cache) {
+        caches.open("aass").then(function(cache) {
             return cache.addAll(URL_TO_CACHE);
         })
     );

@@ -242,39 +242,50 @@
 
     // 注册service-worker
     if ('serviceWorker' in navigator) {
-        window.addEventListener('load', (e) => {
-            navigator.serviceWorker.register('/sw.js').then(registration => {
-                console.log('Service Worker registration success with scope: ', registration.scope);
-
-                // 有新的更新
-                registration.onupdatefound = () => {
-                    const installWorker = registration.installing;
-                    installWorker.onstatechange = () => {
-                        switch (installWorker.state) {
-                            case 'installed':
-                                if (navigator.serviceWorker.controller) {
-                                    console.log('new update available');
-                                    // resolve(true);
-                                } else {
-                                    console.log('no update available');
-                                    // resolve(false);
-                                }
-
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }
-
-                // if ('PushManager' in window) {  // 订阅通知
-                //     app.notification(registration);
-                // }
-            })
-            .catch(err => {
-                console.log('Service Worker registration failed: ', err);
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('/sw.js').then(function(registration) {
+                // Registration was successful
+                console.log('ServiceWorker registration successful with scope: ', registration.scope);
+            }, function(err) {
+                // registration failed :(
+                console.log('ServiceWorker registration failed: ', err);
             });
         });
+
+
+        // window.addEventListener('load', (e) => {
+        //     navigator.serviceWorker.register('/sw.js').then(registration => {
+        //         console.log('Service Worker registration success with scope: ', registration.scope);
+
+        //         // 有新的更新
+        //         registration.onupdatefound = () => {
+        //             const installWorker = registration.installing;
+        //             installWorker.onstatechange = () => {
+        //                 switch (installWorker.state) {
+        //                     case 'installed':
+        //                         if (navigator.serviceWorker.controller) {
+        //                             console.log('new update available');
+        //                             // resolve(true);
+        //                         } else {
+        //                             console.log('no update available');
+        //                             // resolve(false);
+        //                         }
+
+        //                         break;
+        //                     default:
+        //                         break;
+        //                 }
+        //             }
+        //         }
+
+        //         // if ('PushManager' in window) {  // 订阅通知
+        //         //     app.notification(registration);
+        //         // }
+        //     })
+        //     .catch(err => {
+        //         console.log('Service Worker registration failed: ', err);
+        //     });
+        // });
     }
 
 })();

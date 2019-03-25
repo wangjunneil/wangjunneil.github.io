@@ -112,7 +112,6 @@ var URL_TO_CACHE = [
     "/assets/main.js",
     "/assets/hacker.png",
     "/assets/5-13050G31J7.gif",
-    "/assets/clear.png",
     "/assets/icons/icon-144x144.png",
     "/assets/favicon.ico",
     "/assets/clear.png"

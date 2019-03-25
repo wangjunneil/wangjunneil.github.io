@@ -1,9 +1,7 @@
 function onInstall(e) {
     e.waitUntil(
         caches.open(CACHE_NAME).then(function (cache) {
-            return cache.addAll(URL_TO_CACHE).then(function () {
-                console.log("SERVICE WORKER: Install completed.")
-            })
+            return cache.addAll(URL_TO_CACHE);
         })
     );
 }

@@ -230,7 +230,7 @@
         loading.style.display = 'none';
         // body.style.padding = '20px';
 
-        GeoLocation
+        // GeoLocation
         if (navigator.geolocation) {    // 判断当前浏览器是否支持定位服务
             console.log('Geolocation is supported!');
 

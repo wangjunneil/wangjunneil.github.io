@@ -118,6 +118,6 @@ var URL_TO_CACHE = [
 // Service Worker 事件注册
 self.addEventListener("install", onInstall),
 self.addEventListener("activate", onActivate),
-self.addEventListener("fetch", onFetch),
+self.addEventListener("fetch", onFetch)
 // self.addEventListener('push', onPush),
 // self.addEventListener('notificationclick', onNotificationClick);

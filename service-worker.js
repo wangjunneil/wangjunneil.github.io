@@ -7,7 +7,7 @@ var URL_TO_CACHE = [
     '/assets/jquery-1.9.1.min.js',
     '/assets/core.css',
     '/assets/js/nav.js',
-    '/assets/js/zepto.min.js'
+    '/assets/js/zepto.min.js',
     '/assets/header.png',
     '/assets/offline.gif',
     '/assets/search.png',

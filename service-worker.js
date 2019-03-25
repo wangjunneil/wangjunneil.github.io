@@ -3,7 +3,7 @@ function onInstall(e) {
         return e.addAll(URL_TO_CACHE).then(() => {
             console.log("SERVICE WORKER: Install completed.")
         })
-    }))
+    }));
 }
 
 function onActivate(e) {

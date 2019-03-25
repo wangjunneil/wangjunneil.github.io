@@ -7,33 +7,21 @@ var URL_TO_CACHE = [
     '/assets/jquery-1.9.1.min.js',
     '/assets/core.css',
     '/assets/js/nav.js',
-    '/assets/js/zepto.min.js'
+    '/assets/js/zepto.min.js',
+    '/assets/header.png',
+    '/assets/offline.gif',
+    '/assets/search.png',
+    '/assets/main.js',
+    '/assets/hacker.png',
+    '/assets/5-13050G31J7.gif',
+    '/assets/clear.png',
+    '/assets/icons/icon-144x144.png',
+    '/assets/favicon.ico',
+    '/assets/clear.png'
 ];
 
-// var URL_TO_CACHE = [
-//     '/',
-//     '/offline.html',
-//     '/manifest.json',
-//     '/assets/jquery-1.9.1.min.js',
-//     '/assets/core.css',
-//     '/assets/js/nav.js',
-//     '/assets/js/zepto.min.js',
-//     '/assets/header.png',
-//     '/assets/offline.gif',
-//     '/assets/search.png',
-//     '/assets/main.js',
-//     '/assets/hacker.png',
-//     '/assets/5-13050G31J7.gif',
-//     '/assets/clear.png',
-//     '/assets/icons/icon-144x144.png',
-//     '/assets/favicon.ico',
-//     '/assets/clear.png'
-// ];
-
 function onInstall(event) {
-    event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(function(cache) {
+    event.waitUntil(caches.open(CACHE_NAME).then(function(cache) {
         console.log('Opened cache');
         return cache.addAll(URL_TO_CACHE);
       })

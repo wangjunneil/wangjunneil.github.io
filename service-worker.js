@@ -26,7 +26,7 @@ var URL_TO_CACHE = [
 self.addEventListener('install', function(event) {
     event.waitUntil(
         caches.open(URL_TO_CACHE).then(function(cache) {
-            return cache.addAll(urlsToCache);
+            return cache.addAll(URL_TO_CACHE);
         })
     );
 });

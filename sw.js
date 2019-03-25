@@ -1,6 +1,13 @@
-function onInstall(event) {
-    console.log('[ServiceWorker] Install')
-}
+self.addEventListener('install', function(event) {
+  // Perform install steps
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(function(cache) {
+        console.log('Opened cache');
+        return cache.addAll(URL_TO_CACHE);
+      })
+  );
+});
 
 function onActivate(event) {
     console.log('[ServiceWorker] Activate')
@@ -32,6 +39,5 @@ var URL_TO_CACHE = [
     "/assets/clear.png"
 ];
 
-self.addEventListener("install", onInstall),
 self.addEventListener("activate", onActivate),
 self.addEventListener("fetch", onFetch);

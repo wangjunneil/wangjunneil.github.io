@@ -1,4 +1,4 @@
-function onInstall(e) {
+function onInstall(event) {
     event.waitUntil(
     caches.open(CACHE_NAME)
       .then(function(cache) {

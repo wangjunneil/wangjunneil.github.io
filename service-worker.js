@@ -25,8 +25,8 @@ var URL_TO_CACHE = [
 // 安装事件
 self.addEventListener('install', event => {
     event.waitUntil(
-        caches.open(CACHE_NAME).then(function (e) {
-            return event.addAll(URL_TO_CACHE).then(() => {
+        caches.open(CACHE_NAME).then((e) => {
+            return e.addAll(URL_TO_CACHE).then(() => {
                 console.log("SERVICE WORKER: Install completed.")
             })
         })

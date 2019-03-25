@@ -25,7 +25,7 @@ var URL_TO_CACHE = [
 // 安装事件
 self.addEventListener('install', function(event) {
     event.waitUntil(
-        caches.open(URL_TO_CACHE).then(function(cache) {
+        caches.open(CACHE_NAME).then(function(cache) {
             return cache.addAll(URL_TO_CACHE);
         })
     );

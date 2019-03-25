@@ -60,7 +60,7 @@ function onPush(event) {
     const options = {
         // body: push_message,
         body: 'Did you make a $1,000,000 purchase at Dr. Evil...',
-        icon: '/assets/hacker.jpg',
+        icon: '/assets/hacker.png',
         vibrate: [200, 100, 200, 100, 200, 100, 400],
         tag: "request",
         badge: '/assets/push/badge.png',
@@ -108,13 +108,16 @@ var URL_TO_CACHE = [
     "/assets/offline.gif",
     "/assets/search.png",
     "/assets/main.js",
-    "/assets/hacker.jpg",
+    "/assets/hacker.png",
     "/assets/5-13050G31J7.gif",
+    "/assets/clear.png",
+    "/assets/icons/icon-144x144.png",
+    "/assets/favicon.ico",
     "/assets/clear.png"
 ];
 // Service Worker 事件注册
 self.addEventListener("install", onInstall),
 self.addEventListener("activate", onActivate),
 self.addEventListener("fetch", onFetch),
-self.addEventListener('push', onPush),
-self.addEventListener('notificationclick', onNotificationClick);
+// self.addEventListener('push', onPush),
+// self.addEventListener('notificationclick', onNotificationClick);

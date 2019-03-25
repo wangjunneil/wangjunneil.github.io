@@ -231,12 +231,12 @@
         // body.style.padding = '20px';
 
         // GeoLocation
-        if (navigator.geolocation) {    // 判断当前浏览器是否支持定位服务
-            console.log('Geolocation is supported!');
-
-            app.geolocation();
-        } else {
-            console.log('Geolocation is not supported for this Browser/OS.');
+        // if (navigator.geolocation) {    // 判断当前浏览器是否支持定位服务
+        //     console.log('Geolocation is supported!');
+        //
+        //     app.geolocation();
+        // } else {
+        //     console.log('Geolocation is not supported for this Browser/OS.');
         }
     });
 

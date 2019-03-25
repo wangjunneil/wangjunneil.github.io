@@ -21,12 +21,22 @@ var URL_TO_CACHE = [
 ];
 
 self.addEventListener('install', function(event) {
-  event.waitUntil(caches.open(CACHE_NAME).then(function(cache) {
-        console.log("SERVICE WORKER: Install cache.")
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(function(cache) {
+        console.log('Opened cache');
         return cache.addAll(URL_TO_CACHE);
       })
   );
 });
+
+// self.addEventListener('install', function(event) {
+//   event.waitUntil(caches.open(CACHE_NAME).then(function(cache) {
+//         console.log("SERVICE WORKER: Install cache.")
+//         return cache.addAll(URL_TO_CACHE);
+//       })
+//   );
+// });
 
 // self.addEventListener("activate", function(e) {
 //     console.log("[Serviceworker]", "Activating!", e);

@@ -9,37 +9,37 @@
     }
 
     // 定位用户位置
-    app.geolocation = () => {
-        navigator.geolocation.getCurrentPosition((position) => {
-            let latitude = position.coords.latitude;    // 维度
-            let longitude = position.coords.longitude;  // 经度
+    // app.geolocation = () => {
+    //     navigator.geolocation.getCurrentPosition((position) => {
+    //         let latitude = position.coords.latitude;    // 维度
+    //         let longitude = position.coords.longitude;  // 经度
 
-            console.log(`current position: ${latitude}, ${longitude}`);
+    //         console.log(`current position: ${latitude}, ${longitude}`);
 
-            // http://lbsyun.baidu.com/index.php?title=webapi/guide/webservice-geocoding-abroad
-        }, (error) => { // 错误处理
-            let errorMessage;
+    //         // http://lbsyun.baidu.com/index.php?title=webapi/guide/webservice-geocoding-abroad
+    //     }, (error) => { // 错误处理
+    //         let errorMessage;
 
-            switch (error.code) {
-                case 0:
-                    errorMessage = 'unknown error';
-                    break;
-                case 1:
-                    errorMessage = 'permission denied';
-                    break;
-                case 2:
-                    errorMessage = 'position unavailable';
-                    break;
-                case 3:
-                    errorMessage = 'timed out';
-                    break;
-                default:
-                    break;
-            }
+    //         switch (error.code) {
+    //             case 0:
+    //                 errorMessage = 'unknown error';
+    //                 break;
+    //             case 1:
+    //                 errorMessage = 'permission denied';
+    //                 break;
+    //             case 2:
+    //                 errorMessage = 'position unavailable';
+    //                 break;
+    //             case 3:
+    //                 errorMessage = 'timed out';
+    //                 break;
+    //             default:
+    //                 break;
+    //         }
 
-            console.log(`Error occurred. Error code: ${errorMessage}`);
-        });
-    }
+    //         console.log(`Error occurred. Error code: ${errorMessage}`);
+    //     });
+    // }
 
     app.urlB64ToUint8Array = (base64String) => {
         const padding = '='.repeat((4 - base64String.length % 4) % 4);

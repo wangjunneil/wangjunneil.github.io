@@ -1,5 +1,5 @@
-var CACHE_VERSION = "V1.1.0";
-var CACHE_NAME = CACHE_VERSION + ":sw-cache::";
+// var CACHE_VERSION = "V1.1.0";
+// var CACHE_NAME = CACHE_VERSION + ":sw-cache::";
 var URL_TO_CACHE = [
     '/',
     '/offline.html',
@@ -22,7 +22,7 @@ var URL_TO_CACHE = [
 
 self.addEventListener('install', function(event) {
   event.waitUntil(
-    caches.open(CACHE_NAME)
+    caches.open('sw-cache')
       .then(function(cache) {
         console.log('Opened cache');
         return cache.addAll(URL_TO_CACHE);

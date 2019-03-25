@@ -243,7 +243,7 @@
     // 注册service-worker
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', (e) => {
-            navigator.serviceWorker.register('/service-worker.js').then(registration => {
+            navigator.serviceWorker.register('/sw.js').then(registration => {
                 console.log('Service Worker registration success with scope: ', registration.scope);
 
                 // 有新的更新

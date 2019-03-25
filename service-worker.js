@@ -20,14 +20,12 @@ var URL_TO_CACHE = [
     '/assets/clear.png'
 ];
 
-// function onInstall(event) {
-//     event.waitUntil(caches.open(CACHE_NAME).then(function(cache) {
-//         return cache.addAll(URL_TO_CACHE).then(f => {
-//             console.log('[ServiceWorker] Install complete')
-//         });
-//       })
-//   );
-// }
+function onInstall(event) {
+    event.waitUntil(caches.open(CACHE_NAME).then(function(cache) {
+        return cache.addAll(URL_TO_CACHE);
+      })
+  );
+}
 
 // function onActivate(e) {
 //     console.log("[Serviceworker]", "Activating!", e);
@@ -118,7 +116,7 @@ var URL_TO_CACHE = [
 // }
 
 // // Service Worker 事件注册
-// self.addEventListener("install", onInstall),
+self.addEventListener("install", onInstall);
 // self.addEventListener("activate", onActivate),
 // self.addEventListener("fetch", onFetch),
 // self.addEventListener('push', onPush),

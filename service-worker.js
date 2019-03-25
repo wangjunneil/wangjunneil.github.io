@@ -72,54 +72,54 @@ function onFetch(e) {
 }
 
 // 接收推送消息
-function onPush(event) {
-    let push_message = event.data.text();
+// function onPush(event) {
+//     let push_message = event.data.text();
 
-    const title = "New Message from Vinny's Blog";
-    // const actions = [
-    //     { action: 'like', title: '👍Like' },
-    //     { action: 'reply', title: '⤻ Reply' }
-    // ];
-    const options = {
-        // body: push_message,
-        body: 'Did you make a $1,000,000 purchase at Dr. Evil...',
-        icon: '/assets/hacker.png',
-        vibrate: [200, 100, 200, 100, 200, 100, 400],
-        tag: "request",
-        badge: '/assets/push/badge.png',
-        actions: [
-            { "action": "yes", "title": "Yes", "icon": "images/yes.png" },
-            { "action": "no", "title": "No", "icon": "images/no.png" }
-        ]
-    };
+//     const title = "New Message from Vinny's Blog";
+//     // const actions = [
+//     //     { action: 'like', title: '👍Like' },
+//     //     { action: 'reply', title: '⤻ Reply' }
+//     // ];
+//     const options = {
+//         // body: push_message,
+//         body: 'Did you make a $1,000,000 purchase at Dr. Evil...',
+//         icon: '/assets/hacker.png',
+//         vibrate: [200, 100, 200, 100, 200, 100, 400],
+//         tag: "request",
+//         badge: '/assets/push/badge.png',
+//         actions: [
+//             { "action": "yes", "title": "Yes", "icon": "images/yes.png" },
+//             { "action": "no", "title": "No", "icon": "images/no.png" }
+//         ]
+//     };
 
-    event.waitUntil(self.registration.showNotification(title, options));
-}
+//     event.waitUntil(self.registration.showNotification(title, options));
+// }
 
-// 通知点击事件
-function onNotificationClick(event) {
-    console.log('[Service Worker] Notification click Received.');
+// // 通知点击事件
+// function onNotificationClick(event) {
+//     console.log('[Service Worker] Notification click Received.');
 
-    // event.notification.close();
+//     // event.notification.close();
 
-    // event.waitUntil(
-    //     clients.openWindow('https://developers.google.com/web/')
-    // );
+//     // event.waitUntil(
+//     //     clients.openWindow('https://developers.google.com/web/')
+//     // );
 
-    var messageId = event.notification.data;
+//     var messageId = event.notification.data;
 
-    event.notification.close();
+//     event.notification.close();
 
-    if (event.action == 'like') {
-        // TODO
-    } else if (event.action == 'reply') {
-        // TODO
-    }
-}
+//     if (event.action == 'like') {
+//         // TODO
+//     } else if (event.action == 'reply') {
+//         // TODO
+//     }
+// }
 
 // Service Worker 事件注册
 self.addEventListener("install", onInstall),
 self.addEventListener("activate", onActivate),
-self.addEventListener("fetch", onFetch),
-self.addEventListener('push', onPush),
-self.addEventListener('notificationclick', onNotificationClick);
+self.addEventListener("fetch", onFetch);
+// self.addEventListener('push', onPush),
+// self.addEventListener('notificationclick', onNotificationClick);

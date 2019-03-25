@@ -13,9 +13,7 @@
         navigator.geolocation.getCurrentPosition((position) => {
             let latitude = position.coords.latitude;    // 维度
             let longitude = position.coords.longitude;  // 经度
-
             console.log(`current position: ${latitude}, ${longitude}`);
-
             // http://lbsyun.baidu.com/index.php?title=webapi/guide/webservice-geocoding-abroad
         }, (error) => { // 错误处理
             let errorMessage;

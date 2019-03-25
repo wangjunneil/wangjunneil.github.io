@@ -1,11 +1,5 @@
 function onInstall(event) {
-    event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(function(cache) {
-        console.log('Opened cache');
-        return cache.addAll(URL_TO_CACHE);
-      })
-  );
+    console.log('[ServiceWorker] Install')
 }
 
 function onActivate(event) {

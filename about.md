@@ -5,7 +5,7 @@ title: About Me
 
 **hi.**
 
-**Welcome Vinny's Blog**
+**Welcome WangJun's Blog**
 
 ---
 

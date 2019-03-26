@@ -96,7 +96,7 @@ function onNotificationClick(event) {
     }
 }
 
-var CACHE_VERSION = "V1.1.11";
+var CACHE_VERSION = "V1.1.12";
 var CACHE_NAME = CACHE_VERSION + ":sw-cache::";
 var URL_TO_CACHE = [
     "/",

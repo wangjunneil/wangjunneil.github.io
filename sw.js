@@ -1,6 +1,6 @@
 function onInstall(event) {
     self.skipWaiting();
-    
+
     event.waitUntil(caches.open(CACHE_NAME).then(function(cache) {
         console.log('Opened cache');
         return cache.addAll(URL_TO_CACHE);
@@ -96,7 +96,7 @@ function onNotificationClick(event) {
     }
 }
 
-var CACHE_VERSION = "V1.1.7";
+var CACHE_VERSION = "V1.1.8";
 
 var CACHE_NAME = CACHE_VERSION + ":sw-cache::";
 var URL_TO_CACHE = [

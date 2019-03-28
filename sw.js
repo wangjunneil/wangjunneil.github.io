@@ -1,9 +1,11 @@
 function onInstall(event) {
-    self.skipWaiting();
+    // self.skipWaiting();
 
     event.waitUntil(caches.open(CACHE_NAME).then(function(cache) {
         console.log('Opened cache');
         return cache.addAll(URL_TO_CACHE);
+      }).then(function() {
+        return self.skipWaiting();
       })
   );
 }

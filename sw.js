@@ -98,8 +98,14 @@ function onNotificationClick(event) {
     }
 }
 
-var CACHE_VERSION = "V1.1.15";
+function onMessage(event) {
+    if (event.data.action === 'skipWaiting') {
+        self.skipWaiting();
+    }
+}
 
+
+var CACHE_VERSION = "V1.1.18";
 var CACHE_NAME = CACHE_VERSION + ":sw-cache::";
 var URL_TO_CACHE = [
     "/",
@@ -125,5 +131,6 @@ self.addEventListener("install", onInstall),
 self.addEventListener("activate", onActivate),
 self.addEventListener("fetch", onFetch),
 self.addEventListener('push', onPush),
+self.addEventListener('message', onMessage),
 self.addEventListener('notificationclick', onNotificationClick);
 

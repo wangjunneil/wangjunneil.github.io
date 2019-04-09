@@ -17,7 +17,6 @@
             // http://lbsyun.baidu.com/index.php?title=webapi/guide/webservice-geocoding-abroad
         }, (error) => { // 错误处理
             let errorMessage;
-
             switch (error.code) {
                 case 0:
                     errorMessage = 'unknown error';
@@ -207,8 +206,6 @@
         }
     });
 
-
-
     // 移动端头固定
     window.addEventListener('scroll', () => {
         let header_nav = document.querySelector('.header-nav');
@@ -220,19 +217,15 @@
         }
     });
 
-    // 加载完关闭loading
     // 获取定位
     window.addEventListener('load', () => {
         let loading = document.querySelector('.loading');
-        // let body = document.querySelector('body');
         loading.style.display = 'none';
-        // body.style.padding = '20px';
 
         // GeoLocation
         if (navigator.geolocation) {    // 判断当前浏览器是否支持定位服务
             console.log('Geolocation is supported!');
-
-            app.geolocation();
+            // app.geolocation();
         } else {
             console.log('Geolocation is not supported for this Browser/OS.');
         }
@@ -242,7 +235,6 @@
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', function() {
             navigator.serviceWorker.register('/sw.js', { scope: '/', updateViaCache: 'none'}).then(function(registration) {
-                // Registration was successful
                 console.log('ServiceWorker registration successful with scope: ', registration.scope);
 
                 registration.onupdatefound = () => {
@@ -252,21 +244,30 @@
                             case 'installed':
                                 if (navigator.serviceWorker.controller) {
                                     console.log('new update available');
-                                    // resolve(true);
+                                    document.querySelector('#notification').style.display = 'inline';
                                 } else {
                                     console.log('no update available');
-                                    // resolve(false);
                                 }
-
                                 break;
                             default:
                                 break;
                         }
                     }
+
+                    document.querySelector('#reload').addEventListener('click', function() {
+                        installWorker.postMessage({action: 'skipWaiting'});
+                    });
                 }
+
             }, function(err) {
                 // registration failed :(
                 console.log('ServiceWorker registration failed: ', err);
+            });
+
+            navigator.serviceWorker.addEventListener('controllerchange', function() {
+                if (refreshing) return;
+                window.location.reload();
+                refreshing = true;
             });
         });
 

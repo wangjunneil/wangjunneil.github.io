@@ -930,3 +930,24 @@ section {
   }
 
 }
+
+// 更新通知拦
+#notification {
+  display: none;
+  height: 4%;
+  width: 90%;
+  bottom: 30px;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  background: #2d2d2d;
+  border-radius: 5px;
+  color: #FFF;
+  text-align: center;
+  font-weight: bold;
+  padding: 5px;
+  #reload {
+    color: #9e9eff;
+    cursor: pointer;
+  }
+}

@@ -80,6 +80,7 @@ span[data-note] {
     margin: 0px auto 0em;
     text-align: center;
     font-family: "Cutive Mono",monospace;
+    // font-weight: bold;
     font-size: 1.0em;
     border-bottom: 2px solid rgb(0, 0, 0);
     .page-link{
@@ -927,27 +928,5 @@ section {
   }
   .sticky + .content {
     padding-top: 102px;
-  }
-
-}
-
-// 更新通知拦
-#notification {
-  display: none;
-  height: 4%;
-  width: 90%;
-  bottom: 30px;
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%,-50%);
-  background: #2d2d2d;
-  border-radius: 5px;
-  color: #FFF;
-  text-align: center;
-  font-weight: bold;
-  padding: 5px;
-  #reload {
-    color: #9e9eff;
-    cursor: pointer;
   }
 }

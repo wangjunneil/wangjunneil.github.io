@@ -223,18 +223,18 @@
         loading.style.display = 'none';
 
         // GeoLocation
-        if (navigator.geolocation) {    // 判断当前浏览器是否支持定位服务
-            console.log('Geolocation is supported!');
+        // if (navigator.geolocation) {
+        //     console.log('Geolocation is supported!');
             // app.geolocation();
-        } else {
-            console.log('Geolocation is not supported for this Browser/OS.');
-        }
+        // } else {
+        //    console.log('Geolocation is not supported for this Browser/OS.');
+        // }
     });
 
     // 注册service-worker
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', function() {
-            navigator.serviceWorker.register('/sw.js', { scope: '/', updateViaCache: 'none'}).then(function(registration) {
+            navigator.serviceWorker.register('/sw.js?t=' + Math.random(), { scope: '/', updateViaCache: 'none'}).then(function(registration) {
                 console.log('ServiceWorker registration successful with scope: ', registration.scope);
 
                 registration.onupdatefound = () => {
@@ -244,10 +244,27 @@
                             case 'installed':
                                 if (navigator.serviceWorker.controller) {
                                     console.log('new update available');
-                                    document.querySelector('#notification').style.display = 'inline';
+                                    // document.querySelector('#notification').style.display = 'inline';
                                 } else {
                                     console.log('no update available');
                                 }
+                                break;
+                            case 'waiting':
+                                /* 这假设有一个id ='skip-waiting-button'的按钮，用户应该点击该按钮以立即激活新的SW */
+                                // var button = document.querySelector('#skip-waiting-button');
+                                // button.addEventListener('click', function() {
+                                //     newSW.postMessage('skipWaiting');
+                                // });
+                                // button.style.display = 'inline';
+                                // In your service worker:
+                                // self.addEventListener('message', event => {
+                                //     if (event.data === 'skipWaiting') {
+                                //         self.skipWaiting();
+                                //     }
+                                // });
+                                break;
+                            case 'redundant':
+                                console.error('The installing service worker became redundant.');
                                 break;
                             default:
                                 break;
@@ -265,12 +282,11 @@
             });
 
             navigator.serviceWorker.addEventListener('controllerchange', function() {
-                if (refreshing) return;
-                window.location.reload();
-                refreshing = true;
+                // if (refreshing) return;
+                // window.location.reload();
+                // refreshing = true;
             });
         });
-
 
         // window.addEventListener('load', (e) => {
         //     navigator.serviceWorker.register('/sw.js').then(registration => {

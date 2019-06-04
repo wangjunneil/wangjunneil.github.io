@@ -6,7 +6,22 @@
     <div class="popup" id="popup">
       <div class="popup-inner">
         <div class="popup__text">
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ex velit, viverra non vulputate vitae, blandit vitae nisl. Nullam fermentum orci et erat viverra bibendum. Aliquam sed varius nibh, vitae mattis purus. Mauris elementum sapien non ullamcorper vulputate. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed eget felis sit amet eros viverra pulvinar.</p>
+          <div class="tabs">
+            <div class="tab-2">
+              <label for="tab2-1">支付宝</label>
+              <input id="tab2-1" name="tabs-two" type="radio" checked="checked">
+              <div>
+                <img src="{{ site.baseurl }}/assets/img/qrcode/alipay.png" alt="alipay"/>
+              </div>
+            </div>
+            <div class="tab-2">
+              <label for="tab2-2">微信</label>
+              <input id="tab2-2" name="tabs-two" type="radio">
+              <div>
+                <img src="{{ site.baseurl }}/assets/img/qrcode/wechat.png" alt="wechat"/>
+              </div>
+            </div>
+          </div>
         </div>
         <a class="popup__close" href="#">X</a>
       </div>

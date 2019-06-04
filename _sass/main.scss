@@ -1,5 +1,5 @@
 body {
-  background:url(/assets/5-13050G31J7.gif) repeat 5px 5px;
+  background:url(/assets/img/site/bg.gif) repeat 5px 5px;
   font: 400 12px/1.2 "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #000;
   letter-spacing: 0.2px;
@@ -203,7 +203,7 @@ position: absolute;
 width: 16px;
 height: 16px;
 margin: 6px 0 0 -20px;
-background: url(/assets/clear.png);
+background: url(/assets/img/site/clear.png);
 border-bottom: 0px;
 cursor:pointer;
 
@@ -338,7 +338,6 @@ cursor:pointer;
   // -webkit-animation-name: bounce;
   .hack_pic { display:none; }
   a {
-    // background: #ddd url("gravatar_wrapper.png");
     color: #000;
     text-decoration: none;
     font-weight: 700;
@@ -862,7 +861,7 @@ section {
       width: 16px;
       height: 16px;
       margin: 6px 0 0 5px;
-      background: url(/assets/search.png);
+      background: url(/assets/img/site/search.png);
       border-bottom: 0px;
     }
     input[type="text"] {

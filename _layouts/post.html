@@ -2,14 +2,6 @@
 layout: default
 ---
 
-<noscript>
-	<style>
-		article .footnotes {
-			display: block;
-		}
-	</style>
-</noscript>
-
 <article>
     <!-- 目录导航，在nav,js中进行渲染 -->
     <div class="w-catalog"></div>
@@ -23,10 +15,9 @@ layout: default
 	<div class="divider"></div>
 
 	{{ content }}
+	{% include cc.html %}
 
-    {% include cc.html %}
-
-    <div class="divider"></div>
+	<div class="divider"></div>
 
 </article>
 

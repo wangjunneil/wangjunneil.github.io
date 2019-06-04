@@ -64,7 +64,7 @@ function onPush(event) {
     const options = {
         // body: push_message,
         body: 'Did you make a $1,000,000 purchase at Dr. Evil...',
-        icon: '/assets/hacker.png',
+        icon: '/assets/img/site/hacker.png',
         vibrate: [200, 100, 200, 100, 200, 100, 400],
         tag: "request",
         badge: '/assets/push/badge.png',
@@ -110,19 +110,19 @@ var URL_TO_CACHE = [
     "/",
     "/offline.html",
     "/manifest.json",
-    "/assets/jquery-1.9.1.min.js",
+    "/assets/js/jquery-1.9.1.min.js",
     "/assets/core.css",
     "/assets/js/nav.js",
     "/assets/js/zepto.min.js",
-    "/assets/header.png",
-    "/assets/offline.gif",
-    "/assets/search.png",
-    "/assets/main.js",
-    "/assets/hacker.png",
-    "/assets/5-13050G31J7.gif",
+    "/assets/img/site/header.png",
+    "/assets/img/site/offline.gif",
+    "/assets/img/site/search.png",
+    "/assets/js/main.js",
+    "/assets/img/site/hacker.png",
+    "/assets/img/site/bg.gif",
     "/assets/icons/icon-144x144.png",
     "/assets/favicon.ico",
-    "/assets/clear.png"
+    "/assets/img/site/clear.png"
 ];
 
 // Service Worker 事件注册

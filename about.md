@@ -1,6 +1,6 @@
 ---
 layout: page
-title: About Me - Simple is beautiful
+title: About Me - Simple is best
 ---
 
 ![aboutbg](//vinnycc.oss-cn-shanghai.aliyuncs.com/20190604/aboutbg.png)

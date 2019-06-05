@@ -4,8 +4,8 @@
         <title></title>  
         <description>王俊博客，软件改变世界！王俊博客是作者个人知识库、是记录历程回顾的笔记本、是经验教训的资源池， 旨在促进软件开发领域知识与创新的传播，为软件开发中提供帮助。更多是作者本人的经验积累。
 </description>  
-        <link>https://www.wangjun.dev</link>  
-        <atom:link href="https://www.wangjun.dev/feed.xml" rel="self" type="application/rss+xml" />  
+        <link>http://localhost:4000</link>  
+        <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />  
           
             <item>  
                <title>🔥 旅行必备 V2Ray 的高级使用方式</title>  
@@ -295,8 +295,8 @@
 &lt;/ul&gt;
 </description>  
                <pubDate>Thu, 06 Jun 2019 00:00:00 +0800</pubDate>  
-               <link>https://www.wangjun.dev/2019/06/v2ray-build/</link>  
-               <guid isPermaLink="true">https://www.wangjun.dev/2019/06/v2ray-build/</guid>  
+               <link>http://localhost:4000/2019/06/v2ray-build/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2019/06/v2ray-build/</guid>  
                </item>  
           
             <item>  
@@ -359,8 +359,8 @@
 
 </description>  
                <pubDate>Thu, 06 Jun 2019 00:00:00 +0800</pubDate>  
-               <link>https://www.wangjun.dev/2019/06/outline-build/</link>  
-               <guid isPermaLink="true">https://www.wangjun.dev/2019/06/outline-build/</guid>  
+               <link>http://localhost:4000/2019/06/outline-build/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2019/06/outline-build/</guid>  
                </item>  
           
             <item>  
@@ -448,8 +448,8 @@ tcp和udp都开通，其他默认，具体如下：&lt;/p&gt;
 &lt;p&gt;至此，所有操作已经完成，只需要在本地配置好连接即可国际旅游&lt;/p&gt;
 </description>  
                <pubDate>Wed, 05 Jun 2019 00:00:00 +0800</pubDate>  
-               <link>https://www.wangjun.dev/2019/06/ssr-build/</link>  
-               <guid isPermaLink="true">https://www.wangjun.dev/2019/06/ssr-build/</guid>  
+               <link>http://localhost:4000/2019/06/ssr-build/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2019/06/ssr-build/</guid>  
                </item>  
           
             <item>  
@@ -507,8 +507,8 @@ p.waitFor&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;p&q
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>  
                <pubDate>Wed, 05 Jun 2019 00:00:00 +0800</pubDate>  
-               <link>https://www.wangjun.dev/2019/06/reversh-shell-way/</link>  
-               <guid isPermaLink="true">https://www.wangjun.dev/2019/06/reversh-shell-way/</guid>  
+               <link>http://localhost:4000/2019/06/reversh-shell-way/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2019/06/reversh-shell-way/</guid>  
                </item>  
           
             <item>  
@@ -556,8 +556,8 @@ p.waitFor&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;p&q
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>  
                <pubDate>Wed, 05 Jun 2019 00:00:00 +0800</pubDate>  
-               <link>https://www.wangjun.dev/2019/06/hydra-brute-force/</link>  
-               <guid isPermaLink="true">https://www.wangjun.dev/2019/06/hydra-brute-force/</guid>  
+               <link>http://localhost:4000/2019/06/hydra-brute-force/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2019/06/hydra-brute-force/</guid>  
                </item>  
           
             <item>  
@@ -652,8 +652,8 @@ $ http-server -p 443 --ssl --cert ./localhost+2.pem --key ./localhost+2-key.pem
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>  
                <pubDate>Tue, 04 Jun 2019 00:00:00 +0800</pubDate>  
-               <link>https://www.wangjun.dev/2019/06/https-certificate/</link>  
-               <guid isPermaLink="true">https://www.wangjun.dev/2019/06/https-certificate/</guid>  
+               <link>http://localhost:4000/2019/06/https-certificate/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2019/06/https-certificate/</guid>  
                </item>  
           
             <item>  
@@ -759,8 +759,8 @@ $ http-server -p 443 --ssl --cert ./localhost+2.pem --key ./localhost+2-key.pem
 &lt;/ul&gt;
 </description>  
                <pubDate>Wed, 29 May 2019 00:00:00 +0800</pubDate>  
-               <link>https://www.wangjun.dev/2019/05/pwa-handle-install-prompt/</link>  
-               <guid isPermaLink="true">https://www.wangjun.dev/2019/05/pwa-handle-install-prompt/</guid>  
+               <link>http://localhost:4000/2019/05/pwa-handle-install-prompt/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2019/05/pwa-handle-install-prompt/</guid>  
                </item>  
           
             <item>  
@@ -1262,8 +1262,8 @@ $ http-server -p 443 --ssl --cert ./localhost+2.pem --key ./localhost+2-key.pem
 &lt;/ul&gt;
 </description>  
                <pubDate>Fri, 11 May 2018 00:00:00 +0800</pubDate>  
-               <link>https://www.wangjun.dev/2018/05/pwa-app/</link>  
-               <guid isPermaLink="true">https://www.wangjun.dev/2018/05/pwa-app/</guid>  
+               <link>http://localhost:4000/2018/05/pwa-app/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2018/05/pwa-app/</guid>  
                </item>  
           
             <item>  
@@ -1631,8 +1631,8 @@ require&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quo
 &lt;/blockquote&gt;
 </description>  
                <pubDate>Tue, 08 May 2018 00:00:00 +0800</pubDate>  
-               <link>https://www.wangjun.dev/2018/05/create-publish-nodejs-cli/</link>  
-               <guid isPermaLink="true">https://www.wangjun.dev/2018/05/create-publish-nodejs-cli/</guid>  
+               <link>http://localhost:4000/2018/05/create-publish-nodejs-cli/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2018/05/create-publish-nodejs-cli/</guid>  
                </item>  
           
             <item>  
@@ -1672,8 +1672,8 @@ require&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quo
 
 </description>  
                <pubDate>Mon, 07 May 2018 00:00:00 +0800</pubDate>  
-               <link>https://www.wangjun.dev/2018/05/http-server-ways/</link>  
-               <guid isPermaLink="true">https://www.wangjun.dev/2018/05/http-server-ways/</guid>  
+               <link>http://localhost:4000/2018/05/http-server-ways/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2018/05/http-server-ways/</guid>  
                </item>  
           
     </channel>  

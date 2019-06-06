@@ -3,7 +3,7 @@ layout: page
 title: About Me - Simple is best
 ---
 
-![aboutbg](//vinnycc.oss-cn-shanghai.aliyuncs.com/20190604/aboutbg.png)
+![aboutbg](//via.placeholder.com/863x413?text=""){: data-src="//vinnycc.oss-cn-shanghai.aliyuncs.com/20190604/aboutbg.png"}
 
 ---
 

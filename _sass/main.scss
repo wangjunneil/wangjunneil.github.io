@@ -23,7 +23,14 @@ h5 {
 }
 img {
   max-width: 100%;
-  /* box-shadow: 10px 10px 5px #888888; */
+
+  /* 懒加载 */
+  filter: blur(0em);
+  transition: filter 0.5s;
+}
+img[data-src] {
+  /* 懒加载 */
+  filter: blur(0.2em);
 }
 a {
   color: inherit;

@@ -4,8 +4,8 @@
         <title></title>  
         <description>王俊博客，软件改变世界！王俊博客是作者个人知识库、是记录历程回顾的笔记本、是经验教训的资源池， 旨在促进软件开发领域知识与创新的传播，为软件开发中提供帮助。更多是作者本人的经验积累。
 </description>  
-        <link>http://localhost:4000</link>  
-        <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />  
+        <link>https://www.wangjun.dev</link>  
+        <atom:link href="https://www.wangjun.dev/feed.xml" rel="self" type="application/rss+xml" />  
           
             <item>  
                <title>🔥 旅行必备 V2Ray 的高级使用方式</title>  
@@ -67,7 +67,7 @@
 
 &lt;p&gt;点击下载 &lt;a href=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/config.json&quot;&gt;config.json&lt;/a&gt; 配置文件，修改 port、id、alterId 字段，id和alterId随意变更，保持位数一致。port 最好使用已经配置好防火墙规则的端口（关于配置防火墙规则请参看 &lt;a href=&quot;//wangjun.dev/2019/06/ssr-build/&quot;&gt;旅行必备 ShadowsocketR 搭建与使用&lt;/a&gt; 中的配置防火墙一节）。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/v2ray-config-json.png&quot; alt=&quot;v2ray-config-json&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;//via.placeholder.com/599x397?text=&amp;quot;&amp;quot;&quot; alt=&quot;v2ray-config-json&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/v2ray-config-json.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;准备好 v2ray 的配置内容后，到刚才创建的实例中，使用命令&lt;code class=&quot;highlighter-rouge&quot;&gt;vi /etc/v2ray/config.json&lt;/code&gt;打开v2ray的配置文件，删除里面全部内容，将准备好的配置明细复制进去，复制的格式很乱，不需要关心，v2ray会正常解析&lt;/p&gt;
 
@@ -93,7 +93,7 @@
 
 &lt;p&gt;所有配置在上面的json中都可以找到，配置如下：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/v2ray-client.png&quot; alt=&quot;v2ray-client&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;//via.placeholder.com/599x549?text=&amp;quot;&amp;quot;&quot; alt=&quot;v2ray-client&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/v2ray-client.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;配置完成并save后，点击load core即可开启国际旅行&lt;/p&gt;
 
@@ -120,13 +120,13 @@
 
 &lt;p&gt;安装完成后，默认nginx就已经启动，可以使用命令&lt;code class=&quot;highlighter-rouge&quot;&gt;netstat -an | grep 80&lt;/code&gt;看看端口是否处于 listen 状态，打开浏览器，直接输入服务器的IP地址应该可以看到nginx的欢迎界面，如下：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/nginx.png&quot; alt=&quot;nginx&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;//via.placeholder.com/599x454?text=&amp;quot;&amp;quot;&quot; alt=&quot;nginx&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/nginx.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;33-域名解析&quot;&gt;3.3 域名解析&lt;/h3&gt;
 
 &lt;p&gt;这里使用在阿里云注册的域名为例，如果没有的话，可以在 &lt;a href=&quot;https://www.freenom.com/zh/index.html?lang=zh&quot;&gt;freenom&lt;/a&gt; 可以申请免费域名。将域名解析到上面服务器的公网IP上，添加一个记录，记录类型为A，主机记录为ray，这样就将二级域名 ray.wangjun.bid 解析到了对应的 Google 云服务器上。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/aliyun-parse.png&quot; alt=&quot;aliyun-parse&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;//via.placeholder.com/599x366?text=&amp;quot;&amp;quot;&quot; alt=&quot;aliyun-parse&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/aliyun-parse.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;到服务器上使用命令&lt;code class=&quot;highlighter-rouge&quot;&gt;vi /etc/nginx/sites-available/default&lt;/code&gt;打开nginx配置文件，删除里面所有内容，将域名配置到nginx的配置文件中，最终内容如下：&lt;/p&gt;
 
@@ -156,7 +156,7 @@
 
 &lt;p&gt;系统版本和代理服务器安装方式不一样，根据自己的配置来，这里在 Google 云创建的是 debian9 的操作系统，代理服务器使用的是 nginx，所以：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/certboot.png&quot; alt=&quot;certboot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;//via.placeholder.com/599x454?text=&amp;quot;&amp;quot;&quot; alt=&quot;certboot&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/certboot.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;那我们的安装方式就是：&lt;/p&gt;
 
@@ -174,7 +174,7 @@
 
 &lt;p&gt;这里会要求输入和选择几项配置，具体如下：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/publish-cert.png&quot; alt=&quot;publish-cert&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;//via.placeholder.com/599x735?text=&amp;quot;&amp;quot;&quot; alt=&quot;publish-cert&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/publish-cert.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;出现”Congratulations”说明命令执行成功，重新打开浏览器输入&lt;strong&gt;https://域名&lt;/strong&gt;可以正常看见nginx欢迎界面，且浏览器网址左边的小锁正常显示，HTTPS配置完成。&lt;/p&gt;
 
@@ -192,17 +192,17 @@
 
 &lt;p&gt;CDN同样我们选择免费的，免费即王道，这里选择 &lt;a href=&quot;https://www.cloudflare.com/zh-cn/&quot;&gt;CloudFlare&lt;/a&gt;，具体操作如下：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/CloudFlare-addsite.png&quot; alt=&quot;CloudFlare-addsite&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;//via.placeholder.com/599x440?text=&amp;quot;&amp;quot;&quot; alt=&quot;CloudFlare-addsite&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/CloudFlare-addsite.png&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/CloudFlare-freeplan.png&quot; alt=&quot;CloudFlare-freeplan&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;//via.placeholder.com/599x440?text=&amp;quot;&amp;quot;&quot; alt=&quot;CloudFlare-freeplan&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/CloudFlare-freeplan.png&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/CloudFlare-parse.png&quot; alt=&quot;CloudFlare-parse&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;//via.placeholder.com/599x440?text=&amp;quot;&amp;quot;&quot; alt=&quot;CloudFlare-parse&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/CloudFlare-parse.png&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/CloudFlare-dns.png&quot; alt=&quot;CloudFlare-dns&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;//via.placeholder.com/599x440?text=&amp;quot;&amp;quot;&quot; alt=&quot;CloudFlare-dns&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/CloudFlare-dns.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;经过上面的操作，CloudFlare配置已经完成，最后在阿里云域名下将对应域名的 DNS 解析为 CloudFlare 为我们分配的 DNS 记录，点击确定即可&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/aliyun-edit-dns.png&quot; alt=&quot;aliyun-edit-dns&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;//via.placeholder.com/599x356?text=&amp;quot;&amp;quot;&quot; alt=&quot;aliyun-edit-dns&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/aliyun-edit-dns.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;CDN已经配置完成&lt;/p&gt;
 
@@ -212,7 +212,7 @@
 
 &lt;p&gt;编辑&lt;code class=&quot;highlighter-rouge&quot;&gt;vi /etc/v2ray/config.json&lt;/code&gt;文件修改和新增如下配置&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/v2ray-config-update.png&quot; alt=&quot;v2ray-config-update&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;//via.placeholder.com/599x611?text=&amp;quot;&amp;quot;&quot; alt=&quot;v2ray-config-update&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/v2ray-config-update.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;这里为什么改端口，之前的端口已经配置在防火墙的出入站规则中，外部是可以直接访问，反向代理一个重要的原则是隐藏内部应用，统一出入口，所以端口只需要设置一个不在防火墙规则里的1024～65535之间的值即可。&lt;/p&gt;
 
@@ -280,9 +280,9 @@
   &lt;li&gt;勾选Use TLS，TLS serverName使用配置的域名&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190606/v2ray-client-fake-1.png&quot; alt=&quot;v2ray-client-fake-1&quot; /&gt;
-&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190606/v2ray-client-fake-2.png&quot; alt=&quot;v2ray-client-fake-2&quot; /&gt;
-&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190606/v2ray-client-fake-3.png&quot; alt=&quot;v2ray-client-fake-3&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;//via.placeholder.com/599x549?text=&amp;quot;&amp;quot;&quot; alt=&quot;v2ray-client-fake-1&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190606/v2ray-client-fake-1.png&quot; /&gt;
+&lt;img src=&quot;//via.placeholder.com/599x549?text=&amp;quot;&amp;quot;&quot; alt=&quot;v2ray-client-fake-2&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190606/v2ray-client-fake-2.png&quot; /&gt;
+&lt;img src=&quot;//via.placeholder.com/599x549?text=&amp;quot;&amp;quot;&quot; alt=&quot;v2ray-client-fake-3&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190606/v2ray-client-fake-3.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;All done.&lt;/strong&gt; 点击客户端上的load core，✈️ 开启你的环游世界之旅。&lt;/p&gt;
 
@@ -295,8 +295,8 @@
 &lt;/ul&gt;
 </description>  
                <pubDate>Thu, 06 Jun 2019 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2019/06/v2ray-build/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2019/06/v2ray-build/</guid>  
+               <link>https://www.wangjun.dev/2019/06/v2ray-build/</link>  
+               <guid isPermaLink="true">https://www.wangjun.dev/2019/06/v2ray-build/</guid>  
                </item>  
           
             <item>  
@@ -331,7 +331,7 @@
 &lt;p&gt;从上述命令可见 outline 的server环境是基于 docker 来做的，首先安装 docker 容器，启动、设置开机自启动、查看启动状态，执行一键脚本安装。
 执行完后会输出一段 json 格式的内容，其实就是一个连接服务端的加密串，将它复制保存到记事本中，后续需要使用。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/outline-result.png&quot; alt=&quot;outline-result&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;//via.placeholder.com/599x255?text=&amp;quot;&amp;quot;&quot; alt=&quot;outline-result&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/outline-result.png&quot; /&gt;&lt;/p&gt;
 
 &lt;table&gt;
   &lt;tbody&gt;
@@ -343,7 +343,7 @@
 
 &lt;h2 id=&quot;4-outline-manager&quot;&gt;4. outline manager&lt;/h2&gt;
 
-&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/outline-manager.png&quot; alt=&quot;outline-manager&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;//via.placeholder.com/599x740?text=&amp;quot;&amp;quot;&quot; alt=&quot;outline-manager&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/outline-manager.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;点击下载 &lt;a href=&quot;https://github.com/Jigsaw-Code/outline-server/releases&quot;&gt;outline manager&lt;/a&gt; 并安装，将上面输出的 json 加密串配置在 outline manager 中，
 启动并点击钥匙按钮获取连接key，类似如下：&lt;/p&gt;
@@ -355,12 +355,12 @@
 
 &lt;p&gt;点击下载 &lt;a href=&quot;https://github.com/Jigsaw-Code/outline-client/releases&quot;&gt;outline client&lt;/a&gt;，根据自己系统自行按照，使用上一步的key添加连接，保存并启动即可。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/outline-client.png&quot; alt=&quot;outline-client&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;//via.placeholder.com/527x762?text=&amp;quot;&amp;quot;&quot; alt=&quot;outline-client&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/outline-client.png&quot; /&gt;&lt;/p&gt;
 
 </description>  
                <pubDate>Thu, 06 Jun 2019 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2019/06/outline-build/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2019/06/outline-build/</guid>  
+               <link>https://www.wangjun.dev/2019/06/outline-build/</link>  
+               <guid isPermaLink="true">https://www.wangjun.dev/2019/06/outline-build/</guid>  
                </item>  
           
             <item>  
@@ -386,7 +386,7 @@
 
 &lt;h2 id=&quot;2-创建实例&quot;&gt;2. 创建实例&lt;/h2&gt;
 
-&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/create-vm.png&quot; alt=&quot;create-vm&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;//via.placeholder.com/599x517?text=&amp;quot;&amp;quot;&quot; alt=&quot;create-vm&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/create-vm.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;配置说明：&lt;/p&gt;
 
@@ -400,12 +400,12 @@
 
 &lt;p&gt;其他保持默认，点击创建&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/create-vm-result.png&quot; alt=&quot;create-vm-result&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;//via.placeholder.com/599x517?text=&amp;quot;&amp;quot;&quot; alt=&quot;create-vm-result&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/create-vm-result.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;创建完成后，记住分配的公网IP，测试下这个IP的延时以决定是否用此实例（此步骤可选）。浏览器打开 &lt;a href=&quot;https://tools.ipip.net/traceroute.php&quot;&gt;ipip.net&lt;/a&gt;，
 输入当前的带宽路径和刚才分配的公网IP，点击查看延时性，基本上高于100ms可以选择不要重新创建实例。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/check-ip.png&quot; alt=&quot;check-ip&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;//via.placeholder.com/599x517?text=&amp;quot;&amp;quot;&quot; alt=&quot;check-ip&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/check-ip.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;3-执行安装&quot;&gt;3. 执行安装&lt;/h2&gt;
 
@@ -423,7 +423,7 @@
 
 &lt;p&gt;脚本执行完成后，会显示最终的 SSR 链接信息，如下：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/ssr-result.png&quot; alt=&quot;ssr-result&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;//via.placeholder.com/599x354?text=&amp;quot;&amp;quot;&quot; alt=&quot;ssr-result&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/ssr-result.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;4-配置防火墙&quot;&gt;4. 配置防火墙&lt;/h2&gt;
 
@@ -431,7 +431,7 @@
 在 Google 云控制台点击 VPC 网络 - 防火墙规则，点击创建防火墙规则。名称随意，&lt;strong&gt;来源 IP 地址范围&lt;/strong&gt;使用 &lt;strong&gt;0.0.0.0/0&lt;/strong&gt;，&lt;strong&gt;协议和端口&lt;/strong&gt;将5001端口的
 tcp和udp都开通，其他默认，具体如下：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/fire-rule.png&quot; alt=&quot;fire-rule&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;//via.placeholder.com/599x515?text=&amp;quot;&amp;quot;&quot; alt=&quot;fire-rule&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/fire-rule.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;5-客户端链接&quot;&gt;5. 客户端链接&lt;/h2&gt;
 
@@ -443,13 +443,13 @@ tcp和udp都开通，其他默认，具体如下：&lt;/p&gt;
 
 &lt;p&gt;这里以 MacOS 客户端为例子&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/client-connect.png&quot; alt=&quot;client-connect&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;//via.placeholder.com/599x513?text=&amp;quot;&amp;quot;&quot; alt=&quot;client-connect&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/client-connect.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;至此，所有操作已经完成，只需要在本地配置好连接即可国际旅游&lt;/p&gt;
 </description>  
                <pubDate>Wed, 05 Jun 2019 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2019/06/ssr-build/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2019/06/ssr-build/</guid>  
+               <link>https://www.wangjun.dev/2019/06/ssr-build/</link>  
+               <guid isPermaLink="true">https://www.wangjun.dev/2019/06/ssr-build/</guid>  
                </item>  
           
             <item>  
@@ -460,7 +460,7 @@ tcp和udp都开通，其他默认，具体如下：&lt;/p&gt;
   &lt;li&gt;&lt;a href=&quot;#反向连接&quot; id=&quot;markdown-toc-反向连接&quot;&gt;反向连接&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/1512862_1adf.png&quot; alt=&quot;metasploit&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;//via.placeholder.com/748x370?text=&amp;quot;&amp;quot;&quot; alt=&quot;metasploit&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/1512862_1adf.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;原理&quot;&gt;原理&lt;/h2&gt;
 
@@ -507,8 +507,8 @@ p.waitFor&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;p&q
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>  
                <pubDate>Wed, 05 Jun 2019 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2019/06/reversh-shell-way/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2019/06/reversh-shell-way/</guid>  
+               <link>https://www.wangjun.dev/2019/06/reversh-shell-way/</link>  
+               <guid isPermaLink="true">https://www.wangjun.dev/2019/06/reversh-shell-way/</guid>  
                </item>  
           
             <item>  
@@ -519,7 +519,7 @@ p.waitFor&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;p&q
 &lt;/ul&gt;
 
 &lt;p style=&quot;text-align:center;&quot;&gt;
-&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/xhydra.png&quot; style=&quot;margin-left:5px;&quot; /&gt;
+![xhygra](//via.placeholder.com/300x300?text=&quot;&quot;){: data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190605/xhydra.png&quot;}
 &lt;/p&gt;
 
 &lt;h2 id=&quot;说明&quot;&gt;说明&lt;/h2&gt;
@@ -556,8 +556,8 @@ p.waitFor&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;p&q
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>  
                <pubDate>Wed, 05 Jun 2019 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2019/06/hydra-brute-force/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2019/06/hydra-brute-force/</guid>  
+               <link>https://www.wangjun.dev/2019/06/hydra-brute-force/</link>  
+               <guid isPermaLink="true">https://www.wangjun.dev/2019/06/hydra-brute-force/</guid>  
                </item>  
           
             <item>  
@@ -652,8 +652,8 @@ $ http-server -p 443 --ssl --cert ./localhost+2.pem --key ./localhost+2-key.pem
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>  
                <pubDate>Tue, 04 Jun 2019 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2019/06/https-certificate/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2019/06/https-certificate/</guid>  
+               <link>https://www.wangjun.dev/2019/06/https-certificate/</link>  
+               <guid isPermaLink="true">https://www.wangjun.dev/2019/06/https-certificate/</guid>  
                </item>  
           
             <item>  
@@ -667,15 +667,15 @@ $ http-server -p 443 --ssl --cert ./localhost+2.pem --key ./localhost+2-key.pem
   &lt;li&gt;&lt;a href=&quot;#6-参考链接&quot; id=&quot;markdown-toc-6-参考链接&quot;&gt;6. 参考链接&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190530/1_hWVmsnBY6Fr6OoNvIU5pmg.png&quot; alt=&quot;pwa-a2hs&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;//via.placeholder.com/600x400?text=&amp;quot;&amp;quot;&quot; alt=&quot;pwa-a2hs&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190530/1_hWVmsnBY6Fr6OoNvIU5pmg.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;1-概念&quot;&gt;1. 概念&lt;/h2&gt;
 
 &lt;p&gt;&lt;strong&gt;A2HS&lt;/strong&gt; 是（Add to Home screen）的缩写，也是PWA特性之一，它主要为web应用程序提供与本机应用程序相同的用户体验优势，将PWA应用添加至桌面后，用户可以像打开普通应用程序一样使用。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190529/a2hs-1.png&quot; alt=&quot;a2hs-1&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;//via.placeholder.com/900x630?text=&amp;quot;&amp;quot;&quot; alt=&quot;a2hs-1&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190529/a2hs-1.png&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190529/a2hs-2.png&quot; alt=&quot;a2hs-2&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;//via.placeholder.com/900x630?text=&amp;quot;&amp;quot;&quot; alt=&quot;a2hs-2&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190529/a2hs-2.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;2-背景&quot;&gt;2. 背景&lt;/h2&gt;
 
@@ -719,7 +719,7 @@ $ http-server -p 443 --ssl --cert ./localhost+2.pem --key ./localhost+2-key.pem
 
 &lt;h2 id=&quot;4-demo效果&quot;&gt;4. demo效果&lt;/h2&gt;
 
-&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190530/2019-05-30 00.20.10.gif&quot; alt=&quot;demo-a2hs&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;//via.placeholder.com/900x515?text=&amp;quot;&amp;quot;&quot; alt=&quot;demo-a2hs&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190530/2019-05-30 00.20.10.gif&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://github.com/wangjunneil/exchange-pwa/tree/master/src/views&quot;&gt;完整的demo代码&lt;/a&gt;&lt;/p&gt;
 
@@ -759,8 +759,8 @@ $ http-server -p 443 --ssl --cert ./localhost+2.pem --key ./localhost+2-key.pem
 &lt;/ul&gt;
 </description>  
                <pubDate>Wed, 29 May 2019 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2019/05/pwa-handle-install-prompt/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2019/05/pwa-handle-install-prompt/</guid>  
+               <link>https://www.wangjun.dev/2019/05/pwa-handle-install-prompt/</link>  
+               <guid isPermaLink="true">https://www.wangjun.dev/2019/05/pwa-handle-install-prompt/</guid>  
                </item>  
           
             <item>  
@@ -802,7 +802,7 @@ $ http-server -p 443 --ssl --cert ./localhost+2.pem --key ./localhost+2-key.pem
 
 &lt;h2 id=&quot;3-基本组成结构&quot;&gt;3. 基本组成结构&lt;/h2&gt;
 
-&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190322/1523604475510f808913f4f.jpeg&quot; alt=&quot;pwa组成&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;//via.placeholder.com/640x225?text=&amp;quot;&amp;quot;&quot; alt=&quot;pwa组成&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190322/1523604475510f808913f4f.jpeg&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;断网或网络差，基于常驻后台的 &lt;strong&gt;Service Worker&lt;/strong&gt; 实现数据离线存储与通知推送。&lt;/p&gt;
 
@@ -818,7 +818,7 @@ $ http-server -p 443 --ssl --cert ./localhost+2.pem --key ./localhost+2-key.pem
 
 &lt;h3 id=&quot;41-应用描述文件&quot;&gt;4.1 应用描述文件&lt;/h3&gt;
 
-&lt;p&gt;&lt;strong&gt;manifest.json&lt;/strong&gt; 文件是 Web 站点的描述文件，用来告诉浏览器 PWA应用 的基本信息，包括名称、图标、启动页、背景色等等。完整的 manifest.json 配置请参看 &lt;a href=&quot;https://link.zhihu.com/?target=https%3A//developer.mozilla.org/en-US/docs/Web/Manifest&quot;&gt;Web App Manifest properties&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;manifest.json&lt;/strong&gt; 文件是 Web 站点的描述文件，用来告诉浏览器 PWA应用 的基本信息，包括名称、图标、启动页、背景色等等。完整的 manifest.json 配置请参看 &lt;a href=&quot;//link.zhihu.com/?target=https%3A//developer.mozilla.org/en-US/docs/Web/Manifest&quot;&gt;Web App Manifest properties&lt;/a&gt;。&lt;/p&gt;
 
 &lt;p&gt;在工程的根路径中创建 &lt;strong&gt;manifest.json&lt;/strong&gt; 文件，内容如下：&lt;/p&gt;
 
@@ -882,7 +882,7 @@ $ http-server -p 443 --ssl --cert ./localhost+2.pem --key ./localhost+2-key.pem
 &lt;/table&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;如果觉得手写 &lt;strong&gt;manifest.json&lt;/strong&gt; 文件过于繁琐，可以使用在线生成 &lt;a href=&quot;https://app-manifest.firebaseapp.com/&quot;&gt;Web App Manifest Generator&lt;/a&gt; 的方式。&lt;/p&gt;
+  &lt;p&gt;如果觉得手写 &lt;strong&gt;manifest.json&lt;/strong&gt; 文件过于繁琐，可以使用在线生成 &lt;a href=&quot;//app-manifest.firebaseapp.com/&quot;&gt;Web App Manifest Generator&lt;/a&gt; 的方式。&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;h3 id=&quot;42-首页文件注册-manifestjson&quot;&gt;4.2 首页文件注册 manifest.json&lt;/h3&gt;
@@ -960,16 +960,16 @@ $ http-server -p 443 --ssl --cert ./localhost+2.pem --key ./localhost+2-key.pem
 
 &lt;p&gt;按章节 &lt;strong&gt;3. 基本组成结构&lt;/strong&gt; 中的图，至此准备工作结束，一个基本的 &lt;strong&gt;PWA&lt;/strong&gt; 应用已经完成，现在可以将整个站点发布到 nginx、apache等服务器中。&lt;/p&gt;
 
-&lt;p&gt;这里值得一提的是，&lt;strong&gt;&lt;u&gt;正确的 PWA 应用应该部署在 HTTPS 的环境下，即你需要安全证书&lt;/u&gt;&lt;/strong&gt;，不支持自签名证书，关于如何获取免费的 HTTPS 证书请参看另一篇文章 &lt;a href=&quot;https://vinny.cc/2017/10/lets-encrypt-ssl/&quot;&gt;使用Lets Encrypt为站点快速部署SSL证书&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;这里值得一提的是，&lt;strong&gt;&lt;u&gt;正确的 PWA 应用应该部署在 HTTPS 的环境下，即你需要安全证书&lt;/u&gt;&lt;/strong&gt;，不支持自签名证书，关于如何获取免费的 HTTPS 证书请参看另一篇文章 &lt;a href=&quot;//wangjun.dev/2019/06/https-certificate/&quot;&gt;使用Lets Encrypt为站点快速部署SSL证书&lt;/a&gt;。&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;访问的截图如下：&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p style=&quot;text-align:center;&quot;&gt;
-&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190321/Screenshot_20180418-004321.png&quot; height=&quot;300px&quot; style=&quot;margin-left:5px;&quot; /&gt;
+&lt;img src=&quot;//via.placeholder.com/428x762?text=''&quot; height=&quot;300px&quot; style=&quot;margin-left:5px;&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190321/Screenshot_20180418-004321.png&quot; /&gt;
 
-&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190321/Screenshot_20180418-003023.png&quot; height=&quot;300px&quot; style=&quot;margin-left:5px;&quot; /&gt;
+&lt;img src=&quot;//via.placeholder.com/428x762?text=''&quot; height=&quot;300px&quot; style=&quot;margin-left:5px;&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190321/Screenshot_20180418-003023.png&quot; /&gt;
 
-&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190321/Screenshot_20180418-003027.png&quot; height=&quot;300px&quot; style=&quot;margin-left:5px;&quot; /&gt;
+&lt;img src=&quot;//via.placeholder.com/428x762?text=''&quot; height=&quot;300px&quot; style=&quot;margin-left:5px;&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190321/Screenshot_20180418-003027.png&quot; /&gt;
 &lt;/p&gt;
 
 &lt;blockquote&gt;
@@ -1068,10 +1068,10 @@ $ http-server -p 443 --ssl --cert ./localhost+2.pem --key ./localhost+2-key.pem
 &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addEventListener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;install&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;onInstall&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addEventListener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;activate&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;onActivate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addEventListener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;fetch&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;onFetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;从上述脚本可知，我们对缓存定义了版本，版本主要实现缓存的更新，否则即使站点做了更新，用户在设备上访问的还是旧的内容。&lt;em&gt;URL_TO_CACHE&lt;/em&gt; 定义了需要预缓存的基本结构，又叫 &lt;strong&gt;&lt;a href=&quot;https://developers.google.com/web/fundamentals/architecture/app-shell&quot;&gt;App Shell&lt;/a&gt;&lt;/strong&gt;，在 &lt;strong&gt;install&lt;/strong&gt; 中进行安装，在 &lt;strong&gt;fetch&lt;/strong&gt; 中进行读取，命中则直接返回，否则重新请求。&lt;/p&gt;
+&lt;p&gt;从上述脚本可知，我们对缓存定义了版本，版本主要实现缓存的更新，否则即使站点做了更新，用户在设备上访问的还是旧的内容。&lt;em&gt;URL_TO_CACHE&lt;/em&gt; 定义了需要预缓存的基本结构，又叫 &lt;strong&gt;&lt;a href=&quot;//developers.google.com/web/fundamentals/architecture/app-shell&quot;&gt;App Shell&lt;/a&gt;&lt;/strong&gt;，在 &lt;strong&gt;install&lt;/strong&gt; 中进行安装，在 &lt;strong&gt;fetch&lt;/strong&gt; 中进行读取，命中则直接返回，否则重新请求。&lt;/p&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;更多完整的 &lt;strong&gt;ServiceWorker&lt;/strong&gt; 生命周期介绍请参看 &lt;a href=&quot;https://developers.google.com/web/fundamentals/primers/service-workers/&quot;&gt;服务工作线程：简介&lt;/a&gt;&lt;/p&gt;
+  &lt;p&gt;更多完整的 &lt;strong&gt;ServiceWorker&lt;/strong&gt; 生命周期介绍请参看 &lt;a href=&quot;//developers.google.com/web/fundamentals/primers/service-workers/&quot;&gt;服务工作线程：简介&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;h3 id=&quot;47-激活更新事件&quot;&gt;4.7 激活更新事件&lt;/h3&gt;
@@ -1090,12 +1090,12 @@ $ http-server -p 443 --ssl --cert ./localhost+2.pem --key ./localhost+2-key.pem
   &lt;li&gt;
     &lt;p&gt;此时，旧服务工作线程仍控制着当前页面，新服务工作线程进入 &lt;strong&gt;waiting&lt;/strong&gt; 状态。&lt;/p&gt;
 
-    &lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190321/sw11.png&quot; alt=&quot;sw11&quot; /&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;img src=&quot;//via.placeholder.com/900x622?text=&amp;quot;&amp;quot;&quot; alt=&quot;sw11&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190321/sw11.png&quot; /&gt;&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;当关掉重新打开 PWA应用 时，就工作线程被终止，新服务线程取得控制权，同时触发 &lt;strong&gt;activate&lt;/strong&gt; 事件，删除旧的缓存&lt;/p&gt;
 
-    &lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190321/sw12.png&quot; alt=&quot;sw12&quot; /&gt;&lt;strong&gt;总结激活更新&lt;/strong&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;img src=&quot;//via.placeholder.com/900x622?text=&amp;quot;&amp;quot;&quot; alt=&quot;sw12&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190321/sw12.png&quot; /&gt;&lt;strong&gt;总结激活更新&lt;/strong&gt;&lt;/p&gt;
 
     &lt;p&gt;更新 html 内容，修改 &lt;strong&gt;Service Worker&lt;/strong&gt;，打开 PWA应用，由于服务工作线程已经改变，触发 &lt;strong&gt;install&lt;/strong&gt; 事件，新的缓存被安装，关闭 PWA应用 再重新打开，接手，触发 &lt;strong&gt;activate&lt;/strong&gt; 事件删除老缓存，页面刷新为新的html内容。&lt;/p&gt;
   &lt;/li&gt;
@@ -1107,7 +1107,7 @@ $ http-server -p 443 --ssl --cert ./localhost+2.pem --key ./localhost+2-key.pem
 
 &lt;p&gt;这里我使用我的博客站点进行测试，最后生成的报告如下：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190321/lighthouse.png&quot; alt=&quot;lighthouse&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;//via.placeholder.com/752x762?text=&amp;quot;&amp;quot;&quot; alt=&quot;lighthouse&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190321/lighthouse.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;从上述的报告中可以看到，当前 https://wangjun.dev 的站点对于 PWA 应用支持的得分为 91，除了有一个问题，就是无法从 HTTP 请求转向到 HTTPS 请求。&lt;/p&gt;
 
@@ -1160,7 +1160,7 @@ $ http-server -p 443 --ssl --cert ./localhost+2.pem --key ./localhost+2-key.pem
 
 &lt;p&gt;IOS 的 Safari 浏览器暂时不支持读取 manifest.json 文件的 icon 配置信息，当添加到桌面时，只是页面的缩略图，对用户不是很友好，具体的改善步骤为，在 index.html 中的 head 标签内添加适配信息&lt;/p&gt;
 
-&lt;p style=&quot;text-align:center;&quot;&gt;&lt;img src=&quot;https://www.netguru.co/hs-fs/hubfs/white_splash_small.gif?t=1526027228428&amp;amp;width=300&amp;amp;height=537&amp;amp;name=white_splash_small.gif&quot; style=&quot;height:300px;margin:0 auto;&quot; /&gt;&lt;/p&gt;
+&lt;p style=&quot;text-align:center;&quot;&gt;&lt;img src=&quot;//via.placeholder.com/370x662?text=''&quot; style=&quot;height:300px;margin:0 auto;&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190608/white_splash_small.gif&quot; /&gt;&lt;/p&gt;
 
 &lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;link&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;rel=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;apple-touch-icon&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/assets/icons/icon-96x96.png&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;nt&quot;&gt;&amp;lt;link&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;rel=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;apple-touch-icon&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;sizes=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;152x152&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/assets/icons/icon-152x152.png&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
@@ -1170,7 +1170,7 @@ $ http-server -p 443 --ssl --cert ./localhost+2.pem --key ./localhost+2-key.pem
 
 &lt;p&gt;&lt;strong&gt;启动页面&lt;/strong&gt;&lt;/p&gt;
 
-&lt;p&gt;IOS 在启动 PWA应用时，启动页面默认是黑屏或者白屏，对于这个问题可以在 &lt;a href=&quot;https://developer.apple.com/library/content/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html&quot;&gt;apple developer’s page&lt;/a&gt; 找到解决方案，通过加入 &lt;strong&gt;apple-touch-startup-image&lt;/strong&gt; 标签解决，如下：&lt;/p&gt;
+&lt;p&gt;IOS 在启动 PWA应用时，启动页面默认是黑屏或者白屏，对于这个问题可以在 &lt;a href=&quot;//developer.apple.com/library/content/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html&quot;&gt;apple developer’s page&lt;/a&gt; 找到解决方案，通过加入 &lt;strong&gt;apple-touch-startup-image&lt;/strong&gt; 标签解决，如下：&lt;/p&gt;
 
 &lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;meta&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;apple-mobile-web-app-capable&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;content=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;yes&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;nt&quot;&gt;&amp;lt;meta&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;apple-mobile-web-app-capable&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;content=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;yes&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
@@ -1193,9 +1193,9 @@ $ http-server -p 443 --ssl --cert ./localhost+2.pem --key ./localhost+2-key.pem
 
 &lt;p style=&quot;text-align:center;&quot;&gt;
 
-&lt;img src=&quot;https://www.netguru.co/hs-fs/hubfs/add_to_homescreen_small.gif?t=1526027228428&amp;amp;width=300&amp;amp;name=add_to_homescreen_small.gif&quot; style=&quot;height:300px;&quot; /&gt;
+&lt;img src=&quot;//via.placeholder.com/370x662?text=''&quot; style=&quot;height:300px;&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190608/add_to_homescreen_small.gif&quot; /&gt;
 
-&lt;img src=&quot;https://www.netguru.co/hs-fs/hubfs/Simulator%20Screen%20Shot%20-%20iPhone%206s%20-%202018-04-04%20at%2010.14.00.png?t=1526027228428&amp;amp;width=300&amp;amp;height=534&amp;amp;name=Simulator%20Screen%20Shot%20-%20iPhone%206s%20-%202018-04-04%20at%2010.14.00.png&quot; style=&quot;height:300px;&quot; /&gt;
+&amp;lt;img src=&quot;//via.placeholder.com/300x534?text=&quot;&quot;&quot; style=&quot;height:300px;&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190608/SimulatorScreenShot-iPhone6s.png&quot;/&amp;gt;
 
 &lt;/p&gt;
 
@@ -1207,13 +1207,13 @@ $ http-server -p 443 --ssl --cert ./localhost+2.pem --key ./localhost+2-key.pem
 
 &lt;h2 id=&quot;附录c-实验中的pwa应用参考&quot;&gt;附录C 实验中的PWA应用参考&lt;/h2&gt;
 
-&lt;p&gt;关于 PWA应用 的完善版，可以参考本站点 &lt;a href=&quot;https://vinny.cc&quot;&gt;vinny.cc&lt;/a&gt; 的实现，关键的文件如下：&lt;/p&gt;
+&lt;p&gt;关于 PWA应用 的完善版，可以参考本站点 &lt;a href=&quot;//wangjun.dev&quot;&gt;wangjun.dev&lt;/a&gt; 的实现，关键的文件如下：&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;https://vinny.cc/manifest.json&quot;&gt;https://vinny.cc/manifest.json&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;//wangjun.dev/manifest.json&quot;&gt;https://wangjun.dev/manifest.json&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;https://vinny.cc/assets/main.js&quot;&gt;https://vinny.cc/assets/main.js&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;//wangjun.dev/assets/main.js&quot;&gt;https://wangjun.dev/assets/main.js&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;https://vinny.cc/service-worker.js&quot;&gt;https://vinny.cc/service-worker.js&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;//wangjun.dev/service-worker.js&quot;&gt;https://wangjun.dev/service-worker.js&lt;/a&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;附录d-如何对pwa进行远程调试&quot;&gt;附录D 如何对PWA进行远程调试&lt;/h2&gt;
 
@@ -1226,7 +1226,7 @@ $ http-server -p 443 --ssl --cert ./localhost+2.pem --key ./localhost+2-key.pem
   &lt;li&gt;
     &lt;p&gt;使用USB线接入电脑或者在手机上安装 ADB 远程调试工具，如 网络adb&lt;/p&gt;
 
-    &lt;p style=&quot;text-align:center;&quot;&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190321/14822209063612928.png&quot; style=&quot;height:300px;&quot; /&gt;&lt;/p&gt;
+    &lt;p style=&quot;text-align:center;&quot;&gt;&lt;img src=&quot;//via.placeholder.com/248x440?text=''&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190321/14822209063612928.png&quot; style=&quot;height:300px;&quot; /&gt;&lt;/p&gt;
 
     &lt;p&gt;若使用 远程adb 的方式，则如要使用如下命令建立连接：&lt;/p&gt;
 
@@ -1237,33 +1237,31 @@ $ http-server -p 443 --ssl --cert ./localhost+2.pem --key ./localhost+2-key.pem
   &lt;li&gt;
     &lt;p&gt;在电脑上打开 Chrome 浏览器并打开开发者工具，打开 Remote devices 应可以看见已连接上的Android设备&lt;/p&gt;
 
-    &lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190321/pwa_debug-1.png&quot; alt=&quot;pwd-debug-1&quot; /&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;img src=&quot;//via.placeholder.com/900x646?text=&amp;quot;&amp;quot;&quot; alt=&quot;pwd-debug-1&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190321/pwa_debug-1.png&quot; /&gt;&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;在手机中打开 PWA应用，在浏览器开发者工具中就可以看见并进行调试&lt;/p&gt;
 
-    &lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190321/pwa_debug-2.png&quot; alt=&quot;pwd-debug-2&quot; /&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;img src=&quot;//via.placeholder.com/900x652?text=&amp;quot;&amp;quot;&quot; alt=&quot;pwd-debug-2&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190321/pwa_debug-2.png&quot; /&gt;&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;p&gt;另外如果 &lt;strong&gt;PWA应用&lt;/strong&gt; 部署在本地，可以通过chrome浏览器的 &lt;code class=&quot;highlighter-rouge&quot;&gt;Port forwarding&lt;/code&gt; 功能将本地 &lt;strong&gt;PWA应用&lt;/strong&gt; 映射到手机上，这样在手机中输入”localhost:8887”即可在调试中出现。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190321/pwa_debug-3.png&quot; alt=&quot;pwa_debug-3&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;//via.placeholder.com/900x652?text=&amp;quot;&amp;quot;&quot; alt=&quot;pwa_debug-3&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190321/pwa_debug-3.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;参考文章&quot;&gt;参考文章&lt;/h2&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;a href=&quot;https://www.netguru.co/codestories/few-tips-that-will-make-your-pwa-on-ios-feel-like-native&quot;&gt;https://www.netguru.co/codestories/few-tips-that-will-make-your-pwa-on-ios-feel-like-native&lt;/a&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://developers.google.com/web/fundamentals/app-install-banners/&quot;&gt;https://developers.google.com/web/fundamentals/app-install-banners/&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://developers.google.com/web/fundamentals/primers/service-workers/&quot;&gt;https://developers.google.com/web/fundamentals/primers/service-workers/&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://developers.google.com/web/tools/lighthouse/?hl=zh-cn&quot;&gt;https://developers.google.com/web/tools/lighthouse/?hl=zh-cn&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;//www.netguru.co/codestories/few-tips-that-will-make-your-pwa-on-ios-feel-like-native&quot;&gt;https://www.netguru.co/codestories/few-tips-that-will-make-your-pwa-on-ios-feel-like-native&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;//developers.google.com/web/fundamentals/app-install-banners/&quot;&gt;https://developers.google.com/web/fundamentals/app-install-banners/&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;//developers.google.com/web/fundamentals/primers/service-workers/&quot;&gt;https://developers.google.com/web/fundamentals/primers/service-workers/&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;//developers.google.com/web/tools/lighthouse/?hl=zh-cn&quot;&gt;https://developers.google.com/web/tools/lighthouse/?hl=zh-cn&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>  
                <pubDate>Fri, 11 May 2018 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2018/05/pwa-app/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2018/05/pwa-app/</guid>  
+               <link>https://www.wangjun.dev/2018/05/pwa-app/</link>  
+               <guid isPermaLink="true">https://www.wangjun.dev/2018/05/pwa-app/</guid>  
                </item>  
           
             <item>  
@@ -1372,7 +1370,7 @@ require&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quo
 
 &lt;h3 id=&quot;41-命令行参数&quot;&gt;4.1 命令行参数&lt;/h3&gt;
 
-&lt;p&gt;如何处理接受的命令行参数，这里使用 &lt;strong&gt;&lt;a href=&quot;https://github.com/substack/minimist&quot;&gt;minimist&lt;/a&gt;&lt;/strong&gt; 的解析库，在根路径下使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;npm install --save minimist&lt;/code&gt; 进行安装&lt;/p&gt;
+&lt;p&gt;如何处理接受的命令行参数，这里使用 &lt;strong&gt;&lt;a href=&quot;//github.com/substack/minimist&quot;&gt;minimist&lt;/a&gt;&lt;/strong&gt; 的解析库，在根路径下使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;npm install --save minimist&lt;/code&gt; 进行安装&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;[index.js]&lt;/strong&gt;&lt;/p&gt;
 
@@ -1502,8 +1500,8 @@ require&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quo
 &lt;p&gt;某些命令可能会执行很长时间，为了让用户得到正在运行的反馈状态，应该在执行时显示 &lt;strong&gt;进度&lt;/strong&gt;，使用命令 &lt;code class=&quot;highlighter-rouge&quot;&gt;npm install --save axios ora&lt;/code&gt; 安装第三方的进度与网络请求的库。&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;进度 ora 的更多用法请参看 &lt;a href=&quot;https://www.npmjs.com/package/ora&quot;&gt;https://www.npmjs.com/package/ora&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;请求 axios 的更多用法请参看 &lt;a href=&quot;https://www.npmjs.com/package/axios&quot;&gt;https://www.npmjs.com/package/axios&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;进度 ora 的更多用法请参看 &lt;a href=&quot;//www.npmjs.com/package/ora&quot;&gt;https://www.npmjs.com/package/ora&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;请求 axios 的更多用法请参看 &lt;a href=&quot;//www.npmjs.com/package/axios&quot;&gt;https://www.npmjs.com/package/axios&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;现在我们开始请求天气，使用的是 &lt;strong&gt;雅虎&lt;/strong&gt; 的 API，此 API 使用的 &lt;strong&gt;“YQL”&lt;/strong&gt; 的语法查询，关键的是它不需要 &lt;strong&gt;API Key&lt;/strong&gt; 就可以直接进行接口的调用，非常方便。&lt;/p&gt;
@@ -1624,15 +1622,15 @@ require&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quo
   &lt;li&gt;preferGlobal 的设置是若用户使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;npm install --save&lt;/code&gt; 而不是 &lt;code class=&quot;highlighter-rouge&quot;&gt;npm install --gobal&lt;/code&gt; 的方式进行安装，将会发出警告。&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;首次上传的话你需要有 npm 的账号信息，若没有请去 &lt;a href=&quot;https://www.npmjs.com/&quot;&gt;https://www.npmjs.com/&lt;/a&gt; 进行注册，注册完成后，先使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;npm adduser&lt;/code&gt; 将账号信息在电脑中进行验证，最后在根路径中执行 &lt;code class=&quot;highlighter-rouge&quot;&gt;npm publish&lt;/code&gt; 命令进行发布即可。&lt;/p&gt;
+&lt;p&gt;首次上传的话你需要有 npm 的账号信息，若没有请去 &lt;a href=&quot;//www.npmjs.com/&quot;&gt;https://www.npmjs.com/&lt;/a&gt; 进行注册，注册完成后，先使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;npm adduser&lt;/code&gt; 将账号信息在电脑中进行验证，最后在根路径中执行 &lt;code class=&quot;highlighter-rouge&quot;&gt;npm publish&lt;/code&gt; 命令进行发布即可。&lt;/p&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;本文中所有的示例代码在 &lt;a href=&quot;https://github.com/wangjunneil/weather-cli&quot;&gt;https://github.com/wangjunneil/weather-cli&lt;/a&gt; 可以获取到&lt;/p&gt;
+  &lt;p&gt;本文中所有的示例代码在 &lt;a href=&quot;//github.com/wangjunneil/weather-cli&quot;&gt;https://github.com/wangjunneil/weather-cli&lt;/a&gt; 可以获取到&lt;/p&gt;
 &lt;/blockquote&gt;
 </description>  
                <pubDate>Tue, 08 May 2018 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2018/05/create-publish-nodejs-cli/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2018/05/create-publish-nodejs-cli/</guid>  
+               <link>https://www.wangjun.dev/2018/05/create-publish-nodejs-cli/</link>  
+               <guid isPermaLink="true">https://www.wangjun.dev/2018/05/create-publish-nodejs-cli/</guid>  
                </item>  
           
             <item>  
@@ -1672,8 +1670,8 @@ require&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quo
 
 </description>  
                <pubDate>Mon, 07 May 2018 00:00:00 +0800</pubDate>  
-               <link>http://localhost:4000/2018/05/http-server-ways/</link>  
-               <guid isPermaLink="true">http://localhost:4000/2018/05/http-server-ways/</guid>  
+               <link>https://www.wangjun.dev/2018/05/http-server-ways/</link>  
+               <guid isPermaLink="true">https://www.wangjun.dev/2018/05/http-server-ways/</guid>  
                </item>  
           
     </channel>  

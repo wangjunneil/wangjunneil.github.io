@@ -53,6 +53,35 @@
         return outputArray;
     }
 
+    // 图像懒加载
+    /*
+     * HTML: <img src="//via.placeholder.com/300.png"data-src="real-image-path">
+     * Markdown: ![aboutbg](//via.placeholder.com/863x413?text=""){: data-src="real-image-path"}
+     */
+    app.imageLazy = () => {
+        const imageToLazy = document.querySelectorAll('img[data-src]');
+        const loadImage = function (image) {
+            image.setAttribute('src', image.getAttribute('data-src'));
+            image.addEventListener('load', function() {
+                image.removeAttribute("data-src");
+            })
+        }
+
+
+        const intersectionObserver = new IntersectionObserver(function(items, observer) {
+            items.forEach(function(item) {
+                if(item.isIntersecting) {
+                    loadImage(item.target);
+                    observer.unobserve(item.target);
+                }
+            });
+        });
+
+        imageToLazy.forEach(function(image){
+            intersectionObserver.observe(image);
+        })
+    }
+
     app.suggest = (posts) => {
         let keyword = app.search_input.value;
         let suggest = app.suggest_div;
@@ -229,6 +258,9 @@
         // } else {
         //    console.log('Geolocation is not supported for this Browser/OS.');
         // }
+
+        // 图片懒加载
+        app.imageLazy();
     });
 
     // 注册service-worker

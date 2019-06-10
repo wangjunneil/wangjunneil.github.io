@@ -4,11 +4,91 @@
         <title></title>  
         <description>王俊博客，软件改变世界！王俊博客是作者个人知识库、是记录历程回顾的笔记本、是经验教训的资源池， 旨在促进软件开发领域知识与创新的传播，为软件开发中提供帮助。更多是作者本人的经验积累。
 </description>  
-        <link>https://www.wangjun.dev</link>  
-        <atom:link href="https://www.wangjun.dev/feed.xml" rel="self" type="application/rss+xml" />  
+        <link>http://localhost:4000</link>  
+        <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />  
           
             <item>  
-               <title>🔥 旅行必备 V2Ray 的高级使用方式</title>  
+               <title>旅行必备 Wireguard 的搭建与使用</title>  
+               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#1-介绍&quot; id=&quot;markdown-toc-1-介绍&quot;&gt;1. 介绍&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#2-安装和使用&quot; id=&quot;markdown-toc-2-安装和使用&quot;&gt;2. 安装和使用&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#21-创建实例&quot; id=&quot;markdown-toc-21-创建实例&quot;&gt;2.1 创建实例&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#22-执行安装&quot; id=&quot;markdown-toc-22-执行安装&quot;&gt;2.2 执行安装&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#23-防火墙规则&quot; id=&quot;markdown-toc-23-防火墙规则&quot;&gt;2.3 防火墙规则&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#24-客户端使用&quot; id=&quot;markdown-toc-24-客户端使用&quot;&gt;2.4 客户端使用&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;//via.placeholder.com/594x311?text=&amp;quot;&amp;quot;&quot; alt=&quot;wireguard&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190610/og-logo.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;1-介绍&quot;&gt;1. 介绍&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.wireguard.com/&quot;&gt;WireGuard&lt;/a&gt; 是 Jason A. Donenfeld 开发的开源VPN协议。目前已经支持Linux, macOS, Android, iOS以及OpenWrt平台。WireGuard使用UDP协议传输数据，在不使用的情况下默认不会传输任何 UDP 数据包，所以比常规VPN省电很多，可以像SS一样一直挂着使用。WireGuard协议的速度瞬秒其它VPN协议。&lt;/p&gt;
+
+&lt;h2 id=&quot;2-安装和使用&quot;&gt;2. 安装和使用&lt;/h2&gt;
+
+&lt;h3 id=&quot;21-创建实例&quot;&gt;2.1 创建实例&lt;/h3&gt;
+
+&lt;p&gt;参考 &lt;a href=&quot;//wangjun.dev/2019/06/ssr-build/&quot;&gt;旅行必备 ShadowsocketR 搭建与使用&lt;/a&gt; 中的创建实例&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;唯一区别就是系统选择Centos7&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;22-执行安装&quot;&gt;2.2 执行安装&lt;/h3&gt;
+
+&lt;p&gt;打开 vm 实例的 ssh 终端，输入以下命令执行安装：&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 切换成root用户&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 安装wget工具&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;yum &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt; wget
+
+&lt;span class=&quot;c&quot;&gt;# 下载一键安装脚本&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;wget https://raw.githubusercontent.com/yobabyshark/wireguard/master/wireguard_install.sh
+
+&lt;span class=&quot;c&quot;&gt;# 授权并执行&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;chmod&lt;/span&gt; +x wireguard_install.sh &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; ./wireguard_install.sh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;先升级系统内核，选择1，等待升级完成后，执行&lt;code class=&quot;highlighter-rouge&quot;&gt;reboot&lt;/code&gt;重启系统&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1. 升级系统内核
+2. 安装wireguard
+3. 升级wireguard
+4. 卸载wireguard
+5. 显示客户端二维码
+6. 增加用户
+0. 退出脚
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;系统重启完成后，再次执行一键安装脚本&lt;code class=&quot;highlighter-rouge&quot;&gt;./wireguard_install.sh&lt;/code&gt;，这次选择&lt;strong&gt;安装wireguard&lt;/strong&gt;，等待执行完成后，会显示配置二维码和配置信息，如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;//via.placeholder.com/487x713?text=&amp;quot;&amp;quot;&quot; alt=&quot;wireguard-result&quot; data-src=&quot;//vinnycc.oss-cn-shanghai.aliyuncs.com/20190610/wireguard-result.png&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;二维码内容就是 /etc/wireguard/client.conf 文件内容&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;23-防火墙规则&quot;&gt;2.3 防火墙规则&lt;/h3&gt;
+
+&lt;p&gt;wireguard安装完后，查看随机分配的端口号，如上面截图中的是38597，确定在防火墙规则中开放了对此端口号的出入站。&lt;/p&gt;
+
+&lt;h3 id=&quot;24-客户端使用&quot;&gt;2.4 客户端使用&lt;/h3&gt;
+
+&lt;p&gt;IOS与Mac客户端可以在appstore里直接下载wireguard，但需要使用美区账号。&lt;/p&gt;
+
+&lt;p&gt;Window端下载 &lt;a href=&quot;https://tunsafe.com/download&quot;&gt;https://tunsafe.com/download&lt;/a&gt;&lt;/p&gt;
+</description>  
+               <pubDate>Fri, 07 Jun 2019 00:00:00 +0800</pubDate>  
+               <link>http://localhost:4000/2019/06/wireguard-build/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2019/06/wireguard-build/</guid>  
+               </item>  
+          
+            <item>  
+               <title>旅行必备 V2Ray 的高级使用方式</title>  
                <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
   &lt;li&gt;&lt;a href=&quot;#1-介绍&quot; id=&quot;markdown-toc-1-介绍&quot;&gt;1. 介绍&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;#2-安装和使用&quot; id=&quot;markdown-toc-2-安装和使用&quot;&gt;2. 安装和使用&lt;/a&gt;    &lt;ul&gt;
@@ -295,8 +375,8 @@
 &lt;/ul&gt;
 </description>  
                <pubDate>Thu, 06 Jun 2019 00:00:00 +0800</pubDate>  
-               <link>https://www.wangjun.dev/2019/06/v2ray-build/</link>  
-               <guid isPermaLink="true">https://www.wangjun.dev/2019/06/v2ray-build/</guid>  
+               <link>http://localhost:4000/2019/06/v2ray-build/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2019/06/v2ray-build/</guid>  
                </item>  
           
             <item>  
@@ -359,8 +439,8 @@
 
 </description>  
                <pubDate>Thu, 06 Jun 2019 00:00:00 +0800</pubDate>  
-               <link>https://www.wangjun.dev/2019/06/outline-build/</link>  
-               <guid isPermaLink="true">https://www.wangjun.dev/2019/06/outline-build/</guid>  
+               <link>http://localhost:4000/2019/06/outline-build/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2019/06/outline-build/</guid>  
                </item>  
           
             <item>  
@@ -448,8 +528,8 @@ tcp和udp都开通，其他默认，具体如下：&lt;/p&gt;
 &lt;p&gt;至此，所有操作已经完成，只需要在本地配置好连接即可国际旅游&lt;/p&gt;
 </description>  
                <pubDate>Wed, 05 Jun 2019 00:00:00 +0800</pubDate>  
-               <link>https://www.wangjun.dev/2019/06/ssr-build/</link>  
-               <guid isPermaLink="true">https://www.wangjun.dev/2019/06/ssr-build/</guid>  
+               <link>http://localhost:4000/2019/06/ssr-build/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2019/06/ssr-build/</guid>  
                </item>  
           
             <item>  
@@ -507,8 +587,8 @@ p.waitFor&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;p&q
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>  
                <pubDate>Wed, 05 Jun 2019 00:00:00 +0800</pubDate>  
-               <link>https://www.wangjun.dev/2019/06/reversh-shell-way/</link>  
-               <guid isPermaLink="true">https://www.wangjun.dev/2019/06/reversh-shell-way/</guid>  
+               <link>http://localhost:4000/2019/06/reversh-shell-way/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2019/06/reversh-shell-way/</guid>  
                </item>  
           
             <item>  
@@ -556,8 +636,8 @@ p.waitFor&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;p&q
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>  
                <pubDate>Wed, 05 Jun 2019 00:00:00 +0800</pubDate>  
-               <link>https://www.wangjun.dev/2019/06/hydra-brute-force/</link>  
-               <guid isPermaLink="true">https://www.wangjun.dev/2019/06/hydra-brute-force/</guid>  
+               <link>http://localhost:4000/2019/06/hydra-brute-force/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2019/06/hydra-brute-force/</guid>  
                </item>  
           
             <item>  
@@ -652,8 +732,8 @@ $ http-server -p 443 --ssl --cert ./localhost+2.pem --key ./localhost+2-key.pem
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>  
                <pubDate>Tue, 04 Jun 2019 00:00:00 +0800</pubDate>  
-               <link>https://www.wangjun.dev/2019/06/https-certificate/</link>  
-               <guid isPermaLink="true">https://www.wangjun.dev/2019/06/https-certificate/</guid>  
+               <link>http://localhost:4000/2019/06/https-certificate/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2019/06/https-certificate/</guid>  
                </item>  
           
             <item>  
@@ -759,8 +839,8 @@ $ http-server -p 443 --ssl --cert ./localhost+2.pem --key ./localhost+2-key.pem
 &lt;/ul&gt;
 </description>  
                <pubDate>Wed, 29 May 2019 00:00:00 +0800</pubDate>  
-               <link>https://www.wangjun.dev/2019/05/pwa-handle-install-prompt/</link>  
-               <guid isPermaLink="true">https://www.wangjun.dev/2019/05/pwa-handle-install-prompt/</guid>  
+               <link>http://localhost:4000/2019/05/pwa-handle-install-prompt/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2019/05/pwa-handle-install-prompt/</guid>  
                </item>  
           
             <item>  
@@ -1260,8 +1340,8 @@ $ http-server -p 443 --ssl --cert ./localhost+2.pem --key ./localhost+2-key.pem
 &lt;/ul&gt;
 </description>  
                <pubDate>Fri, 11 May 2018 00:00:00 +0800</pubDate>  
-               <link>https://www.wangjun.dev/2018/05/pwa-app/</link>  
-               <guid isPermaLink="true">https://www.wangjun.dev/2018/05/pwa-app/</guid>  
+               <link>http://localhost:4000/2018/05/pwa-app/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2018/05/pwa-app/</guid>  
                </item>  
           
             <item>  
@@ -1629,49 +1709,8 @@ require&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quo
 &lt;/blockquote&gt;
 </description>  
                <pubDate>Tue, 08 May 2018 00:00:00 +0800</pubDate>  
-               <link>https://www.wangjun.dev/2018/05/create-publish-nodejs-cli/</link>  
-               <guid isPermaLink="true">https://www.wangjun.dev/2018/05/create-publish-nodejs-cli/</guid>  
-               </item>  
-          
-            <item>  
-               <title>快速创建简易HTTP服务器的方式</title>  
-               <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#1-python-方式&quot; id=&quot;markdown-toc-1-python-方式&quot;&gt;1. Python 方式&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#2-php-方式&quot; id=&quot;markdown-toc-2-php-方式&quot;&gt;2. Php 方式&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#3-ruby-方式&quot; id=&quot;markdown-toc-3-ruby-方式&quot;&gt;3. Ruby 方式&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#4-npm-方式&quot; id=&quot;markdown-toc-4-npm-方式&quot;&gt;4. NPM 方式&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;1-python-方式&quot;&gt;1. Python 方式&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;python2 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; SimpleHTTPServer 8000
-&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;python3 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; http.server 8000
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;2-php-方式&quot;&gt;2. Php 方式&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;php &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; 0.0.0.0:80000
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;3-ruby-方式&quot;&gt;3. Ruby 方式&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ruby &lt;span class=&quot;nt&quot;&gt;-rwebrick&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;WEBrick::HTTPServer.new(:Port =&amp;gt; 8000, :DocumentRoot =&amp;gt; Dir.pwd).start&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;4-npm-方式&quot;&gt;4. NPM 方式&lt;/h2&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# install&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;npm i &lt;span class=&quot;nt&quot;&gt;-g&lt;/span&gt; http-server
-&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;http-server &lt;span class=&quot;nt&quot;&gt;-p8080&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-c-1&lt;/span&gt; dist/
-
-&lt;span class=&quot;c&quot;&gt;# https&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;http-server &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; —p433 C localhost.pem &lt;span class=&quot;nt&quot;&gt;-K&lt;/span&gt; localhost-key.pem dist/
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-</description>  
-               <pubDate>Mon, 07 May 2018 00:00:00 +0800</pubDate>  
-               <link>https://www.wangjun.dev/2018/05/http-server-ways/</link>  
-               <guid isPermaLink="true">https://www.wangjun.dev/2018/05/http-server-ways/</guid>  
+               <link>http://localhost:4000/2018/05/create-publish-nodejs-cli/</link>  
+               <guid isPermaLink="true">http://localhost:4000/2018/05/create-publish-nodejs-cli/</guid>  
                </item>  
           
     </channel>  

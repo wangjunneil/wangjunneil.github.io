@@ -1,5 +1,6 @@
 _site/
 ssl/
 .sass-cache/
+.jekyll-cache/
 .DS_Store
 *.iml

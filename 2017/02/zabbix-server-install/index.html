@@ -43,8 +43,8 @@ iptables <span class="nt">-A</span> OUTPUT <span class="nt">-p</span> tcp <span 
 iptables <span class="nt">-A</span> INPUT <span class="nt">-p</span> tcp <span class="nt">--sport</span> 80 <span class="nt">-j</span> ACCEPT
 iptables <span class="nt">-A</span> OUTPUT <span class="nt">-p</span> tcp <span class="nt">--dport</span> 443 <span class="nt">-j</span> ACCEPT
 iptables <span class="nt">-A</span> INPUT <span class="nt">-p</span> tcp <span class="nt">--sport</span> 443 <span class="nt">-j</span> ACCEPT
-</code></pre></div></div><h2 id="11-浏览器打开web控制台">11. 浏览器打开web控制台</h2><p>输入连接 <strong>//xxx.xxx.xxx.xxx/zabbix</strong> 进行界面配置即可完成。默认的用户名密码是 <strong>Admin</strong>/<strong>zabbix</strong>。</p><h2 id="附录a邮件脚步报警">附录A：邮件脚步报警</h2><p>对于自定义的媒介脚本，应该放在”<strong>/usr/local/zabbix/share/zabbix/alertscripts</strong>“目录中，这样在配置自定义媒介时，zabbix-server才会识别到。</p><p>下面是python语言编写的自动发送邮件的脚本<strong>mail.py</strong>。</p><div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#coding:utf-8</span>
-
+</code></pre></div></div><h2 id="11-浏览器打开web控制台">11. 浏览器打开web控制台</h2><p>输入连接 <strong>//xxx.xxx.xxx.xxx/zabbix</strong> 进行界面配置即可完成。默认的用户名密码是 <strong>Admin</strong>/<strong>zabbix</strong>。</p><h2 id="附录a邮件脚步报警">附录A：邮件脚步报警</h2><p>对于自定义的媒介脚本，应该放在”<strong>/usr/local/zabbix/share/zabbix/alertscripts</strong>“目录中，这样在配置自定义媒介时，zabbix-server才会识别到。</p><p>下面是python语言编写的自动发送邮件的脚本<strong>mail.py</strong>。</p><div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#coding:utf-8
+</span>
 <span class="kn">import</span> <span class="nn">smtplib</span>
 <span class="kn">from</span> <span class="nn">email.mime.text</span> <span class="kn">import</span> <span class="n">MIMEText</span>
 <span class="kn">import</span> <span class="nn">sys</span>

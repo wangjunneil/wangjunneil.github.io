@@ -61,15 +61,15 @@ var URL_TO_CACHE = [
     "/assets/core.css",
     "/assets/js/nav.js",
     "/assets/js/zepto.min.js",
-    "/assets/img/site/header.png",
+    "/assets/img/site/header.webp",
     "/assets/img/site/offline.gif",
-    "/assets/img/site/search.png",
+    "/assets/img/site/search.webp",
     "/assets/js/main.js",
-    "/assets/img/site/hacker.png",
+    "/assets/img/site/hacker.webp",
     "/assets/img/site/bg.gif",
     "/assets/img/icons/icon-144x144.png",
     "/assets/favicon.ico",
-    "/assets/img/site/clear.png"
+    "/assets/img/site/clear.webp"
 ];
 
 // Service Worker 事件注册

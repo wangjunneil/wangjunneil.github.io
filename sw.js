@@ -52,59 +52,7 @@ function onFetch(e) {
     )
 }
 
-// 接收推送消息
-// function onPush(event) {
-//     let push_message = event.data.text();
-
-//     const title = "New Message from Vinny's Blog";
-//     // const actions = [
-//     //     { action: 'like', title: '👍Like' },
-//     //     { action: 'reply', title: '⤻ Reply' }
-//     // ];
-//     const options = {
-//         // body: push_message,
-//         body: 'Did you make a $1,000,000 purchase at Dr. Evil...',
-//         icon: '/assets/img/site/hacker.png',
-//         vibrate: [200, 100, 200, 100, 200, 100, 400],
-//         tag: "request",
-//         badge: '/assets/push/badge.png',
-//         actions: [
-//             { "action": "yes", "title": "Yes", "icon": "images/yes.png" },
-//             { "action": "no", "title": "No", "icon": "images/no.png" }
-//         ]
-//     };
-
-//     event.waitUntil(self.registration.showNotification(title, options));
-// }
-
-// 通知点击事件
-// function onNotificationClick(event) {
-//     console.log('[Service Worker] Notification click Received.');
-
-//     // event.notification.close();
-
-//     // event.waitUntil(
-//     //     clients.openWindow('https://developers.google.com/web/')
-//     // );
-
-//     var messageId = event.notification.data;
-
-//     event.notification.close();
-
-//     if (event.action == 'like') {
-//         // TODO
-//     } else if (event.action == 'reply') {
-//         // TODO
-//     }
-// }
-
-// function onMessage(event) {
-//     if (event.data.action === 'skipWaiting') {
-//         self.skipWaiting();
-//     }
-// }
-
-var CACHE_VERSION = "V1.1.31";
+var CACHE_VERSION = "V1.1.32";
 var CACHE_NAME = CACHE_VERSION + ":sw-cache::";
 var URL_TO_CACHE = [
     "/",
@@ -119,16 +67,12 @@ var URL_TO_CACHE = [
     "/assets/js/main.js",
     "/assets/img/site/hacker.png",
     "/assets/img/site/bg.gif",
-    "/assets/icons/icon-144x144.png",
+    "/assets/img/icons/icon-144x144.png",
     "/assets/favicon.ico",
     "/assets/img/site/clear.png"
 ];
 
 // Service Worker 事件注册
-self.addEventListener("install", onInstall),
-self.addEventListener("activate", onActivate),
+self.addEventListener("install", onInstall);
+self.addEventListener("activate", onActivate);
 self.addEventListener("fetch", onFetch);
-// self.addEventListener('push', onPush),
-// self.addEventListener('message', onMessage),
-// self.addEventListener('notificationclick', onNotificationClick);
-

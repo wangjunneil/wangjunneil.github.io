@@ -313,11 +313,11 @@
                 console.log('ServiceWorker registration failed: ', err);
             });
 
-            navigator.serviceWorker.addEventListener('controllerchange', function() {
+            // navigator.serviceWorker.addEventListener('controllerchange', function() {
                 // if (refreshing) return;
                 // window.location.reload();
                 // refreshing = true;
-            });
+            // });
         });
 
         // window.addEventListener('load', (e) => {

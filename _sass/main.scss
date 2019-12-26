@@ -1,6 +1,6 @@
 body {
   background:url(/assets/img/site/bg.webp) repeat 5px 5px;
-  font: 400 12px/1.2 "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font: 400 12px/1.2 "Anonymous Pro",monospace;
   color: #000;
   letter-spacing: 0.2px;
   margin: 0;
@@ -85,13 +85,12 @@ span[data-note] {
     max-width: 600px;
     margin: 0px auto 0em;
     text-align: center;
-    font-family: "Cutive Mono",monospace;
+    font-family: "Anonymous Pro",monospace;
     font-size: 1.0em;
     border-bottom: 2px solid rgb(0, 0, 0);
     .page-link{
         padding: 0em 0.2em;
         color: rgb(51, 51, 51);
-        font-weight: 600;
         border-bottom: 0px;
     }
     a:hover {
@@ -228,7 +227,7 @@ cursor:pointer;
     a {
         border-bottom: 0px;
         font-size: 11px;
-        font-family: "Cutive Mono", monospace;
+        font-family: "Anonymous Pro",monospace;
         padding: 0px 10px;
     }
     // a:hover{
@@ -433,7 +432,7 @@ time {
 }
 code,
 pre {
-  font-family: Consolas, monospace, x;
+  font-family: "Anonymous Pro",monospace;
 }
 code {
   color: #3a3f51;
@@ -562,7 +561,7 @@ div.highlighter-rouge {
     margin: 0 auto;
     text-align: right;
     color: #555;
-    font-family: "Cutive Mono", monospace;
+    font-family: "Anonymous Pro",monospace;
     padding-bottom: 30px;
 }
 .block {
@@ -609,7 +608,7 @@ div.highlighter-rouge {
 .footer {
   margin-top: 10px;
   color: #777;
-  font-family: "Cutive Mono", monospace;
+  font-family: "Anonymous Pro",monospace;
   padding: 1.1em 0em;
   // border-top: 1px dotted #000;
   a {
@@ -746,7 +745,7 @@ section {
         color: #363535;
         box-sizing: border-box;
         // font-weight: bold;
-        font-family: "Cutive Mono",monospace;
+        font-family: "Anonymous Pro",monospace;
       }
       .post-date {
         float: right;

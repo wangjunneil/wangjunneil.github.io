@@ -27,6 +27,7 @@
 <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
 <meta name="keywords" content="{% if page.tags %}{{ page.tags | join: ',' }}{% else %}{{ site.keywords }}{% endif %}">
 
+<link href="https://fonts.googleapis.com/css?family=Anonymous+Pro&display=swap" rel="stylesheet">
 <link rel="icon" href="{{ site.baseurl }}/assets/favicon.ico">
 <link rel="stylesheet" href="{{ site.baseurl }}/assets/core.css">
 <link rel="canonical" href="{{ page.url | prepend: site.baseurl }}">
